@@ -5,13 +5,15 @@
     <li data-target="#myCarousel" data-slide-to="2"></li>
   </ol>
   <div class="carousel-inner">
-    <%@slider.each_with_index do |item, index| %>
+    <% index = 0 %>
+    <%@slider.each do |item| %>
       <div class="carousel-item <%= "active" if index == 0%>">
         <%= image_tag item.image.url%>
         <div class="container">
           <%= item.text.html_safe if item.text %>
         </div>
       </div>
+      <% index += 1 %>
     <% end %>
   </div>
   <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
