@@ -1,0 +1,59 @@
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
+    html: { class: 'form-signin', method: :put } ) do |f| %>
+  
+  <%= devise_error_messages! %>
+
+  <div class="text-center mb-4">
+    <a href="/">
+      <%= image_tag 'logo-egg.png' %>
+    </a>
+    <h1 class="h3 mt-5 mb-3 font-weight-normal">Edit <%= resource_name.to_s.humanize %></h1>
+    <p>You can edit the following fields</p>
+  </div>
+
+  <div class="form-label-group">
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+      class: 'form-control', placeholder: 'Email address', required: true %>
+    <%= f.label :email %>
+  </div>
+  
+  <div class="text-center mx-4">
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+  </div>
+
+  <div class="form-label-group">
+    <%= f.password_field :password, autocomplete: "off", required: true, 
+        class: 'form-control', placeholder: "Password" %>
+    <%= f.label :password %>
+  </div>
+
+  <div class="form-label-group">
+    <%= f.password_field :password_confirmation, autocomplete: "off", required: true, 
+        class: 'form-control', placeholder: "Password confirmation" %>
+    <%= f.label :password_confirmation %>
+  </div>
+
+  <div class="form-label-group">
+    <%= f.password_field :current_password, autocomplete: "off", required: true, 
+        class: 'form-control', placeholder: "Current password" %>
+    <%= f.label :current_password %>
+    <div><i>(we need your current password to confirm your changes)</i></div>
+  </div>
+
+  <%= f.submit "Update", class: "btn btn-lg btn-primary btn-block mb-3" %>
+  
+  <p>Cancel my account</p>
+
+  <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-sm" %></p>
+  
+  <div class="text-center mx-4">
+    <%= link_to "Back", :back %>
+  </div>
+
+  <p class="mt-5 mb-3 text-muted text-center">© 2018</p>
+<% end %>

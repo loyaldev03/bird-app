@@ -1,0 +1,49 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <a class="navbar-brand" href="/">
+      <%= image_tag 'logo-egg.png' %>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <ul class="navbar-nav mr-5">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <%= link_to "About us", about_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Contact", contacts_path, class: "nav-link" %>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0 mr-3">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <% if current_user %>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Profile
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" type="button"><%= current_user.email.split('@')[0] %></button>
+                <%= link_to "Admin dashboard", admin_root_path, class: "dropdown-item" %>
+                <%= link_to "Edit profile", edit_user_registration_path, class: "dropdown-item" %>
+                <div class="dropdown-divider"></div>
+                <%= link_to "Log out", destroy_user_session_path, 
+                    class: "dropdown-item", method: :delete %>
+              </div>
+            </div>
+          </li>
+        </ul>
+      <% else %>
+        <%= link_to "Sign in", user_session_path, class: 'btn btn-outline-secondary' %>
+      <% end %>
+    </div>
+  </nav>
+</header>
