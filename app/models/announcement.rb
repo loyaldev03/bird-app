@@ -25,14 +25,6 @@ class Announcement < ApplicationRecord
     self
   end
 
-  def activity_notify
-    [StreamRails.feed_manager.get_feed( 'general_actions', 1 )]
-  end
-
-  def activity_object
-    self
-  end
-
   #because announcements shouldn't have a user
   def activity_actor
     User.with_role(:admin).first
