@@ -16,13 +16,16 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
 
-    if @comment.commentable_type == "User" &&
+    if current_user.has_role?(:admin)
+      @comment.user_id = params[:comment][:user_id] || current_user.id
+    elsif @comment.commentable_type == "User" &&
             @comment.parent.nil? &&
             @comment.commentable_id != current_user.id
       redirect_back(fallback_location: root_path) and return
+    else
+      @comment.user_id = current_user.id
     end
 
-    @comment.user_id = current_user.id
 
     logger.warn(@comment.errors.full_messages) unless @comment.save
 
