@@ -11,5 +11,6 @@
 
   $('.feed-block').prepend("<%= escape_javascript(render(@post)) %>");
   $('#post_text').val('').focus();
+  $('.emojionearea-editor').html('');
   
 <% end %>
