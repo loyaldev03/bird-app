@@ -44,11 +44,13 @@ class PostsController < ApplicationController
     @topic_id = params[:topic_id]
     @post_hash = SecureRandom.hex
     @new_post = Post.new
+    @new_post.feed_images.build
   end
 
   protected
 
     def post_params
-      params.require(:post).permit(:text, :topic_id, :parent_id, :post_hash)
+      params.require(:post).permit(:text, :topic_id, :parent_id, :post_hash,
+        feed_images_attributes: [:id, :feedable_id, :feedable_type, :image, :_destroy])
     end
 end

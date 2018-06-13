@@ -13,6 +13,8 @@ class TopicsController < ApplicationController
     end
     @new_post = Post.new
 
+    @new_post.feed_images.build
+
     breadcrumb @category.title, chirp_path(@category), match: :exact
     breadcrumb @topic.title, chirp_topic_path(@category, @topic), match: :exact
   end

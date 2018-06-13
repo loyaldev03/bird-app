@@ -26,6 +26,14 @@
       </p>
     </div>
 
+    <div>
+      <% post.feed_images.each do |image| %>
+        <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
+          <%= image_tag image.image, class: "feed-image mb-2" %>
+        </a>
+      <% end %>
+    </div>
+
     <div class="comment-footer">
       <span>
         <%= render partial: 'likes/like_button', locals: { object: post,  style: 'thumbup' } %>

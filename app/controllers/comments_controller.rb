@@ -58,6 +58,7 @@ class CommentsController < ApplicationController
     @commentable_type = params[:commentable_type]
     @comment_hash = SecureRandom.hex
     @new_comment = Comment.new
+    @new_comment.feed_images.build
   end
 
 
@@ -65,6 +66,7 @@ class CommentsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:commentable_type, :commentable_id, 
-        :body, :title, :parent_id, :likes_count, :shares_count, :comment_hash)
+        :body, :title, :parent_id, :likes_count, :shares_count, :comment_hash,
+        feed_images_attributes: [:id, :feedable_id, :feedable_type, :image, :_destroy])
     end
 end

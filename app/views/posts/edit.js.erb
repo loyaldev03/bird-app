@@ -1,3 +1,7 @@
 $('#feed-post-<%= @post.id%>').html("<%= escape_javascript(render 'posts/edit_form') %>");
 
-$("#edit_post_<%=@post.id%> .emoji-area").emojioneArea();
+$("#edit_post_<%=@post.id%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+
+// $(document).ready(function() {
+//   $("#edit_post_<%=@post.id%> .emoji-area").imageAttach();
+// });

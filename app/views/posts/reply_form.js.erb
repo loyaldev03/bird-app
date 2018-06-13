@@ -12,4 +12,8 @@ $("[id^='topic-post']").show();
   $('#feed-post-<%= @post_id %>').closest('div').append(`<%= form %>`);
 <% end %>
 
-$("#new_post-<%=@post_hash%> .emoji-area").emojioneArea();
+$("#new_post-<%=@post_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+
+// $(document).ready(function() {
+//   $("#new_post-<%=@post_hash%> .emoji-area").imageAttach();
+// });

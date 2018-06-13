@@ -4,6 +4,9 @@ class Comment < ApplicationRecord
   has_many :likes, as: :likeable
   belongs_to :parent,  class_name: "Comment", optional: true
   has_many   :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
+  
+  has_many :feed_images, as: :feedable, dependent: :destroy
+  accepts_nested_attributes_for :feed_images
 
   after_create :add_points, :feed_commentable, :feed_masterfeed, :increment_count
   after_destroy :decrement_count, :remove_points

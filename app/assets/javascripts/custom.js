@@ -159,8 +159,27 @@ $(document).on('turbolinks:load', function() {
     }, 600, function(){});
   }
 
-  $(document).ready(function() {
-    $(".emoji-area").emojioneArea();
+  $(".emoji-area").emojioneArea({search: false, recentEmojis: false, pickerPosition: 'bottom'});
+
+  // $(document).ready(function() {
+  //   $(".emoji-area").imageAttach();
+  // });
+
+  // $('.image-attach').next("[type='file']").change(function(){
+  $(document).on('change', ".image-attach + [type='file']", function(){
+    var remove_button = $('<button class="c-btn-blue c-btn-sm ml-2">remove</button>');
+
+    $(this).siblings('span').remove();
+    $(this).siblings('button').remove();
+    $(this).after(remove_button)
+        .after($('<span>'+$(this).val().split('/').pop().split('\\').pop()+'</span>'));
+
+    remove_button.click(function(){
+      $(this).siblings("[type='file']").val('');
+      $(this).siblings('span').remove();
+      $(this).remove();
+    });
+
   });
 
 });

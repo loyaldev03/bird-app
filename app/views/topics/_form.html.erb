@@ -10,6 +10,9 @@
       <%= f.label :text, "Text", class: "sr-only" %>
       <%= f.text_area :text, id: "post_text#{('-'+parent_id) if parent_id}", class: "form-control emoji-area", required: true %>
     </div>
+
+    <%= render 'layouts/image_attach', object: f %>
+
     <%= f.submit "Add a Post", class: "btn c-btn-blue btn-wide" %>
   <% end %>
 </div>

@@ -30,9 +30,18 @@
 
     <%= image_tag(reply.user.avatar.thumb, class: "post-user-avatar") %>
 
+    <div>
+      <% reply.feed_images.each do |image| %>
+        <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
+          <%= image_tag image.image, class: "feed-image mb-2" %>
+        </a>
+      <% end %>
+    </div>
+
     <% if reply.replies.present? %>
       <%= render partial: 'posts/reply', collection: reply.replies.order(created_at: :asc) %>
     <% end %>
+
   </div>
 
 <% else %>
@@ -67,6 +76,14 @@
       <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
       <span class="comments-count"><%= reply.replies_count %></span>
     <% end %>
+
+    <div>
+      <% reply.feed_images.each do |image| %>
+        <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
+          <%= image_tag image.image, class: "feed-image mb-2" %>
+        </a>
+      <% end %>
+    </div>
 
     <% if reply.replies.present? %>
       <%= render partial: 'posts/reply', collection: reply.replies.order(created_at: :asc) %>

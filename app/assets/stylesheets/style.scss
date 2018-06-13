@@ -453,3 +453,16 @@ button, input[type=submit], a {
 .emojionearea-editor {
   text-align: left;
 }
+
+.image-attach {
+  z-index: 5;
+  position: absolute;
+  right: 30px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  opacity: .6;
+  cursor: pointer;
+  transition: opacity .3s ease-in-out;
+  background-image: asset-data-url("icons/paper-clip.svg") !important;
+}

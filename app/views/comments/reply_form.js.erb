@@ -12,4 +12,8 @@ $("[id^='comment-reply']").show();
   $('#Comment-<%= @comment_id %>').closest('div').append(`<%= form %>`);
 <% end %>
 
-$("#new_comment-<%=@comment_hash%> .emoji-area").emojioneArea();
+$("#new_comment-<%=@comment_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+
+// $(document).ready(function() {
+//   $("#new_comment-<%=@comment_hash%> .emoji-area").imageAttach();
+// });

@@ -6,6 +6,9 @@ class Post < ApplicationRecord
   belongs_to :parent,  class_name: "Post", optional: true
   has_many   :replies, class_name: "Post", foreign_key: :parent_id, dependent: :destroy
 
+  has_many :feed_images, as: :feedable, dependent: :destroy
+  accepts_nested_attributes_for :feed_images
+
   after_create :feed_masterfeed, :feed_topic, :increment_count, :add_points
   after_destroy :decrement_count, :remove_points
 
@@ -32,10 +35,6 @@ class Post < ApplicationRecord
   #   else
       
   #   end
-  # end
-
-  # def activity_object
-  #   self
   # end
 
   def activity_object

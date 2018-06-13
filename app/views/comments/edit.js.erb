@@ -1,3 +1,7 @@
 $('#Comment-<%= @comment.id%>').html("<%= escape_javascript(render 'comments/edit_form') %>");
 
-$("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea();
+$("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+
+// $(document).ready(function() {
+//   $("#edit_comment_<%=@comment.id%> .emoji-area").imageAttach();
+// });
