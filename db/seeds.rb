@@ -32,7 +32,7 @@ end
 3.times do |i|
   new_release = Release.create!(
     title: 'Works Well With Others',
-    artist_id: 1,
+    # artist_id: 1,
     catalog: 'DB157',
     text: "<p>2016 was a banner year for Dirtybird’s founder, Claude VonStroke. He debuted his Get Real alias with Green Velvet in the winter, and followed up with another number one single in the spring with “The Rain Break”.",
     facebook_img: 'https://birdfeed-dev.s3.amazonaws.com/uploads/facebook-images/18/ae2ea0be7c11e79b5f6f59ff01eb9b/Works Well With Others - Claude VonStroke Will Clarke Sbastien V - Dirtybird.jpg',
@@ -49,7 +49,7 @@ end
     title: 'Tiny Tambourine',
     release_id: new_release.id,
     created_at: DateTime.current - 2.hours,
-    artist_id: 1,
+    # artist_id: 1,
     track_number: 1,
     genre: 'Tech House',
     isrc_code: 'GBKQU1766270',
@@ -61,7 +61,7 @@ end
     title: 'Daylight Dark Room',
     release_id: new_release.id,
     created_at: DateTime.current - 2.hours,
-    artist_id: 1,
+    # artist_id: 1,
     track_number: 2,
     genre: 'Tech House',
     isrc_code: 'GBKQU1766271',
