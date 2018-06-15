@@ -161,11 +161,8 @@ $(document).on('turbolinks:load', function() {
 
   $(".emoji-area").emojioneArea({search: false, recentEmojis: false, pickerPosition: 'bottom'});
 
-  // $(document).ready(function() {
-  //   $(".emoji-area").imageAttach();
-  // });
+  dragDropAttach();
 
-  // $('.image-attach').next("[type='file']").change(function(){
   $(document).on('change', ".image-attach + [type='file']", function(){
     var remove_button = $('<button class="c-btn-blue c-btn-sm ml-2">remove</button>');
 
@@ -183,3 +180,19 @@ $(document).on('turbolinks:load', function() {
   });
 
 });
+
+function dragDropAttach() {
+  setTimeout( function() {
+    var dropContainer = $('.emojionearea')[0];
+    dropContainer.ondragover = dropContainer.ondragenter = function(e) {
+      e.preventDefault();
+    };
+
+    dropContainer.ondrop = function(e) {
+      var file_input = $(dropContainer).closest('form').find("[type='file']")[0];
+      file_input.files = e.dataTransfer.files;
+      $(file_input).trigger('change');
+      e.preventDefault();
+    };
+  },200);
+}

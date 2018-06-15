@@ -9,11 +9,13 @@ $("[id^='topic-post']").show();
 <% if Post.find(@post_id).parent_id.blank? %>
   $('#topic-post-<%= @post_id %>').hide().before(`<%= form %>`);
 <% else %>
-  $('#feed-post-<%= @post_id %>').closest('div').append(`<%= form %>`);
+  if($('#feed-post-<%= @post_id %>').siblings('.nested-messages').length == 0){
+    $('#feed-post-<%= @post_id %>').closest('div').append(`<%= form %>`);
+  } else {
+    $('#feed-post-<%= @post_id %>').siblings('.nested-messages').before(`<%= form %>`);
+  }
 <% end %>
 
 $("#new_post-<%=@post_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
 
-// $(document).ready(function() {
-//   $("#new_post-<%=@post_hash%> .emoji-area").imageAttach();
-// });
+dragDropAttach();

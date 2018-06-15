@@ -9,11 +9,13 @@ $("[id^='comment-reply']").show();
 <% if Comment.find(@comment_id).parent_id.blank? %>
   $('#comment-reply-<%= @comment_id %>').hide().before(`<%= form %>`);
 <% else %>
-  $('#Comment-<%= @comment_id %>').closest('div').append(`<%= form %>`);
+  if($('#Comment-<%= @comment_id %>').siblings('.nested-messages').length == 0){
+    $('#Comment-<%= @comment_id %>').closest('div').append(`<%= form %>`);
+  } else {
+    $('#Comment-<%= @comment_id %>').siblings('.nested-messages').before(`<%= form %>`);
+  }
 <% end %>
 
 $("#new_comment-<%=@comment_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
 
-// $(document).ready(function() {
-//   $("#new_comment-<%=@comment_hash%> .emoji-area").imageAttach();
-// });
+dragDropAttach();

@@ -2,6 +2,4 @@ $('#feed-post-<%= @post.id%>').html("<%= escape_javascript(render 'posts/edit_fo
 
 $("#edit_post_<%=@post.id%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
 
-// $(document).ready(function() {
-//   $("#edit_post_<%=@post.id%> .emoji-area").imageAttach();
-// });
+dragDropAttach();
