@@ -15,12 +15,12 @@
   <% if current_user && current_user.id == @user.id %>
     <%= form_for(@user, remote: true,
         html: { id: 'change-avatar', class: 'userpage-avatar left-avatar', method: :put } ) do |f| %>
-      <%= image_tag @user.avatar.big_thumb if @user.avatar.present? %>
+      <%= image_tag @user.avatar.big_thumb %>
       <%= f.file_field :avatar, class: 'form-control-file' %>
       <%= f.hidden_field :avatar_cache %>
     <% end %>
   <% else %>
-    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar left-avatar") if @user.avatar.present? %>
+    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar left-avatar") %>
   <% end %>
   
   <div class="user-bgrd">
