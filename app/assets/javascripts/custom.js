@@ -178,21 +178,22 @@ $(document).on('turbolinks:load', function() {
     });
 
   });
-
 });
 
 function dragDropAttach() {
   setTimeout( function() {
-    var dropContainer = $('.emojionearea')[0];
-    dropContainer.ondragover = dropContainer.ondragenter = function(e) {
-      e.preventDefault();
-    };
+    if ($('.emojionearea').length > 0){
+      var dropContainer = $('.emojionearea')[0];
+      dropContainer.ondragover = dropContainer.ondragenter = function(e) {
+        e.preventDefault();
+      };
 
-    dropContainer.ondrop = function(e) {
-      var file_input = $(dropContainer).closest('form').find("[type='file']")[0];
-      file_input.files = e.dataTransfer.files;
-      $(file_input).trigger('change');
-      e.preventDefault();
-    };
+      dropContainer.ondrop = function(e) {
+        var file_input = $(dropContainer).closest('form').find("[type='file']")[0];
+        file_input.files = e.dataTransfer.files;
+        $(file_input).trigger('change');
+        e.preventDefault();
+      };
+    }
   },200);
 }

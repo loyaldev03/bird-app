@@ -5,10 +5,8 @@
 
   <div class="feed-item-body">
     <div id="feed-post-<%= post.id %>">
-      <p class="mb-1">
-        <b>
-          <%= link_to post.user.name.split.map(&:capitalize).join(' '), post.user %>&nbsp;
-        </b>
+      <p class="mb-1 feed-name">
+        <%= link_to post.user.name.split.map(&:capitalize).join(' '), post.user %>&nbsp;
       </p>
       <p class="post-text">
         <%= post.text %>

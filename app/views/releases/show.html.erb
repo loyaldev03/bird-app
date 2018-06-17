@@ -87,11 +87,11 @@
       <%#= link_to "Q&A", chirp_path, class: "btn c-btn-transparent btn-wide" %>
     </div>
 
-    <div class="c-panel bg-white">
+    <div class="c-panel bg-white big-c-buttons">
       <div class="c-flag mb-4"><b>RELEASE</b> FEED</div>
       
-      <button class="btn c-btn-blue mt-1" type="button" data-toggle="modal" data-target="#addcommentModal">
-        ADD A COMMENT
+      <button class="btn c-btn-blue mt-1 btn-wide" type="button" data-toggle="modal" data-target="#addcommentModal">
+        POST A COMMENT
       </button>
 
       <%= render partial: 'follows/follow_button', 
@@ -162,13 +162,15 @@
                   <%= render 'likes/like_button', object: track %>
                 </h3>
 
-                <%# if track.users.any?
-                     artists = track.users.map(&:name).join(' feat. ')
-                   else
-                     artists = track.artist
-                   end %>
-
-                By <%= track.artist %>
+                By
+                <% if track.users.any? %>
+                  <%# artists = track.users.map(&:name).join(' feat. ') %>
+                  <% track.users.each do |u| %>
+                    <%= link_to u.name, u %>
+                  <% end %>
+                <% else %>
+                  <%= track.artist %>
+                <% end %>
 
                 <div class="jp-controls">
                   <div class="jp-current-time-track" role="timer" aria-label="time">0:00</div>

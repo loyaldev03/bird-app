@@ -2,7 +2,7 @@
   <%= image.hidden_field :feedable_id %>
   <%= image.hidden_field :feedable_type %>
   <%= image.label :image, "&nbsp;".html_safe, class: "image-attach" %>
-  <%= image.file_field :image, class: "d-none" %>
+  <%= image.file_field :image %>
 
   <%#= image.check_box :_destroy %>
 <% end %>

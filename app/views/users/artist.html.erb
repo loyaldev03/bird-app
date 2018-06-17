@@ -225,13 +225,15 @@
                   <%= render 'likes/like_button', object: track %>
                 </h3>
 
-                <%# if track.users.any?
-                     artists = track.users.map(&:name).join(' feat. ')
-                   else
-                     artists = track.artist
-                   end %>
-
-                By <%= track.artist %>
+                By
+                <% if track.users.any? %>
+                  <%# artists = track.users.map(&:name).join(' feat. ') %>
+                  <% track.users.each do |u| %>
+                    <%= link_to u.name, u %>
+                  <% end %>
+                <% else %>
+                  <%= track.artist %>
+                <% end %>
 
                 <div class="jp-controls">
                   <div class="jp-current-time-track" role="timer" aria-label="time">0:00</div>

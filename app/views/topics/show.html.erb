@@ -11,9 +11,9 @@
   <% end %>
 
   <h1><%= @topic.title %></h1>
-  <p><%= @topic.text %></p>
+  <p class="topic-text"><%= @topic.text %></p>
   
-  <div class="text-center"><%= render 'follows/follow_button', target: @topic %></div>
+  <div class="text-right mr-4"><%= render 'follows/follow_button', target: @topic %></div>
 
   <div class="feed-block">
     <%= render @topic.posts.parents_posts.order(created_at: :desc) %>

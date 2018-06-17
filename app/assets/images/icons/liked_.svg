@@ -36,12 +36,12 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="775"
-     inkscape:window-height="482"
+     inkscape:window-height="480"
      id="namedview13"
      showgrid="false"
      inkscape:zoom="19.666667"
-     inkscape:cx="2.6610169"
-     inkscape:cy="6.0000001"
+     inkscape:cx="6.5"
+     inkscape:cy="6"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
@@ -54,16 +54,16 @@
   </defs>
   <g
      id="g9"
-     style="fill:#3ed4e0;fill-opacity:1">
+     style="fill:#ffffff">
     <g
        transform="translate(-808 -659)"
        id="g7"
-       style="fill:#3ed4e0;fill-opacity:1">
+       style="fill:#ffffff">
       <use
          fill="#777"
          xlink:href="#8jr3a"
          id="use5"
-         style="fill:#3ed4e0;fill-opacity:1" />
+         style="fill:#ffffff" />
     </g>
   </g>
 </svg>

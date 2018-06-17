@@ -25,21 +25,20 @@
     float: right;
   }
 
-  .feed-item {
-    // margin-top: 50px;
-  }
-
   h1 {
     font-size: 22px;
     font-weight: 400;
-    text-align: center;
-    margin: 15px;
+    margin: 15px 30px;
 
     & + form {
       display: block !important;
       float: none !important;
       text-align: center;
     }
+  }
+
+  .topic-text {
+    padding: 0 30px;
   }
 }
 

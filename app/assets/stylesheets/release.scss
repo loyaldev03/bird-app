@@ -60,8 +60,6 @@
     margin-left: 10px;
 
     a {
-      color: white;
-
       img {
         margin-bottom: 8px;
         margin-left: 3px;
@@ -88,9 +86,15 @@
   }
 
   .like-button {
+    color: white;
     display: inline-block;
     margin: 0 6px;
     vertical-align: unset;
+
+    &:hover {
+      text-decoration: none;
+      color: #eee;
+    }
   }
 }
 
@@ -121,6 +125,11 @@
   position: relative;
   text-align: right;
   top: -30px;
+
+  a {
+    background-color: #e75e35;
+    border-color: #e75e35;
+  }
 }
 
 .release-avatar {
@@ -138,7 +147,7 @@
   min-height: 217px;
   
   h1 {
-    font-size: 12px;
+    font-size: 22px;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 0.75px;
@@ -146,7 +155,7 @@
   }
 
   div {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .release-date {
@@ -198,6 +207,10 @@
       margin-bottom: 5px;
     }
   }
+
+  a {
+    color: white !important;
+  }
 }
 
 .follow-button-black {
@@ -205,7 +218,7 @@
   position: absolute;
   z-index: 2;
   top: 19px;
-  right: 150px;
+  right: 230px;
 }
 
 .follow-form {

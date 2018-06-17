@@ -124,6 +124,12 @@ button, input[type=submit], a {
   padding: 3px 10px;
 }
 
+.big-c-buttons {
+  a, button, input[type='submit'] {
+    font-size: 13px;
+  }
+}
+
 .t-small {
   font-size: 8px;
 }
@@ -465,4 +471,10 @@ button, input[type=submit], a {
   cursor: pointer;
   transition: opacity .3s ease-in-out;
   background-image: asset-data-url("icons/paper-clip.svg") !important;
+
+  & + [type='file'] {
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+  }
 }

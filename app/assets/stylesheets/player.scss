@@ -178,15 +178,15 @@
 }
 
 .jp-playlist {
-  opacity: 0.97;
+  opacity: 0.98;
   border-radius: 0 0 5px 5px;
   text-align: left;
-  background-color: gray;
+  background-color: white;
   display: inline-block;
   margin-right: 150px;
+  box-shadow: 0px 1px #80808052;
 
   ul {
-    // display: none;
     list-style-type: none;
     margin: 0;
     padding: 10px 15px;
@@ -198,16 +198,26 @@
   }
 }
 
+.jp-playlist-item {
+  color: #3ed4e0;
+
+  &:hover {
+    color: darken(#3ed4e0, 70%);
+    text-decoration: none;
+  }
+}
+
 .jp-playlist-item-remove {
   float: right;
   margin-left: 10px;
+  color: #3ed4e0;
 }
 
 .jp-playlist-current {
-  color: #959ded;
+  color: #e75e35;
 
   &:hover {
-    color: #828cea;
+    color: darken(#e75e35, 70%);
   }
 }
 
