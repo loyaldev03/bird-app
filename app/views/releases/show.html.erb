@@ -1,8 +1,6 @@
 <div class="release-present">
   <% if @release.image_uri.present?
        image = @release.image_uri
-     elsif @release.avatar.present?
-       image = @release.avatar.url
      else
        image = @release.avatar.url
      end %>

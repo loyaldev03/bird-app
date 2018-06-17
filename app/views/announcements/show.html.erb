@@ -1,6 +1,6 @@
 <div class="release-present">
   <% if @announcement.avatar.present?
-       image = @announcement.avatar.url
+       image = @announcement.avatar.thumb.url
      elsif @announcement.image_uri.present?
        image = @announcement.image_uri
      else

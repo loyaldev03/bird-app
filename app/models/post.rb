@@ -84,8 +84,6 @@ class Post < ApplicationRecord
     end
 
     def feed_topic
-      return if self.parent_id.present?
-
       feed = StreamRails.feed_manager.get_feed( 'topic', self.topic_id )
       activity = create_activity
       feed.add_activity(activity)

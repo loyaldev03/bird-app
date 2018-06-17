@@ -3,7 +3,7 @@
 </p>
   
 <%= link_to activity['actor'] do %>
-  <%= image_tag activity['actor'].avatar.url, class: "feed-avatar" %>
+  <%= image_tag activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
   <%= activity['actor'].name %>
 <% end %>
 <em>
