@@ -1,6 +1,9 @@
 <div class="topics-header">
-  <%#= image_tag(@category.image) if @category.image.present? %>
-  <%= image_tag('crowd.jpg') %>
+  <% if @category.image.present? %>
+    <%= image_tag(@category.image) %>
+  <% else %>
+    <%= image_tag('crowd.jpg') %>
+  <% end %>
 </div>
 
 <%#= render 'topics/breadcrumbs' %>
