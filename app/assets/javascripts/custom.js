@@ -182,13 +182,22 @@ $(document).on('turbolinks:load', function() {
 
 function dragDropAttach() {
   setTimeout( function() {
-    if ($('.emojionearea').length > 0){
-      var dropContainer = $('.emojionearea')[0];
+    var $dropContainer = $('.emojionearea');
+    
+    if ($dropContainer.length > 0){
+      dropContainer = $dropContainer[0];
+
+      dropContainer.ondragleave = function(e) {
+        $dropContainer.removeClass('drop-here');
+      };
+
       dropContainer.ondragover = dropContainer.ondragenter = function(e) {
+        $dropContainer.addClass('drop-here');
         e.preventDefault();
       };
 
       dropContainer.ondrop = function(e) {
+        $dropContainer.removeClass('drop-here');
         var file_input = $(dropContainer).closest('form').find("[type='file']")[0];
         file_input.files = e.dataTransfer.files;
         $(file_input).trigger('change');

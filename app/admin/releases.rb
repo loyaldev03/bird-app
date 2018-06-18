@@ -48,6 +48,8 @@ ActiveAdmin.register Release do
   end
 
   form do |f|
+    f.actions
+    
     f.inputs do
       image = f.object.avatar.present? ? image_tag(f.object.avatar.url) : '' 
       f.input :avatar, hint: image, as: :jcropable

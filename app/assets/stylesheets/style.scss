@@ -79,6 +79,7 @@ button, input[type=submit], a {
 
   &:active, &:hover, &:focus {
     outline: none;
+    text-decoration: none;
   }
 }
 
@@ -477,4 +478,16 @@ button, input[type=submit], a {
     width: 1px;
     height: 1px;
   }
+}
+
+.drop-here:after {
+  content: 'Drop image here';
+  font-size: 30px;
+  font-weight: bold;
+  color: #e0e0e0;
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
 }

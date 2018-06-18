@@ -92,10 +92,6 @@
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  &:focus, &:active {
-    text-decoration: none;
-    outline: none;
-  }
 }
 .aa-suggestion span:first-child {
   color: #333;

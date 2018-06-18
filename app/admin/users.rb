@@ -22,6 +22,8 @@ ActiveAdmin.register User do
   filter :created_at
 
   form do |f|
+    f.actions
+    
     f.inputs do
       f.input :avatar, hint: image_tag(f.object.avatar.url(:thumb)), as: :jcropable
       f.input :avatar_cache, as: :hidden

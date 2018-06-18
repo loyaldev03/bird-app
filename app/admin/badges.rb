@@ -12,6 +12,8 @@ ActiveAdmin.register Badge do
   end
 
   form do |f|
+    f.actions
+    
     f.inputs do
       f.input :badge_kind
       f.input :name
