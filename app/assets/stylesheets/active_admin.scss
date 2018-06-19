@@ -98,3 +98,14 @@ input[disabled],
     margin: 0;
   }
 }
+
+.sidebar_section.panel {
+  margin-bottom: 0;
+}
+
+.small-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 16px;
+  object-fit: cover;
+}

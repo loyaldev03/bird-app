@@ -1,5 +1,6 @@
 ActiveAdmin.register Release do
-  # config.filters = false
+  filter :title
+  filter :artist
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -15,6 +16,15 @@ ActiveAdmin.register Release do
     selectable_column
     column :title
     column :artist
+    column "Attached Artists" do |release|
+      images = ""
+
+      release.users.each do |user|
+        images << "<a href='/artists/#{user.id}' title='#{user.name}' target='_blank'><img src='#{user.avatar.thumb.url}' class='small-avatar'></a>"  
+      end
+
+      images.html_safe
+    end
     column :available_to_all
     column :release_date
     column :published_at
@@ -77,7 +87,7 @@ ActiveAdmin.register Release do
         t.input :genre
         t.input :isrc_code
         t.input :uri, as: :file, label: "Track file (WAV Format)"
-        f.input :users, as: :select, label: "Artists",
+        t.input :users, as: :select, label: "Artists",
         collection: User.with_role(:artist).map {|a| [a.name, a.id] }
       end
     end
