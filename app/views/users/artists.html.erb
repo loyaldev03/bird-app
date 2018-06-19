@@ -6,11 +6,7 @@
   <% @artists.each do |artist| %>
     <li class="item-wide">
       <%= link_to artist_path(artist), class: "item-avatar"  do %>
-        <% if artist.artist_info && artist.artist_info.avatar.present? %>
-          <%= image_tag  artist.artist_info.avatar.url %>
-        <% elsif artist.avatar.present? %>
-          <%= image_tag artist.avatar.big_thumb %>
-        <% end %>
+        <%= image_tag artist.avatar.big_thumb %>
       <% end %>
 
       <div class="item-body">

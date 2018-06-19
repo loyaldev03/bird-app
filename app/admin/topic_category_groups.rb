@@ -14,6 +14,7 @@ ActiveAdmin.register TopicCategoryGroup do
 # end
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.actions
     
     f.inputs do

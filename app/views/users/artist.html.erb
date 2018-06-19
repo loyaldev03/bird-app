@@ -13,7 +13,11 @@
   <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
 
   <div class="user-bgrd" >
-    <%= image_tag 'dj.jpg'%>
+    <% if @user.artist_info && @user.artist_info.image.present? %>
+      <%= image_tag(@user.artist_info.image) %>
+    <% else %>
+      <%= image_tag('crowd.jpg') %>
+    <% end %>
   </div>
 
   <%= render 'follows/follow_button', target: @user %>

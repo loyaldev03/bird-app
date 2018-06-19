@@ -1,6 +1,6 @@
 class ArtistInfo < ApplicationRecord
   belongs_to :user, foreign_key: "artist_id"
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :image, HeaderUploader
 
   def parse_youtube
     regex = /(?:.be\/|\/watch\?v=|\/(?=p\/))([\w\/\-]+)/

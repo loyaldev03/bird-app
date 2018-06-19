@@ -22,6 +22,7 @@ ActiveAdmin.register User do
   filter :created_at
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.actions
     
     f.inputs do

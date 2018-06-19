@@ -42,9 +42,16 @@ class Ability
       #   track.user_ids.include?(user.id)
       # end
 
+      can :manage, ActiveAdmin::Page
+
       can :manage, Announcement, user_id: user.id
-      can :manage, ArtistInfo, user_id: user.id
+      can :create, Announcement
+
+      can :manage, ArtistInfo, artist_id: user.id
+      can :create, ArtistInfo
+      
       can :manage, Video, user_id: user.id
+      can :create, Video
 
 
       # can :access, :ckeditor
