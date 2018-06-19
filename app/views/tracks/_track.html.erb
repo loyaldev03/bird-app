@@ -6,13 +6,17 @@
   </h3>
 
   By
-  <% if track.users.any? %>
+  <% if track.artist_as_string && track.artist.present? %>
+    <%= track.artist %>
+  <% elsif track.users.any? %>
     <%# artists = track.users.map(&:name).join(' feat. ') %>
     <% track.users.each do |u| %>
       <%= link_to u.name, u %>
     <% end %>
-  <% else %>
+  <% elsif track.artist.present? %>
     <%= track.artist %>
+  <% else %>
+    Various Artists
   <% end %>
 
   <div class="jp-controls">

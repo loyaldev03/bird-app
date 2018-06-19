@@ -5,9 +5,10 @@ ActiveAdmin.register Release do
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
   permit_params :title, :artist, :catalog, :text, :avatar, :facebook_img,
-    :published_at, :upc_code, :compilation, :release_date, 
+    :published_at, :upc_code, :compilation, :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
-    :genre, :isrc_code, :uri, :sample_uri, :artist, :_destroy, user_ids: []]
+    :genre, :isrc_code, :uri, :sample_uri, :artist, :_destroy, :artist_as_string, 
+    user_ids: []]
 
   config.sort_order = 'created_at_desc'
   jcropable
@@ -74,21 +75,23 @@ ActiveAdmin.register Release do
       f.input :compilation
       f.input :published_at, as: :date_time_picker
       f.input :release_date, as: :date_time_picker
-      f.input :artist
       f.input :users, as: :select, label: "Artists",
-      collection: User.with_role(:artist).map {|a| [a.name, a.id] }
+          collection: User.with_role(:artist).map {|a| [a.name, a.id] }
+      f.input :artist_as_string
+      f.input :artist
     end
 
     f.inputs do
       f.has_many :tracks, class: "directUpload" do |t|
         t.input :track_number
         t.input :title
-        t.input :artist
         t.input :genre
         t.input :isrc_code
         t.input :uri, as: :file, label: "Track file (WAV Format)"
         t.input :users, as: :select, label: "Artists",
         collection: User.with_role(:artist).map {|a| [a.name, a.id] }
+        t.input :artist_as_string
+        t.input :artist
       end
     end
     f.actions

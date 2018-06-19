@@ -1,17 +1,23 @@
 var tracks = [];
 <% @tracks.each do |track| %>
-  <%# if track.users.any? %>
-    <%# artists = track.users.map(&:name).join(' feat. ') %>
-  <%# else %>
-    <%# artists = track.artist %>
-  <%# end %>
+  <% if track.artist_as_string && track.artist.present? %>
+    <% artists = track.artist %>
+  <% elsif track.users.any? %>
+    <% track.users.each do |u| %>
+      <% artists = track.users.map(&:name).join(' & ') %>
+    <% end %>
+  <% elsif track.artist.present? %>
+    <% artists = track.artist %>
+  <% else %>
+    <% artists = 'Various Artists' %>
+  <% end %>
 
   tracks.push({ 
     'release_id': '<%= track.release.id %>',
     'track_number': '<%= track.track_number %>',
     'id': '<%= track.id %>',
     'title': '<%= track.title %>', 
-    'artists': '<%= track.artist %>', 
+    'artists': '<%= artists %>', 
     'mp3': '<%= track.stream_uri %>'
   });
 <% end %>

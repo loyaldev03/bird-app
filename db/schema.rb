@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180618161219) do
+ActiveRecord::Schema.define(version: 20180619184522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -304,11 +304,13 @@ ActiveRecord::Schema.define(version: 20180618161219) do
     t.string "image_uri"
     t.string "artist"
     t.integer "encode_status"
+    t.boolean "artist_as_string"
   end
 
   create_table "releases_users", id: false, force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "release_id"
+    t.index ["release_id", "user_id"], name: "index_releases_users_on_release_id_and_user_id", unique: true
     t.index ["release_id"], name: "index_releases_users_on_release_id"
     t.index ["user_id"], name: "index_releases_users_on_user_id"
   end
@@ -412,11 +414,13 @@ ActiveRecord::Schema.define(version: 20180618161219) do
     t.integer "old_id"
     t.boolean "drip_source"
     t.string "artist"
+    t.boolean "artist_as_string"
   end
 
   create_table "tracks_users", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "track_id"
+    t.index ["track_id", "user_id"], name: "index_tracks_users_on_track_id_and_user_id", unique: true
     t.index ["track_id"], name: "index_tracks_users_on_track_id"
     t.index ["user_id"], name: "index_tracks_users_on_user_id"
   end

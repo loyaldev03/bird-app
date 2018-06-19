@@ -112,7 +112,9 @@
         <div class="c-flag c-flag-inner mb-2">ARTISTS</div>
 
         <ol class="users-block list-unstyled mt-1">
-          <% if @release.users.any? %>
+          <% if @release.artist_as_string && @release.artist.present? %>
+            <p><%= @release.artist %></p>
+          <% elsif @release.users.any? %>
             <% @release.users.each do |artist| %>
               <li>
                 <%= link_to artist_path(artist), class: "d-inline-block align-middle" do %>
@@ -161,13 +163,17 @@
                 </h3>
 
                 By
-                <% if track.users.any? %>
+                <% if track.artist_as_string && track.artist.present? %>
+                  <%= track.artist %>
+                <% elsif track.users.any? %>
                   <%# artists = track.users.map(&:name).join(' feat. ') %>
                   <% track.users.each do |u| %>
                     <%= link_to u.name, u %>
                   <% end %>
-                <% else %>
+                <% elsif track.artist.present? %>
                   <%= track.artist %>
+                <% else %>
+                  Various Artists
                 <% end %>
 
                 <div class="jp-controls">
