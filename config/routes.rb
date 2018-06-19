@@ -37,7 +37,9 @@ Rails.application.routes.draw do
   end
   
   get 'artists/:id', to: 'users#artist', as: 'artist'
-  get 'artists', to: 'users#artists', as: 'artists'
+  get 'artist_releases/:id', to: 'users#artist_releases', as: 'artist_releases'
+  get 'artist_tracks/:id', to: 'users#artist_tracks', as: 'artist_tracks'
+  get 'artists', to: 'users#artists'
   
   get 'about', to: 'home#about'
   get 'birdfeed', to: 'home#birdfeed'

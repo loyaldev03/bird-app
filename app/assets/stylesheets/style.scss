@@ -116,6 +116,9 @@ button, input[type=submit], a {
     color: white;
   }
 }
+.c-btn-black {
+  @include btn(#323333,white,#434444);
+}
 
 .star {
   display: inline-block;
@@ -242,10 +245,11 @@ button, input[type=submit], a {
     z-index: -1;
   }
 
-  & + a, & + button {
+  & ~ a, & ~ button {
     float: right;
     position: relative;
     z-index: 2;
+    margin-left: 10px;
   }
 }
 

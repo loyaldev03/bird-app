@@ -1,67 +1,10 @@
-<div class="user-present">
-  <% if current_user && current_user.id == @user.id %>
-    <%= form_for(@user, remote: true,
-        html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
-      <%= image_tag @user.avatar.big_thumb if @user.avatar.present? %>
-      <%= f.file_field :avatar, class: 'form-control-file' %>
-      <%= f.hidden_field :avatar_cache %>
-    <% end %>
-  <% else %>
-    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") if @user.avatar.present? %>
-  <% end %>
-
-  <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
-
-  <div class="user-bgrd" >
-    <% if @user.artist_info && @user.artist_info.image.present? %>
-      <%= image_tag(@user.artist_info.image) %>
-    <% else %>
-      <%= image_tag('crowd.jpg') %>
-    <% end %>
-  </div>
-
-  <%= render 'follows/follow_button', target: @user %>
-
-  <div class="artist-name">
-    <h1><%= @user.name.upcase %></h1>
-    <span>
-      <% if @user.artist_info %>
-        <%= "#{@user.artist_info.genre} / " if @user.artist_info.genre.present? %>
-        <b><%= "#{@user.artist_info.followers_count} #{'Follower'.pluralize(@user.artist_info.followers_count)}" %></b>
-      <% end %>
-    </span>
-  </div>
-
-  <% if @user.artist_info.present? %>
-    <div class="artist-social">
-      <%= link_to image_tag('icons/artist-dirtybird.svg'), 
-            @user.artist_info.instagram if @user.artist_info.instagram.present? %>
-      <%= link_to image_tag('icons/artist-facebook.svg'), 
-            @user.artist_info.facebook if @user.artist_info.facebook.present? %>
-      <%= link_to image_tag('icons/artist-twitter.svg'), 
-            @user.artist_info.twitter if @user.artist_info.twitter.present? %>
-    </div>
-  <% end %>
-
-  <div class="user-since">
-    <%= image_tag 'icons/egg.svg' %>
-    DIRTYBIRD ARTIST<br>
-    <span>Since <%= @user.created_at.strftime("%Y") %></span>
-  </div>
-
-  <div class="artist-bio truncated-description">
-    <% if @user.artist_info.present? && @user.artist_info.bio_short? %>
-      <article><%= @user.artist_info.bio_short %></article>
-      <a href="#" class="truncated-long">Read more</a>
-      <article><%= @user.artist_info.bio_long.html_safe %></article>
-      <a href="#" class="truncated-short"><br><br>Read less</a>
-    <% end %>
-  </div>
-</div>
+<%= render 'users/artist_header' %>
 
 <% if @releases.any? %>
   <div class="release-flag-block mt-4">
     <div class="c-flag">RELEASES FEED</div>
+    <%= link_to "TRACKS", artist_tracks_path(@user), class: "btn c-btn-blue btn-wide" %>
+    <%= link_to "RELEASES", artist_releases_path(@user), class: "btn c-btn-blue btn-wide" %>
   </div>
 
   <div class="h-carousel mb-4">
@@ -213,10 +156,10 @@
         <div class="c-panel bg-white">
           <div class="c-flag c-flag-inner mb-2"><b>TRACKS</b> OF THIS ARTIST</div>
 
-        <%= link_to get_artist_tracks_path(@user.id), 
-            style: "width: 40px; height: 40px;", remote: true do %>
-          <%= image_tag('icons/icon-play-black.svg', title: "Play artist tracks") %>
-        <% end %>
+          <%= link_to get_artist_tracks_path(@user.id), 
+              style: "width: 40px; height: 40px;", remote: true do %>
+            <%= image_tag('icons/icon-play-black.svg', title: "Play artist tracks") %>
+          <% end %>
 
           <ol class="list-unstyled mt-1">
             <% @user.tracks.each do |track| %>
@@ -331,10 +274,4 @@
   <% end %>
 <% end %>
 
-<% if current_user && current_user.id == @user.id %>
-  <% content_for :body_area do %>
-    <div class="modal modal-blured" id="cropModal" tabindex="-1" role="dialog" aria-hidden="true">
 
-    </div>
-  <% end %>
-<% end %>

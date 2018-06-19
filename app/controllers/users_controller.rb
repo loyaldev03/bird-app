@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include UsersHelper
+  include ReleasesHelper
   
   before_action :authenticate_user!, except: 
       [:index, :show, :parse_youtube, :artist, :announcements_feed,
@@ -8,7 +9,7 @@ class UsersController < ApplicationController
   before_action :set_notifications, only: [:leaderboard, :index, :show, :home, 
         :artist, :artists, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
-        :friends_feed, :others_feed]
+        :friends_feed, :others_feed, :artist_releases , :artist_tracks]
 
   def leaderboard
     @leader_users = leaderboard_query(1, 5, true)
@@ -171,6 +172,20 @@ class UsersController < ApplicationController
     @activities = @enricher.enrich_activities(results)
 
     artist_vars
+  end
+
+  def artist_releases
+    @user = User.find(params[:id])
+    page = params[:page] || 1
+    @releases = releases_query( @user.releases.published, page, 16, true )
+  end
+
+  def artist_tracks
+    @user = User.find(params[:id])
+    page = params[:page] || 1
+    # user_releases = "SELECT id FROM releases INNER JOIN releases_users ON releases_users.release_id = releases.id WHERE releases_users.user_id = #{@user.id}"
+    # tracks_from_releases = "SELECT * FROM tracks WHERE release_id IN (#{user_releases})"
+    @tracks = @user.releases_tracks
   end
 
   def interviews_feed

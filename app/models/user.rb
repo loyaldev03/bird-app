@@ -91,6 +91,11 @@ class User < ApplicationRecord
     false
   end
 
+  def releases_tracks
+    releases = self.releases.published.ids
+    Track.where("release_id IN (?)",releases)
+  end
+
   def followers
     User.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User'", self.id)
   end

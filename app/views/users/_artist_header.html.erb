@@ -1,0 +1,68 @@
+<div class="user-present">
+  <% if current_user && current_user.id == @user.id %>
+    <%= form_for(@user, remote: true,
+        html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
+      <%= image_tag @user.avatar.big_thumb if @user.avatar.present? %>
+      <%= f.file_field :avatar, class: 'form-control-file' %>
+      <%= f.hidden_field :avatar_cache %>
+    <% end %>
+  <% else %>
+    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") if @user.avatar.present? %>
+  <% end %>
+
+  <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
+
+  <div class="user-bgrd" >
+    <% if @user.artist_info && @user.artist_info.image.present? %>
+      <%= image_tag(@user.artist_info.image) %>
+    <% else %>
+      <%= image_tag('crowd.jpg') %>
+    <% end %>
+  </div>
+
+  <%= render 'follows/follow_button', target: @user %>
+
+  <div class="artist-name">
+    <h1><%= @user.name.upcase %></h1>
+    <span>
+      <% if @user.artist_info %>
+        <%= "#{@user.artist_info.genre} / " if @user.artist_info.genre.present? %>
+        <b><%= "#{@user.artist_info.followers_count} #{'Follower'.pluralize(@user.artist_info.followers_count)}" %></b>
+      <% end %>
+    </span>
+  </div>
+
+  <% if @user.artist_info.present? %>
+    <div class="artist-social">
+      <%= link_to image_tag('icons/artist-dirtybird.svg'), 
+            @user.artist_info.instagram if @user.artist_info.instagram.present? %>
+      <%= link_to image_tag('icons/artist-facebook.svg'), 
+            @user.artist_info.facebook if @user.artist_info.facebook.present? %>
+      <%= link_to image_tag('icons/artist-twitter.svg'), 
+            @user.artist_info.twitter if @user.artist_info.twitter.present? %>
+    </div>
+  <% end %>
+
+  <div class="user-since">
+    <%= image_tag 'icons/egg.svg' %>
+    DIRTYBIRD ARTIST<br>
+    <span>Since <%= @user.created_at.strftime("%Y") %></span>
+  </div>
+
+  <div class="artist-bio truncated-description">
+    <% if @user.artist_info.present? && @user.artist_info.bio_short? %>
+      <article><%= @user.artist_info.bio_short %></article>
+      <a href="#" class="truncated-long">Read more</a>
+      <article><%= @user.artist_info.bio_long.html_safe %></article>
+      <a href="#" class="truncated-short"><br><br>Read less</a>
+    <% end %>
+  </div>
+</div>
+
+<% if current_user && current_user.id == @user.id %>
+  <% content_for :body_area do %>
+    <div class="modal modal-blured" id="cropModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+    </div>
+  <% end %>
+<% end %>

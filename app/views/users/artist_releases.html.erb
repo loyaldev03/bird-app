@@ -1,0 +1,27 @@
+<%= render 'users/artist_header' %>
+
+<% if @releases.any? %>
+  <div class="release-flag-block mt-4">
+    <div class="c-flag">ARTIST RELEASES</div>
+
+    <%= link_to "TRACKS", artist_tracks_path(@user), 
+        class: "btn c-btn-blue btn-wide" %>
+        
+    <%= link_to "RELEASES", artist_releases_path(@user), 
+        class: "btn c-btn-black btn-wide disabled" %>
+  </div>
+
+  <div class="row mt-4 releases-list">
+    <%= render @releases %>
+  </div>
+
+  <div class="text-center">
+    <% if @limit <= @releases.count %>
+      <% _params = {page: params[:page] ? params[:page].to_i + 1 : 2} %>
+      <%= link_to "Show more", load_more_releases_path(_params), 
+          remote: true, class: "btn c-btn-blue show-more" %>
+    <% end %>
+  </div>
+<% else %>
+  No releases for this artist
+<% end %>

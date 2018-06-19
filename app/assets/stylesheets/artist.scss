@@ -246,3 +246,20 @@
   right: 37px;
   z-index: 2;
 }
+
+.tracks-list {
+  padding: 0 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  .track-item {
+    width: 45%;
+  }
+
+  @media (max-width: 991px) {
+    .track-item {
+      width: 100%;
+    }
+  }
+}
