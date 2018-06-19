@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, except: 
       [:index, :show, :parse_youtube, :artist, :announcements_feed,
         :interviews_feed, :videos_feed, :others_feed, :artists, :leaderboard,
-        :load_more, :get_tracks]
+        :load_more, :get_tracks, :artist_releases, :artist_tracks]
   before_action :set_notifications, only: [:leaderboard, :index, :show, :home, 
         :artist, :artists, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
