@@ -1,5 +1,5 @@
 ActiveAdmin.register Release do
-  config.filters = false
+  # config.filters = false
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -14,6 +14,7 @@ ActiveAdmin.register Release do
   index do
     selectable_column
     column :title
+    column :artist
     column :available_to_all
     column :release_date
     column :published_at
