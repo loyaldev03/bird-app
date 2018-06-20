@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     end
   end
   
+  get 'admins/:id', to: 'users#admin', as: 'admin'
   get 'artists/:id', to: 'users#artist', as: 'artist'
   get 'artist_releases/:id', to: 'users#artist_releases', as: 'artist_releases'
   get 'artist_tracks/:id', to: 'users#artist_tracks', as: 'artist_tracks'

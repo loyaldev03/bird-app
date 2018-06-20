@@ -3,11 +3,11 @@ class UsersController < ApplicationController
   include ReleasesHelper
   
   before_action :authenticate_user!, except: 
-      [:index, :show, :parse_youtube, :artist, :announcements_feed,
+      [:index, :show, :parse_youtube, :admin, :artist, :announcements_feed,
         :interviews_feed, :videos_feed, :others_feed, :artists, :leaderboard,
         :load_more, :get_tracks, :artist_releases, :artist_tracks]
   before_action :set_notifications, only: [:leaderboard, :index, :show, :home, 
-        :artist, :artists, :friends, :idols, :choose_profile, 
+        :artist, :artists, :admin, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
         :friends_feed, :others_feed, :artist_releases , :artist_tracks]
 
@@ -26,12 +26,33 @@ class UsersController < ApplicationController
     @badge_kinds = BadgeKind.all
   end
 
+  def admin
+    @user = User.find(params[:id])
+
+    if @user.has_role? :artist
+      redirect_to artist_path(@user) and return
+    elsif !@user.has_role?(:admin) && !@user.has_role?(:artist)
+      redirect_to user_path(@user) and return
+    end
+
+    begin
+      feed = StreamRails.feed_manager.get_user_feed(@user.id)
+      results = feed.get()['results']
+    rescue Faraday::Error::ConnectionFailed
+      results = []
+    end
+    @enricher = StreamRails::Enrich.new
+    @activities = @enricher.enrich_activities(results)
+  end
+
   def show
     @user = User.find(params[:id])
     fan_vars
 
     if @user.has_role? :artist
       redirect_to artist_path(@user) and return
+    elsif @user.has_role? :admin
+      redirect_to admin_path(@user) and return
     end
 
     @enricher = StreamRails::Enrich.new
@@ -158,8 +179,10 @@ class UsersController < ApplicationController
   def artist
     @user = User.find(params[:id])
 
-    unless @user.has_role? :artist
+    if !@user.has_role?(:admin) && !@user.has_role?(:artist)
       redirect_to user_path(@user) and return
+    elsif @user.has_role? :admin
+      redirect_to admin_path(@user) and return
     end
 
     begin
@@ -247,15 +270,11 @@ class UsersController < ApplicationController
     @followed_users = @user.followed_users.with_role(:fan).limit(4)
     @followed_artists = @user.followed_users.with_role(:artist).limit(4)
 
-    if @user.has_role? :admin
-      @user_position = nil
-    else
-      @user_position = User
-          .joins('LEFT OUTER JOIN badge_points on (users.id = badge_points.user_id)')
-          .group('users.id')
-          .order('users.created_at ASC, SUM(badge_points.value) DESC')
-          .count.keys.index(@user.id) + 1
-    end
+    @user_position = User
+        .joins('LEFT OUTER JOIN badge_points on (users.id = badge_points.user_id)')
+        .group('users.id')
+        .order('users.created_at ASC, SUM(badge_points.value) DESC')
+        .count.keys.index(@user.id) + 1
   end
 
   def get_feed_from objects, verb, target

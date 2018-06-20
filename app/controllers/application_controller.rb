@@ -58,10 +58,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-    def admin_controller?
-      return params[:controller].match(/^admin\//).present?
-    end
-
     def set_online
       if current_user
         begin
