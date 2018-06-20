@@ -92,11 +92,4 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
-
-
-  
-  post 'demo_drop/:id', to: 'home#demo_drop', as: 'demo_drop'
-  get 'demo', to: 'home#demo_index'
-  post 'demo_login', to: 'home#demo_login'
-  get 'demo_get_100/:id', to: 'home#demo_get_100_points', as: "demo_get_100"
 end

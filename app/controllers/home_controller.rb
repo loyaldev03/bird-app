@@ -77,48 +77,4 @@ class HomeController < ApplicationController
     render json: {}
   end
 
-
-  #======================#TODO demo remove=========================
-  def demo_index
-    @users = User.all.order(id: :asc)
-      @other_user = User.find 37079
-    if current_user
-      # @other_user = @users.where.not(id: current_user.id).first
-
-      begin
-        feed = StreamRails.feed_manager.get_user_feed(@other_user.id)
-        results = feed.get()['results']
-      rescue Faraday::Error::ConnectionFailed
-        results = []
-      end
-      
-      @enricher = StreamRails::Enrich.new
-      @activities = @enricher.enrich_activities(results)
-
-      @releases = Release.limit(3)
-      @posts = Post.all
-      @topics = Topic.all
-    end
-  end
-
-  def demo_login
-    user = User.find params[:user_id]
-    sign_in user
-
-    redirect_to demo_path
-  end
-
-  def demo_drop
-    user = User.find(params[:id])
-    user.subscription_type = nil
-    user.save
-
-    redirect_to root_path
-  end
-
-  def demo_get_100_points
-    # User.find(params[:id]).change_points( 100 )
-    redirect_to demo_path
-  end
-
 end
