@@ -53,7 +53,7 @@ class User < ApplicationRecord
   after_update :crop_avatar
 
   def badges_by_kind kind
-    badge_kind = BadgeKind.find_by(name: kind)
+    badge_kind = BadgeKind.find_by(ident: kind)
     return unless badge_kind
     self.badges.where(badge_kind_id: badge_kind.id)
   end
@@ -143,7 +143,7 @@ class User < ApplicationRecord
     end
 
     if income_action_type == 'member_over_time'
-      badge_kind = BadgeKind.find_by(name: 'Membership Level')
+      badge_kind = BadgeKind.find_by(ident: 'Membership Level')
       return unless badge_kind
 
       max_days = 0
@@ -173,8 +173,8 @@ class User < ApplicationRecord
 
     else
 
-      kind = BadgeKind.where(name: kind_name).first
-      action_type = BadgeActionType.where(name: income_action_type, badge_kind_id: kind.id).first
+      kind = BadgeKind.where(ident: kind_name).first
+      action_type = BadgeActionType.where(ident: income_action_type, badge_kind_id: kind.id).first
       points_for_type = self.badge_points.where(badge_action_type_id: action_type.id).last
 
       if points_for_type.blank?
