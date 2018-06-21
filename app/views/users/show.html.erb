@@ -1,15 +1,6 @@
-<script>
-  $(document).on('turbolinks:load', function() {
-    <% if current_user && @user == current_user %>
-      <% @user.badge_levels.each do |level| %>
-        <% unless level.notified? %>
-            $('#badge<%= level.badge_id %>Modal').modal();
-            <% level.update_attributes(notified: true ) %>
-        <% end %>
-      <% end %>
-    <% end %>
-  });
-</script>
+<% if current_user && @user == current_user %>
+  <%= content_for :js_init, javascript_include_tag("badge-notify.js") %>
+<% end %>
 
 <%= render 'users/user_header' %>
 
@@ -59,6 +50,8 @@
       <div class="c-panel bg-white mb-4">
         <div class="c-flag c-flag-inner mb-4">BADGES ACHEIVED</div>
 
+        <%= link_to "SEE ALL", badges_path(@user), class: "btn c-btn-blue" %>
+        
         <div>
           <% if @user.badges.present? %>
             <% @user.badges.each do |badge| %>
@@ -79,7 +72,7 @@
       <% if @followed_users.any? %>
         <div class="c-panel bg-white mb-4">
           <div class="c-flag c-flag-inner mb-4">FRIENDS</div>
-          <%= link_to "SEE ALL", friends_path(@user), class: "btn c-btn-blue float-right" %>
+          <%= link_to "SEE ALL", friends_path(@user), class: "btn c-btn-blue" %>
 
           <ol class="users-block list-unstyled mt-1">
             <% @followed_users.each do |user| %>
@@ -106,7 +99,7 @@
       <% if @followed_artists.any? %>
         <div class="c-panel bg-c-dark">
           <div class="c-flag c-flag-inner mb-4">ARTISTS</div>
-          <%= link_to "SEE ALL", idols_path(@user), class: "btn c-btn-blue float-right" %>
+          <%= link_to "SEE ALL", idols_path(@user), class: "btn c-btn-blue" %>
 
           <ol class="users-block list-unstyled mt-1">
             <% @followed_artists.each do |artist| %>

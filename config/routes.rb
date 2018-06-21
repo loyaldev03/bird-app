@@ -41,10 +41,12 @@ Rails.application.routes.draw do
   get 'artist_releases/:id', to: 'users#artist_releases', as: 'artist_releases'
   get 'artist_tracks/:id', to: 'users#artist_tracks', as: 'artist_tracks'
   get 'artists', to: 'users#artists'
+  get 'badges/:id', to: 'users#badges', as: 'badges'
   
   get 'about', to: 'home#about'
   get 'birdfeed', to: 'home#birdfeed'
   post 'share', to: 'home#share'
+  get 'badge-notify', to: 'home#badge_notify'
 
   resources :contacts, only: [:index, :create]
   resources :slider_images

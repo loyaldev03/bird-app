@@ -22,7 +22,7 @@ class HomeController < ApplicationController
       user_max: DateTime.now - 1.month
     ).order('published_at DESC')
 
-    @badge_kinds = BadgeKind.all
+    @badge_kinds = BadgeKind.visible
 
     #TODO decrease count of queries
     # @leader_points = {}
@@ -72,9 +72,26 @@ class HomeController < ApplicationController
         time: DateTime.now.iso8601
       }
       feed.add_activity(activity)
+
+      current_user.change_points( 'share', params[:type].capitalize )
     end
 
     render json: {}
+  end
+
+  def badge_notify
+    return unless current_user
+
+    badges = []
+
+    current_user.badge_levels.each do |level|
+      unless level.notified?
+        badges << level.badge_id
+        level.update_attributes( notified: true )
+      end
+    end
+
+    render json: { badges: badges }
   end
 
 end

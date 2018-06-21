@@ -4,6 +4,8 @@ class Download < ActiveRecord::Base
 
   enum format: [:wav, :aiff, :flac, :mp3_160, :mp3_320]
 
+  after_create :add_points
+
   include StreamRails::Activity
   as_activity
 
@@ -26,4 +28,10 @@ class Download < ActiveRecord::Base
       true
     end
   end
+
+  private
+
+    def add_points
+      self.user.change_points( 'download', self.release ? "Release" : "Track" )
+    end
 end

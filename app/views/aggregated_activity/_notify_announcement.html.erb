@@ -4,9 +4,7 @@
     <b class="notify-caption"><%= announcement['object'].class.to_s %></b>
 
     <%= link_to announcement['object'] do %>
-      <% if announcement['object'].avatar.present? %>
-        <%= image_tag( announcement['object'].avatar.url, class: "announcement-feed-avatar" ) %>
-      <%end%>
+      <%= image_tag( announcement['object'].avatar.url, class: "announcement-feed-avatar" ) %>
 
       <b><%= announcement['object'].title %></b>
     <% end %>

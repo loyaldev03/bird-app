@@ -5,25 +5,26 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, except: 
       [:index, :show, :parse_youtube, :admin, :artist, :announcements_feed,
         :interviews_feed, :videos_feed, :others_feed, :artists, :leaderboard,
-        :load_more, :get_tracks, :artist_releases, :artist_tracks]
+        :load_more, :get_tracks, :artist_releases, :artist_tracks, :badges]
   before_action :set_notifications, only: [:leaderboard, :index, :show, :home, 
         :artist, :artists, :admin, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
-        :friends_feed, :others_feed, :artist_releases , :artist_tracks]
+        :friends_feed, :others_feed, :artist_releases , :artist_tracks, 
+        :badges]
 
   def leaderboard
     @leader_users = leaderboard_query(1, 5, true)
-    @badge_kinds = BadgeKind.all
+    @badge_kinds = BadgeKind.visible
   end
 
   def index
     @leader_users = leaderboard_query(params[:page] || 1, 9, true)
-    @badge_kinds = BadgeKind.all
+    @badge_kinds = BadgeKind.visible
   end
 
   def load_more
     @leader_users = leaderboard_query(params[:page], 9, false)
-    @badge_kinds = BadgeKind.all
+    @badge_kinds = BadgeKind.visible
   end
 
   def admin
@@ -70,7 +71,12 @@ class UsersController < ApplicationController
 
     @activities = @enricher.enrich_activities(results)
 
-    # current_user.change_points( 'member over time' ) if current_user == @user
+    current_user.change_points( 'member_over_time', nil ) if current_user == @user
+  end
+
+  def badges
+    @user = User.find(params[:id])
+
   end
 
   def home

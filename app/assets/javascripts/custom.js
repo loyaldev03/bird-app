@@ -32,6 +32,12 @@ $(document).on('turbolinks:load', function() {
     $(this).siblings('.main-container').css({'filter': 'blur(15px)'});
   });
 
+  $('.modal-blured').on('hide.bs.modal', function (e) {
+    if ($('.modal-backdrop.show').length == 1) {
+      $(this).siblings('.main-container').css({'filter': 'blur(0px)'});
+    }
+  });
+
   $('#searchModal').on('shown.bs.modal', function () {
     var client = algoliasearch("TOQ4XQOWDP", "90f548a9f6bb9108464d081db4c6a29a")
     var tracks = client.initIndex('Track');
@@ -102,12 +108,6 @@ $(document).on('turbolinks:load', function() {
     ]);
     
     $('#aa-search-input').focus();
-  });
-
-  $('.modal-blured').on('hide.bs.modal', function (e) {
-    if ($('.modal-backdrop.show').length == 1) {
-      $(this).siblings('.main-container').css({'filter': 'blur(0px)'});
-    }
   });
 
   let avatar_form = document.querySelector('#change-avatar');
