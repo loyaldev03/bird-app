@@ -3,9 +3,13 @@
   <div class="text-right" id="message-<%= comment.id %>">
     <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
 
-    <%= link_to comment_reply_form_path( comment_id: comment.id ),
+    <%= link_to comment_reply_form_path( 
+        comment_id: comment.id, 
+        commentable_id: comment.commentable_id,
+        commentable_type: comment.commentable_type ),
         remote: true, id: "comment-#{comment.id}" do %>
       <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
+
       <span class="comments-count"><%= comment.replies_count %></span>
     <% end %>
 

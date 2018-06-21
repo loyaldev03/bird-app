@@ -470,12 +470,11 @@ button, input[type=submit], a {
   position: absolute;
   right: 30px;
   top: 7px;
-  width: 16px;
-  height: 16px;
+  width: 19px;
   opacity: .6;
   cursor: pointer;
   transition: opacity .3s ease-in-out;
-  background-image: asset-data-url("icons/paper-clip.svg") !important;
+  background-image: asset-data-url("icons/icon-image.svg") !important;
 
   & + [type='file'] {
     visibility: hidden;

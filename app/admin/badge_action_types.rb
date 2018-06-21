@@ -1,6 +1,6 @@
 ActiveAdmin.register BadgeActionType do
 
-  permit_params :name, :badge_kind_id, :points, :count_to_achieve
+  permit_params :ident, :name, :badge_kind_id, :points, :count_to_achieve
 
   config.sort_order = 'badge_kind_id_asc'
 

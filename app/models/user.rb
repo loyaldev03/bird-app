@@ -174,7 +174,11 @@ class User < ApplicationRecord
     else
 
       kind = BadgeKind.where(ident: kind_name).first
+
+      return unless kind
+      
       action_type = BadgeActionType.where(ident: income_action_type, badge_kind_id: kind.id).first
+
       points_for_type = self.badge_points.where(badge_action_type_id: action_type.id).last
 
       if points_for_type.blank?
