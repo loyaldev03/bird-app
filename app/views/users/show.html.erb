@@ -1,6 +1,13 @@
-<% if current_user && @user == current_user %>
-  <%= content_for :js_init, javascript_include_tag("badge-notify.js") %>
-<% end %>
+<script type='text/javascript'>
+  $(document).on('turbolinks:load', function() {
+    $.get('/badge-notify')
+      .done(function(result){
+        result['badges'].forEach(function(badge){
+          $('#badge' + badge + 'Modal').modal();
+        });
+      });
+  });
+</script>
 
 <%= render 'users/user_header' %>
 
