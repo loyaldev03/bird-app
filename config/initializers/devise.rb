@@ -29,10 +29,12 @@ Devise.setup do |config|
   require 'devise/orm/active_record'
 
   config.omniauth :facebook, ENV['facebook_api_id'], ENV['facebook_api_secret'],
-                 { 
-                    scope: 'email', info_fields: 'email',
-                    client_options: { ssl: { verify: false } } 
-                  }
+                scope: 'public_profile,email',
+                info_fields: 'email,first_name,last_name,gender,birthday,location,picture',
+                client_options: {
+                    site: 'https://graph.facebook.com/v2.11',
+                    authorize_url: "https://www.facebook.com/v2.11/dialog/oauth"
+                }
                   
   config.omniauth :google_oauth2, ENV['google_client_id'], ENV['google_client_secret'], { }
 

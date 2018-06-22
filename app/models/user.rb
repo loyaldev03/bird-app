@@ -353,13 +353,9 @@ class User < ApplicationRecord
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      if auth.info.email
-        user.email = auth.info.email
-        user.name = auth.info.email.split('@')[0]
-      else
-        user.email = "example@mail.com"
-        user.name = "noname"
-      end
+      user.email = auth.info.email || "example#{SecureRandom.hex(10)}@mail.com"
+      user.first_name = auth.info.first_name || "noname"
+      user.last_name = auth.info.last_name
       user.password = Devise.friendly_token[0,20]
       #user.social_profile_picture = auth.info.image # assuming the user model has an image
     end
@@ -385,7 +381,7 @@ class User < ApplicationRecord
   private
 
     def set_default_avatar
-      self.avatar = primary_avatar(self.name)
+      self.avatar = primary_avatar(self.name) unless self.avatar.present?
     end
 
     def follow_general_actions
