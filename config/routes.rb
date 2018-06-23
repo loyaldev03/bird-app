@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   post "sync_playlist", to: "tracks#sync_playlist"
   get "fill_track_title", to: "tracks#fill_track_title"
   get 'load_more_releases', to: 'releases#load_more'
+  get 'track_listened', to: 'tracks#track_listened'
 
   resources :tracks
   get 'get_tracks', to: 'tracks#get_tracks'

@@ -84,12 +84,25 @@
       setPlaylist(respond.tracks, false, currentTrackIndex, time);
   });
 
+  var sent = false;
   function timerAndLoadingForAudio(audio) {
     audio.on('audioprocess', function () {
-      $('.jp-current-time').text(secondsToHms(audio.getCurrentTime()));
+      var current_time = audio.getCurrentTime();
+      $('.jp-current-time').text(secondsToHms(current_time));
       $(`[data-track=${playlist[currentTrackIndex].id}]`)
           .siblings('.jp-current-time-track')
-          .text(secondsToHms(audio.getCurrentTime()));
+          .text(secondsToHms(current_time));
+
+      var duration = audio.getDuration();
+      if(current_time/duration < 0.8) {sent = false}
+      if(current_time/duration > 0.8 && !sent){
+        $.ajax({
+          url: '/track_listened',
+          dataType: 'JSON',
+          data: { id: playlist[currentTrackIndex].id }
+        });
+        sent = true;
+      }
     });
 
     audio.on('ready', function(){

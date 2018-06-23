@@ -123,4 +123,15 @@ class TracksController < ApplicationController
 
     redirect_to S3_BUCKET.object(tf.s3_key).presigned_url(:get, response_content_disposition: 'attachment')
   end
+
+  def track_listened
+    if current_user
+      track = Track.find params[:id]
+      track.increment! :listened_count
+
+      current_user.change_points( 'listen', 'Track' )
+    end
+
+    render json: {}
+  end
 end
