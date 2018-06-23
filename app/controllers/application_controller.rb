@@ -69,8 +69,12 @@ class ApplicationController < ActionController::Base
     end
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :provider, :uid])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :provider, :uid])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [
+          :first_name, :last_name, :provider, :uid, :city, :shipping_address, 
+          :birthdate, :gender, :t_shirt_size])
+      devise_parameter_sanitizer.permit(:account_update, keys: [
+          :first_name, :last_name, :provider, :uid, :city, :shipping_address, 
+          :birthdate, :gender, :t_shirt_size])
     end
 
     def record_not_uniq

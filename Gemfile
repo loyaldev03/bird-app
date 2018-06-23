@@ -47,6 +47,7 @@ gem 'ratyrate'
 gem 'rack-cors'
 gem 'bulk_insert'
 gem 'transloadit'
+gem 'braintree'
 
 
 group :development, :test do

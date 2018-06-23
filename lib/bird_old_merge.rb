@@ -91,6 +91,12 @@ class BirdOldMerge
     #   t.string "provider"
     #   t.string "uid"
     #   t.datetime "subscription_started_at"
+
+    #   t.string "braintree_subscription_id"
+    #   t.date "braintree_subscription_expires_at"
+    #   t.date "subscription_started_at"
+    #   t.integer "subscription_length", default: 0, null: false
+    
     #   t.string "city"
     #   t.string "last_name"
     #   t.integer "old_id"
@@ -118,6 +124,10 @@ class BirdOldMerge
           image_uri,
           first_name,
           braintree_customer_id,
+          braintree_subscription_id,
+          braintree_subscription_expires_at,
+          subscription_started_at,
+          subscription_length,
           
           address_zip || ' ' || address_line_1 || '' || address_line_2 || ' ' || address_city || ' ' || address_state || ' ' || address_country as shipping_address,
           

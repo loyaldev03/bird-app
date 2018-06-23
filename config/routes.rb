@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post '/rate' => 'rater#create', :as => 'rate'
   get "leaderboard", to: "users#leaderboard"
   get "choose_profile", to: "users#choose_profile"
+  delete "cancel_subscription", to: "users#cancel_subscription"
   get "home", to: "users#home"
   # get "activity_feed", to: "users#activity_feed"
   get "chirp_feed", to: "users#chirp_feed"
@@ -66,7 +67,7 @@ Rails.application.routes.draw do
 
   namespace :callbacks do
     post 'transloadit', to: 'transloadit#create'
-    # post 'braintree/nonce', to: 'braintree#nonce'
+    post 'braintree/nonce', to: 'braintree#nonce'
     # post 'braintree/analytics_notify', to: 'braintree#analytics_notify'
   end
 

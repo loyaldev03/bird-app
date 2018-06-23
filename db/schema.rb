@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180621175530) do
+ActiveRecord::Schema.define(version: 20180622141044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,15 +448,18 @@ ActiveRecord::Schema.define(version: 20180621175530) do
     t.datetime "birthdate"
     t.integer "gender"
     t.string "t_shirt_size"
-    t.integer "subscription_type"
+    t.integer "subscription_type", default: 0
     t.string "provider"
     t.string "uid"
-    t.datetime "subscription_started_at"
+    t.date "subscription_started_at"
     t.string "city"
     t.string "last_name"
     t.integer "old_id"
     t.boolean "drip_source"
     t.string "image_uri"
+    t.string "braintree_subscription_id"
+    t.date "braintree_subscription_expires_at"
+    t.integer "subscription_length"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

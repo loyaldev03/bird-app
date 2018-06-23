@@ -653,6 +653,8 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    braintree (2.89.0)
+      builder (>= 2.0.0)
     builder (3.2.3)
     bulk_insert (1.6.0)
       activerecord (>= 4.1.0)
@@ -945,6 +947,7 @@ DEPENDENCIES
   avatarly
   aws-sdk
   bootstrap (~> 4.0.0)
+  braintree
   bulk_insert
   byebug
   cancancan (~> 2.0)

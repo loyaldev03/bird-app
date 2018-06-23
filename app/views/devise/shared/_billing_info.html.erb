@@ -1,0 +1,39 @@
+<h2>Billing Information</h2>
+
+<% if current_user.braintree_subscription %>
+  <p> Subscription Type:
+    <% if current_user.subscription_type == 'member' %>
+      <% if current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] %>
+        Monthly
+      <% elsif current_user.braintree_subscription.plan_id == ENV['YEARLY_PLAN_ID'] %>
+        Annual
+      <% end %>
+    <% end %>
+    <%= current_user.subscription_type.titleize %>
+  </p>
+
+  <p> Next Bill Date:
+    <%= current_user.braintree_subscription.next_billing_date %>
+    for $<%= current_user.braintree_subscription.next_bill_amount %>
+  </p>
+  <p> Card:
+    <img src="<%= current_user.braintree_customer.payment_methods.first.image_url %>" width=37 height=25>
+    <% if current_user.braintree_customer.payment_methods.first.respond_to?(:last_4) %>
+      ending in <%= current_user.braintree_customer.payment_methods.first.last_4 %> <br>
+      <button class="btn btn-default start-subscription mt-2">Update Credit Card</button>
+    <% end %>
+  </p>
+  <p>
+    If you're having issues with your account, please <%= link_to 'Contact Support', contacts_path %>!</p>
+    <%= button_to "Cancel my Subscription", cancel_subscription_path, form_class: "unsubscribe-button", class: 'btn btn-danger', data: { confirm: "Are you sure you want to Cancel Your Subscription? This will take place immediately and no partial subscription will be refunded." }, method: :delete %>
+    (Canceling will take place immediately and no partial subscription will be refunded)
+  </p>
+<% else %>
+
+
+  <p>You currently have a Free Chirp-only account. Start a subscription if you'd like access all Birdfeed has to offer, including Music Downloads.</p>
+
+  <button class="btn btn-success start-subscription">Start a Subscription</button>
+  <a href="/" class="btn btn-primary no-subscription">Not now</a>
+
+<% end %>

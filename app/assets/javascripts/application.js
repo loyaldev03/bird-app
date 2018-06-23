@@ -20,4 +20,5 @@
 //= require jquery.Jcrop.min
 //= require emojionearea.min
 //= require lightbox.min
+//= require bootstrap-datepicker.min
 //= require_tree .

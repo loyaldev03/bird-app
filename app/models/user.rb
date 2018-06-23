@@ -13,13 +13,19 @@ class User < ApplicationRecord
 
   before_create :set_default_avatar, only: :create
   after_create :follow_general_actions, only: :create
+  after_update :update_braintree_customer
+  before_destroy :cancel_braintree_subscription
 
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+  after_update :crop_avatar
+  
   attr_accessor :subscription
   enum gender: [:female, :male]
 
   validates :first_name, presence: true
 
   enum subscription_type: [:member, :vip, :admin]
+  enum subscription_length: [:unknown, :monthly, :yearly]
 
   has_many :badge_levels, inverse_of: :user
   has_many :badges, through: :badge_levels
@@ -49,8 +55,7 @@ class User < ApplicationRecord
     attribute :first_name, :last_name
   end
 
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  after_update :crop_avatar
+
 
   def badges_by_kind kind
     badge_kind = BadgeKind.find_by(ident: kind)
@@ -81,20 +86,6 @@ class User < ApplicationRecord
 
   def admin?
     subscription_type == 'admin'
-  end
-
-  def active_subscription?
-    return true if subscription_type == 'vip' || subscription_type == 'admin'
-
-    return false unless subscription_started_at
-
-    if braintree_subscription
-      if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
-        return true
-      end
-    end
-
-    false
   end
 
   def releases_tracks
@@ -175,9 +166,8 @@ class User < ApplicationRecord
 
       kind = BadgeKind.where(ident: kind_name).first
 
-      return unless kind
-      
       action_type = BadgeActionType.where(ident: income_action_type, badge_kind_id: kind.id).first
+      logger.warn action_type
 
       points_for_type = self.badge_points.where(badge_action_type_id: action_type.id).last
 
@@ -377,6 +367,145 @@ class User < ApplicationRecord
 
     StreamRails.feed_manager.client.follow_many(users)
   end
+
+  
+
+  # Braintree methods
+  def braintree_customer
+    # Find Customer form our cached db entry
+    if braintree_customer_id
+      begin
+        return Braintree::Customer.find(braintree_customer_id)
+      rescue Braintree::NotFoundError
+        update(braintree_customer_id: nil)
+      end
+    end
+
+    # Search Braintree for Customer
+    search_results = Braintree::Customer.search do |search|
+      search.email.is email
+    end
+
+    if search_results.any?
+      update(braintree_customer_id: search_results.first.id)
+      return Braintree::Customer.find(search_results.first.id)
+    end
+
+    nil
+  end
+
+  def update_braintree_customer
+    # If these fields changed and user is a Braintree customer
+    if (%w[first_name last_name email] & changes.keys).present? && braintree_customer
+      # Update Braintree's records
+      Braintree::Customer.update(
+        braintree_customer.id,
+        first_name: first_name,
+        last_name: last_name,
+        email: email
+      )
+    end
+  end
+
+  def braintree_subscription
+    # Find Subscription from our cached db entry
+    if braintree_subscription_id
+      begin
+        return Braintree::Subscription.find(braintree_subscription_id)
+      rescue Braintree::NotFoundError
+        update(braintree_subscription_id: nil)
+      end
+    end
+
+    # Get First Subscription Customer has
+    if braintree_customer
+      subscriptions = braintree_customer.payment_methods.map(&:subscriptions).flatten.select { |s| s.status == 'Active' }
+
+      if subscriptions.size > 1
+        # Honeybadger.notify("User #{id} has multiple active subscriptions!")
+      end
+
+      if subscriptions.any?
+        update(braintree_subscription_id: subscriptions.first.id)
+        return Braintree::Subscription.find(subscriptions.first.id)
+      end
+    end
+
+    nil
+  end
+
+  def active_subscription?
+    # VIPs and Admins are always active
+    return true if subscription_type == 'vip' || subscription_type == 'admin'
+
+    # Quick fail if subscription never started
+    return false unless subscription_started_at
+
+    # Check for active braintree subscription
+    # TODO: this currently will always reach out to Braintree. This also is used in SubscribedController, so we should use cached values instead
+    if braintree_subscription
+      # If cache expiration time exists and is in the future
+      if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+        return true
+      end
+
+      # Else refresh cache
+      if braintree_subscription.trial_period
+        update(braintree_subscription_expires_at: Date.parse(braintree_subscription.next_billing_date))
+      else
+        update(braintree_subscription_expires_at: (Date.parse(braintree_subscription.paid_through_date) + 1))
+      end
+
+      # And Check again
+      if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+        return true
+      end
+    end
+
+    # When all else fails, return false
+    false
+  end
+
+  def cancel_braintree_subscription
+    Braintree::Subscription.cancel(braintree_subscription_id) if braintree_subscription
+    update!(
+      subscription_started_at: nil,
+      braintree_customer_id: nil,
+      braintree_subscription_id: nil,
+      braintree_subscription_expires_at: nil
+    )
+  end
+
+
+  def additional_info_set?
+    [
+      city,
+      shipping_address,
+      birthdate,
+      t_shirt_size
+    ].all?(&:present?)
+  end
+
+  # def subscriber_type
+  #   if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+  #     return "#{braintree_subscription.trial_period ? 'Trial ' : ''}Birdfeed - #{subscription_length.titleize}"
+  #   end
+  #   'Chirp Only'
+  # end
+
+  # def subscription_description
+  #   return 'Deleted' if deleted?
+  #   return 'Admin' if admin?
+  #   return 'VIP' if vip?
+
+  #   # Don't check active_subscription? because it's slow and we update once a day via rake task
+  #   if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+  #     return "Member (#{subscription_length.titleize})"
+  #   end
+  #   'Chirp Only'
+  # end
+
+
 
   private
 

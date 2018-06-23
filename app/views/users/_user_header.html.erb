@@ -28,7 +28,13 @@
         <div class="user-since">
           <%= image_tag 'icons/user-logo-icon.svg' %>
           <%= link_to choose_profile_path do %>
-            CHIRP <%= @user.vip? ? "PAID" : "FREE" %>
+            CHIRP 
+            <% if @user.braintree_subscription_expires_at && 
+                Date.today <= @user.braintree_subscription_expires_at %>
+              PAID
+            <% else %>
+              FREE
+            <% end %>
           <% end %>
           <br>
           <p>Member Since <%= @user.created_at.strftime("%Y") %></p>

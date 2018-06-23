@@ -3,18 +3,10 @@ $(document).on('turbolinks:load', function() {
     trigger: 'focus'
   });
 
-  $('[name="user[subscription_type]"]').click(function() {
-    $('#additional-user-info').removeClass('d-none');
-    if(this.value == 'vip') {
-      $('#payment-user-info').removeClass('d-none');
-    } else {
-      $('#payment-user-info').addClass('d-none');
-    }
-  });
-
-  if($('#user_subscription_type_vip:checked').length > 0) {
+  $('.start-subscription').click(function(e) {
+    e.preventDefault();
     $('#payment-user-info').removeClass('d-none');
-  }
+  });
 
   const notify = (selector) => {
     let obj = $(selector);

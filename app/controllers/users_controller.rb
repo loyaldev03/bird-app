@@ -2,10 +2,11 @@ class UsersController < ApplicationController
   include UsersHelper
   include ReleasesHelper
   
-  before_action :authenticate_user!, except: 
-      [:index, :show, :parse_youtube, :admin, :artist, :announcements_feed,
+  before_action :authenticate_user!, except: [
+        :index, :show, :parse_youtube, :admin, :artist, :announcements_feed,
         :interviews_feed, :videos_feed, :others_feed, :artists, :leaderboard,
         :load_more, :get_tracks, :artist_releases, :artist_tracks, :badges]
+
   before_action :set_notifications, only: [:leaderboard, :index, :show, :home, 
         :artist, :artists, :admin, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
@@ -80,8 +81,8 @@ class UsersController < ApplicationController
   end
 
   def home
-    if current_user.subscription_type.blank?
-      redirect_to choose_profile_path and return
+    unless current_user.additional_info_set?
+      redirect_to edit_user_registration_path and return
     end
 
     redirect_to current_user
@@ -326,11 +327,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def cancel_subscription
+    current_user.cancel_braintree_subscription
+
+    flash[:notice] = 'Subscription was canceled'
+    redirect_to choose_profile_path
+  end
+
   private
 
     def user_params
       params.require(:user).permit(:avatar, :avatar_cache, :shipping_address, 
         :birthdate, :gender, :t_shirt_size, :city, #:subscription, 
-        :subscription_type, :crop_x, :crop_y, :crop_w, :crop_h)
+        :crop_x, :crop_y, :crop_w, :crop_h)
     end
 end
