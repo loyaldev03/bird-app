@@ -28,7 +28,7 @@
                 disable_after_rate: false, star_path: '/images/rate/yellow'
           %>
         <% end %>
-        <%= @release.average('main').try(:avg) %>
+        <%= @release.average('main').try(:avg).try(:round,1) %>
       </div>
 
       <button class="release-icon" type="button" data-toggle="collapse" data-target="#release-share" aria-expanded="false" aria-controls="collapseExample">
@@ -187,7 +187,7 @@
                         disable_after_rate: false, star_path: '/images/rate/white' %>
                     &nbsp;
                   <% end %>
-                  <%= track.average('main').try(:avg) %>
+                  <%= track.average('main').try(:avg).try(:round,1) %>
                 </div>
 
                 <% if @release.user_allowed? %>
