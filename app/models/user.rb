@@ -109,6 +109,9 @@ class User < ApplicationRecord
 
   def change_points(income_action_type, action_model, destroy=nil)
     #points #TODO BadgePoint(badge_id) not needed
+
+    return if has_role?(:admin) || has_role?(:artist)
+    
     kind_name = case action_model
     when "Comment"
       types = ["Release", "Track"]
@@ -134,20 +137,23 @@ class User < ApplicationRecord
     end
 
     if income_action_type == 'member_over_time'
-      badge_kind = BadgeKind.find_by(ident: 'Membership Level')
-      return unless badge_kind
+      leaderboard_kind = BadgeKind.find_by(ident: 'leaderboard_points')
 
-      max_days = 0
+      if leaderboard_kind.present?
+        leaderboard_kind.badges.each do |badge|
+          if self.points >= badge.points && !self.badges.include?(badge)
+            self.badges << badge
+          end
+        end
+      end
+
+      membership_kind = BadgeKind.find_by(ident: 'membership_level')
+      return unless membership_kind
+
       id_with_max_days = nil
 
-      BadgeActionType.where(badge_kind_id: badge_kind.id).each do |action_type|
-
-        if max_days < action_type.count_to_achieve
-          max_days = action_type.count_to_achieve
-        end
-
+      BadgeActionType.where(badge_kind_id: membership_kind.id).each do |action_type|
         if action_type.count_to_achieve < (DateTime.now - self.created_at.to_datetime).to_i
-
           action_type.badges.each do |badge|
             unless self.badges.include?(badge)
               self.badges << badge 

@@ -81,7 +81,7 @@ class UsersController < ApplicationController
   end
 
   def home
-    unless current_user.additional_info_set?
+    unless current_user.additional_info_set? || current_user.has_role?(:admin)
       redirect_to edit_user_registration_path and return
     end
 

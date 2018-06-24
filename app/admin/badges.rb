@@ -19,6 +19,7 @@ ActiveAdmin.register Badge do
       f.input :badge_kind
       f.input :name
       f.input :image
+      f.input :points if f.object.badge_kind && f.object.badge_kind.ident == 'leaderboard_points'
     end
     f.inputs do
       
