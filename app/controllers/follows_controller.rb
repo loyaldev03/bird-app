@@ -1,5 +1,10 @@
 class FollowsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to choose_profile_path( message: "follows" ), :alert => "Subscribe to get access to this action"
+  end
   
   def create
     follow = Follow.new(follow_params)

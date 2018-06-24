@@ -59,7 +59,7 @@ class TracksController < ApplicationController
         current_track = { index: 0, time: 0 }
       end
     else
-      tracks = Track.where.not('sample_uri is NULL').order(created_at: :asc).last(5).map do |track|
+      tracks = Track.where.not('sample_uri is NULL').order(created_at: :asc).last(1).map do |track|
         track_presenter = TrackPresenter.new(track, current_user)
 
         # if track_presenter.users.any?
@@ -115,6 +115,15 @@ class TracksController < ApplicationController
 
     unless @track.user_allowed?(current_user)
       raise ActionController::RoutingError, 'Not Found'
+    end
+
+    #special conditions for users from previous version of site
+    if current_user.subscription_length =='monthly_10' ||
+         current_user.subscription_length == 'monthly'
+      
+      if current_user.downloads.where("created_at > ?",current_user.braintree_subscription_expires_at - 1.month).count > 12
+        redirect_to root_path, alert: "You have reached the limit of track downloads" and return
+      end
     end
 
     @format = params[:format] || :mp3_320

@@ -1,5 +1,10 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to choose_profile_path( message: "likes" ), :alert => "Subscribe to get access to this action"
+  end
 
   def create
     like = Like.new(like_params)

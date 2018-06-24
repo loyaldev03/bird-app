@@ -4,8 +4,17 @@ class TopicsController < ApplicationController
 
   breadcrumb 'Categories', :chirp_index_path, match: :exact
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to choose_profile_path( message: "create topics" ), :alert => "Subscribe to get access to this action"
+  end
+
   def show
     @topic = Topic.find(params[:id])
+
+    if ( @topic.user && @topic.user.has_role?(:artist) ) || !@topic.see_to_all
+      authorize! :read, @topic
+    end
+
     if params[:chirp_id].present?
       @category = TopicCategory.find(params[:chirp_id])
     else
@@ -21,6 +30,9 @@ class TopicsController < ApplicationController
 
   def create
     topic = Topic.new(topic_params)
+
+    authorize! :create, topic
+
     topic.user_id = current_user.id
     if topic.save
       flash[:notice] = 'Topic was created'

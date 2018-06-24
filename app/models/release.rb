@@ -39,6 +39,9 @@ class Release < ApplicationRecord
     return true if user.vip?
     return false unless published?
     return false unless user.subscription_started_at
+    logger.warn "=============================="
+    logger.warn user.subscription_length
+    return false if user.subscription_length == 'monthly_7'
     return true if available_to_all?
     return true if published_at >= user.subscription_started_at - 3.months
     false

@@ -35,9 +35,13 @@
         <!-- - <b><span class="jp-artists"></span>&nbsp;</b> -->
       </div>
 
-      <button id="jp-playlist-btn" class="mr-4">
-        <%= image_tag 'icons/playlist.png' %>
-      </button>
+      <% if current_user && (current_user.cahced_active_subscription? || 
+            current_user.has_role?(:admin) ||
+            current_user.has_role?(:artist) ) %>
+        <button id="jp-playlist-btn" class="mr-4">
+          <%= image_tag 'icons/playlist.png' %>
+        </button>
+      <% end %>
 
       <div class="jp-progress-container" style="width: 200px">
         <div id="waveform"></div>

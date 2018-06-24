@@ -25,7 +25,8 @@ class User < ApplicationRecord
   validates :first_name, presence: true
 
   enum subscription_type: [:member, :vip, :admin]
-  enum subscription_length: [:unknown, :monthly, :yearly]
+  enum subscription_length: [:unknown, :monthly, :yearly, 
+      :monthly_7, :monthly_10, :yearly_100]
 
   has_many :badge_levels, inverse_of: :user
   has_many :badges, through: :badge_levels
@@ -111,6 +112,7 @@ class User < ApplicationRecord
     #points #TODO BadgePoint(badge_id) not needed
 
     return if has_role?(:admin) || has_role?(:artist)
+    return unless cahced_active_subscription?
     
     kind_name = case action_model
     when "Comment"
@@ -472,6 +474,11 @@ class User < ApplicationRecord
     false
   end
 
+  def cahced_active_subscription?
+    return true if subscription_type == 'vip' || subscription_type == 'admin'
+    true if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+  end
+
   def cancel_braintree_subscription
     Braintree::Subscription.cancel(braintree_subscription_id) if braintree_subscription
     update!(
@@ -492,12 +499,12 @@ class User < ApplicationRecord
     ].all?(&:present?)
   end
 
-  # def subscriber_type
-  #   if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
-  #     return "#{braintree_subscription.trial_period ? 'Trial ' : ''}Birdfeed - #{subscription_length.titleize}"
-  #   end
-  #   'Chirp Only'
-  # end
+  def subscriber_type
+    if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
+      return "#{braintree_subscription.trial_period ? 'Trial ' : ''}Birdfeed #{subscription_length.split('_')[0].titleize}"
+    end
+    'CHIRP FREE'
+  end
 
   # def subscription_description
   #   return 'Deleted' if deleted?

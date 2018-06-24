@@ -25,4 +25,15 @@ module ApplicationHelper
 
     setting.val if setting.present?
   end
+
+  def correct_user_path user
+    if user.has_role?(:artist)
+      return artist_path user
+    elsif user.has_role?(:admin)
+      return admin_path user
+    else
+      return user_path user
+    end
+  end
+
 end

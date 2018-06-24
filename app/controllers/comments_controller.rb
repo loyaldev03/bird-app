@@ -1,10 +1,21 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
+  load_and_authorize_resource
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to choose_profile_path( message: "comments" ), :alert => "Subscribe to get access to this action"
+  end
 
   def show
     comment = Comment.find params[:id]
 
-    action = comment.commentable.try(:has_role?, :artist) ? 'artist' : 'show'
+    if comment.commentable.try(:has_role?, :artist)
+      action = 'artist'
+    elsif comment.commentable.try(:has_role?, :admin)
+      action = 'admin'
+    else
+      action = 'show'
+    end
 
     redirect_to( url_for(
         controller: comment.commentable_type.pluralize.downcase, 

@@ -76,12 +76,12 @@
 
 .feed-replies-list {
   & > div {
-    display: none;
+    // display: none;
   }
 
-  & > div:nth-last-child(-n+3) {
-    display: block;
-  }
+  // & > div:nth-last-child(-n+3) {
+  //   display: block;
+  // }
 }
 
 .feed-reply {

@@ -2,7 +2,7 @@ ActiveAdmin.register Topic do
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-  permit_params :title, :text, :category_id
+  permit_params :title, :text, :category_id, :see_to_all
 #
 # or
 #

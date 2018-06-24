@@ -26,14 +26,15 @@
 
   <%= f.submit "Update", class: "btn btn-lg btn-primary btn-block mb-3" %>
 
-  <%= link_to "Change subscription", choose_profile_path %>
+  <div class="text-center mx-4">
+    <%= link_to "Change subscription", choose_profile_path %>
+    <br>
   
   <!-- <p>Cancel my account</p> -->
 
  <!--  <p>Unhappy? <%#= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-sm" %></p> -->
   <%#= render 'devise/shared/billing_info' %>
   
-  <div class="text-center mx-4">
     <%= link_to "Back", :back %>
   </div>
 <% end %>

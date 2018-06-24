@@ -19,9 +19,9 @@
     <em>comment</em>
 
     <% if activity['object'].parent.try(:body).present? %>
-      <%= activity['object'].parent.body.truncate(20) %>
+      <%= link_to activity['object'].parent.body.truncate(20), activity['object'] %>
     <% else %>
-      <%= activity['object'].parent.text.truncate(20) %>
+      <%= link_to activity['object'].parent.text.truncate(20), activity['object'] %>
     <% end %>
     
   <% else %>

@@ -30,6 +30,9 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= User.new # guest user (not logged in)
+
+    alias_action :create, :read, :update, :destroy, :to => :crud
+
     if user.has_role? :admin 
       can :manage, :all
 
@@ -53,6 +56,19 @@ class Ability
       can :manage, Video, user_id: user.id
       can :create, Video
 
+      can :manage, Topic, user_id: user.id
+      can :read, Topic
+      can :create, Topic
+
+      can :manage, Post, user_id: user.id
+      can :create, Post
+
+      can :manage, User, id: user.id
+      can :read, User
+
+      can :crud, Follow
+      can :crud, Like
+      can [:crud, :show, :edit, :reply_form], Comment
 
       # can :access, :ckeditor
     # Performed checks for actions:
@@ -60,6 +76,24 @@ class Ability
       # can [:read, :create, :destroy], Ckeditor::AttachmentFile
     else
       cannot :manage, ActiveAdmin::Page
+
+      if user.cahced_active_subscription?
+        can :read, Announcement
+
+        can :manage, Topic, user_id: user.id
+        can :read, Topic
+        can :create, Topic
+
+        can :manage, Post, user_id: user.id
+        can :create, Post
+
+        can :manage, User, id: user.id
+        can :read, User
+
+        can :crud, Follow
+        can :crud, Like
+        can [:crud, :show, :edit, :reply_form], Comment
+      end
     end
   end
 end

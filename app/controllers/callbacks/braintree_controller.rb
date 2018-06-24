@@ -46,10 +46,12 @@ class Callbacks::BraintreeController < ApplicationController
         redirect_to choose_profile_path and return
       end
     else
-      if params[:subscription] == 'yearly'
-        plan_id = ENV['BRAINTREE_YEARLY_PLAN_ID']
-      elsif params[:subscription] == 'monthly'
-        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_ID']
+      if params[:subscription] == 'yearly_100'
+        plan_id = ENV['BRAINTREE_YEARLY_PLAN_100_ID']
+      elsif params[:subscription] == 'monthly_7'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_7_ID']
+      elsif params[:subscription] == 'monthly_10'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_10_ID']  
       else
         throw "Couldn't find plan for subscription #{params[:subscription]}"
       end

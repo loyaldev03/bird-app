@@ -1,5 +1,11 @@
 <h2>Billing Information</h2>
 
+<p>
+  <% if params[:message] %>
+    Please subscribe to <%= params[:message] %> availability 
+  <% end %>
+</p>
+
 <% if current_user.braintree_subscription %>
   <p> Subscription Type:
     <% if current_user.subscription_type == 'member' %>

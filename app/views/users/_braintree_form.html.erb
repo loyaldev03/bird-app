@@ -11,28 +11,32 @@
 
   <% if !current_user.braintree_subscription %>
     <div class="form-group">
-      <%= radio_button_tag(:subscription, 'monthly', checked: true) %>
-      <%= label_tag(:subscription_monthly, 'Monthly - $6.99/month') %>
+      <%= radio_button_tag(:subscription, 'monthly_7', checked: true) %>
+      <%= label_tag(:subscription_monthly_7, 'Monthly - $6.99/month - listen tracks') %>
+      <br>
+      <%= radio_button_tag(:subscription, 'monthly_10') %>
+      <%= label_tag(:subscription_monthly_10, 'Monthly - $9.99/month - plus download 12 tracks per month') %>
       <br>
       <%= radio_button_tag(:subscription, 'yearly') %>
-      <%= label_tag(:subscription_yearly, 'Yearly - $75.00/year') %>
+      <%= label_tag(:subscription_yearly_100, 'Yearly - $99.00/year - unlimited access to the tracks') %>
       <br>
-      Both plans include a 30 day trial. You will not be billed if you cancel before it ends.
+      All plans include a 30 day trial. You will not be billed if you cancel before it ends.
     </div>
   <% end %>
 
   <div class="form-group">
     <% if current_user.braintree_subscription %>
-      <%= submit_tag 'Update Payment Method', class: 'btn btn-default' %>
+      <%= submit_tag 'Update Payment Method', class: 'btn btn-default', 
+          data: { disable_with: false } %>
     <% else %>
-      <%= submit_tag 'Start Subscription', class: 'btn btn-default' %>
+      <%= submit_tag 'Start Subscription', class: 'btn btn-default', 
+          data: { disable_with: false } %>
     <% end %>
   </div>
 <% end %>
 
-<script src="https://js.braintreegateway.com/js/braintree-2.21.0.min.js"></script>
 <script>
-  setTimeout(function(){
+  // setTimeout(function(){
     // Honeybadger.wrap(function(){
       var clientToken = "<%= Braintree::ClientToken.generate %>";
 
@@ -56,5 +60,5 @@
         }
       });
     // })();
-  },500);
+  // },500);
 </script>

@@ -13,6 +13,10 @@ class UsersController < ApplicationController
         :friends_feed, :others_feed, :artist_releases , :artist_tracks, 
         :badges]
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to choose_profile_path( message: "visit this page" ), :alert => "Subscribe to get access to this action"
+  end
+
   def leaderboard
     @leader_users = leaderboard_query(1, 5, true)
     @badge_kinds = BadgeKind.visible
@@ -57,6 +61,8 @@ class UsersController < ApplicationController
       redirect_to admin_path(@user) and return
     end
 
+    authorize! :read, @user unless @user == current_user
+
     @enricher = StreamRails::Enrich.new
 
     begin
@@ -77,7 +83,6 @@ class UsersController < ApplicationController
 
   def badges
     @user = User.find(params[:id])
-
   end
 
   def home
@@ -89,7 +94,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    # TODO recheck for subscription_type
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
 
@@ -192,6 +196,8 @@ class UsersController < ApplicationController
       redirect_to admin_path(@user) and return
     end
 
+    authorize! :read, @user
+
     begin
       feed = StreamRails.feed_manager.get_user_feed(@user.id)
       results = feed.get()['results']
@@ -206,12 +212,18 @@ class UsersController < ApplicationController
 
   def artist_releases
     @user = User.find(params[:id])
+
+    authorize! :read, @user
+
     page = params[:page] || 1
     @releases = releases_query( @user.releases.published, page, 16, true )
   end
 
   def artist_tracks
     @user = User.find(params[:id])
+
+    authorize! :read, @user
+
     page = params[:page] || 1
     # user_releases = "SELECT id FROM releases INNER JOIN releases_users ON releases_users.release_id = releases.id WHERE releases_users.user_id = #{@user.id}"
     # tracks_from_releases = "SELECT * FROM tracks WHERE release_id IN (#{user_releases})"
@@ -220,6 +232,9 @@ class UsersController < ApplicationController
 
   def interviews_feed
     @user = User.find(params[:id])
+
+    authorize! :read, @user
+
     artist_vars
 
     get_feed_from @user.announcements, "Announcement"
@@ -229,6 +244,9 @@ class UsersController < ApplicationController
 
   def videos_feed
     @user = User.find(params[:id])
+
+    authorize! :read, @user
+
     artist_vars
 
     get_feed_from @user.videos, "Addvideo"
@@ -238,6 +256,9 @@ class UsersController < ApplicationController
 
   def others_feed
     @user = User.find(params[:id])
+
+    authorize! :read, @user
+
     artist_vars
 
     begin

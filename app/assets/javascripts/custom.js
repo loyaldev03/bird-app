@@ -139,6 +139,13 @@ $(document).on('turbolinks:load', function() {
     $("html, body").animate({ scrollTop: $(document).height() }, 500);
   });
 
+  $('.feed-replies-list').each(function(){
+    $(this).find("[id^='message-']").each(function(){
+      $(this).find("[id^='message-']").hide();
+      $(this).find("[id^='message-']").slice(-3).show();
+    });
+  });
+
   $('.show-more-comments').click(function(){
     $(this).siblings('.feed-replies-list').find('div').show();
     $(this).hide();
