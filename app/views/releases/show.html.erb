@@ -241,8 +241,6 @@
                 html: { class: "feed-form w-75" }, remote: true do |f| %>
               <%= f.hidden_field :commentable_type, value: "Release" %>
               <%= f.hidden_field :commentable_id, value: @release.id %>
-              <%#= f.label :title, class: "sr-only" %>
-              <%#= f.text_field :title, placeholder: "Type the title here" %>
               <%= f.label :body, class: "sr-only" %>
               <%= f.text_area :body, rows: 10, placeholder: "Type text", 
                   max: 200, required: true, class: "emoji-area" %>

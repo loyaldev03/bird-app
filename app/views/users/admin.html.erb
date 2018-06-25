@@ -58,8 +58,6 @@
               <%= f.hidden_field :commentable_type, value: "User" %>
               <%= f.hidden_field :commentable_id, value: @user.id %>
 
-              <%= f.label :title, class: "sr-only" %>
-              <%= f.text_field :title, placeholder: "Type the title here" %>
               <%= f.label :body, class: "sr-only" %>
               <%= f.text_area :body, rows: 10, placeholder: "Type text", 
                   max: 200, class: "emoji-area" %>

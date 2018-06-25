@@ -23,7 +23,7 @@
       <div class="topics-link">
         <%= link_to chirp_topic_path( @category, topic ) do %>
           <%= "#{topic.title}" %> 
-          <%= "<span class='topic-caption'><span>#{pluralize(topic.posts.count, 'post')}</span> / Created #{time_ago_in_words(topic.created_at)} ago</span>".html_safe %>
+          <%= "<span class='topic-caption'><span>#{pluralize(topic.posts.count, 'comment')}</span> / Created #{time_ago_in_words(topic.created_at)} ago</span>".html_safe %>
         <% end %>
       </div>
       
