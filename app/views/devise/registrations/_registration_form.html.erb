@@ -50,7 +50,7 @@
 
 <div class="form-group">
   <%= f.label :t_shirt_size %>
-  <%= f.select :t_shirt_size, options_for_select(['S - Mens', 'M - Mens', 'L - Mens', 'XL - Mens', '2X - Mens', '3X - Mens', 'XS - Womens', 'S - Womens', 'M - Womens', 'L - Womens', 'XL - Womens'], current_user.t_shirt_size),{ include_blank: 'Shirt Size' } %>
+  <%= f.select :t_shirt_size, options_for_select(['S - Mens', 'M - Mens', 'L - Mens', 'XL - Mens', '2X - Mens', '3X - Mens', 'XS - Womens', 'S - Womens', 'M - Womens', 'L - Womens', 'XL - Womens'], (current_user.t_shirt_size if current_user)),{ include_blank: 'Shirt Size' }, required: true %>
 </div>
 
 <div class="form-label-group">
