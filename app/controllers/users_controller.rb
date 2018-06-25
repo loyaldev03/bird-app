@@ -358,8 +358,7 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:avatar, :avatar_cache, :shipping_address, 
-        :birthdate, :gender, :t_shirt_size, :city, #:subscription, 
-        :crop_x, :crop_y, :crop_w, :crop_h)
+      params.require(:user).permit(:avatar, :avatar_cache, 
+          :crop_x, :crop_y, :crop_w, :crop_h)
     end
 end
