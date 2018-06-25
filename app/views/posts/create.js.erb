@@ -12,5 +12,9 @@
   $('.feed-block').prepend("<%= escape_javascript(render(@post)) %>");
   $('#post_text').val('').focus();
   $('.emojionearea-editor').html('');
+  var file = $("[type='file']");
+  file.val('');
+  file.next('span').remove();
+  file.next('button').remove();
   
 <% end %>

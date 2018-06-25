@@ -19,6 +19,6 @@
 //= require algolia/v3/algoliasearch.min
 //= require jquery.Jcrop.min
 //= require emojionearea.min
-//= require lightbox.min
 //= require bootstrap-datepicker.min
 //= require_tree .
+//= stub footer

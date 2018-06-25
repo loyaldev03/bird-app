@@ -9,7 +9,7 @@
         <%= link_to post.user.name.split.map(&:capitalize).join(' '), post.user %>&nbsp;
       </p>
       <p class="post-text">
-        <%= post.text %>
+        <%= post.text.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %>
           
         <% if current_user.id == post.user_id %>
           <%= link_to edit_post_path(post), remote: true do %>

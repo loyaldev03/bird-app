@@ -14,12 +14,18 @@ class PostsController < ApplicationController
   
   def create
     @topic = Topic.find(params[:post][:topic_id])
+
+    if params[:post][:text].blank? && params[:post][:feed_images_attributes]['0'][:image].blank?
+      redirect_to @topic and return
+    end
+
     @post = Post.new(post_params)
     @post.user_id = current_user.id
     if @post.save
-      flash[:notice] = 'Post was created'
+      # flash[:notice] = 'Post was created'
     else
-      flash[:alert] = @post.errors.full_messages.join(', ')
+      redirect_to @topic, alert: "Not an image"
+      logger.warn @post.errors.full_messages.join(', ')
     end
   end
 
