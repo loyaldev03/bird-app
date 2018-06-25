@@ -5,7 +5,7 @@ class Follow < ApplicationRecord
 
   after_create :add_points, :feed_masterfeed#, :feed_release_topic_announcement
   after_save :trigger_followers_count
-  before_destroy :trigger_followers_count, :remove_points#, :unfeed_release_topic_announcement
+  after_destroy :trigger_followers_count, :remove_points#, :unfeed_release_topic_announcement
 
   include StreamRails::Activity
   as_activity
@@ -45,9 +45,9 @@ class Follow < ApplicationRecord
     end
 
     def trigger_followers_count
-      if self.user.has_role?(:artist)
-        artist_info = ArtistInfo.find_or_create_by(artist_id: self.user.id)
-        artist_info.update_attributes(followers_count: self.user.followers.count - 1)
+      if self.followable.class == User && self.followable.has_role?(:artist)
+        artist_info = ArtistInfo.find_or_create_by(artist_id: self.followable.id)
+        artist_info.update_attributes(followers_count: self.followable.followers.count )
       end
     end
 end
