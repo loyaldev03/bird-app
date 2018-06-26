@@ -9,9 +9,8 @@
     <div class="feed-name">
       <%= link_to activity['object'].user.name.split.map(&:capitalize).join(' '), activity['object'].user %>&nbsp;
     </div>
-    <h3><%= activity['object'].title %></h3>
-    <p><%= activity['object'].body %></p>
-
+    <%= comment_with_meta_data(activity['object'].body).html_safe %>
+      
     <div class="comment-footer">
       <span>
         <%= render partial: 'likes/like_button', locals: { object: activity['object'],  style: 'thumbup' } %>

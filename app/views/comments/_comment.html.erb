@@ -30,7 +30,8 @@
         <i>edited</i>
       <% end %>
 
-      <%= comment.body %>
+      <%= comment_with_meta_data(comment.body).html_safe %>
+
     </p>
     <%= image_tag(comment.user.avatar.thumb, class: "post-user-avatar") %>
 
@@ -51,8 +52,8 @@
 
   <div class="nested-messages" id="message-<%= comment.id %>">
     <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
-    <p class="feed-reply" id="Comment-<%= comment.id %>">
-      <%= comment.body %>
+    <div class="feed-reply" id="Comment-<%= comment.id %>">
+      <%= comment_with_meta_data(comment.body).html_safe %>
 
       <% if current_user && current_user.id == comment.user_id %>
         <%= link_to edit_comment_path(comment), remote: true do %>
@@ -69,7 +70,7 @@
       <% if comment.edited_at.present? %>
         <i>edited</i>
       <% end %>
-    </p>
+    </div>
 
     <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
 

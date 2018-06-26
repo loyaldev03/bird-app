@@ -14,7 +14,7 @@
   <% end %>
 
   <h1><%= @topic.title %></h1>
-  <p class="topic-text"><%= @topic.text %></p>
+  <p class="topic-text"><%= @topic.text.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %></p>
   
   <div class="text-right mr-4"><%= render 'follows/follow_button', target: @topic %></div>
 

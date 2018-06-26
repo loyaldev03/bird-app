@@ -48,6 +48,7 @@ gem 'rack-cors'
 gem 'bulk_insert'
 gem 'transloadit'
 gem 'braintree'
+gem 'metainspector'
 
 
 group :development, :test do

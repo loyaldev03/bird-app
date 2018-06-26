@@ -21,7 +21,8 @@
         <% end %>
       <% end %>
 
-      <%= reply.text %>
+      <%= comment_with_meta_data(reply.text).html_safe %>
+
       &nbsp;
       <% if reply.edited_at.present? %>
         <i>edited</i>
@@ -50,7 +51,7 @@
     <%= link_to image_tag(reply.user.avatar.thumb, class: "post-user-avatar"), reply.user %>
     
     <p id="feed-post-<%= reply.id %>" class="feed-reply">
-      <%= reply.text %>
+      <%= reply.text.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %>
       &nbsp;
       <% if reply.edited_at.present? %>
         <i>edited</i>
