@@ -45,12 +45,12 @@ module ApplicationHelper
     if match = text.match(URI.regexp)
       meta_data = get_metadata(match[0])
       meta_data_html = '<strong>'+meta_data[:title].to_s+'</strong>'
-      meta_data_html += '<br>'+meta_data[:desc].try(:truncate,140).to_s if meta_data[:desc]
+      # meta_data_html += '<br>'+meta_data[:desc].try(:truncate,140).to_s if meta_data[:desc]
       meta_data_html += '<br><img class="feed-image" src="'+meta_data[:image].to_s+'">' if meta_data[:image]
-      meta_data_html = '<a href="'+match[0]+'">'+meta_data_html+'</a>'
+      meta_data_html = '<a href="'+match[0]+'" target="_blank">'+meta_data_html+'</a>'
     end
 
-    text.dup.gsub(URI.regexp, '<a href="\0">\0</a><p>'+meta_data_html.to_s+'</p>')
+    text.dup.gsub(URI.regexp, '<a href="\0" target="_blank">\0</a><p>'+meta_data_html.to_s+'</p>')
   end
 
 end

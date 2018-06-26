@@ -117,7 +117,7 @@
         <div class="c-panel bg-white mb-4">
           <iframe id="ytplayer" type="text/html" width="100%" height="100%"
             src="https://www.youtube.com/embed/<%= @artist_video.parse_youtube %>"
-            frameborder="0"></iframe>
+            frameborder="0" allowfullscreen></iframe>
           <div class="panel-sign">
             <h4><%= @artist_video.title.upcase %></h4>
             <p>Published on <%= @artist_video.created_at.strftime("%B, %-d, %Y") %></p>
