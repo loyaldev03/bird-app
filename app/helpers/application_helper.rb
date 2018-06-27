@@ -38,7 +38,9 @@ module ApplicationHelper
 
   def get_metadata url
     page = MetaInspector.new(url)
-    { title: page.title, desc: page.description, image: page.images.best }
+    logger.warn page.meta 
+    { title: page.title, desc: page.description, image: page.images.best, 
+      video: page.meta['og:video:url'], player: page.meta['twitter:player'] }
   end
 
   def comment_with_meta_data text
@@ -46,7 +48,14 @@ module ApplicationHelper
       meta_data = get_metadata(match[0])
       meta_data_html = '<strong>'+meta_data[:title].to_s+'</strong>'
       # meta_data_html += '<br>'+meta_data[:desc].try(:truncate,140).to_s if meta_data[:desc]
-      meta_data_html += '<br><img class="feed-image" src="'+meta_data[:image].to_s+'">' if meta_data[:image]
+      if meta_data[:video].present?
+        meta_data_html += '<iframe id="ytplayer" type="text/html" width="100%" height="400px" src="'+meta_data[:video]+'" frameborder="0" allowfullscreen></iframe>'
+      elsif meta_data[:player].present?
+        meta_data_html += '<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="'+meta_data[:player]+'"></iframe>'
+      elsif meta_data[:image].present?
+        meta_data_html += '<br><img class="feed-image" src="'+meta_data[:image].to_s+'">'
+      end
+        
       meta_data_html = '<a href="'+match[0]+'" target="_blank">'+meta_data_html+'</a>'
     end
 
