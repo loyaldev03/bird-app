@@ -70,7 +70,7 @@
       <%# end %>
 
       <%= render partial: 'follows/follow_button', 
-          locals: { target: @announcement, 
+          locals: { object: @announcement, 
                     opt: { 
                         classes: "btn btn-wide follow-button-black",
                         text: ['follow this feed', 'unfollow this feed'] } } %>

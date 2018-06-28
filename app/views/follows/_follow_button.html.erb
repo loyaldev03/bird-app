@@ -15,18 +15,18 @@
 
 <% if current_user.nil? || 
   (current_user && current_user.has_role?(:artist)) ||
-  (current_user && target == current_user)  %>
+  (current_user && object == current_user)  %>
 
   &nbsp;
 
-<% elsif current_user.followed(target) %>
+<% elsif current_user.followed(object) %>
 
   <%= render partial: 'follows/unfollow', 
-      locals: { target: target, text: text, classes: classes } %>
+      locals: { object: object, text: text, classes: classes } %>
 
 <% else %>
 
   <%= render partial: 'follows/follow', 
-      locals: { target: target, text: text, classes: classes } %>
+      locals: { object: object, text: text, classes: classes } %>
 
 <% end %>

@@ -3,22 +3,19 @@
   <%= activity['activities'][0]['actor'].name %>
 <% end %>
 
-<%= activity['activities'][0]['foreign_id'].class.to_s.downcase %>
+followed
 
-<% if activity['activities'][0]['object'].user_id == current_user.id %>
+<% if activity['activities'][0]['object'].id == current_user.id %>
 
-  your
-  <%= link_to activity['activities'][0]['object'] do %>
-    <%= activity['activities'][0]['object'].class.to_s %>
-  <% end %>
+  you
 
 <% else %>
 
   <%= link_to activity['activities'][0]['object'] do %>
-    <%= activity['activities'][0]['object'].class.to_s %>
+    <%= image_tag activity['activities'][0]['object'].avatar.thumb.url, class: "feed-avatar" %>
+    <%= activity['activities'][0]['object'].name %>
   <% end %>
 
 <% end %>
 
 <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-

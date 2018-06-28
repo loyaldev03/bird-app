@@ -5,19 +5,26 @@ class Follow < ApplicationRecord
 
   after_create :add_points, :feed_masterfeed#, :feed_release_topic_announcement
   after_save :trigger_followers_count
-  after_destroy :trigger_followers_count, :remove_points#, :unfeed_release_topic_announcement
+  after_destroy :trigger_followers_count, :remove_points, :remove_from_aggregated_feed#, :unfeed_release_topic_announcement
 
   include StreamRails::Activity
   as_activity
 
   def activity_notify
+    notify = [StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)]
     if self.followable_type == 'User'
-      [StreamRails.feed_manager.get_notification_feed(self.followable_id)]
+      notify << StreamRails.feed_manager.get_notification_feed(self.followable_id)
     end
+
+    notify
   end
 
   def activity_object
     self.followable
+  end
+
+  def activity_verb
+    self.followable.class.to_s
   end
 
   private
@@ -37,6 +44,11 @@ class Follow < ApplicationRecord
     # def unfeed_release_topic_announcement
 
     # end
+
+    def remove_from_aggregated_feed
+      feed = StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)
+      feed.remove_activity("Follow:#{self.id}", foreign_id=true)
+    end
 
     def feed_masterfeed
       feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )

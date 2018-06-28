@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
       unseen = results.select { |r| r['is_seen'] == false }
       @unseen_count = unseen.count
       @enricher = StreamRails::Enrich.new
+      @enricher.add_fields([:foreign_id])
 
       if @unseen_count <= 8
         @notify_activities = @enricher.enrich_aggregated_activities(results[0..7])

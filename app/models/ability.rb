@@ -47,8 +47,9 @@ class Ability
 
       can :manage, ActiveAdmin::Page
 
-      can :manage, Announcement, user_id: user.id
-      can :create, Announcement
+      # can :manage, Announcement, user_id: user.id
+      # can :create, Announcement
+      can :read, Announcement
 
       can :manage, ArtistInfo, artist_id: user.id
       can :create, ArtistInfo

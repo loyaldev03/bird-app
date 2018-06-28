@@ -9,29 +9,29 @@
 <em>
   has commented on
 </em>
-<% if activity['target'].class == User %>
+<% if activity['object'].class == User %>
 
-  <% if activity['object'].parent.present? %>
-    <%= link_to activity['target'] do %>
-      <%= activity['target'].name + '\'s' %>
+  <% if activity['foreign_id'].parent.present? %>
+    <%= link_to activity['object'] do %>
+      <%= activity['object'].name + '\'s' %>
     <% end %>
     
     <em>comment</em>
 
-    <% if activity['object'].parent.try(:body).present? %>
-      <%= link_to activity['object'].parent.body.truncate(20), activity['object'] %>
+    <% if activity['foreign_id'].parent.try(:body).present? %>
+      <%= link_to activity['foreign_id'].parent.body.truncate(20), activity['foreign_id'] %>
     <% else %>
-      <%= link_to activity['object'].parent.text.truncate(20), activity['object'] %>
+      <%= link_to activity['foreign_id'].parent.text.truncate(20), activity['foreign_id'] %>
     <% end %>
     
   <% else %>
     <em>his page</em>
-    <%= link_to activity['object'].body.truncate(20), activity['object'] %>
+    <%= link_to activity['foreign_id'].body.truncate(20), activity['foreign_id'] %>
   <% end %>
 
 <% else %>
 
-  <%= link_to activity['target'].try(:body).try(:truncate, 20), activity['target'] %>
+  <%= link_to activity['object'].try(:body).try(:truncate, 20), activity['object'] %>
 
 <% end %>
 

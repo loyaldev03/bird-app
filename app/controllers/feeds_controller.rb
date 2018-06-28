@@ -18,6 +18,7 @@ class FeedsController < ApplicationController
 
     def create_enricher
       @enricher = StreamRails::Enrich.new
+      @enricher.add_fields([:foreign_id])
     end
 
 end

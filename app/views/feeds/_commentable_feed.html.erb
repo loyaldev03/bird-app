@@ -1,7 +1,11 @@
-<% for activity in @activities %>
-  <% unless activity['verb'] == 'Comment' && activity['object'].try(:parent_id).present? %>
-    <div class="feed-item">
-      <%= render_activity(activity, prefix: 'commentable') %>
-    </div>
+<% if @activities.present? %>
+  <% for activity in @activities %>
+    <% unless activity['verb'] == 'Comment' && activity['object'].try(:parent_id).present? %>
+      <div class="feed-item">
+        <%= render_activity(activity, prefix: 'commentable') %>
+      </div>
+    <% end %>
   <% end %>
+<% else %>
+  <%= render 'feeds/no_feed_items' %>
 <% end %>

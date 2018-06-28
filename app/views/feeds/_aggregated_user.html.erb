@@ -1,0 +1,7 @@
+<% if @activities.present? %>
+  <% for activity in @activities %>
+      <%= render_activity(activity, prefix: 'userpage') %>
+  <% end %>
+<% else %>
+  <%= render 'feeds/no_feed_items' %>
+<% end %>

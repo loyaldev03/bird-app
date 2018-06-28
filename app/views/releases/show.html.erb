@@ -66,7 +66,7 @@
   <div class="col-md-8">
     <div class="release-info mb-4">
       <h1><%= @release.title.upcase %></h1>
-      <p class="release-date">Released date: <%= time_ago_in_words( @release.release_date ) %> ago</p>
+      <p class="release-date">Release date: <%= time_ago_in_words( @release.release_date ) %> ago</p>
 
       <div class="truncated-description">
         <% if @release.text.present? %>
@@ -93,7 +93,7 @@
       </button>
 
       <%= render partial: 'follows/follow_button', 
-          locals: { target: @release, 
+          locals: { object: @release, 
                     opt: { 
                         classes: "btn btn-wide follow-button-black",
                         text: ['follow this feed', 'unfollow this feed'] } } %>
@@ -134,7 +134,7 @@
                 </div>
 
                 <%= render partial: 'follows/follow_button', 
-                    locals: { target: artist, 
+                    locals: { object: artist, 
                               opt: { 
                                   classes: "btn c-btn-blue",
                                   text: ['follow', 'following'] } } %>

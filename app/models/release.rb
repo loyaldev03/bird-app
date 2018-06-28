@@ -10,6 +10,7 @@ class Release < ApplicationRecord
   enum encode_status: [:pending, :complete, :failed] # can be nil # TODO: remove this
 
   has_and_belongs_to_many :users
+  belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"
 
   after_create :feed_masterfeed
   after_save :change_published_date, only: :update
@@ -147,13 +148,9 @@ class Release < ApplicationRecord
     self
   end
 
-  #because announcements shouldn't have a user
+  #because releases has many users
   def activity_actor
     User.with_role(:admin).first
-  end
-
-  def activity_verb
-    "Announcement"
   end
 
   def activity_time

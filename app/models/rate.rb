@@ -10,12 +10,20 @@ class Rate < ActiveRecord::Base
   include StreamRails::Activity
   as_activity
 
-  def activity_object
-    self.rateable
+  def activity_notify
+    [StreamRails.feed_manager.get_feed('user_aggregated', self.rater_id)]
   end
 
   def activity_actor
     rater
+  end
+
+  def activity_object
+    self.rateable
+  end
+
+  def activity_verb
+    self.rateable.class.to_s
   end
 
   private 

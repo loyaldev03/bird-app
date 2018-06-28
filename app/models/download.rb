@@ -9,12 +9,20 @@ class Download < ActiveRecord::Base
   include StreamRails::Activity
   as_activity
 
+  def activity_notify
+    [StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)]
+  end
+
   def activity_object
     if self.release
       self.track.release
     else
       self.track
     end
+  end
+
+  def activity_verb
+    self.release? ? "Release" : "Track"
   end
 
   def activity_should_sync?

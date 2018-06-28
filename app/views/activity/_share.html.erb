@@ -8,18 +8,18 @@
 <% end %>
 <em>has shared</em>
   
-<% if activity['target'].present? %>
+<% if activity['object'].present? %>
 
-  <%= case activity['target'].class.to_s
+  <%= case activity['object'].class.to_s
 
     when "Track"
-      "<em>track</em> #{link_to activity['target'].title, activity['target']} from #{ link_to activity['object'].title, activity['object']}".html_safe 
+      "<em>track</em> #{link_to activity['object'].title, activity['object']} from #{ link_to activity['foreign_id'].title, activity['foreign_id']}".html_safe 
 
    end %>
 
 <% else %>
-  <em><%= activity['object'].class.to_s.downcase %></em>
-  <%= link_to activity['object'].title.truncate(20), activity['object'] %>
+  <em><%= activity['foreign_id'].class.to_s.downcase %></em>
+  <%= link_to activity['foreign_id'].title.truncate(20), activity['foreign_id'] %>
 <% end %>
 
 

@@ -184,6 +184,15 @@
   height: 100px;
   position: relative;
 
+  .item-avatar img {
+    width: 63px;
+    height: 63px;
+    object-fit: cover;
+    border-radius: 10px;
+    float: left;
+    margin-right: 15px;
+  }
+
   h3 {
     font-size: 12px;
     font-weight: 700;
@@ -199,7 +208,7 @@
     position: absolute;
     z-index: 2;
     bottom: 10px;
-    left: 15px;
+    left: 87px;
     align-items: center;
 
     .star {

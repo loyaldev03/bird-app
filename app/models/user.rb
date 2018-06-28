@@ -44,7 +44,11 @@ class User < ApplicationRecord
   has_many :likes
   has_one :artist_info, foreign_key: "artist_id"
   has_and_belongs_to_many :releases
-  has_many :announcements
+  # has_many :announcements
+
+  has_many :as_admin_announcements, foreign_key: "admin_id", class_name: "Announcement"
+  has_many :as_admin_releases, foreign_key: "admin_id", class_name: "Release"
+
   has_many :tracks_users
   has_many :tracks, through: :tracks_users
   has_one :playlist
@@ -96,6 +100,10 @@ class User < ApplicationRecord
 
   def followers
     User.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User'", self.id)
+  end
+
+  def followed object
+    self.follows.where(followable_id: object.id, followable_type: object.class.to_s).first
   end
 
   def posts_from_followed_topics
@@ -175,7 +183,6 @@ class User < ApplicationRecord
       kind = BadgeKind.where(ident: kind_name).first
 
       action_type = BadgeActionType.where(ident: income_action_type, badge_kind_id: kind.id).first
-      logger.warn action_type
 
       points_for_type = self.badge_points.where(badge_action_type_id: action_type.id).last
 
@@ -345,10 +352,6 @@ class User < ApplicationRecord
     persents
   end
 
-  def followed(object = nil)
-    self.follows.where(followable_id: object.id, followable_type: object.class.to_s).first
-  end
-
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email || "example#{SecureRandom.hex(10)}@mail.com"
@@ -368,12 +371,16 @@ class User < ApplicationRecord
   end
 
   def self.batch_follow_to_general_actions offset=0
-    users = all.offset(offset).limit(2500)
-    users = users.map do |user|
-      { source: "notification:#{user.id}", target: 'general_actions:1' }
+    users = all.order(id: :asc).offset(offset).limit(2500)
+
+    payload = []
+    users.each do |user|
+      payload << { source: "notification:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "user:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "user_aggregated:#{user.id}", target: 'general_actions:1' }
     end
 
-    StreamRails.feed_manager.client.follow_many(users)
+    StreamRails.feed_manager.client.follow_many(payload)
   end
 
   
@@ -529,7 +536,10 @@ class User < ApplicationRecord
     def follow_general_actions
       notification_feed = StreamRails.feed_manager.get_notification_feed(self.id)
       news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:flat]
+      user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated',self.id)
+
       notification_feed.follow('general_actions', 1)
       news_feed.follow('general_actions', 1)
+      user_aggregated_feed.follow('general_actions', 1)
     end
 end

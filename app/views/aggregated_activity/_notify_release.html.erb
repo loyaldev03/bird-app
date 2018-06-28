@@ -1,0 +1,15 @@
+<% activity['activities'].each do |release| %>
+  <% if DateTime.parse( release['time'] ).in_time_zone < DateTime.now %>
+
+    <b class="notify-caption"><%= release['object'].class.to_s %></b>
+
+    <%= link_to release['object'] do %>
+      <%= image_tag( release['object'].avatar.url, class: "release-feed-avatar" ) %>
+
+      <b><%= release['object'].title %></b>
+    <% end %>
+
+    <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+
+  <% end %>
+<% end %>

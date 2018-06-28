@@ -1,4 +1,13 @@
+<% if track.release.image_uri.present?
+     image = track.release.image_uri
+   elsif track.release.avatar.present?
+     image = track.release.avatar.url
+   else
+     image = track.release.avatar.url
+   end %>
+
 <div class="track-item w-md-50">
+  <%= link_to image_tag(image), track.release, class: "item-avatar" %>
   <h3>
     <%= track.track_number %>.
     <%= track.title.truncate(70).upcase %>
@@ -45,13 +54,6 @@
   </div>
 
 
-  <% if track.release.image_uri.present?
-       image = track.release.image_uri
-     elsif track.release.avatar.present?
-       image = track.release.avatar.url
-     else
-       image = track.release.avatar.url
-     end %>
 
   <button class="icon-share" type="button" data-toggle="collapse" data-target="#track<%= track.id %>-share" aria-expanded="false" aria-controls="collapseExample">
     <%= image_tag('icons/icon-share.svg', title: "Share") %>

@@ -38,7 +38,6 @@ module ApplicationHelper
 
   def get_metadata url
     page = MetaInspector.new(url)
-    logger.warn page.meta 
     { title: page.title, desc: page.description, image: page.images.best, 
       video: page.meta['og:video:url'], player: page.meta['twitter:player'] }
   end

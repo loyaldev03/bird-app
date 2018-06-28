@@ -6,7 +6,7 @@
   <div>
     <%= link_to activity['object'] do %>
       <% if activity['object'].avatar.present? %>
-        <%= image_tag( activity['object'].avatar.url, class: "announcement-feed-avatar" ) %>
+        <%= image_tag( activity['object'].avatar.url, class: "release-feed-avatar" ) %>
       <%end%>
 
       <b><%= activity['object'].title %></b>

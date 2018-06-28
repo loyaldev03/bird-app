@@ -13,7 +13,8 @@
       <% end %>
 
       <div class="feed-block">
-        <%= render 'feeds/commentable_feed' %>
+        <%#= render 'feeds/commentable_feed' %>
+        <%= render 'feeds/aggregated_user' %>
       </div>
     </div>
   </div>
@@ -53,7 +54,7 @@
             <h5 class="modal-title">What's in your mind?</h5>
 
             <%= form_for current_user.comments.build, 
-                html: { class: "feed-form" },
+                html: { class: "feed-form w-100" },
                 remote: true do |f| %>
               <%= f.hidden_field :commentable_type, value: "User" %>
               <%= f.hidden_field :commentable_id, value: @user.id %>

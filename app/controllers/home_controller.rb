@@ -49,6 +49,7 @@ class HomeController < ApplicationController
     end
     
     @enricher = StreamRails::Enrich.new
+    @enricher.add_fields([:foreign_id])
     @activities = @enricher.enrich_activities(results)
   end
 
@@ -57,17 +58,16 @@ class HomeController < ApplicationController
       feed = StreamRails.feed_manager.get_user_feed( current_user.id )
 
       if params[:subtype] && params[:subtype_id]
-        target = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
+        object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
       else
-        target = ''
+        object = ''
       end
 
       activity = {
         actor: "User:#{current_user.id}",
         verb: "Share",
-        object: "#{params[:type].capitalize}:#{params[:type_id]}",
+        object: object,
         foreign_id: "#{params[:type].capitalize}:#{params[:type_id]}",
-        target: target,
         social: params[:social],
         time: DateTime.now.iso8601
       }

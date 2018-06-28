@@ -13,6 +13,8 @@ class FollowsController < ApplicationController
     if follow.save
       if follow.followable_type == "User"
         StreamRails.feed_manager.follow_user(follow.user_id, follow.followable_id)
+        user_aggregated_feed = StreamRails.feed_manager.get_feed( 'user_aggregated', follow.user_id )
+        user_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
       else
         feed = StreamRails.feed_manager.get_feed( follow.followable_type.downcase, follow.followable_id )
         user_feed = StreamRails.feed_manager
@@ -22,7 +24,7 @@ class FollowsController < ApplicationController
     end
 
     render 'toggle_follow', locals: {
-              target: follow, 
+              object: follow, 
               text: JSON.parse( params[:text] ), 
               classes: params[:classes] } 
   end
@@ -46,7 +48,7 @@ class FollowsController < ApplicationController
     end
 
     render 'toggle_follow', locals: {
-              target: follow, 
+              object: follow, 
               text: JSON.parse( params[:text] ), 
               classes: params[:classes] } 
   end

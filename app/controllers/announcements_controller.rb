@@ -17,6 +17,7 @@ class AnnouncementsController < ApplicationController
     end
 
     @enricher = StreamRails::Enrich.new
+    @enricher.add_fields([:foreign_id])
     @activities = @enricher.enrich_activities(results)
   end
 end

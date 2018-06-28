@@ -24,7 +24,7 @@
             <%= render 'likes/like_button', object: release %>
           </h3>
 
-          <p>Released date: <%= time_ago_in_words( release.release_date ) %> ago</p>
+          <p>Release date: <%= time_ago_in_words( release.release_date ) %> ago</p>
 
           <p class="item-text"><%= strip_tags(release.text).truncate(220) %></p>
 
@@ -105,7 +105,7 @@
       </ul> -->
 
       <div class="feed-block">
-        <%= render 'feeds/commentable_feed' %>
+        <%= render 'feeds/aggregated_user' %>
       </div>
     </div>
   </div>

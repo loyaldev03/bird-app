@@ -38,15 +38,11 @@ class Post < ApplicationRecord
   # end
 
   def activity_object
-    self
-  end
-
-  def activity_target
     self.topic
   end
 
   def activity_verb
-    "Comment"
+    "Topic"
   end
 
   private

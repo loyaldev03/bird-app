@@ -8,6 +8,7 @@ class Comment < ApplicationRecord
   has_many :feed_images, as: :feedable, dependent: :destroy
   accepts_nested_attributes_for :feed_images
 
+  before_create :autofollow_commentable_feed
   after_create :add_points, :feed_commentable, :feed_masterfeed, :increment_count
   after_destroy :decrement_count, :remove_points
 
@@ -31,16 +32,12 @@ class Comment < ApplicationRecord
   end
 
   def activity_object
-    self
-  end
-
-  def activity_target
     self.commentable
   end
 
-  def activity_extra_data
-    {'parent_id' => self.parent_id}
-  end
+  # def activity_extra_data
+  #   {'parent_id' => self.parent_id}
+  # end
 
   def activity_should_sync?
     if (self.user.has_role?(:artist) || self.user.has_role?(:admin)) && 
@@ -51,6 +48,14 @@ class Comment < ApplicationRecord
       false
     end
   end
+
+  # def activity_verb
+  #   if self.commentable_type == "User"
+  #     "Comment"
+  #   else
+  #     self.commentable_type
+  #   end
+  # end
 
   private
 
@@ -77,6 +82,19 @@ class Comment < ApplicationRecord
       while self_parent.present?
         self_parent.decrement! :replies_count
         self_parent = self_parent.parent
+      end
+    end
+
+    def autofollow_commentable_feed
+      if self.user_id != self.commentable_id && 
+          self.commentable_type != 'User' &&
+          self.user.followed( self.commentable ).blank?
+        user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
+        user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)
+
+        self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
+        user_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        user_feed.follow(self.commentable_type.downcase, self.commentable_id)
       end
     end
 

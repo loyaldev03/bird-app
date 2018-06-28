@@ -1,5 +1,6 @@
 class Announcement < ApplicationRecord
-  belongs_to :user, optional: true
+  # belongs_to :user, optional: true
+  belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"
   belongs_to :release, optional: true
   has_many :likes, as: :likeable
   has_many :comments, as: :commentable
@@ -25,9 +26,13 @@ class Announcement < ApplicationRecord
     self
   end
 
+  def activity_verb
+    "Release"
+  end
+
   #because announcements shouldn't have a user
   def activity_actor
-    User.with_role(:admin).first
+    self.admin || User.with_role(:admin).first
   end
 
   # def activity_time

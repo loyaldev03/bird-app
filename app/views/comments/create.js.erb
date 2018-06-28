@@ -17,8 +17,8 @@
             locals: { 
               activity: { 
                 'actor' => @comment.user,
-                'object' => @comment,
-                'target' => @comment.commentable,
+                'foreign_id' => @comment,
+                'object' => @comment.commentable,
                 'time' => @comment.created_at
               } 
             } 
@@ -26,5 +26,7 @@
         ) %>
       </div>
     `);
+
+  $('.no-feed-items').remove();
 
 <% end %>

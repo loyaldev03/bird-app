@@ -13,4 +13,15 @@ class Topic < ApplicationRecord
     attribute :title, :text
   end
 
+  include StreamRails::Activity
+  as_activity
+
+  def activity_notify
+    [StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)]
+  end
+
+  def activity_object
+    self
+  end
+
 end
