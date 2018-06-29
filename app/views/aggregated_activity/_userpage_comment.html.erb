@@ -1,4 +1,5 @@
 <% for _activity in activity['activities'] %>
+  <% logger.warn _activity["id"] %>
   <div class="feed-item">
 
     <% if _activity['foreign_id'].class.to_s == "Comment" %>
