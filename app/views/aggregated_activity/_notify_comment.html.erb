@@ -5,7 +5,7 @@
 
 <%= activity['activities'][0]['foreign_id'].class.to_s.downcase %>
 
-<% if activity['activities'][0]['object'].user_id == current_user.id %>
+<% if activity['activities'][0]['object'].try(:user_id) == current_user.id %>
 
   your
   <%= link_to activity['activities'][0]['object'] do %>
