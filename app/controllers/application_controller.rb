@@ -54,6 +54,14 @@ class ApplicationController < ActionController::Base
       else
         @notify_activities = @enricher.enrich_aggregated_activities(unseen)
       end
+
+      if current_user.braintree_subscription_expires_at && 
+          (current_user.subscription_length == 'monthly_10' ||
+           current_user.subscription_length == 'monthly')
+        @credits = 10 - current_user.downloads.where("created_at > ?", current_user.braintree_subscription_expires_at - 1.month).count
+      else
+        @credits = nil
+      end
     end
   end
 

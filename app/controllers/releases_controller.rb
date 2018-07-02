@@ -77,10 +77,10 @@ class ReleasesController < ApplicationController
     end
 
     #special conditions for users from previous version of site
-    if current_user.subscription_length =='monthly_10' ||
+    if current_user.subscription_length == 'monthly_10' ||
          current_user.subscription_length == 'monthly'
       
-      if current_user.downloads.where("created_at > ?",current_user.braintree_subscription_expires_at - 1.month).count > 10
+      if current_user.downloads.where("created_at > ?", current_user.braintree_subscription_expires_at - 1.month).count > 10
         redirect_to root_path, alert: "You have reached the limit of track downloads" and return
       end
     end

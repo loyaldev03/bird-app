@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="jp-details">
         <div class="jp-title" aria-label="title">&nbsp;</div>
 
@@ -38,6 +38,11 @@
       <% if current_user && (current_user.cahced_active_subscription? || 
             current_user.has_role?(:admin) ||
             current_user.has_role?(:artist) ) %>
+
+        <% if @credits %>
+          <span class="jp-credits"><%= pluralize(@credits, "Credit") %></span>
+        <% end %>
+
         <button id="jp-playlist-btn" class="mr-4">
           <%= image_tag 'icons/playlist.png' %>
         </button>

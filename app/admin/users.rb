@@ -2,7 +2,9 @@ ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :avatar, 
       :avatar_cache, :shipping_address, :birthdate, :gender, :t_shirt_size, 
       :subscription_type, :first_name, :last_name, :city, #:subscription,
-      track_ids: [], role_ids: [], release_ids: []
+      track_ids: [], role_ids: [], release_ids: [],
+      artist_info_attributes: [:id, :bio_short, :bio_long, :facebook, :twitter, 
+      :instagram, :video, :genre, :user, :_destroy]
 
   jcropable
 
@@ -33,17 +35,36 @@ ActiveAdmin.register User do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :roles, as: :check_boxes
+
+      if current_user.has_role?(:admin)
+        f.input :roles, as: :check_boxes
+        f.input :subscription_type
+        f.input :braintree_subscription_expires_at, as: :date_time_picker
+      end
+      
       f.input :city
       f.input :shipping_address
       f.input :birthdate, as: :date_time_picker
       f.input :gender
       f.input :t_shirt_size
-      # f.input :subscription
-      f.input :subscription_type
       f.input :releases
       f.input :tracks
     end
+
+    f.inputs do
+      f.has_many :artist_info do |s|
+        image = s.object.image.present? ? image_tag(s.object.image.url, style: "background-color: gray;") : ''
+        s.input :bio_short
+        s.input :bio_long
+        s.input :facebook
+        s.input :twitter
+        s.input :instagram
+        s.input :genre
+        s.input :image, hint: image, as: :jcropable
+        s.input :image_cache, as: :hidden
+      end
+    end
+
     f.actions
   end
 
