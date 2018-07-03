@@ -84,3 +84,8 @@ ActiveAdmin.register User do
   end
 
 end
+
+ActiveAdmin.register ArtistInfo do
+  menu false
+  jcropable
+end
