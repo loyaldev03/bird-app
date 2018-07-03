@@ -12,6 +12,14 @@ ActiveAdmin.register User do
     selectable_column
     id_column
     column :email
+    column "Role" do |user|
+      roles = ""
+
+      # user.roles.each do |role|
+      # end
+
+      user.roles.pluck(:name).join.html_safe
+    end
     column :current_sign_in_at
     column :sign_in_count
     column :created_at

@@ -59,18 +59,21 @@ class HomeController < ApplicationController
 
       if params[:subtype] && params[:subtype_id]
         object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
+        verb = params[:subtype].capitalize
       else
-        object = ''
+        object = "#{params[:type].capitalize}:#{params[:type_id]}"
+        verb = params[:type].capitalize
       end
 
       activity = {
         actor: "User:#{current_user.id}",
-        verb: "Share",
+        verb: verb,
         object: object,
-        foreign_id: "#{params[:type].capitalize}:#{params[:type_id]}",
+        foreign_id: "Share",
         social: params[:social],
         time: DateTime.now.iso8601
       }
+
       feed.add_activity(activity)
 
       current_user.change_points( 'share', params[:type].capitalize )

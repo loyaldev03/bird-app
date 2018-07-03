@@ -16,6 +16,12 @@
     <% end %>
   </strong>
   &nbsp;
+<% elsif object['foreign_id'] == "Share" %>
+  <strong>
+    Shared
+  </strong>
+  on <%= object['social'] %>
+  &nbsp;
 <% else %>
   <% unless ["Release", "Announcement"].include? object['foreign_id'].class.to_s %>
     <strong>
