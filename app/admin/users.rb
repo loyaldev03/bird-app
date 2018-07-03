@@ -3,7 +3,7 @@ ActiveAdmin.register User do
       :avatar_cache, :shipping_address, :birthdate, :gender, :t_shirt_size, 
       :subscription_type, :first_name, :last_name, :city, #:subscription,
       track_ids: [], role_ids: [], release_ids: [],
-      artist_info_attributes: [:id, :bio_short, :bio_long, :facebook, :twitter, 
+      artist_info_attributes: [:id, :image, :bio_short, :bio_long, :facebook, :twitter, 
       :instagram, :video, :genre, :user, :_destroy]
 
   jcropable
