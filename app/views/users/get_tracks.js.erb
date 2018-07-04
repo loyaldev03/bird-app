@@ -1,5 +1,5 @@
 var tracks = [];
-<% @tracks.each do |track| %>
+<% @tracks[0..10].each do |track| %>
   <% if track.artist_as_string && track.artist.present? %>
     <% artists = track.artist %>
   <% elsif track.users.any? %>
@@ -23,7 +23,8 @@ var tracks = [];
 <% end %>
 
 if (tracks.length > 0) {
-  setPlaylist(tracks, true);
+  addToPlaylist(tracks, true);
+  // setPlaylist(tracks, true);
 
 
 }

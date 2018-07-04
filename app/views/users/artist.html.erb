@@ -162,7 +162,7 @@
           <% end %>
 
           <ol class="list-unstyled mt-1">
-            <% @user.tracks.each do |track| %>
+            <% @user.tracks.order(created_at: :desc).limit(4).each do |track| %>
               <li class="track-item">
                 <h3>
                   <%= track.track_number %>.
@@ -234,6 +234,9 @@
           </ol>
         </div>
       <% end %>
+
+      <!-- PLAYLISTS -->
+      <%= render 'users/playlist' %>
     </div>
   </div>
 </div>

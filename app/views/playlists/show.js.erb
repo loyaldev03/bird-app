@@ -1,0 +1,7 @@
+var tracks = <%= raw @tracks.to_json %>;
+
+setPlaylist(tracks, true);
+
+$('.user-playlist-items li').removeClass('active');
+$('#select-playlist-<%= @playlist_id %>').parent().addClass('active');
+$('#jp-playlist-popover').removeClass('show');

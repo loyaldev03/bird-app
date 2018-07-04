@@ -3,11 +3,11 @@ class TracksController < ApplicationController
     track = Track.find(params[:id])
     track_presenter = TrackPresenter.new(track, current_user)
 
-    # if track_presenter.users.any?
-      # artists = track_presenter.users.map(&:name).join(' feat. ')
-    # else
-      # artists = track_presenter.artist
-    # end
+    if track_presenter.users.any?
+      artists = track_presenter.users.map(&:name).join(' feat. ')
+    else
+      artists = track_presenter.artist
+    end
 
     respond_to do |format|
       format.html { redirect_to track.release }
@@ -17,7 +17,7 @@ class TracksController < ApplicationController
             id: track_presenter.id,
             track_number: track_presenter.track_number,
             title: track_presenter.title, 
-            artists: track_presenter.artist,
+            artists: artists,
             mp3: track_presenter.stream_uri,
             release_id: track_presenter.release_id,
             waveform: track_presenter.waveform_image_uri
@@ -28,32 +28,42 @@ class TracksController < ApplicationController
   end
 
   def get_tracks
-    if current_user && current_user.playlist.present?
+    if current_user && current_user.playlists.present?
       tracks = []
 
-      current_user.playlist.tracks.split(',').each do |track_id|
-        track = Track.find( track_id )
-        track_presenter = TrackPresenter.new(track, current_user)
+      if params[:playlist].present?
+        playlist = Playlist.find params[:playlist]
+      elsif current_user.current_playlist_id.present?
+        playlist = current_user.current_playlist
+      else
+        playlist = current_user.playlists.order(updated_at: :desc).first
+        current_user.update_attributes(current_playlist_id: playlist.id)
+      end
 
-        # if track_presenter.users.any?
-          # artists = track_presenter.users.map(&:name).join(' feat. ')
-        # else
-          # artists = track_presenter.artist
-        # end
+      playlist.tracks.to_s.split(',').each do |track_id|
+        track_presenter = TrackPresenter.new(Track.find( track_id ), current_user)
+
+        if track_presenter.artist_as_string && track_presenter.artist.present?
+          artists = track_presenter.artist
+        elsif track_presenter.users.any?
+          artists = track_presenter.users.map(&:name).join(' feat. ')
+        else
+          artists = track_presenter.artist
+        end
 
         tracks << {
           id: track_presenter.id,
           track_number: track_presenter.track_number,
           title: track_presenter.title, 
-          artists: track_presenter.artist,
+          artists: artists,
           mp3: track_presenter.stream_uri,
           release_id: track_presenter.release_id,
           waveform: track_presenter.waveform_image_uri
         }
       end
 
-      if current_user.playlist.current_track.present?
-        current_track_data = current_user.playlist.current_track.split(':')
+      if playlist.current_track.present?
+        current_track_data = playlist.current_track.split(':')
         current_track = { index: current_track_data[0].to_i, time: current_track_data[1].to_i }
       else
         current_track = { index: 0, time: 0 }
@@ -62,16 +72,18 @@ class TracksController < ApplicationController
       tracks = Track.where.not('sample_uri is NULL').order(created_at: :asc).last(1).map do |track|
         track_presenter = TrackPresenter.new(track, current_user)
 
-        # if track_presenter.users.any?
-          # artists = track_presenter.users.map(&:name).join(' feat. ')
-        # else
-          # artists = track_presenter.artist
-        # end
+        if track_presenter.artist_as_string && track_presenter.artist.present?
+          artists = track_presenter.artist
+        elsif track_presenter.users.any?
+          artists = track_presenter.users.map(&:name).join(' feat. ')
+        else
+          artists = track_presenter.artist
+        end
 
         { id: track_presenter.id,
           track_number: track_presenter.track_number,
           title: track_presenter.title, 
-          artists: track_presenter.artist,
+          artists: artists,
           mp3: track_presenter.stream_uri,
           release_id: track_presenter.release_id,
           waveform: track_presenter.waveform_image_uri }
@@ -87,31 +99,24 @@ class TracksController < ApplicationController
       end
     end
 
-      render json: { tracks: tracks, current_track: current_track }
-  end
+    playlist_name_form = render_to_string( 
+        partial: 'playlists/change_name', 
+        locals: { playlist: playlist } )
 
-  def sync_playlist
-    if current_user && current_user.playlist.present?
-      current_user.playlist.update_attributes(
-        tracks: params[:tracks],
-        current_track: "#{params[:current_track_id]}:#{params[:time] || 0}")
-    end
-
-    render json: {}
+    render json: { tracks: tracks, 
+            current_track: current_track,
+            playlist_name_form: playlist_name_form,
+            creator: current_user.current_playlist.user.name }
   end
 
   def fill_track_title
-    @track = Track.find params[:track_id]
+    track = Track.find(params[:track_id])
+    @track = TrackPresenter.new(track, current_user)
+    @release = ReleasePresenter.new(track.release, current_user)
   end
 
   def download
-    #TODO redirect to registration if no rights
-    # redirect_to choose_profile_path and return if current_user.subscription_type.blank?
-    # if current_user && current_user.admin?
-    #   @track = Track.with_deleted.find(params[:id])
-    # else
-      @track = Track.find(params[:id])
-    # end
+    @track = Track.find(params[:id])
 
     unless @track.user_allowed?(current_user)
       raise ActionController::RoutingError, 'Not Found'
@@ -121,7 +126,7 @@ class TracksController < ApplicationController
     if current_user.subscription_length =='monthly_10' ||
          current_user.subscription_length == 'monthly'
       
-      if current_user.downloads.where("created_at > ?",current_user.braintree_subscription_expires_at - 1.month).count > 10
+      if current_user.downloads.where("created_at > ?",current_user.braintree_subscription_expires_at - 1.month).count >= 10
         redirect_to root_path, alert: "You have reached the limit of track downloads" and return
       end
     end

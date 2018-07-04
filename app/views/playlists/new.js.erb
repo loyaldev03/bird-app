@@ -1,0 +1,7 @@
+newPlaylist();
+
+var playlist_name_form = `<%= escape_javascript(
+    render partial: 'playlists/change_name', locals: { playlist: @playlist }
+  ) %>`
+
+$('.jp-playlist-name').html(playlist_name_form+'<span>Created by <%= current_user.name %></span>');

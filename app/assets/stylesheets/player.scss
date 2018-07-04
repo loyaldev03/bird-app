@@ -9,7 +9,7 @@
   z-index: 1061;
   font-family: "Roboto Mono";
   display: inline-block;
-  text-align: right;
+  text-align: center;
 
   .jp-controls {
     padding: 12px 0;
@@ -127,13 +127,20 @@
   // top: 10px;
   transition: top 0.3s;
   padding: 12px 0;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .jp-title {
   display: inline-block;
+  width: 300px;
 
   a:hover {
     color: #3ed4e0;
+  }
+
+  .like-button img {
+    margin-top: 1px;
   }
 }
 
@@ -162,65 +169,6 @@
       background-color: #3e3e3e;
       width: 0;
     }
-  }
-}
-
-.jp-type-playlist {
-  text-align: right;
-}
-
-#jp-playlist-btn {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-
-  img {
-    padding: 12px;
-    vertical-align: top;
-  }
-}
-
-.jp-playlist {
-  opacity: 0.98;
-  border-radius: 0 0 5px 5px;
-  text-align: left;
-  background-color: white;
-  display: inline-block;
-  margin-right: 150px;
-  box-shadow: 0px 1px #80808052;
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px 15px;
-  }
-
-  li {
-    outline: none;
-    font-size: 14px;
-  }
-}
-
-.jp-playlist-item {
-  color: #3ed4e0;
-
-  &:hover {
-    color: darken(#3ed4e0, 70%);
-  }
-}
-
-.jp-playlist-item-remove {
-  float: right;
-  margin-left: 10px;
-  color: #3ed4e0;
-}
-
-.jp-playlist-current {
-  color: #e75e35;
-
-  &:hover {
-    color: darken(#e75e35, 70%);
   }
 }
 

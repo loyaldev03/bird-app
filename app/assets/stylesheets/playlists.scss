@@ -1,0 +1,251 @@
+@mixin playlist-dropdown {
+  color: #222;
+  max-width: 400px;
+  min-width: 300px;
+  opacity: 0.98;
+  border-radius: 0 0 15px 15px;
+  text-align: left;
+  background-color: white;
+  display: inline-block;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  position: absolute;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid white;
+    top: -20px;
+    right: 73px;
+    z-index: 3;
+  }
+}
+
+.playlist-name-btn {
+  color: #ff7272;
+}
+
+.jp-playlist-item {
+  color: #3ed4e0;
+
+  &:hover {
+    color: darken(#3ed4e0, 70%);
+  }
+}
+
+.jp-playlist-item-remove {
+  font-size: 17px;
+  color: #100f0f;
+  line-height: 3px;
+  font-weight: bold;
+}
+
+.jp-playlist-current {
+  color: #e75e35;
+
+  &:hover {
+    color: darken(#e75e35, 70%);
+  }
+}
+
+.jp-type-playlist {
+  text-align: right;
+}
+
+#jp-playlist-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  img {
+    padding: 12px;
+    vertical-align: top;
+  }
+}
+
+.jp-playlist {
+  @include playlist-dropdown;
+  left: calc(50% + 400px);
+  transform: translateX(-100%);
+  font-family: 'Titillium Web', sans-serif;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 15px;
+  }
+
+  li {
+    outline: none;
+    font-size: 14px;
+  }
+}
+
+.jp-release-playlist {
+  @include playlist-dropdown;
+  left: calc(50% - 300px);
+  padding: 0 15px;
+  font-family: 'Titillium Web', sans-serif;
+
+  &:before {
+    left: 35px;
+  }
+
+  .jp-release-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+    float: left;
+    margin: -5px 14px 5px 0;
+  }
+
+  h4 {
+    margin-top: 20px;
+    margin-bottom: 3px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    font-size: 10px;
+    padding-left: 0;
+  }
+}
+
+.jp-playlist-name {
+  color: #ff7272;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 12px;
+  margin-top: 12px;
+  
+  span {
+    margin-left: 5px;
+    color: #000000;
+    font-size: 7px;
+    font-weight: 300;
+  }
+}
+
+#jp-release-playlist-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.jp-release-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:active, &:focus {
+    color: #222;
+  }
+
+  span {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 3px;
+  }
+}
+
+.release-popover-collapse {
+  position: absolute;
+  top: 25px;
+  left: -10px;
+  background-color: #3ed4e0;
+  padding: 8px;
+  color: white;
+  z-index: 2;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 7px solid transparent;
+    border-bottom: 7px solid #3ed4e0;
+    top: -14px;
+    left: 12px;
+    z-index: 2;
+  }
+}
+
+.playlist-popover-collapse {
+  position: absolute;
+  top: 29px;
+  right: 0px;
+  background-color: #3ed4e0;
+  padding: 8px;
+  color: white;
+  z-index: 2;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 7px solid transparent;
+    border-bottom: 7px solid #3ed4e0;
+    top: -14px;
+    left: 12px;
+    z-index: 2;
+  }
+}
+
+.jp-playlist-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 7px 0;
+  margin: 0 13px;
+  border-top: 1px solid #3ed4e0;
+  position: relative;
+
+  a {
+    color: #0d0c0c;
+    font-size: 10px;
+    font-weight: bold;
+  }
+}
+
+.user-playlist-items {
+  list-style-type: none;
+  padding: 0 10px 0 0;
+  margin: 0;
+
+  li {
+    border-radius: 3px;
+    background-color: rgba(255,255,255,0.07);
+    margin-bottom: 3px;
+
+    a {
+      padding: 6px;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.72px;
+      font-size: 10px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    &.active {
+      background-color: #3ed4e0;
+    }
+
+    &:hover {
+      background-color: rgba(255,255,255,0.17);
+    }
+  }
+}

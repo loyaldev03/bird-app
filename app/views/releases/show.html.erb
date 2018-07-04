@@ -70,7 +70,7 @@
 
       <div class="truncated-description">
         <% if @release.text.present? %>
-          <article><%= strip_tags(@release.text).truncate(400) %></article>
+          <article><%= strip_tags(@release.text).gsub('&amp;','&').truncate(400) %></article>
 
           <% if @release.text.html_safe.truncate(400) != @release.text.html_safe %>
             <a href="#" class="truncated-long">Read more</a>
@@ -253,3 +253,5 @@
     </div>
   <% end %>
 <% end %>
+
+

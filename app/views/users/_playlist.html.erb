@@ -1,0 +1,21 @@
+<% if current_user && (current_user.cahced_active_subscription? || 
+    current_user.has_role?(:admin) ||
+    current_user.has_role?(:artist) ) &&
+    @user.current_playlist %>
+
+
+  <div class="c-panel bg-dark mb-4">
+    <div class="c-flag c-flag-inner mb-4">PLAYLISTS</div>
+
+    <ol class="light-scroll user-playlist-items">
+      <% for playlist in @user.playlists %>
+        <li class="<%= current_user.current_playlist_id == playlist.id ? 'active' : '' %>">
+          <%= link_to playlist, remote: true, id: "select-playlist-#{playlist.id}" do %>
+            <%= "#{playlist.name}: #{pluralize(playlist.tracks_count, "Track")}" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+
+<% end %>

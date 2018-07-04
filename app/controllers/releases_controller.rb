@@ -80,7 +80,7 @@ class ReleasesController < ApplicationController
     if current_user.subscription_length == 'monthly_10' ||
          current_user.subscription_length == 'monthly'
       
-      if current_user.downloads.where("created_at > ?", current_user.braintree_subscription_expires_at - 1.month).count > 10
+      if current_user.downloads.where("created_at > ?", current_user.braintree_subscription_expires_at - 1.month).count >= 10
         redirect_to root_path, alert: "You have reached the limit of track downloads" and return
       end
     end
@@ -97,12 +97,40 @@ class ReleasesController < ApplicationController
 
   def get_tracks
     release = Release.find(params[:id])
-    @release_presenter = ReleasePresenter.new(release, current_user)
+    release_presenter = ReleasePresenter.new(release, current_user)
+    @release_id = release_presenter.id
 
-    if current_user && current_user.playlist.present?
-      current_user.playlist.update_attributes(
-        tracks: @release_presenter.tracks.map{|t| t[:id]}.join(','),
-        current_track: "0:0")
+    @tracks = []
+
+    release_presenter.tracks.each do |track|
+
+      if track.artist_as_string && track.artist.present?
+        artists = track.artist
+      elsif track.users.any?
+        track.users.each do |u|
+          artists = track.users.map(&:name).join(' & ')
+        end
+      elsif track.artist.present?
+        artists = track.artist
+      else
+        artists = 'Various Artists'
+      end
+
+      @tracks << { 
+        release_id: release_presenter.id,
+        track_number: track.track_number,
+        id: track.id,
+        title: track.title, 
+        artists: artists, 
+        mp3: track.stream_uri
+      }
     end
+
+
+    # if current_user && current_user.playlists.present?
+    #   current_user.current_playlist.update_attributes(
+    #     tracks: release_presenter.tracks.map{|t| t[:id]}.join(','),
+    #     current_track: "0:0")
+    # end
   end
 end

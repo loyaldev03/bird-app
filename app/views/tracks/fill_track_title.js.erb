@@ -5,3 +5,44 @@ $('.jp-title').prepend('<%= escape_javascript( render "likes/like_button", objec
 
   $('.jp-title').children('.star').each(ratyRate);
 <% end%>
+
+<% if @release.image_uri.present?
+     image = @release.image_uri
+   else
+     image = @release.avatar.url
+   end %>
+
+var list = `
+  <div class="clearfix">
+    <%= image_tag image, class: "jp-release-image" %>
+    <h4><%= @release.title.upcase %></h4>
+    <p class="release-date">Release date: <%= @release.release_date.strftime('%Y-%m-%d')  %></p>
+  </div>
+
+  <hr class="mt-1 mb-2">
+
+  <ul>
+    <% for track in @release.tracks %>
+      <li style="position: relative;">
+        <button type="button" data-toggle="collapse" data-target="#jp-release-popover-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample" class="jp-release-btn">
+          <span>+</span>
+          <%= track.title  %>
+        </button>
+
+        <div id="jp-release-popover-<%= track.id %>" class="collapse release-popover-collapse">
+          <%= link_to "Add to Playlist", "#", class: "jp-release-add", data: { track_id: track.id } %>
+          <br>
+          <%= link_to "Create Playlist", "#", class: "jp-release-new", data: { track_id: track.id } %>
+        </div>
+      </li>
+    <% end %>
+  </ul>`;
+
+$('.jp-release-playlist').html(list);
+
+$('#jp-release-playlist-btn').show();
+
+$(".jp-release-add").click(function(e){
+   e.preventDefault();
+   playTrack($(this).data('track_id'));
+});

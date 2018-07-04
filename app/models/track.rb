@@ -19,7 +19,7 @@ class Track < ApplicationRecord
     attribute :title, :genre, :isrc_code
   end
 
-  def stream_uri(is_sample)
+  def stream_uri(is_sample=true)
     return sample_uri if is_sample
 
     # Get most recent successfully encoded 160k mp3, or 320k mp3, or base uri

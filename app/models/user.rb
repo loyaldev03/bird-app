@@ -52,7 +52,7 @@ class User < ApplicationRecord
 
   has_many :tracks_users
   has_many :tracks, through: :tracks_users
-  has_one :playlist
+  has_many :playlists
   has_many :downloads
 
   include AlgoliaSearch
@@ -525,6 +525,10 @@ class User < ApplicationRecord
   #   end
   #   'Chirp Only'
   # end
+
+  def current_playlist
+    Playlist.find_by_id current_playlist_id
+  end
 
 
 

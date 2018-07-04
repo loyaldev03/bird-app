@@ -1,0 +1,8 @@
+<a href="#" class="playlist-name-btn">
+  <%= playlist.name %>
+</a>
+
+<%= form_for playlist, remote: true, html: { style: "display: none;" } do |f| %>
+  <%= f.text_field :name %>
+  <%= f.submit "&#10004;".html_safe %>
+<% end %>

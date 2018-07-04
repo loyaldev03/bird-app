@@ -1,30 +1,9 @@
-var tracks = [];
-<% @release_presenter.tracks.each do |track| %>
-  <% if track.artist_as_string && track.artist.present? %>
-    <% artists = track.artist %>
-  <% elsif track.users.any? %>
-    <% track.users.each do |u| %>
-      <% artists = track.users.map(&:name).join(' & ') %>
-    <% end %>
-  <% elsif track.artist.present? %>
-    <% artists = track.artist %>
-  <% else %>
-    <% artists = 'Various Artists' %>
-  <% end %>
-
-  tracks.push({ 
-    'release_id': '<%= @release_presenter.id %>',
-    'track_number': '<%= track.track_number %>',
-    'id': '<%= track.id %>',
-    'title': '<%= track.title %>', 
-    'artists': '<%= artists %>', 
-    'mp3': '<%= track.stream_uri %>'
-  });
-<% end %>
+var tracks = <%= raw @tracks.to_json %>;
 
 if (tracks.length > 0) {
-  setPlaylist(tracks, true);
+  addToPlaylist(tracks, true);
+  // setPlaylist(tracks, true);
 
   $("[id^='play-release-']").show().next('.jp-controls').css({'display': 'none'});
-  $('#play-release-<%= @release_presenter.id %>').hide().next('.jp-controls').css({'display': 'inline-flex'});
+  $('#play-release-<%= @release_id %>').hide().next('.jp-controls').css({'display': 'inline-flex'});
 }

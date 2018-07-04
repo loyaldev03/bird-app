@@ -57,7 +57,6 @@ Rails.application.routes.draw do
   get '/releases/:id/download', to: 'releases#download', as: :release_download
   get '/tracks/:id/download', to: 'tracks#download', as: :track_download
   get "get_release_tracks/:id", to: "releases#get_tracks", as: "get_release_tracks"
-  post "sync_playlist", to: "tracks#sync_playlist"
   get "fill_track_title", to: "tracks#fill_track_title"
   get 'load_more_releases', to: 'releases#load_more'
   get 'track_listened', to: 'tracks#track_listened'
@@ -65,6 +64,9 @@ Rails.application.routes.draw do
   resources :tracks
   get 'get_tracks', to: 'tracks#get_tracks'
   get 'get_artist_tracks/:id', to: 'users#get_tracks', as: 'get_artist_tracks'
+
+  resources :playlists
+  post "sync_playlist", to: "playlists#sync_playlist"
 
   namespace :callbacks do
     post 'transloadit', to: 'transloadit#create'
