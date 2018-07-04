@@ -12,17 +12,27 @@ ActiveAdmin.register User do
     selectable_column
     id_column
     column :email
+    column "Name" do |user|
+      user.name
+    end
     column "Role" do |user|
-      roles = ""
-
-      # user.roles.each do |role|
-      # end
-
       user.roles.pluck(:name).join.html_safe
     end
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column "Points" do |user|
+      user.points
+    end
+    column "Badges" do |user|
+      images = ""
+
+      user.badges.each do |badge|
+        images << "<img src='#{badge.image.thumb.url}' class='small-avatar' title='#{badge.name}'>"  
+      end
+
+      images.html_safe
+    end
     actions
   end
 
