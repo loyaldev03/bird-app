@@ -181,3 +181,67 @@
   border-radius: 15px 15px 3px 3px;
   color: #222;
 }
+
+.feed-new-header {
+  display: flex;
+}
+
+.feed-new-release {
+  color: white;
+  background-color: black;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.feed-new-posted {
+  white-space: nowrap;
+  margin-right: 15px;
+
+  &:before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-color: #222;
+    left: -22px;
+    top: 2px;
+    border-radius: 8px;
+  }
+}
+
+.feed-top-pane {
+  background-color: black;
+  border-radius: 8px;
+  padding: 7px 13px;
+  color: white;
+  font-size: 15px;
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.feed-new-avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  margin: 15px;
+}
+
+.feed-new-type {
+  float: right;
+  margin-left: 15px;
+  height: 100%;
+  display: flex;
+
+  img {
+    margin: auto;
+  }
+}
+
+.feed-new-artists {
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+}
+

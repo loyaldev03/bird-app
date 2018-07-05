@@ -6,9 +6,7 @@
 
     <div>
       <%= link_to release['object'] do %>
-        <% if release['object'].avatar.present? %>
-          <%= image_tag( release['object'].avatar.url, class: "release-feed-avatar" ) %>
-        <%end%>
+        <%= image_tag( release['object'].avatar.url, class: "release-feed-avatar" ) %>
 
         <b><%= release['object'].title %></b>
       <% end %>

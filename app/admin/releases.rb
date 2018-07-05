@@ -5,7 +5,8 @@ ActiveAdmin.register Release do
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
   permit_params :title, :artist, :catalog, :text, :avatar, :facebook_img,
-    :published_at, :upc_code, :compilation, :release_date, :artist_as_string,
+    :published_at, :upc_code, :compilation, :release_type, :buy_uri, 
+    :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
     :genre, :isrc_code, :uri, :sample_uri, :artist, :_destroy, :artist_as_string, 
     user_ids: []]
@@ -73,6 +74,8 @@ ActiveAdmin.register Release do
       f.input :text, as: :froala_editor
       f.input :upc_code
       f.input :compilation
+      f.input :release_type
+      f.input :buy_uri
       f.input :published_at, as: :date_time_picker
       f.input :release_date, as: :date_time_picker
       f.input :users, as: :select, label: "Artists",

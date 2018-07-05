@@ -99,14 +99,20 @@ class TracksController < ApplicationController
       end
     end
 
-    playlist_name_form = render_to_string( 
-        partial: 'playlists/change_name', 
-        locals: { playlist: playlist } )
+    if current_user
+      playlist_name_form = render_to_string( 
+          partial: 'playlists/change_name', 
+          locals: { playlist: playlist } )
+      creator = current_user.current_playlist.user.name 
+    else
+      playlist_name_form = ""
+      creator = ""
+    end
 
     render json: { tracks: tracks, 
             current_track: current_track,
             playlist_name_form: playlist_name_form,
-            creator: current_user.current_playlist.user.name }
+            creator: creator}
   end
 
   def fill_track_title

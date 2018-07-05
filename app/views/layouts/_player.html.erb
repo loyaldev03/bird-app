@@ -61,23 +61,29 @@
     </div>
 
     <div class="jp-playlist" style="display: none;">
-      <div class="jp-playlist-name"></div>
-      <ul></ul>
-      <div class="jp-playlist-footer">
-        <%= link_to "Create playlist", new_playlist_path, remote: true %>
-        <a href="#" data-toggle="collapse" data-target="#jp-playlist-popover" aria-expanded="false" aria-controls="collapseExample" class="jp-playlist-open-btn">
-          Load playlist
-        </a>
+      
+      <% if current_user %>
+        <div class="jp-playlist-name"></div>
+        <ul></ul>
+        <div class="jp-playlist-footer">
+          <%= link_to "Create playlist", new_playlist_path, remote: true %>
+          <a href="#" data-toggle="collapse" data-target="#jp-playlist-popover" aria-expanded="false" aria-controls="collapseExample" class="jp-playlist-open-btn">
+            Load playlist
+          </a>
 
-        <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
-          <% for playlist in current_user.playlists %>
-          <%= link_to playlist.name, playlist, class: "jp-release-add", remote: true %>
-          <br>
-          <% end %>
+          <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
+            <% for playlist in current_user.playlists %>
+              <%= link_to playlist.name, playlist, class: "jp-release-add", remote: true %>
+              <br>
+            <% end %>
+          </div>
+
+
+          <!-- <a href="#">Load playlist</a> -->
         </div>
+      <% else %>
 
-        <!-- <a href="#">Load playlist</a> -->
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

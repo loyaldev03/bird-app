@@ -8,6 +8,7 @@ class Release < ApplicationRecord
   has_many :downloads, through: :tracks
 
   enum encode_status: [:pending, :complete, :failed] # can be nil # TODO: remove this
+  enum release_type: [:usual, :exclusive, :d_select]
 
   has_and_belongs_to_many :users
   belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"

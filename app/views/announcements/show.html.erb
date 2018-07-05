@@ -4,7 +4,7 @@
      elsif @announcement.image_uri.present?
        image = @announcement.image_uri
      else
-       image = nil
+       image = @announcement.avatar.url
      end %>
   <%= image_tag(image, class: "release-avatar left-avatar") if image %>
   

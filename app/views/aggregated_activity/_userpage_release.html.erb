@@ -1,40 +1,148 @@
 <div class="feed-item">
-  <p class="feed-posted"> 
-    <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-  </p>
+  <% release = ReleasePresenter.new(activity['activities'][0]['foreign_id'], current_user) %>
+  <% if release.class.to_s == "Release" %>
 
-  <div class="t-wide">
-    <%= link_to activity['activities'][0]['actor'] do %>
-      <%= image_tag activity['activities'][0]['actor'].avatar.thumb.url, class: "feed-avatar" %>
-      <strong><%= activity['activities'][0]['actor'].name %>:</strong>
-    <% end %>
+    <div class="feed-new-header">
+      <div class="feed-new-posted">
+        <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+      </div>
 
-    <% if ["Release", "Announcement"].include? activity['activities'][0]['foreign_id'].class.to_s %>
-      Added
-    <% else %>
-      Has
-    <% end %>
+      <div class="feed-top-pane">
+        <% case release.release_type %>
+          <% when "usual" then color = "#3ed4e0"  %>
+          <% when "exclusive" then color = "#faae03"  %>
+          <% when "d_select" then color = "#bd2c2c"  %>
+        <% end %>
 
-    <% activity['activities'].reverse! %>
-    <% if activity['activity_count'] > 1 %>
-      <% for _activity in activity['activities'][0..-2] %>
-        <%= render 'aggregated_activity/release_action', object: _activity %>
+        <div class="feed-new-type">
+          <%= image_tag "#{release.release_type.to_s}.png" %>
+        </div>
+
+        <strong>
+          <span style="color: <%= color %>">
+            NEW
+            <%= release.compilation? ? "COMPILATION" : "RELEASE" %>:
+          </span>
+          &nbsp;
+          <%= release.title %>
+        </strong>
+
+        <div>
+          Now Available for stream and download 
+        </div>
+
+      </div>
+    </div>
+
+    <div class="feed-new-release">
+      <div class="d-flex">
+        <%= link_to release do %>
+          <%= image_tag( release.avatar.url, class: "feed-new-avatar" ) %>
+        <% end %>
+
+        <div class="mt-4 position-relative">
+          <%= link_to release, style: "color: white;" do %>
+            <b><%= release.title.upcase %></b>
+          <% end %>
+
+          <p class="release-date">Release date: <%= time_ago_in_words( release.release_date ) %> ago</p>
+
+          <p><%= strip_tags(release.text).gsub('&amp;','&').truncate(400) %></p>
+
+          <%= link_to "LISTEN", get_release_tracks_path(release.id), 
+              id: "play-release-#{release.id}",
+              class: "btn c-btn-white c-btn-sm release-listen", remote: true %>
+
+          <div class="jp-controls" style="display: none;">
+            <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+            <button class="jp-previous" role="button" tabindex="0"></button>
+            <button class="jp-play jp-play-release" data-release="<%= release.id %>" role="button" tabindex="1"></button>
+            <button class="jp-next" role="button" tabindex="2"></button>
+            <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+          </div>
+
+          <span style="position: relative; top: 4px;">
+            <%= render 'likes/like_button', object: release %>
+          </span>
+
+          <% if release.download_uris.any? %>
+            <a class="position-static" type="button" data-toggle="collapse" data-target="#release-download<%= release.id %>" aria-expanded="false" aria-controls="collapseExample">
+              <%= image_tag('icons/icon-download.svg', title: "Download full release", class: "icon-download") %>
+            </a>
+
+            <div id="release-download<%= release.id %>" class="collapse collapse-formats text-left" style="width: 241px; top: -20px;">
+              <% release.download_uris.each do |format, uri| %>
+                <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
+              <% end %>
+            </div>
+          <% end %>
+
+          <button class="icon-share position-static" type="button" data-toggle="collapse" data-target="#release<%= release.id %>-share" aria-expanded="false" aria-controls="collapseExample">
+            <%= image_tag('icons/icon-share.svg', title: "Share") %>
+          </button>
+
+          <div id="release<%= release.id %>-share" class="collapse share-panel" style="bottom: 36px;">
+            <h5 class="mx-3 my-2">Share</h5>
+            <div class="mx-3 mb-3" data-object-type="release" data-object-id="<%= release.id %>">
+              <%= social_share_button_tag(strip_tags(release.title).gsub("\'",''), desc: strip_tags(release.text).gsub("\'",''), image: release.avatar.url) %>
+            </div>
+          </div>
+
+          <div class="feed-new-artists">
+            <% for artist in release.users %>
+              <%= link_to artist do %>
+                <%= image_tag artist.avatar.thumb.url, class: "feed-avatar" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <% for track in release.tracks %>
+          <div class="col-lg-6">
+            <%= render track %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+
+    <p class="feed-posted"> 
+      <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+    </p>
+
+    <div class="t-wide">
+      <%= link_to activity['activities'][0]['actor'] do %>
+        <%= image_tag activity['activities'][0]['actor'].avatar.thumb.url, class: "feed-avatar" %>
+        <strong><%= activity['activities'][0]['actor'].name %>:</strong>
       <% end %>
 
-      & <%= render 'aggregated_activity/release_action', object: activity['activities'][-1] %>
+      <% if ["Release", "Announcement"].include? release.class.to_s %>
+        Added
+      <% else %>
+        Has
+      <% end %>
 
-    <% else %>
-      <%= render 'aggregated_activity/release_action', object: activity['activities'][0] %>
-    <% end %>
+      <% activity['activities'].reverse! %>
+      <% if activity['activity_count'] > 1 %>
+        <% for _activity in activity['activities'][0..-2] %>
+          <%= render 'aggregated_activity/release_action', object: _activity %>
+        <% end %>
 
-    the <%= activity['activities'][0]['object'].class.to_s.downcase %>
+        & <%= render 'aggregated_activity/release_action', object: activity['activities'][-1] %>
 
-    <strong>
-      <%= activity['activities'][0]['object'].title %>
-    </strong>
+      <% else %>
+        <%= render 'aggregated_activity/release_action', object: activity['activities'][0] %>
+      <% end %>
 
+      the <%= activity['activities'][0]['object'].class.to_s.downcase %>
 
-  </div>
+      <strong>
+        <%= activity['activities'][0]['object'].title %>
+      </strong>
+    </div>
 
     <% release =  activity['activities'][0]['object'] %>
 
@@ -96,7 +204,7 @@
       </div>
     </div>
 
+  <% end %>
 
-    
   <hr class="feed-divider">
 </div>

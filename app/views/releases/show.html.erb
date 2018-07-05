@@ -11,11 +11,13 @@
     <%#= image_tag 'dj.jpg' %>
 
     <div class="release-header">
-      <div class="release-exclusive">
-        <%= image_tag 'icons/user-logo-icon.svg' %>
-        <div>ONLY ON<br>
-        BIRDFEED</div>
-      </div>
+      <% if @release.exclusive? %>
+        <div class="release-exclusive">
+          <%= image_tag 'icons/user-logo-icon.svg' %>
+          <div>ONLY ON<br>
+          BIRDFEED</div>
+        </div>
+      <% end %> 
 
       <div class="release-likes">
         <%= render partial: 'likes/like_button', locals: { object: @release,  style: 'release' } %>

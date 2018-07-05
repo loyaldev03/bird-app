@@ -15,7 +15,7 @@
           <% @artists.each do |user| %>
             <li class="filter-user">
               <%= link_to releases_path( filters: { artist: user.id } ) do %>
-                <%= image_tag(user.avatar.thumb, class: "user-avatar") if user.avatar.present? %>
+                <%= image_tag(user.avatar.thumb, class: "user-avatar") %>
                 <div><%= user.name %></div>
                 <div><%= pluralize(user.artist_info.tracks_count, 'track') if user.artist_info %></div>
               <% end %>

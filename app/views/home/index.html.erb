@@ -16,7 +16,7 @@
        elsif release.image_uri.present?
          image = release.image_uri
        else
-         image = nil
+         image = release.avatar.url
        end %>
      
     <div class="item-with-tongue">
