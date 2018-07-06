@@ -9,7 +9,7 @@ class Comment < ApplicationRecord
   accepts_nested_attributes_for :feed_images
 
   before_create :autofollow_commentable_feed
-  after_create :add_points, :feed_commentable, :feed_masterfeed, :increment_count
+  after_create :add_points, :feed_commentable, :increment_count
   after_destroy :decrement_count, :remove_points
 
   validates :user_id, :body, presence: true
@@ -20,15 +20,25 @@ class Comment < ApplicationRecord
   as_activity
 
   def activity_notify
+    notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
+
     if self.commentable.try(:users)
       self.commentable.users.map do |user|
-        StreamRails.feed_manager.get_notification_feed(user.id)
+        notify << StreamRails.feed_manager.get_notification_feed(user.id)
       end
+
     elsif self.commentable.try(:user)
-      [StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)]
+      notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
     elsif self.commentable_type == "User"
-      [StreamRails.feed_manager.get_notification_feed(self.commentable_id)]
+      notify << StreamRails.feed_manager.get_notification_feed(self.commentable_id)
     end
+
+    if self.parent_id.present?
+      notify << StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
+      notify << StreamRails.feed_manager.get_news_feeds(self.commentable.user.id)[:aggregated]
+    end
+
+    notify
   end
 
   def activity_object
@@ -48,14 +58,6 @@ class Comment < ApplicationRecord
       false
     end
   end
-
-  # def activity_verb
-  #   if self.commentable_type == "User"
-  #     "Comment"
-  #   else
-  #     self.commentable_type
-  #   end
-  # end
 
   private
 
@@ -89,12 +91,14 @@ class Comment < ApplicationRecord
       if self.user_id != self.commentable_id && 
           self.commentable_type != 'User' &&
           self.user.followed( self.commentable ).blank?
-        user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
-        user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)
+        # user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
+        notify_feed = StreamRails.feed_manager.get_notification_feed( self.user_id)
+        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]
 
         self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
-        user_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
-        user_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        # user_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        notify_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        news_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
       end
     end
 

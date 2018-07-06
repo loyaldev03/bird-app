@@ -17,7 +17,7 @@ class Topic < ApplicationRecord
   as_activity
 
   def activity_notify
-    [StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)]
+    [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
   end
 
   def activity_object

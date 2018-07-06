@@ -251,7 +251,7 @@ class UsersController < ApplicationController
       results = []
     end
 
-    @activities = @enricher.enrich_activities(results).select { |a| a['actor'].has_role?(:fan) }
+    @activities = @enricher.enrich_activities(results).select { |a| !a['actor'].has_role?(:artist) }
 
     render :show
   end
@@ -261,12 +261,12 @@ class UsersController < ApplicationController
     @releases = @user.releases.published.limit(30)
 
     @artist_video = @user.videos.last
-    @followed_users = @user.followed_users.with_role(:fan).limit(4)
+    @followed_users = @user.followed_users.where("users.id NOT IN (?)", User.with_role(:artist).pluck(:id)).limit(4)
     @followed_artists = @user.followed_users.with_role(:artist).limit(4)
   end
 
   def fan_vars
-    @followed_users = @user.followed_users.with_role(:fan).limit(4)
+    @followed_users = @user.followed_users.where("users.id NOT IN (?)", User.with_role(:artist).pluck(:id)).limit(4)
     @followed_artists = @user.followed_users.with_role(:artist).limit(4)
 
     @user_position = User
@@ -312,8 +312,8 @@ class UsersController < ApplicationController
         'actor' => @user,
         'object' => object,
         'target' => object.try(target.to_sym),
-        'verb' => verb,
-        'foreign_id' => "#{verb}:#{object.id}",
+        'verb' => object.class.to_s,
+        'foreign_id' => "#{object.class.to_s}:#{object.id}",
         'time' => object.created_at
       }
     end
@@ -327,7 +327,7 @@ class UsersController < ApplicationController
 
   def friends
     @user = User.find(params[:id])
-    @friends = @user.followed_users.with_role(:fan)
+    @friends = @user.followed_users.where("users.id NOT IN (?)", User.with_role(:artist).pluck(:id))
   end
 
   def idols

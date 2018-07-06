@@ -37,10 +37,12 @@ class TopicsController < ApplicationController
     if topic.save
       flash[:notice] = 'Topic was created'
 
-      user_feed = StreamRails.feed_manager.get_user_feed( current_user.id )
-      notify_feed = StreamRails.feed_manager.get_feed( 'notification', current_user.id )
-      user_feed.follow( 'topic', topic.id )
+      # user_feed = StreamRails.feed_manager.get_user_feed( current_user.id )
+      notify_feed = StreamRails.feed_manager.get_notification_feed( current_user.id )
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds( current_user.id )[:aggregated]
+      # user_feed.follow( 'topic', topic.id )
       notify_feed.follow( 'topic', topic.id )
+      news_aggregated_feed.follow( 'topic', topic.id )
 
     else
       flash[:alert] = topic.errors.full_messages.join(', ')

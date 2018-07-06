@@ -373,13 +373,13 @@ class User < ApplicationRecord
   end
 
   def self.batch_follow_to_general_actions offset=0
-    users = all.order(id: :asc).offset(offset).limit(2500)
+    users = all.order(id: :asc).offset(offset).limit(500)
 
     payload = []
     users.each do |user|
       payload << { source: "notification:#{user.id}", target: 'general_actions:1' }
-      payload << { source: "user:#{user.id}", target: 'general_actions:1' }
-      payload << { source: "user_aggregated:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "timeline_aggregated:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "user_aggregated:#{user.id}", target: "user:#{user.id}" }
     end
 
     StreamRails.feed_manager.client.follow_many(payload)
@@ -541,11 +541,11 @@ class User < ApplicationRecord
 
     def follow_general_actions
       notification_feed = StreamRails.feed_manager.get_notification_feed(self.id)
-      news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:flat]
+      news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:aggregated]
       user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated',self.id)
 
       notification_feed.follow('general_actions', 1)
       news_feed.follow('general_actions', 1)
-      user_aggregated_feed.follow('general_actions', 1)
+      user_aggregated_feed.follow('user', self.id)
     end
 end

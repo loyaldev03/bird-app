@@ -25,7 +25,7 @@ class PostsController < ApplicationController
       # flash[:notice] = 'Post was created'
     else
       redirect_to @topic, alert: "Not an image"
-      logger.warn @post.errors.full_messages.join(', ')
+      logger.warn @post.errors.full_messages
     end
   end
 

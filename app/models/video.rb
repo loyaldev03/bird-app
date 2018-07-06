@@ -4,13 +4,11 @@ class Video < ApplicationRecord
 
   validates :user_id, :title, :video_link, presence: true
 
-  after_create :feed_masterfeed
-
   include StreamRails::Activity
   as_activity
 
   def activity_notify
-    # [StreamRails.feed_manager.get_notification_feed(self.user.id)]
+    [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
   end
 
   def activity_verb
@@ -32,11 +30,4 @@ class Video < ApplicationRecord
     end
   end
 
-  private
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
-    end
 end

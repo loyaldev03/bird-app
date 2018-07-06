@@ -8,19 +8,14 @@ class FollowsController < ApplicationController
   
   def create
     follow = Follow.new(follow_params)
-    follow.user = current_user
+    follow.user_id = current_user.id
 
     if follow.save
-      if follow.followable_type == "User"
-        StreamRails.feed_manager.follow_user(follow.user_id, follow.followable_id)
-        user_aggregated_feed = StreamRails.feed_manager.get_feed( 'user_aggregated', follow.user_id )
-        user_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
-      else
-        feed = StreamRails.feed_manager.get_feed( follow.followable_type.downcase, follow.followable_id )
-        user_feed = StreamRails.feed_manager
-            .get_feed( "#{follow.followable_type.downcase}_user_feed", follow.user_id)
-        user_feed.follow(feed.slug, follow.followable_id)
-      end
+      user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
+      
+      user_feed.follow( 'user', follow.followable_id )
+      news_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
     end
 
     render 'toggle_follow', locals: {
@@ -37,14 +32,11 @@ class FollowsController < ApplicationController
     if follow.user_id == current_user.id
       follow.destroy!
 
-      if follow.followable_type == "User"
-        StreamRails.feed_manager.unfollow_user(follow.user_id, follow.followable_id)
-      else
-        feed = StreamRails.feed_manager.get_feed( follow.followable_type.downcase, follow.followable_id )
-        user_feed = StreamRails.feed_manager
-            .get_feed( "#{follow.followable_type.downcase}_user_feed", follow.user_id)
-        user_feed.unfollow(feed.slug, follow.user_id)
-      end
+      user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
+      
+      user_feed.unfollow( 'user', follow.followable_id )
+      news_aggregated_feed.unfollow( follow.followable_type.downcase, follow.followable_id )
     end
 
     render 'toggle_follow', locals: {

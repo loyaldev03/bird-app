@@ -75,11 +75,7 @@
         <strong><%= activity['activities'][0]['actor'].name %>:</strong>
       <% end %>
 
-      <% if ["Release", "Announcement"].include? release.class.to_s %>
-        Added
-      <% else %>
-        Has
-      <% end %>
+      Has
 
       <% activity['activities'].reverse! %>
       <% if activity['activity_count'] > 1 %>

@@ -29,7 +29,7 @@
       <% end %>
     </p>
 
-    <%= image_tag(reply.user.avatar.thumb, class: "post-user-avatar") %>
+    <%= link_to image_tag(reply.user.avatar.thumb, class: "post-user-avatar"), reply.user %>
 
     <div>
       <% reply.feed_images.each do |image| %>

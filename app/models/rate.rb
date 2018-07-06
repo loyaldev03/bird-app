@@ -11,7 +11,7 @@ class Rate < ActiveRecord::Base
   as_activity
 
   def activity_notify
-    [StreamRails.feed_manager.get_feed('user_aggregated', self.rater_id)]
+    [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
   end
 
   def activity_actor

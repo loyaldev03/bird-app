@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   has_many :feed_images, as: :feedable, dependent: :destroy
   accepts_nested_attributes_for :feed_images
 
-  after_create :feed_masterfeed, :feed_topic, :increment_count, :add_points
+  after_create :increment_count, :add_points
   after_destroy :decrement_count, :remove_points
 
   attr_accessor :post_hash
@@ -25,17 +25,17 @@ class Post < ApplicationRecord
   include StreamRails::Activity
   as_activity
 
-  # def activity_notify
-  #   if self.commentable.try(:users)
-  #     self.commentable.users.map do |user|
-  #       StreamRails.feed_manager.get_notification_feed(user.id)
-  #     end
-  #   elsif self.commentable.try(:user)
-  #     [StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)]
-  #   else
-      
-  #   end
-  # end
+  def activity_notify
+    notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 ),
+              StreamRails.feed_manager.get_feed('topic', self.topic_id)]
+
+    if self.parent_id.present?
+      notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
+      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:aggregated]
+    end
+
+    notify
+  end
 
   def activity_object
     self.topic
@@ -71,18 +71,6 @@ class Post < ApplicationRecord
         self_parent.decrement! :replies_count
         self_parent = self_parent.parent
       end
-    end
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
-    end
-
-    def feed_topic
-      feed = StreamRails.feed_manager.get_feed( 'topic', self.topic_id )
-      activity = create_activity
-      feed.add_activity(activity)
     end
 
 end

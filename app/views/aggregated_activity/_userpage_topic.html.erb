@@ -30,6 +30,27 @@
           
         </p>
 
+      <% elsif _activity['foreign_id'].class.to_s == "Post" %>
+
+        Has commented the topic
+
+        <strong>
+          <%= link_to _activity['object'].title, _activity['object'] %>
+        </strong>
+        
+        on 
+
+        <strong>
+          <%= link_to _activity['object'].category.title, _activity['object'] %>
+        </strong>
+
+        <p style="margin-top: 10px">
+          <strong>
+            <%= _activity['foreign_id'].text.truncate(40) %>
+          </strong>
+
+        </p>
+
       <% else %>
 
         <span class="t-wide">is now following</span>

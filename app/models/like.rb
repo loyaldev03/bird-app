@@ -2,7 +2,7 @@ class Like < ApplicationRecord
   belongs_to :user
   belongs_to :likeable, polymorphic: true
   
-  after_create :add_points, :feed_masterfeed, :trigger_likes_count
+  after_create :add_points, :trigger_likes_count
   after_destroy :trigger_likes_count, :remove_points, :remove_from_aggregated_feed
 
   
@@ -10,14 +10,16 @@ class Like < ApplicationRecord
   as_activity
 
   def activity_notify
-    notify = [StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)]
+    notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
 
     if self.likeable.try(:users)
       self.likeable.users.each do |user|
-        notify.merge StreamRails.feed_manager.get_notification_feed(user.id)
+        notify << StreamRails.feed_manager.get_notification_feed(user.id)
+        notify << StreamRails.feed_manager.get_news_feeds(user.id)[:aggregated]
       end
     elsif self.likeable.try(:user)
       notify << StreamRails.feed_manager.get_notification_feed(self.likeable.user.id)
+      notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:aggregated]
     end
 
     notify
@@ -44,12 +46,6 @@ class Like < ApplicationRecord
     def remove_from_aggregated_feed
       feed = StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)
       feed.remove_activity("Like:#{self.id}", foreign_id=true)
-    end
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
     end
 
     def trigger_likes_count

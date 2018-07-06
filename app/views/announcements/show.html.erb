@@ -36,29 +36,21 @@
   </div>
 </div>
 
+<div class="release-info mb-4">
+  <h1 class="fz-23 mb-4"><%= @announcement.title.upcase %></h1>
+
+  <div class="truncated-description">
+    <% if @announcement.text.present? %>
+      <article><%= @announcement.text.html_safe %></article>
+    <% end %>
+  </div>
+
+  
+  <%#= link_to "Q&A", chirp_path, class: "btn c-btn-transparent btn-wide" %>
+</div>
+
 <div class="row">
   <div class="col-md-8">
-
-    <div class="release-info mb-4">
-      <h1 class="fz-23 mb-4"><%= @announcement.title.upcase %></h1>
-      <!-- <p class="release-date">Date: <%#= time_ago_in_words( @announcement.release_date ) %> ago</p> -->
-
-      <div class="truncated-description">
-        <% if @announcement.text.present? %>
-          <article><%= strip_tags(@announcement.text).truncate(400) %></article>
-
-          <% if strip_tags(@announcement.text).truncate(400) != strip_tags(@announcement.text) %>
-            <a href="#" class="truncated-long">Read more</a>
-          <% end %>
-
-          <article><%= @announcement.text.html_safe %></article>
-          <a href="#" class="truncated-short"><br><br>Read less</a>
-        <% end %>
-      </div>
-
-      
-      <%#= link_to "Q&A", chirp_path, class: "btn c-btn-transparent btn-wide" %>
-    </div>
 
     <div class="c-panel bg-white">
       <div class="c-flag mb-4"><b>ANNOUNCEMENT</b> FEED</div>
