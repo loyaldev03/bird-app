@@ -16,7 +16,7 @@ class Release < ApplicationRecord
   after_create :feed_masterfeed
   after_save :change_published_date, only: :update
 
-  accepts_nested_attributes_for :tracks
+  accepts_nested_attributes_for :tracks, :allow_destroy => true
 
   validates :title, :release_date, :published_at, presence: true
 

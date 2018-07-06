@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180705130816) do
+ActiveRecord::Schema.define(version: 20180706095558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20180705130816) do
     t.integer "old_id"
     t.string "image_uri"
     t.datetime "release_date"
+    t.string "bg_color", default: "#8a8b8b"
+    t.string "feed_title"
   end
 
   create_table "artist_infos", force: :cascade do |t|

@@ -4,7 +4,8 @@ ActiveAdmin.register User do
       :subscription_type, :first_name, :last_name, :city, #:subscription,
       track_ids: [], role_ids: [], release_ids: [],
       artist_info_attributes: [:id, :image, :bio_short, :bio_long, :facebook, :twitter, 
-      :instagram, :video, :genre, :user, :_destroy]
+      :instagram, :video, :genre, :user, :_destroy],
+      videos_attributes: [:id, :title, :video_link, :user, :_destroy]
 
   jcropable
 
@@ -70,7 +71,7 @@ ActiveAdmin.register User do
     end
 
     f.inputs do
-      f.has_many :artist_info do |s|
+      f.has_many :artist_info, allow_destroy: true do |s|
         image = s.object.image.present? ? image_tag(s.object.image.url, style: "background-color: gray;") : ''
         s.input :bio_short
         s.input :bio_long
@@ -80,6 +81,13 @@ ActiveAdmin.register User do
         s.input :genre
         s.input :image, hint: image, as: :jcropable
         s.input :image_cache, as: :hidden
+      end
+    end
+
+    f.inputs do
+      f.has_many :videos, allow_destroy: true do |s|
+        s.input :title
+        s.input :video_link
       end
     end
 
@@ -93,10 +101,6 @@ ActiveAdmin.register User do
         params[:user].delete "password_confirmation"
       end
 
-      if params[:user][:avatar].present?
-
-
-      end
       super
     end
   end

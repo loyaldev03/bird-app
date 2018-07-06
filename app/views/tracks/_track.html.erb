@@ -47,7 +47,7 @@
       <%= image_tag('icons/icon-download.svg') %>
     </button>
   <% end %>
-  <div id="download-<%= track.id %>" class="collapse collapse-track-formats">
+  <div id="download-<%= track.id %>" class="collapse collapse-formats">
       <% track.download_uris.each do |format, uri| %>
         <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
       <% end %>

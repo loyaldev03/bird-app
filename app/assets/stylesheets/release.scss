@@ -116,15 +116,10 @@
 
 .collapse-formats {
   z-index: 1025;
-  position: relative;
+  position: absolute;
   text-align: right;
-}
-
-.collapse-track-formats {
-  z-index: 1025;
-  position: relative;
-  text-align: right;
-  top: -30px;
+  bottom: 20px;
+  right: 60px;
 
   a {
     background-color: #e75e35;

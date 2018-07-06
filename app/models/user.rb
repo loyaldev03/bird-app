@@ -37,13 +37,14 @@ class User < ApplicationRecord
   has_many :comments
   has_many :commented, as: :commentable, class_name: 'Comment'
   has_many :videos
+  accepts_nested_attributes_for :videos, :allow_destroy => true
 
   has_many :follows
   has_many :followed_users, through: :follows, source: :followable, source_type: "User"
 
   has_many :likes
   has_one :artist_info, foreign_key: "artist_id"
-  accepts_nested_attributes_for :artist_info
+  accepts_nested_attributes_for :artist_info, :allow_destroy => true
   has_and_belongs_to_many :releases
   # has_many :announcements
 
