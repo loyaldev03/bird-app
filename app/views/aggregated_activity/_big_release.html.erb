@@ -17,14 +17,25 @@
 <div class="feed-release p-2" style="background-color: <%= bg_color %>; color: <%= text_color %>">
 
   <div class="d-flex">
-    <%= link_to release do %>
-      <%= image_tag(image, class: 'feed-new-avatar', 
-          style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
+    <% if release.class.to_s == "Announcement" && release.url.present? %>
+      <%= link_to release.url do %>
+        <%= image_tag(image, class: 'feed-new-avatar', 
+            style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
+      <% end %>
+    <% else %>
+      <%= link_to release do %>
+        <%= image_tag(image, class: 'feed-new-avatar', 
+            style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
+      <% end %>
     <% end %>
 
-    <div class="mt-4 position-relative">
+    <div class="mt-4 position-relative" style="flex-grow: 1">
       <h3>
-        <%= link_to release.title.truncate(70).upcase, release, style: "color: #{text_color}" %>
+        <% if release.class.to_s == "Announcement" && release.url.present? %>
+          <%= link_to release.title.truncate(70).upcase, release.url, style: "color: #{text_color}" %>
+        <% else %>
+          <%= link_to release.title.truncate(70).upcase, release, style: "color: #{text_color}" %>
+        <% end %>
         <%= render 'likes/like_button', object: release %>
       </h3>
 
