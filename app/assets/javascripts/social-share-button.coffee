@@ -11,8 +11,6 @@ window.SocialShareButton =
     appkey = $(el).data('appkey') || ''
     $parent = $(el).parent()
 
-    console.log($parent.data())
-    console.log($(el).data())
     $.ajax '/share',
       type: 'POST'
       dataType: 'JSON'

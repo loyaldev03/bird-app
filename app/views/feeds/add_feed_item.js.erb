@@ -1,0 +1,7 @@
+$('.feed-block').prepend('lalala');
+$('.feed-block').prepend(`
+    <%= escape_javascript(
+      render(partial: "aggregated_activity/userpage_#{ @feed }", 
+        locals: { activity: @activity } )
+    ) %>
+  `);

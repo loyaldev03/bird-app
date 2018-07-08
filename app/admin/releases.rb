@@ -71,7 +71,7 @@ ActiveAdmin.register Release do
       f.input :facebook_img
       f.input :title
       f.input :catalog
-      f.input :text, as: :froala_editor
+      f.input :text, as: :quill_editor, input_html: {data: {options: {modules: {toolbar: [['bold', 'italic', 'underline'], ['link']]}, placeholder: 'Type something...', theme: 'snow'}}}
       f.input :upc_code
       f.input :compilation
       f.input :release_type

@@ -17,7 +17,7 @@
     <div class="c-panel bg-white">
       <div class="c-flag mb-4">BIRDFEED</div>
 
-      <div class="feed-block">
+      <div class="feed-block" data-user-id="<%= @user.id if current_page?(user_path(@user)) %>">
         <ul class="feed-tabs">
           <% if current_user && @user.id == current_user.id %>
             <li class="nav-item">

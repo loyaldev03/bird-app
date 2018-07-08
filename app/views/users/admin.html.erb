@@ -12,7 +12,7 @@
         </button>
       <% end %>
 
-      <div class="feed-block">
+      <div class="feed-block" data-user-id="<%= @user.id %>">
         <%#= render 'feeds/commentable_feed' %>
         <%= render 'feeds/aggregated_user' %>
       </div>

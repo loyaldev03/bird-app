@@ -9,7 +9,7 @@ class Comment < ApplicationRecord
   accepts_nested_attributes_for :feed_images
 
   before_create :autofollow_commentable_feed
-  after_create :add_points, :feed_commentable, :increment_count
+  after_create :add_points, :increment_count
   after_destroy :decrement_count, :remove_points
 
   validates :user_id, :body, presence: true
@@ -36,6 +36,8 @@ class Comment < ApplicationRecord
     if self.parent_id.present?
       notify << StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
       notify << StreamRails.feed_manager.get_news_feeds(self.commentable.user.id)[:aggregated]
+    else
+      notify << StreamRails.feed_manager.get_feed( self.commentable_type.downcase, self.commentable_id )
     end
 
     notify
@@ -102,17 +104,4 @@ class Comment < ApplicationRecord
       end
     end
 
-    def feed_commentable
-      return if self.parent_id.present?
-
-      feed = StreamRails.feed_manager.get_feed( self.commentable_type.downcase, self.commentable_id )
-      activity = create_activity
-      feed.add_activity(activity)
-    end
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
-    end
 end

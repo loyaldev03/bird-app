@@ -28,7 +28,7 @@ ActiveAdmin.register Announcement do
       f.input :title
       f.input :feed_title
       f.input :bg_color
-      f.input :text, as: :froala_editor
+      f.input :text, as: :quill_editor, input_html: {data: {options: {modules: {toolbar: [['bold', 'italic', 'underline'], ['link']]}, placeholder: 'Type something...', theme: 'snow'}}}
       f.input :release_date, as: :date_time_picker
       f.input :admin, as: :select, label: "Admin",
           collection: User.with_role(:admin).map {|a| [a.name, a.id] }

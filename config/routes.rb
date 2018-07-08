@@ -17,7 +17,11 @@ Rails.application.routes.draw do
   get "choose_profile", to: "users#choose_profile"
   delete "cancel_subscription", to: "users#cancel_subscription"
   get "home", to: "users#home"
-  # get "activity_feed", to: "users#activity_feed"
+
+  get "get_feed_token", to: "feeds#get_feed_token"
+  get "add_feed_item", to: "feeds#add_feed_item"
+  get "is_seen", to: "feeds#is_seen"
+
   get "chirp_feed", to: "users#chirp_feed"
   get "release_feed", to: "users#release_feed"
   get "artists_feed", to: "users#artists_feed"
@@ -79,8 +83,6 @@ Rails.application.routes.draw do
   resources :posts do
     get 'reply_form'
   end
-
-  get "is_seen", to: "feeds#is_seen"
 
   resources :follows
   resources :comments do

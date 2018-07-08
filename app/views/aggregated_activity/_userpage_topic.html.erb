@@ -1,7 +1,7 @@
 <% for _activity in activity['activities'] %>
   <div class="feed-item">
     <p class="feed-posted"> 
-      <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+      <%= time_ago_in_words(_activity['time'].in_time_zone) %> ago
     </p>
 
     <div class="t-wide">
