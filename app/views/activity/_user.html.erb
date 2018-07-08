@@ -9,7 +9,7 @@
 
 <%= activity['foreign_id'].class.to_s %>
 <strong>
-  <%= link_to activity['foreign_id'].try(:title), activity['foreign_id'] %>
+  <%= activity['foreign_id'].try(:title) %>
 </strong>
 
 <%= activity['object'].class.to_s %>
