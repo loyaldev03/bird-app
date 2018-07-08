@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
+  before_action :set_notification
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_online
 
@@ -69,6 +70,10 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+    def set_notification
+         request.env['exception_notifier.exception_data'] = {"server" => request.env['SERVER_NAME']}
+    end
 
     def set_online
       if current_user

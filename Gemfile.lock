@@ -691,6 +691,9 @@ GEM
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.7.1)
+    exception_notification (4.2.2)
+      actionmailer (>= 4.0, < 6)
+      activesupport (>= 4.0, < 6)
     excon (0.62.0)
     execjs (2.7.0)
     faraday (0.12.2)
@@ -897,6 +900,7 @@ GEM
     selenium-webdriver (3.11.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
+    slack-notifier (2.3.2)
     social-share-button (1.1.0)
       coffee-rails
     spring (2.0.2)
@@ -976,6 +980,7 @@ DEPENDENCIES
   carrierwave (~> 1.0)
   coffee-rails (~> 4.2)
   devise
+  exception_notification
   fog-aws
   font-awesome-rails
   jbuilder (~> 2.5)
@@ -995,6 +1000,7 @@ DEPENDENCIES
   rolify
   sass-rails (~> 5.0)
   selenium-webdriver
+  slack-notifier
   social-share-button
   spring
   spring-watcher-listen (~> 2.0.0)
