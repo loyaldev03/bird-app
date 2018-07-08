@@ -26,7 +26,9 @@ class FeedsController < ApplicationController
     @enricher.add_fields([:foreign_id])
 
     @activity = @enricher.enrich_aggregated_activities([
-      {"updated_at" => params['feed']['time'], "activities" => [params['feed']]}
+      { "updated_at" => params['feed']['time'], 
+        "activities" => [params['feed']],
+        "activity_count" => 1}
     ]).first
   end
 

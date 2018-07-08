@@ -23,6 +23,7 @@ class Comment < ApplicationRecord
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
 
     if self.commentable.try(:users)
+      
       self.commentable.users.map do |user|
         notify << StreamRails.feed_manager.get_notification_feed(user.id)
       end
@@ -51,15 +52,21 @@ class Comment < ApplicationRecord
   #   {'parent_id' => self.parent_id}
   # end
 
-  def activity_should_sync?
-    if (self.user.has_role?(:artist) || self.user.has_role?(:admin)) && 
-        self.commentable_type == "User" && 
-        self.commentable_id == self.user_id
-      true
-    else
-      false
-    end
-  end
+  # def activity_should_sync?
+  #   admin_condition  = self.user.has_role?(:admin) && self.parent_id.blank?
+  #   artist_condition = self.user.has_role?(:artist) && 
+  #                      self.commentable_type == "User" && 
+  #                      self.commentable_id == self.user_id
+  #   user_condition   = self.parent_id.blank?
+    
+  #   if (self.user.has_role?(:artist) || self.user.has_role?(:admin)) && 
+  #       self.commentable_type == "User" && 
+  #       self.commentable_id == self.user_id
+  #     true
+  #   else
+  #     false
+  #   end
+  # end
 
   private
 

@@ -186,14 +186,14 @@ $(document).on('turbolinks:load', function() {
     })
       .done(function(respond) {
         var userId = $('.feed-block').data('userId');
+        var feed = $('.feed-block').data('feed');
         var client = stream.connect(respond.key, null, respond.app_id);
-        var user1 = client.feed('user', userId, respond.token);
+        var user1 = client.feed(feed, userId, respond.token);
 
         user1.subscribe(callback).then(successCallback, failCallback);
       });
 
     function callback(data) {
-      console.log(data);
         data.new.forEach(function(item){
           $.ajax({
             url: '/add_feed_item',

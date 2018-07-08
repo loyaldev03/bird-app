@@ -13,9 +13,9 @@
 
       <% case _activity['foreign_id'].class.to_s %>
       <% when "Like" %>
-        <%= "Has Liked a post" %>
+        <%= "Has Liked the comment" %>
       <% when "Post" %> 
-        <%= "Has Commented a post" %>
+        <%= "Has Commented the comment" %>
       <% else %> 
         <%= _activity['foreign_id'].class.to_s %>
       <% end %>
