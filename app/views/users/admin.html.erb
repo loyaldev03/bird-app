@@ -12,10 +12,13 @@
         </button>
       <% end %>
 
-      <div class="feed-block" data-user-id="<%= @user.id %>" data-feed="user">
+      <div class="feed-block" data-feed-id="<%= @user.id %>" data-feed="user">
         <%#= render 'feeds/commentable_feed' %>
         <%= render 'feeds/aggregated_user' %>
       </div>
+
+      <div id="loading" style="display: none;">Loading...</div>
+
     </div>
   </div>
 

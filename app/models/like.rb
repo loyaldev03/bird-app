@@ -15,11 +15,11 @@ class Like < ApplicationRecord
     if self.likeable.try(:users)
       self.likeable.users.each do |user|
         notify << StreamRails.feed_manager.get_notification_feed(user.id)
-        notify << StreamRails.feed_manager.get_news_feeds(user.id)[:aggregated]
+        notify << StreamRails.feed_manager.get_news_feeds(user.id)[:flat]
       end
     elsif self.likeable.try(:user)
       notify << StreamRails.feed_manager.get_notification_feed(self.likeable.user.id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:aggregated]
+      notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:flat]
     end
 
     notify
@@ -44,7 +44,7 @@ class Like < ApplicationRecord
     end
 
     def remove_from_aggregated_feed
-      feed = StreamRails.feed_manager.get_feed('user_aggregated', self.user_id)
+      feed = StreamRails.feed_manager.get_user_feed(self.user_id)
       feed.remove_activity("Like:#{self.id}", foreign_id=true)
     end
 

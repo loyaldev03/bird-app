@@ -1,7 +1,8 @@
-$('.feed-block').prepend('lalala');
+<% renderer = (@feed == 'user' || @feed == 'timeline') ? "aggregated_activity/userpage_#{ @new_item }" : "activity/commentable_#{ @new_item }" %>
+
 $('.feed-block').prepend(`
     <%= escape_javascript(
-      render(partial: "aggregated_activity/userpage_#{ @feed }", 
+      render(partial: renderer, 
         locals: { activity: @activity } )
     ) %>
   `);

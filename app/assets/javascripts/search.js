@@ -27,7 +27,7 @@ $(document).on('turbolinks:load', function() {
             suggestion: function(suggestion) {
               return '<a href="/releases/'+suggestion.objectID+'"><span><i>' +
                 suggestion._highlightResult.title.value + '</i> '
-                  + suggestion._highlightResult.text.value + '</span></a>';
+                  + suggestion._highlightResult.text.value.slice(0, 140) + '</span></a>';
             }
           }
         },

@@ -31,7 +31,7 @@ class Post < ApplicationRecord
 
     if self.parent_id.present?
       notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:aggregated]
+      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
     end
 
     notify

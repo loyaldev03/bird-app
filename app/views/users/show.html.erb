@@ -17,7 +17,7 @@
     <div class="c-panel bg-white">
       <div class="c-flag mb-4">BIRDFEED</div>
 
-      <div class="feed-block" data-user-id="<%= @user.id if current_page?(user_path(@user)) %>" data-feed="user">
+      <div class="feed-block" data-feed-id="<%= @user.id if current_page?(user_path(@user)) %>" data-feed="<%= current_user.id == @user.id ? "timeline" : "user" %>">
         <ul class="feed-tabs">
           <% if current_user && @user.id == current_user.id %>
             <li class="nav-item">
@@ -48,6 +48,9 @@
         </ul>
         <%= render 'feeds/aggregated_user' %>
       </div>
+
+      <div id="loading" style="display: none;">Loading...</div>
+      
     </div>
   </div>
 

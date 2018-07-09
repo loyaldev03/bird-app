@@ -106,7 +106,56 @@ $(document).on('turbolinks:load', function() {
 
   });
 
+  load_more_feed();
+
 });
+
+var load_more_feed = function(){
+  if($('.feed-block').length > 0 && $('.feed-block').data('feedId') > 0) {
+
+    var win = $(window);
+
+    win.on('scroll.pagination', function(e) {
+      if ($(document).height() - win.height() == win.scrollTop()) {
+        $('#loading').show();
+        win.off('scroll.pagination');
+
+        var feedId = $('.feed-block').data('feedId');
+        var feed, data_feed = $('.feed-block').data('feed');
+
+        switch (data_feed) {
+          case 'user':
+            feed = "user_aggregated";
+            break;
+          case 'timeline':
+            feed = "timeline_aggregated";
+            break;
+          case 'release':
+            feed = "release";
+            break;
+          case 'announcement':
+            feed = "announcement";
+            break;
+        }
+        
+        $.ajax({
+          url: '/load_more_feed',
+          dataType: 'script',
+          data: {
+            last_item_id: $('#last-item-id').data('itemId'),
+            feed: feed,
+            feed_id: feedId}
+        })
+          .done( function() {
+            if ($('#loading').length > 0) {
+              load_more_feed();
+              $('#loading').hide();
+            }
+          });
+      }
+    });
+  }
+} 
 
 function dragDropAttach() {
   setTimeout( function() {

@@ -72,7 +72,10 @@ class ApplicationController < ActionController::Base
   protected
 
     def set_notification
-         request.env['exception_notifier.exception_data'] = {"server" => request.env['SERVER_NAME']}
+         request.env['exception_notifier.exception_data'] = {
+          "server" => request.env['SERVER_NAME'],
+          "current_user" => current_user
+        }
     end
 
     def set_online

@@ -372,20 +372,6 @@ class User < ApplicationRecord
     end
   end
 
-  def self.batch_follow_to_general_actions offset=0
-    users = all.order(id: :asc).offset(offset).limit(500)
-
-    payload = []
-    users.each do |user|
-      payload << { source: "notification:#{user.id}", target: 'general_actions:1' }
-      payload << { source: "timeline_aggregated:#{user.id}", target: 'general_actions:1' }
-      payload << { source: "user_aggregated:#{user.id}", target: "user:#{user.id}" }
-    end
-
-    StreamRails.feed_manager.client.follow_many(payload)
-  end
-
-  
 
   # Braintree methods
   def braintree_customer
@@ -515,20 +501,24 @@ class User < ApplicationRecord
     'CHIRP FREE'
   end
 
-  # def subscription_description
-  #   return 'Deleted' if deleted?
-  #   return 'Admin' if admin?
-  #   return 'VIP' if vip?
-
-  #   # Don't check active_subscription? because it's slow and we update once a day via rake task
-  #   if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
-  #     return "Member (#{subscription_length.titleize})"
-  #   end
-  #   'Chirp Only'
-  # end
 
   def current_playlist
     Playlist.find_by_id current_playlist_id
+  end
+
+
+  def self.batch_follow_to_general_actions offset=0
+    users = all.order(id: :asc).offset(offset).limit(500)
+
+    payload = []
+    users.each do |user|
+      payload << { source: "notification:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "timeline:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "timeline_aggregated:#{user.id}", target: "timeline:#{user.id}" }
+      payload << { source: "user_aggregated:#{user.id}", target: "user:#{user.id}" }
+    end
+
+    StreamRails.feed_manager.client.follow_many(payload)
   end
 
 
@@ -541,7 +531,7 @@ class User < ApplicationRecord
 
     def follow_general_actions
       notification_feed = StreamRails.feed_manager.get_notification_feed(self.id)
-      news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:aggregated]
+      news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:flat]
       user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated',self.id)
 
       notification_feed.follow('general_actions', 1)

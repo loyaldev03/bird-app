@@ -67,9 +67,12 @@
                         classes: "btn btn-wide follow-button-black",
                         text: ['follow this feed', 'unfollow this feed'] } } %>
 
-      <div class="feed-block light-scroll">
+      <div class="feed-block light-scroll" data-feed-id="<%= @announcement.id %>" data-feed="announcement">
         <%= render 'feeds/commentable_feed' %>
       </div>
+
+      <div id="loading" style="display: none;">Loading...</div>
+      
     </div>
   </div>
 

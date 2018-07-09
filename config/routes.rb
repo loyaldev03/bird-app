@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   get "get_feed_token", to: "feeds#get_feed_token"
   get "add_feed_item", to: "feeds#add_feed_item"
+  get "load_more_feed", to: "feeds#load_more"
   get "is_seen", to: "feeds#is_seen"
 
   get "chirp_feed", to: "users#chirp_feed"

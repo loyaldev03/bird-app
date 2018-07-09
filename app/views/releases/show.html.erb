@@ -100,9 +100,12 @@
                         classes: "btn btn-wide follow-button-black",
                         text: ['follow this feed', 'unfollow this feed'] } } %>
 
-      <div class="feed-block" data-user-id="<%= @release.id %>" data-feed="release">
+      <div class="feed-block" data-feed-id="<%= @release.id %>" data-feed="release">
         <%= render 'feeds/commentable_feed' %>
       </div>
+      
+      <div id="loading" style="display: none;">Loading...</div>
+
     </div>
   </div>
 

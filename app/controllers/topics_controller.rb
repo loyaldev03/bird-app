@@ -39,7 +39,7 @@ class TopicsController < ApplicationController
 
       # user_feed = StreamRails.feed_manager.get_user_feed( current_user.id )
       notify_feed = StreamRails.feed_manager.get_notification_feed( current_user.id )
-      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds( current_user.id )[:aggregated]
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds( current_user.id )[:flat]
       # user_feed.follow( 'topic', topic.id )
       notify_feed.follow( 'topic', topic.id )
       news_aggregated_feed.follow( 'topic', topic.id )

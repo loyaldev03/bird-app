@@ -30,15 +30,19 @@ class Comment < ApplicationRecord
 
     elsif self.commentable.try(:user)
       notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
-    elsif self.commentable_type == "User"
+    elsif self.commentable_type == "User" && self.commentable_id != self.user_id
       notify << StreamRails.feed_manager.get_notification_feed(self.commentable_id)
     end
 
     if self.parent_id.present?
       notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:aggregated]
+      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
     else
-      notify << StreamRails.feed_manager.get_feed( self.commentable_type.downcase, self.commentable_id )
+
+      unless self.commentable_type == "User" && self.commentable_id == self.user_id
+        notify << StreamRails.feed_manager.get_feed( self.commentable_type.downcase, self.commentable_id )
+      end
+
     end
 
     notify
@@ -97,7 +101,7 @@ class Comment < ApplicationRecord
           self.user.followed( self.commentable ).blank?
         # user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
         notify_feed = StreamRails.feed_manager.get_notification_feed( self.user_id)
-        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]
+        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:flat]
 
         self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
         # user_feed.follow(self.commentable_type.downcase, self.commentable_id)

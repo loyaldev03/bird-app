@@ -7,7 +7,7 @@ class BadgeLevel < ApplicationRecord
 
   def activity_notify
     [StreamRails.feed_manager.get_feed( 'masterfeed', 1 ),
-     StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]]
+     StreamRails.feed_manager.get_news_feeds(self.user_id)[:flat]]
   end
 
   def activity_object

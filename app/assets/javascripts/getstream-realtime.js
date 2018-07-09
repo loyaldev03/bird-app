@@ -1,33 +1,38 @@
 $(document).on('turbolinks:load', function() {
-  if($('.feed-block').length > 0 && $('.feed-block').data('userId') > 0) {
+
+  if($('.feed-block').length > 0 && $('.feed-block').data('feedId') > 0) {
+    var feedId = $('.feed-block').data('feedId');
+    var feed = $('.feed-block').data('feed');
+    
     $.ajax({
       url: '/get_feed_token',
       dataType: 'JSON',
-      data: { feed: 'user' }
+      data: { feed: feed, feed_id: feedId }
     })
       .done(function(respond) {
-        var userId = $('.feed-block').data('userId');
-        var feed = $('.feed-block').data('feed');
         var client = stream.connect(respond.key, null, respond.app_id);
-        var user1 = client.feed(feed, userId, respond.token);
+        var current_feed = client.feed(feed, feedId, respond.token);
 
-        user1.subscribe(callback).then(successCallback, failCallback);
+        current_feed.subscribe(callback).then(successCallback, failCallback);
       });
 
     function callback(data) {
-        data.new.forEach(function(item){
-          $.ajax({
-            url: '/add_feed_item',
-            dataType: 'script',
-            data: { feed: item }
-          });
+      data.new.forEach(function(item){
+        $.ajax({
+          url: '/add_feed_item',
+          dataType: 'script',
+          data: { new_item: item, feed: feed, feed_id: feedId }
         });
+      });
     }
 
     function successCallback() {
+      // console.log('successCallback');
     }
 
     function failCallback(data) {
+      // console.log('failCallback');
+      // console.log(data);
     }
   }
 });

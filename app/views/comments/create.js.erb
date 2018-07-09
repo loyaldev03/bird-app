@@ -10,22 +10,22 @@
 <% else %>
 
   $('.modal').modal('hide');
-  $('.feed-block').prepend(`
-      <div class="feed-item">
-        <%= escape_javascript(
-          render(partial: 'activity/commentable_comment', 
-            locals: { 
-              activity: { 
-                'actor' => @comment.user,
-                'foreign_id' => @comment,
-                'object' => @comment.commentable,
-                'time' => @comment.created_at
-              } 
-            } 
-          )
-        ) %>
-      </div>
-    `);
+  // $('.feed-block').prepend(`
+  //     <div class="feed-item">
+  //       <%#= escape_javascript(
+  //         render(partial: 'activity/commentable_comment', 
+  //           locals: { 
+  //             activity: { 
+  //               'actor' => @comment.user,
+  //               'foreign_id' => @comment,
+  //               'object' => @comment.commentable,
+  //               'time' => @comment.created_at
+  //             } 
+  //           } 
+  //         )
+  //       ) %>
+  //     </div>
+  //   `);
 
   $('.no-feed-items').remove();
 

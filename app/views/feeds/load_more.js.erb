@@ -1,0 +1,14 @@
+$('#last-item-id').remove();
+
+<% if @activities.count == 0 %>
+
+  $('#loading').remove();
+
+<% else %>
+  <% renderer = (@feed == 'user_aggregated' || @feed == 'timeline_aggregated') ? "feeds/aggregated_user" : "feeds/commentable_feed" %>
+
+  $('.feed-block').append(`
+      <%= escape_javascript( render renderer ) %>
+    `);
+
+<% end %>
