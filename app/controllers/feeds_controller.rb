@@ -15,7 +15,13 @@ class FeedsController < ApplicationController
 
   def get_feed_token
     token = StreamRails.feed_manager.client.feed(params[:feed], params[:feed_id]).readonly_token
-    render json: { token: token, key: ENV['STREAM_API_KEY'], app_id: ENV['STREAM_API_ID'] }
+    notify_token = StreamRails.feed_manager.client.feed('notification', params[:user_id]).readonly_token
+    render json: { 
+                    token: token, 
+                    key: ENV['STREAM_API_KEY'], 
+                    app_id: ENV['STREAM_API_ID'],
+                    notify_token: notify_token,
+                  }
   end
 
   def add_feed_item
@@ -37,6 +43,17 @@ class FeedsController < ApplicationController
       ]).first
     end
 
+  end
+
+  def add_notify_item
+    params.permit!
+    @new_item = params['new_item']['verb'].downcase
+
+    @activity = @enricher.enrich_aggregated_activities([
+      { "updated_at" => params['new_item']['time'], 
+        "activities" => [params['new_item']],
+        "activity_count" => 1}
+    ]).first
   end
 
   def load_more

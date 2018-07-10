@@ -88,7 +88,8 @@
             <div class="header-user">
               <%= link_to image_tag(current_user.avatar.thumb, class: "user-avatar"), root_path %>
               <span><%= link_to current_user.name, root_path %></span>
-              <li class="nav-item dropdown dropdown-notify-menu">
+
+              <li class="nav-item dropdown dropdown-notify-menu" data-current-user="<%= current_user.id %>">
                 <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <%= image_tag "icons/icon-notifications.svg" %>
                   <% if @unseen_count && @unseen_count > 0 %>
@@ -99,6 +100,7 @@
                   <%= render 'feeds/notify' %>
                 </div>
               </li>
+
             </div>
             <li class="nav-item dropdown dropdown-usermenu">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

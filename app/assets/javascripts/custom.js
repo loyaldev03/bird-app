@@ -53,7 +53,7 @@ $(document).on('turbolinks:load', function() {
 
   $('.dropdown-notify-menu').on("show.bs.dropdown", function(event){
     $.get( "/is_seen", function() {});
-    $('.nav-notify-count').hide();
+    $('.nav-notify-count').remove();
   });
 
   $('.dropdown-notify-menu').on("hide.bs.dropdown", function(event){

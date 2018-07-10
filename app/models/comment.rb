@@ -13,7 +13,7 @@ class Comment < ApplicationRecord
   after_destroy :decrement_count, :remove_points
   after_create_commit { CommentRelayJob.perform_later(self) if self.parent_id.present? }
 
-  validates :user_id, :body, presence: true
+  validates :user_id, presence: true
 
   attr_accessor :comment_hash
 
@@ -26,18 +26,30 @@ class Comment < ApplicationRecord
     if self.commentable.try(:users)
 
       self.commentable.users.map do |user|
-        notify << StreamRails.feed_manager.get_notification_feed(user.id)
+        unless self.user_id == user.id
+          notify << StreamRails.feed_manager.get_notification_feed(user.id)
+        end
       end
 
     elsif self.commentable.try(:user)
-      notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
+
+      unless self.user_id == self.commentable.user.id
+        notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
+      end
+
     elsif self.commentable_type == "User" && self.commentable_id != self.user_id
       notify << StreamRails.feed_manager.get_notification_feed(self.commentable_id)
     end
 
+    
+
     if self.parent_id.present?
-      notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
+
+      unless self.user_id == self.parent.user_id
+        notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
+        # notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
+      end
+
     else
 
       unless self.commentable_type == "User" && self.commentable_id == self.user_id

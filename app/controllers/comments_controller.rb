@@ -25,7 +25,16 @@ class CommentsController < ApplicationController
   end
 
   def create
+    if params[:comment][:feed_images_attributes].present? && 
+            params[:comment][:feed_images_attributes]['0'][:image].blank?
+      params[:comment].delete :feed_images_attributes
+    end
+
     @comment = Comment.new(comment_params)
+
+    if params[:comment][:body].blank? && params[:comment][:feed_images_attributes].blank?
+      redirect_to @comment.commentable and return
+    end
 
     if current_user.has_role?(:admin)
       @comment.user_id = params[:comment][:user_id] || current_user.id

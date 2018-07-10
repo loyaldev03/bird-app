@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
       rescue Faraday::Error::ConnectionFailed
         results = []
       end
-      logger.warn "1===========#{ (Time.current - start_time).to_f.round(4) }============="
+      logger.warn "1===========get_notification_feed #{ (Time.current - start_time).to_f.round(4) } secs ============="
 
       results = results.each { |r| r['activities'].delete_if { |a| a['actor'] == "User:#{current_user.id}" } }
       results = results.delete_if { |r| r['activities'].count == 0 }
@@ -65,7 +65,6 @@ class ApplicationController < ActionController::Base
       else
         @credits = nil
       end
-      logger.warn "2===========#{ (Time.current - start_time).to_f.round(4) }============="
     end
   end
 

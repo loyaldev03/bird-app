@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   get "get_feed_token", to: "feeds#get_feed_token"
   get "add_feed_item", to: "feeds#add_feed_item"
+  get "add_notify_item", to: "feeds#add_notify_item"
   get "load_more_feed", to: "feeds#load_more"
   get "is_seen", to: "feeds#is_seen"
 

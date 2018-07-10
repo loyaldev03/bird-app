@@ -18,8 +18,11 @@ class Like < ApplicationRecord
         notify << StreamRails.feed_manager.get_news_feeds(user.id)[:flat]
       end
     elsif self.likeable.try(:user)
-      notify << StreamRails.feed_manager.get_notification_feed(self.likeable.user.id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:flat]
+
+      unless self.likeable.user.id != self.user_id
+        notify << StreamRails.feed_manager.get_notification_feed(self.likeable.user.id)
+        notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:flat]
+      end
     end
 
     notify

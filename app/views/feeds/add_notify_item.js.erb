@@ -1,0 +1,17 @@
+var activity = `
+    <%= escape_javascript(
+      render(partial: "aggregated_activity/notify_#{ @new_item }", 
+        locals: { activity: @activity } )
+    ) %>
+  `;
+
+$('.dropdown-notify-menu .dropdown-menu')
+      .prepend('<div class="nav-notify">' + activity + '</div>');
+
+var count = $('.nav-notify-count');
+
+if( count.length > 0 ) {
+  count.text(parseInt(count.text()) + 1);
+} else {
+  $('.dropdown-notify-menu').children('a').append('<span class="nav-notify-count">1</div>');
+}
