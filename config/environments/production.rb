@@ -88,6 +88,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.web_socket_server_url = "wss://dirtybirdrec.herokuapp.com/cable" 
+  config.action_cable.allowed_request_origins = ['https://dirtybirdrec.herokuapp.com', 'http://dirtybirdrec.herokuapp.com']
 end
 
 Rails.application.config.middleware.use ExceptionNotification::Rack,

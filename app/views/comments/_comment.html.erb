@@ -10,7 +10,7 @@
         remote: true, id: "comment-#{comment.id}" do %>
       <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
 
-      <span class="comments-count"><%= comment.replies_count %></span>
+      <span class="comments-count-<%= comment.id %>"><%= comment.replies_count %></span>
     <% end %>
 
     <p class="feed-reply feed-owner" id="Comment-<%= comment.id %>">
@@ -80,7 +80,7 @@
         commentable_type: comment.commentable_type ),
         remote: true, id: "comment-#{comment.id}" do %>
       <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
-      <span class="comments-count"><%= comment.replies_count %></span>
+      <span class="comments-count-<%= comment.id %>"><%= comment.replies_count %></span>
     <% end %>
 
     <div>

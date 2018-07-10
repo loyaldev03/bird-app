@@ -11,6 +11,7 @@ class Comment < ApplicationRecord
   before_create :autofollow_commentable_feed
   after_create :add_points, :increment_count
   after_destroy :decrement_count, :remove_points
+  after_create_commit { CommentRelayJob.perform_later(self) if self.parent_id.present? }
 
   validates :user_id, :body, presence: true
 
