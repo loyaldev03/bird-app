@@ -1,5 +1,15 @@
-$('#Comment-<%= @comment.id%>').html("<%= escape_javascript(render 'comments/edit_form') %>");
+$('#comment-<%= @comment.id%>-inner').html("<%= escape_javascript(render 'comments/edit_form') %>");
 
-$("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+$("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({
+                  search: false,
+                  recentEmojis: false,
+                  pickerPosition: 'bottom',
+                  events: {
+                    keyup: function (editor, event) {
+                      countChar(editor, <%= @comment.id %>);
+                   }
+                 }
+      });
+countChar( $("#edit_comment_<%=@comment.id%> .emojionearea-editor"), <%= @comment.id %> );
 
 dragDropAttach();

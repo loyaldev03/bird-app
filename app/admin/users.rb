@@ -9,6 +9,11 @@ ActiveAdmin.register User do
 
   jcropable
 
+  filter :email
+  filter :current_sign_in_at
+  filter :sign_in_count
+  filter :created_at
+
   index do
     selectable_column
     id_column
@@ -19,9 +24,13 @@ ActiveAdmin.register User do
     column "Role" do |user|
       user.roles.pluck(:name).join.html_safe
     end
+    column "Subscription", :subscription_length
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column "Reports" do |user|
+      user.reports.count
+    end
     column "Points" do |user|
       user.points
     end
@@ -36,11 +45,6 @@ ActiveAdmin.register User do
     end
     actions
   end
-
-  filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
 
   form do |f|
     f.semantic_errors *f.object.errors.keys

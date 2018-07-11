@@ -1,28 +1,26 @@
 jQuery(document).on 'turbolinks:load', ->
-  feed = $('.feed-block').data('feed');
-  feed_id = $('.feed-block').data('feedId');
+  feed = $('.feed-block').data('feed')
+  feed_id = $('.feed-block').data('feedId')
 
-  App.cable.subscriptions.create {
-      channel: 'WebNotificationsChannel',
-      feed: feed+':'+feed_id
-    },
-    received: (data) ->
-      if $('#Comment-' + data.parent_id+'.feed-replies').length > 0
-        parent = $('#Comment-' + data.parent_id)
-      else
-        parent = $('#message-' + data.parent_id)
-        commentsCount = $('.comments-count' + data.parent_id)
-        commentsCount.text(parseInt(commentsCount.text()) + 1)
+  if feed && App.cable.subscriptions.findAll('{"channel":"WebNotificationsChannel","feed":"'+feed+':'+feed_id+'"}').length == 0
+    App.cable.subscriptions.create {
+        channel: 'WebNotificationsChannel',
+        feed: feed+':'+feed_id
+      },
+      received: (data) ->
+        console.log(data)
+        if data.parent_id
+          if $('#comment-' + data.parent_id + '-inner').length > 0
+            $('#comment-' + data.parent_id + '-inner').after data.object
+          else
+            $('#comment-' + data.parent_id + '-replies .feed-replies-list').append data.object
+        else
+          $('.feed-block').prepend data.object
+          $("html, body").animate({ scrollTop: $("main") }, 500)
 
-      topCommentsCount = parent.closest('.feed-item').find('.comments-count')
+        $('#comment-reply-btn-' + data.parent_id).show()
+        $('#topic-post-btn-' + data.parent_id).show().siblings('')
+        $('.feed-replies-list .feed-form').remove()
+        $('.feed-replies-list').next('.feed-form').remove()
 
-      topCommentsCount.text(parseInt(topCommentsCount.text()) + 1)
-    
-      $('#comment_body-' + data.parent_id).val('').closest('.feed-form').remove()
-      
-      if parent.find('.feed-replies-list').length > 0
-        parent.find('.feed-replies-list').append data.object
-      else
-        parent.append data.object
-
-      $('#comment-reply-' + data.parent_id).show()
+  # console.log(cable)

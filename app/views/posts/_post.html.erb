@@ -47,19 +47,19 @@
   </div>
 
 
-  <div class="<%= 'feed-replies' unless (!current_user && post.replies.empty?) %>">
+  <div id="comment-<%= post.id %>-replies" class="<%= 'feed-replies' unless (!current_user && post.replies.empty?) %>">
     <% if post.replies_count.to_i > 3 %>
       <a href="#" class="show-more-comments">View more comments (<%= post.replies_count - 3 %>)</a>
     <% end %>
 
     <div class="feed-replies-list">
-      <%= (render partial: 'posts/reply', collection: post.replies.order(created_at: :asc)) if post.replies.any? %>
+      <%= (render partial: 'posts/reply', collection: post.replies.order(created_at: :asc)) %>
     </div>
     
     <% if current_user %>
       <%= link_to "Reply", 
-          post_reply_form_path( post_id: post.id, topic_id: @topic.id ), 
-          remote: true, class: "btn c-btn-white btn-wide", id: "topic-post-#{post.id}" %>
+          post_reply_form_path( post_id: post.id, topic_id: post.topic_id ), 
+          remote: true, class: "btn c-btn-white btn-wide", id: "topic-post-btn-#{post.id}" %>
     <% end %>
   </div>
 

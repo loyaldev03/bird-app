@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180708174149) do
+ActiveRecord::Schema.define(version: 20180711114754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -326,6 +326,18 @@ ActiveRecord::Schema.define(version: 20180708174149) do
     t.index ["user_id"], name: "index_releases_users_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.string "reportable_type"
+    t.integer "reportable_id"
+    t.string "text"
+    t.integer "user_id"
+    t.string "ip_address"
+    t.string "comment"
+    t.boolean "closed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
@@ -469,7 +481,7 @@ ActiveRecord::Schema.define(version: 20180708174149) do
     t.string "image_uri"
     t.string "braintree_subscription_id"
     t.date "braintree_subscription_expires_at"
-    t.integer "subscription_length"
+    t.integer "subscription_length", default: 0, null: false
     t.integer "current_playlist_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

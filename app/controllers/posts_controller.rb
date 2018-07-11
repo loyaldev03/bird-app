@@ -13,9 +13,14 @@ class PostsController < ApplicationController
   end
   
   def create
+    if params[:post][:feed_images_attributes].present? && 
+            params[:post][:feed_images_attributes]['0'][:image].blank?
+      params[:post].delete :feed_images_attributes
+    end
+
     @topic = Topic.find(params[:post][:topic_id])
 
-    if params[:post][:text].blank? && params[:post][:feed_images_attributes]['0'][:image].blank?
+    if params[:post][:text].blank? && params[:post][:feed_images_attributes].blank?
       redirect_to @topic and return
     end
 

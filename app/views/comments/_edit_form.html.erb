@@ -1,5 +1,7 @@
 <%= form_for @comment, remote: true do |f| %>
-    <%= f.label :body, "Text", class: "sr-only" %>
-    <%= f.text_area :body, class: "form-control mb-1 emoji-area", required: true %>
+  <%= f.label :body, "Text", class: "sr-only" %>
+  <%= f.text_area :body, class: "form-control mb-1 emoji-area", 
+      required: true %>
   <%= f.submit "Apply", class: "btn c-btn-blue" %>
+  <span id="chars<%= @comment.id %>">140</span> characters left
 <% end %>

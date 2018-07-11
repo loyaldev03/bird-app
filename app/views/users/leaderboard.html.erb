@@ -33,12 +33,11 @@
               </div>
 
               <div class="leaderboard-points">
-                <% if user.has_role?(:mounthly) %>
+                <% if user.monthly_old? || user.monthly_7? || user.monthly_10? %>
                   <%= image_tag 'icons/yellow-egg.svg' %>
-                <% elsif user.has_role?(:yearly) %>
+                <% elsif user.yearly_old? || user.yearly_100? %>
                   <%= image_tag 'icons/red-egg.svg' %>
                 <% end %>
-                <%= image_tag 'icons/red-egg.svg' %> <%#TODO remove it %>
 
                 <b><%= "#{user.points} POINTS" %></b>
               </div>

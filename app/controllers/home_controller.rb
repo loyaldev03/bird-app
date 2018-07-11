@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   include StreamRails::Activity
 
   before_action :authenticate_user!, 
-      except: [:index, :about, :birdfeed, :share]
+      except: [:index, :about, :birdfeed, :share, :report]
   before_action :set_notifications, only: [:about, :birdfeed]
 
   def index
@@ -95,6 +95,36 @@ class HomeController < ApplicationController
     end
 
     render json: { badges: badges }
+  end
+
+  def report
+    report = Report.create(
+          user_id: current_user.try(:id),
+          reportable_type: params[:type],
+          reportable_id: params[:id],
+          ip_address: request.remote_ip,
+          text: params[:text]
+      )
+
+    admins = User.with_role(:admin)
+
+    admins.each do |user|
+      next if current_user && user.id = current_user.id
+
+      feed = StreamRails.feed_manager.get_notification_feed( user.id )
+
+      activity = {
+        actor: "User:#{current_user.try(:id)}",
+        verb: "Report",
+        object: "#{params[:type]}:#{params[:id]}",
+        foreign_id: "Report:#{report.id}",
+        time: DateTime.now.iso8601
+      }
+
+      feed.add_activity(activity)
+    end
+
+    flash[:notice] = 'Report was sent'
   end
 
 end

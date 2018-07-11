@@ -63,7 +63,7 @@
 
 .feed-replies {
   background: #f7f7f7;
-  padding: 20px 20px 20px 0;
+  padding: 20px;
   margin-top: 8px;
   margin-left: 60px;
   text-align: center;
@@ -74,19 +74,8 @@
   }
 }
 
-.feed-reply {
-  background-color: white;
-  padding: 13px 20px;
-  border-radius: 20px;
-  display: inline-block;
-  margin: 0 11px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  max-width: 430px;
-}
-
 .feed-owner {
-  background-color: #c4ffeb;
+  background-color: #c4ffeb !important;
 }
 
 .feed-form {
@@ -126,24 +115,11 @@
   }
 }
 
-.comment-footer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
 .feed-item-body {
   background-color: #e2e2e2;
   border-radius: 15px 15px 0 0;
   padding: 10px 15px;
   margin-left: 60px;
-}
-
-.comment-footer-divider {
-  opacity: 0.26;
-  background-color: #222;
-  width: 1px;
-  height: 30px;
 }
 
 .release-feed-avatar {

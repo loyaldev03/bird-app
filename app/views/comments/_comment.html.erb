@@ -1,99 +1,119 @@
-<% if comment.user == comment.commentable %>
-
-  <div class="text-right" id="message-<%= comment.id %>">
-    <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
-
-    <%= link_to comment_reply_form_path( 
-        comment_id: comment.id, 
-        commentable_id: comment.commentable_id,
-        commentable_type: comment.commentable_type ),
-        remote: true, id: "comment-#{comment.id}" do %>
-      <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
-
-      <span class="comments-count-<%= comment.id %>"><%= comment.replies_count %></span>
-    <% end %>
-
-    <p class="feed-reply feed-owner" id="Comment-<%= comment.id %>">
-      <% if current_user && current_user.id == comment.user_id %>
-        <%= link_to edit_comment_path(comment), remote: true do %>
-          <%= image_tag('icons/pencil.svg', class: "btn-post-edit") %>
-        <% end %>
-
-        <%= link_to comment, method: :delete, remote: true, 
-              data: { confirm: "Are you sure you want to delete your comment?" } do %>
-          <%= image_tag('icons/trash.svg', class: "btn-post-edit") %>
-        <% end %>
-      <% end %>
-
-      &nbsp;
-      <% if comment.edited_at.present? %>
-        <i>edited</i>
-      <% end %>
-
-      <%= comment_with_meta_data(comment.body).html_safe %>
-
-    </p>
-    <%= image_tag(comment.user.avatar.thumb, class: "post-user-avatar") %>
-
-    <div>
-      <% comment.feed_images.each do |image| %>
-        <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
-          <%= image_tag image.image, class: "feed-image mb-2" %>
-        </a>
-      <% end %>
-    </div>
-
-    <% if comment.replies.present? %>
-      <%= render comment.replies.order(created_at: :asc) %>
-    <% end %>
-  </div>
-
-<% else %>
-
-  <div class="nested-messages" id="message-<%= comment.id %>">
-    <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
-    <div class="feed-reply" id="Comment-<%= comment.id %>">
-      <%= comment_with_meta_data(comment.body).html_safe %>
-
-      <% if current_user && current_user.id == comment.user_id %>
-        <%= link_to edit_comment_path(comment), remote: true do %>
-          <%= image_tag('icons/pencil.svg', class: "btn-post-edit") %>
-        <% end %>
-
-        <%= link_to comment, method: :delete, remote: true, 
-              data: { confirm: "Are you sure you want to delete your comment?" } do %>
-          <%= image_tag('icons/trash.svg', class: "btn-post-edit") %>
-        <% end %>
-      <% end %>
-
-      &nbsp;
-      <% if comment.edited_at.present? %>
-        <i>edited</i>
-      <% end %>
-    </div>
-
-    <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
-
-    <%= link_to comment_reply_form_path( 
-        comment_id: comment.id, 
-        commentable_id: comment.commentable_id,
-        commentable_type: comment.commentable_type ),
-        remote: true, id: "comment-#{comment.id}" do %>
-      <%= image_tag 'icons/reply.svg', style: "width: 17px; height: 17px; margin-left: 10px;" %>
-      <span class="comments-count-<%= comment.id %>"><%= comment.replies_count %></span>
-    <% end %>
-
-    <div>
-      <% comment.feed_images.each do |image| %>
-        <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
-          <%= image_tag image.image, class: "feed-image mb-2" %>
-        </a>
-      <% end %>
-    </div>
-
-    <% if comment.replies.present? %>
-      <%= render comment.replies.order(created_at: :asc) %>
-    <% end %>
-  </div>
-
+<% if comment.user == current_user %>
+  <% bg_color = "feed-owner" %>
 <% end %>
+
+<% if comment.user == comment.commentable %>
+  <% to_right = "d-flex flex-row-reverse" %>
+<% end %>
+
+<% if comment.reports.unsolved.present? && current_user && current_user.has_role?(:admin) %>
+  <% unsolved = "comment-unsolved" %>
+<% end %>
+
+<div id="comment-<%= comment.id %>-outer">
+  <div id="comment-<%= comment.id %>-inner" class="comment-inner text-left <%= "#{to_right} #{unsolved}" %>">
+    <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
+
+    <div class="comment-body">
+      <div class="feed-reply <%= bg_color %>">
+        <strong><%= comment.user.name %></strong>
+        <%= comment_with_meta_data(comment.body).html_safe %>
+
+        <% comment.feed_images.each do |image| %>
+          <div>
+            <a href="<%= image.image.url %>" data-lightbox="image-<%=image.id%>">
+              <%= image_tag image.image, class: "feed-image" %>
+            </a>
+          </div>
+        <% end %>
+
+        <% if comment.edited_at.present? %>
+          <i>edited</i>
+        <% end %>
+      </div>
+
+      <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
+
+      <button type="button" data-toggle="collapse" data-target="#comment-<%= comment.id %>-controls" aria-expanded="false" aria-controls="collapseExample" class="jp-release-btn">
+        &middot; &middot; &middot;
+      </button>
+
+      <ul id="comment-<%= comment.id %>-controls" class="collapse comment-controls">
+        <% if current_user && current_user.id == comment.user_id %>
+          <li>
+            <%= link_to edit_comment_path(comment), remote: true do %>
+              Edit
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to comment, method: :delete, remote: true, 
+                  data: { confirm: "Are you sure you want to delete your comment?" } do %>
+              Delete
+            <% end %>
+          </li>
+        <% end %>
+
+        <li>
+          <a href="#" data-toggle="modal" data-target="#report<%= comment.id %>Modal">Report</a>
+
+          <% content_for :body_area do %>
+            <div class="modal modal-blured" id="report<%= comment.id %>Modal" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-wide" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body w-100">
+                    <h5 class="modal-title">Describe the problem</h5>
+
+                    <%= form_tag report_path, remote: true do %>
+                      <%= label_tag :text, "Text", class: "sr-only" %>
+                      <%= text_area_tag :text, nil, class: "form-control mb-1" %>
+                      <%= hidden_field_tag :type, "Comment" %>
+                      <%= hidden_field_tag :id, comment.id %>
+                      <%= hidden_field_tag :id, comment.id %>
+                      <%= submit_tag "Report", class: "btn c-btn-blue" %>
+                    <% end %>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+
+      <div class="comment-substring">
+
+        <strong>
+          <% if current_user %>
+            <% like = current_user.already_liked(comment).present? ? "Unlike" : "Like" %>
+            <a href="#" class="like-comment" data-type="Comment" data-id="<%= comment.id %>" data-like="<%= like %>">
+              <%= like %>
+            </a>
+          <% else %>
+            "Like"
+          <% end %>
+          &middot;
+          <%= link_to comment_reply_form_path( 
+              comment_id: comment.id, 
+              commentable_id: comment.commentable_id,
+              commentable_type: comment.commentable_type ),
+              remote: true, id: "comment-#{comment.id}" do %>
+            Reply
+          <% end %>
+          &middot;
+        </strong>
+
+        <%= time_ago_in_words( comment.created_at ) %>        
+      </div>
+    </div>
+  </div>
+
+  <div class="nested-messages">
+    <%= render comment.replies.order(created_at: :asc) %>
+  </div>
+</div>

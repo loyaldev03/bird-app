@@ -1,32 +1,6 @@
-<% if @comment.parent_id.present? %>
-
-  // $('#comment_body-<%#= @comment.parent_id %>').closest('.feed-item').find('.comments-count').first().text( parseInt( $('#comment_body-<%#= @comment.parent_id %>').closest('.feed-item').find('.comments-count').first().text() ) + 1 );
-  
-  // $('#comment_body-<%= @comment.parent_id %>').val('').closest('.feed-form')
-  //     .before("<%#= escape_javascript(render @comment ) %>").remove();
-
-  // $('#comment-reply-<%#= @comment.parent_id %>').show();
-
-<% else %>
+<% if @comment.parent_id.blank? %>
 
   $('.modal').modal('hide');
-  // $('.feed-block').prepend(`
-  //     <div class="feed-item">
-  //       <%#= escape_javascript(
-  //         render(partial: 'activity/commentable_comment', 
-  //           locals: { 
-  //             activity: { 
-  //               'actor' => @comment.user,
-  //               'foreign_id' => @comment,
-  //               'object' => @comment.commentable,
-  //               'time' => @comment.created_at
-  //             } 
-  //           } 
-  //         )
-  //       ) %>
-  //     </div>
-  //   `);
-
   $('.no-feed-items').remove();
 
 <% end %>

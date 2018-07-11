@@ -1,15 +1,5 @@
-<% if @post.parent_id.present? %>
+<% if @post.parent_id.blank? %>
 
-  $('#post_text-<%= @post.parent_id %>').val('').closest('.feed-form')
-      .before("<%= escape_javascript(render partial: 'posts/reply', locals: {reply: @post} ) %>");
-
-  $('#post_text-<%= @post.parent_id %>').closest('.feed-item').find('.comments-count').first().text( parseInt( $('#post_text-<%= @post.parent_id %>').closest('.feed-item').find('.comments-count').first().text() ) + 1 );
-
-  $('#topic-post-<%= @post.parent_id %>').show().siblings('.feed-form').remove();
-
-<% else %>
-
-  $('.feed-block').prepend("<%= escape_javascript(render(@post)) %>");
   $('#post_text').val('').focus();
   $('.emojionearea-editor').html('');
   var file = $("[type='file']");

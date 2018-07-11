@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   has_many :likes, as: :likeable
+  has_many :reports, as: :reportable
   belongs_to :user
   belongs_to :topic
 
@@ -11,6 +12,7 @@ class Post < ApplicationRecord
 
   after_create :increment_count, :add_points
   after_destroy :decrement_count, :remove_points
+  after_create_commit { CommentRelayJob.perform_later(self) }
 
   attr_accessor :post_hash
 
@@ -30,7 +32,9 @@ class Post < ApplicationRecord
               StreamRails.feed_manager.get_feed('topic', self.topic_id)]
 
     if self.parent_id.present?
-      notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
+      unless self.user_id == self.parent.user_id
+        notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
+      end
       # notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
     end
 

@@ -16,9 +16,6 @@ var button = $('<%= "#like-#{like.likeable_type}-#{like.likeable_id}" %>');
     `);
 <% end %>
 
-  // button.siblings('.likes-count').find('.likes-count-btn').popover({
-  //   trigger: 'focus'
-  // });
 
 <% if action_name == 'create' %>
   button.replaceWith(`

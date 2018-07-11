@@ -31,6 +31,8 @@ gem 'activeadmin_addons'
 gem 'active_admin_flat_skin'
 gem 'active_admin_datetimepicker'
 gem 'activeadmin_quill_editor'
+gem "chartkick"
+gem 'groupdate'
 
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'

@@ -2,6 +2,7 @@ class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :commentable, polymorphic: true
   has_many :likes, as: :likeable
+  has_many :reports, as: :reportable
   belongs_to :parent,  class_name: "Comment", optional: true
   has_many   :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
   
@@ -113,13 +114,13 @@ class Comment < ApplicationRecord
           self.commentable_type != 'User' &&
           self.user.followed( self.commentable ).blank?
         # user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
-        notify_feed = StreamRails.feed_manager.get_notification_feed( self.user_id)
-        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:flat]
+        # notify_feed = StreamRails.feed_manager.get_notification_feed( self.user_id)
+        news_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:flat]
 
         self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
         # user_feed.follow(self.commentable_type.downcase, self.commentable_id)
-        notify_feed.follow(self.commentable_type.downcase, self.commentable_id)
-        news_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        # notify_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        news_feed.follow(self.commentable_type.downcase, self.commentable_id)
       end
     end
 

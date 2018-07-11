@@ -1,16 +1,35 @@
 class CommentRelayJob < ApplicationJob
   def perform(object)
     renderer = CommentsController.renderer_with_signed_in_user(User.find object.user_id)
-    template = renderer.render(partial: 'comments/comment', 
-        locals: { comment: object })
 
-    ActionCable.server.broadcast "#{object.commentable_type.downcase}:#{object.commentable_id}",
+    if object.class.to_s == "Comment"
+
+      template = renderer.render(partial: 'comments/comment', 
+          locals: { comment: object })
+      channel = "#{object.commentable_type.downcase}:#{object.commentable_id}"
+
+    elsif object.class.to_s == "Post" && object.parent_id.present?
+
+      template = renderer.render(partial: 'posts/reply', 
+          locals: { reply: object })
+      channel = "topic:#{object.topic_id}"
+
+    else
+
+      template = renderer.render(partial: 'posts/post', 
+          locals: { post: object })
+      channel = "topic:#{object.topic_id}"
+
+    end
+
+    # logger.warn "===================================="
+    # logger.warn channel
+    # logger.warn "object.parent_id #{object.parent_id}"
+
+    ActionCable.server.broadcast channel,
+      model: object.class.to_s,
       object: template,
       parent_id: object.parent_id
     
-    # ActionCable.server.broadcast "messages:#{comment.message_id}:comments",
-    #   comment: CommentsController.render(partial: 'comments/comment', locals: { comment: comment })
-
-    # ActionCable.server.broadcast 'web_notifications_channel_one', message: '<p>Hello World!</p>'
   end
 end

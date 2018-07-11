@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div id="Comment-<%= activity['foreign_id'].id %>" class="<%= 'feed-replies' unless (!current_user && activity['foreign_id'].replies.empty?) %>">
+  <div id="comment-<%= activity['foreign_id'].id %>-replies" class="<%= 'feed-replies' unless (!current_user && activity['foreign_id'].replies.empty?) %>">
 
     <div class="feed-replies-list">
       <% if activity['foreign_id'].replies.any? %>
@@ -45,7 +45,7 @@
           comment_id: activity['foreign_id'].id, 
           commentable_id: activity['foreign_id'].commentable_id,
           commentable_type: activity['foreign_id'].commentable_type ), 
-        remote: true, class: "btn c-btn-white btn-wide", id: "comment-reply-#{activity['foreign_id'].id}" %>
+        remote: true, class: "btn c-btn-white btn-wide", id: "comment-reply-btn-#{activity['foreign_id'].id}" %>
     <% end %>
   </div>
 

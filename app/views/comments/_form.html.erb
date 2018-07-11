@@ -14,5 +14,6 @@
     <%= render 'layouts/image_attach', object: f %>
 
     <%= f.submit "Send", class: "btn c-btn-blue" %>
+    <span id="chars<%= @comment_hash %>">140</span> characters left
   <% end %>
 </div>

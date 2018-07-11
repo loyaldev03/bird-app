@@ -4,16 +4,12 @@
           ) %>
 
 $('.feed-item .feed-form').remove();
-$("[id^='topic-post']").show();
+$("[id^='topic-post-btn']").show();
 
 <% if Post.find(@post_id).parent_id.blank? %>
-  $('#topic-post-<%= @post_id %>').hide().before(`<%= form %>`);
+  $('#topic-post-btn-<%= @post_id %>').hide().before(`<%= form %>`);
 <% else %>
-  if($('#feed-post-<%= @post_id %>').siblings('.nested-messages').length == 0){
-    $('#feed-post-<%= @post_id %>').closest('div').append(`<%= form %>`);
-  } else {
-    $('#feed-post-<%= @post_id %>').siblings('.nested-messages').before(`<%= form %>`);
-  }
+  $('#comment-<%= @post_id%>-inner').append(`<%= form %>`);
 <% end %>
 
 $("#new_post-<%=@post_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});

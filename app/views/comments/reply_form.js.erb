@@ -4,18 +4,24 @@
           ) %>
 
 $('.feed-item .feed-form').remove();
-$("[id^='comment-reply']").show();
+$("[id^='comment-reply-btn']").show();
 
 <% if Comment.find(@comment_id).parent_id.blank? %>
-  $('#comment-reply-<%= @comment_id %>').hide().before(`<%= form %>`);
+  $('#comment-reply-btn-<%= @comment_id %>').hide().before(`<%= form %>`);
 <% else %>
-  if($('#Comment-<%= @comment_id %>').siblings('.nested-messages').length == 0){
-    $('#Comment-<%= @comment_id %>').closest('div').append(`<%= form %>`);
-  } else {
-    $('#Comment-<%= @comment_id %>').siblings('.nested-messages').before(`<%= form %>`);
-  }
+  $('#comment-<%= @comment_id%>-inner').append(`<%= form %>`);
 <% end %>
 
-$("#new_comment-<%=@comment_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
+$("#new_comment-<%= @comment_hash %> .emoji-area").emojioneArea({
+                  search: false,
+                  recentEmojis: false,
+                  pickerPosition: 'bottom',
+                  events: {
+                    keyup: function (editor, event) {
+                      countChar(editor, '<%= @comment_hash %>');
+                   }
+                 }
+      });
+countChar( $("#new_comment-<%=@comment_hash%> .emojionearea-editor"), '<%= @comment_hash %>' );
 
 dragDropAttach();

@@ -1,9 +1,7 @@
 ActiveAdmin.register Release do
   filter :title
   filter :artist
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
+
   permit_params :title, :artist, :catalog, :text, :avatar, :facebook_img,
     :published_at, :upc_code, :compilation, :release_type, :buy_uri, 
     :release_date, :artist_as_string,

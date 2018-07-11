@@ -1,0 +1,17 @@
+<% for _activity in activity['activities'] %>
+
+  <% if _activity['actor'].try(:id) %>
+    <%= link_to _activity['actor'] do %>
+      <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
+      <%= _activity['actor'].name %>
+    <% end %>
+  <% else %>
+    Unregistered user
+  <% end %>
+
+  <%= link_to admin_reports_path do %>
+    has reported the
+    <%= _activity['object'].class.to_s %>
+  <% end %>
+<br>
+<% end %>

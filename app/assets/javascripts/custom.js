@@ -68,10 +68,9 @@ $(document).on('turbolinks:load', function() {
   });
 
   $('.feed-replies-list').each(function(){
-    $(this).find("[id^='message-']").each(function(){
-      $(this).find("[id^='message-']").hide();
-      $(this).find("[id^='message-']").slice(-3).show();
-    });
+      $(this).find(".comment-inner").hide();
+      $(this).find(".comment-inner").slice(-3).show();
+    // });
   });
 
   $('.show-more-comments').click(function(){
@@ -108,10 +107,18 @@ $(document).on('turbolinks:load', function() {
 
   load_more_feed();
 
+  $('.like-comment').click(function(){
+    var type = $(this).data('type');
+    var id = $(this).data('id');
+    var text = $(this).data('like') == "Like" ? "Unlike" : "Like";
+    $(this).text(text).data('like',text);
+    $("#like-"+type+"-"+id)[0].click();
+    return false;
+  });
 });
 
 var load_more_feed = function(){
-  if($('.feed-block').length > 0 && $('.feed-block').data('feedId') > 0) {
+  if($('.feed-block').length > 0 && $('.feed-block').data('feedId') > 0 && $('.feed-block').data('feed') != "topic") {
 
     var win = $(window);
 
@@ -136,22 +143,25 @@ var load_more_feed = function(){
           case 'announcement':
             feed = "announcement";
             break;
+          default:
+            feed = null;
         }
-        
-        $.ajax({
-          url: '/load_more_feed',
-          dataType: 'script',
-          data: {
-            last_item_id: $('#last-item-id').data('itemId'),
-            feed: feed,
-            feed_id: feedId}
-        })
-          .done( function() {
-            if ($('#loading').length > 0) {
-              load_more_feed();
-              $('#loading').hide();
-            }
-          });
+        if(feed) {
+          $.ajax({
+            url: '/load_more_feed',
+            dataType: 'script',
+            data: {
+              last_item_id: $('#last-item-id').data('itemId'),
+              feed: feed,
+              feed_id: feedId}
+          })
+            .done( function() {
+              if ($('#loading').length > 0) {
+                load_more_feed();
+                $('#loading').hide();
+              }
+            });
+        }
       }
     });
   }
@@ -182,4 +192,18 @@ function dragDropAttach() {
       };
     }
   },200);
+}
+
+function countChar(editor, id) {
+  console.log(editor);
+  console.log(editor.text().length);
+  var len = editor.text().length;
+
+  if (len >= 140) {
+        editor.text( editor.text().substring(0, 140) );
+        $('#chars' + id).text(0);
+  } else {
+       $('#chars' + id).text(140 - len);
+  }
+
 }

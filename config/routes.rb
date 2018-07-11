@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   delete "cancel_subscription", to: "users#cancel_subscription"
   get "home", to: "users#home"
 
+  post "report", to: "home#report"
+
   get "get_feed_token", to: "feeds#get_feed_token"
   get "add_feed_item", to: "feeds#add_feed_item"
   get "add_notify_item", to: "feeds#add_notify_item"

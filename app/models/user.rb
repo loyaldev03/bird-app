@@ -25,12 +25,14 @@ class User < ApplicationRecord
   validates :first_name, presence: true
 
   enum subscription_type: [:member, :vip, :admin]
-  enum subscription_length: [:unknown, :monthly, :yearly, 
+  enum subscription_length: [:unknown, :monthly_old, :yearly_old, 
       :monthly_7, :monthly_10, :yearly_100]
 
   has_many :badge_levels, inverse_of: :user
   has_many :badges, through: :badge_levels
   has_many :badge_points
+
+  has_many :reports
 
   has_many :topics
   has_many :posts

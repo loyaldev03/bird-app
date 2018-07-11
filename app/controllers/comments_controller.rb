@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
         controller: comment.commentable_type.pluralize.downcase, 
         action: action,
         id: comment.commentable_id,
-        anchor: "message-#{comment.id}" ) )
+        anchor: "comment-#{comment.id}-inner" ) )
   end
 
   def create

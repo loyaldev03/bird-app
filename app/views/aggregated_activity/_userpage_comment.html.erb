@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div id="Comment-<%= _activity['foreign_id'].id %>" class="<%= 'feed-replies' unless (!current_user && _activity['foreign_id'].replies.empty?) %>">
+        <div id="comment-<%= _activity['foreign_id'].id %>-replies" class="<%= 'feed-replies' unless (!current_user && _activity['foreign_id'].replies.empty?) %>">
           <div class="feed-replies-list">
             <% if _activity['foreign_id'].replies.any? %>
 
@@ -51,7 +51,7 @@
                 comment_id: _activity['foreign_id'].id, 
                 commentable_id: _activity['foreign_id'].commentable_id,
                 commentable_type: _activity['foreign_id'].commentable_type ), 
-              remote: true, class: "btn c-btn-white btn-wide", id: "comment-reply-#{_activity['foreign_id'].id}" %>
+              remote: true, class: "btn c-btn-white btn-wide", id: "comment-reply-btn-#{_activity['foreign_id'].id}" %>
           <% end %>
         </div>
 
