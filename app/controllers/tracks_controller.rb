@@ -35,6 +35,11 @@ class TracksController < ApplicationController
         playlist = Playlist.find params[:playlist]
       elsif current_user.current_playlist_id.present?
         playlist = current_user.current_playlist
+
+        unless playlist
+          playlist = current_user.playlists.order(updated_at: :desc).first
+          current_user.update_attributes(current_playlist_id: playlist.id)
+        end
       else
         playlist = current_user.playlists.order(updated_at: :desc).first
         current_user.update_attributes(current_playlist_id: playlist.id)
