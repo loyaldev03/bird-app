@@ -30,14 +30,12 @@ class ApplicationController < ActionController::Base
 
   def set_notifications
     if current_user
-      start_time = Time.current
       begin
         feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
         results = feed.get(limit: 20)['results']
       rescue Faraday::Error::ConnectionFailed
         results = []
       end
-      logger.warn "1===========get_notification_feed #{ (Time.current - start_time).to_f.round(4) } secs ============="
 
       results = results.each { |r| r['activities'].delete_if { |a| a['actor'] == "User:#{current_user.id}" } }
       results = results.delete_if { |r| r['activities'].count == 0 }

@@ -13,8 +13,7 @@ class Release < ApplicationRecord
   has_and_belongs_to_many :users
   belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"
 
-  after_create :feed_masterfeed
-  after_save :change_published_date, only: :update
+  after_update :change_published_date
   after_destroy :remove_from_general_feed
 
   accepts_nested_attributes_for :tracks, :allow_destroy => true
@@ -144,7 +143,8 @@ class Release < ApplicationRecord
   
 
   def activity_notify
-    [StreamRails.feed_manager.get_feed( 'general_actions', 1 )]
+    [StreamRails.feed_manager.get_feed( 'general_actions', 1 ),
+     StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
   end
 
   def activity_object
@@ -165,12 +165,6 @@ class Release < ApplicationRecord
     def remove_from_general_feed
       feed = StreamRails.feed_manager.get_feed( 'general_actions', 1 )
       feed.remove_activity("Release:#{self.id}", foreign_id=true)
-    end
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
     end
 
     def change_published_date

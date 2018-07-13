@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Titillium+Web:400,700|Roboto+Mono:400,700");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:400,700,900|Roboto+Mono:400,700");
 
 @mixin btn($b-color,$t-color,$a-color) {
   font-size: 10px;
@@ -81,6 +81,10 @@ button, input[type=submit], a {
     outline: none;
     text-decoration: none;
   }
+}
+
+strong {
+  font-weight: 700;
 }
 
 .notice, .alert {

@@ -5,7 +5,7 @@ class Announcement < ApplicationRecord
   has_many :likes, as: :likeable
   has_many :comments, as: :commentable
 
-  after_create :feed_masterfeed
+
   # after_save :change_published_date, only: :update
 
 
@@ -19,7 +19,8 @@ class Announcement < ApplicationRecord
   end
 
   def activity_notify
-    [StreamRails.feed_manager.get_feed( 'general_actions', 1 )]
+    [StreamRails.feed_manager.get_feed( 'general_actions', 1 ),
+     StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
   end
 
   def activity_object
@@ -40,13 +41,7 @@ class Announcement < ApplicationRecord
   # end
 
   private
-
-    def feed_masterfeed
-      feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
-      activity = create_activity
-      feed.add_activity(activity)
-    end
-
+  
     # def change_published_date
     #   if published_at_changed?
     #     feed = StreamRails.feed_manager.get_feed( 'general_actions', 1 )

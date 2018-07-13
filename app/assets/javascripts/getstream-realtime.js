@@ -1,20 +1,11 @@
 var current_feed, current_notify;
-$(document).on('turbolinks:before-visit', function() {
-  if (typeof current_feed !== 'undefined' ) {
-    current_feed.unsubscribe();    
-  }
-
-  if (typeof current_notify !== 'undefined' ) {
-    current_notify.unsubscribe();    
-  }
-});
 
 $(document).on('turbolinks:load', function() {
   var feedId = $('.feed-block').data('feedId');
   var feed = $('.feed-block').data('feed');
   var userId = $('.dropdown-notify-menu').data('currentUser');
 
-
+  
   $.ajax({
     url: '/get_feed_token',
     dataType: 'JSON',
@@ -22,14 +13,27 @@ $(document).on('turbolinks:load', function() {
   })
     .done(function(respond) {
       var client = stream.connect(respond.key, null, respond.app_id);
+      var feed_not_set = false;
 
-      if(feed && feed != "topic") {
+      if (typeof current_feed === 'undefined') { feed_not_set = true }
+      if (typeof current_feed !== 'undefined') {
+        if (current_feed.id !== feed + ":" + feedId ) {
+          feed_not_set = true;
+        }
+      }
+
+      if(feed && feed != "topic" && feed_not_set) {
         current_feed = client.feed(feed, feedId, respond.token);
         current_feed.subscribe(feedCallback).then(feedSuccessCallback, feedFailCallback);
       }
 
-      current_notify = client.feed('notification', userId, respond.notify_token);
-      current_notify.subscribe(notifyCallback).then(notifySuccessCallback, notifyFailCallback);
+      if (typeof current_notify === 'undefined') {
+        console.log('CURRENT_NOTIFY');
+        current_notify = client.feed('notification', userId, respond.notify_token);
+        current_notify.subscribe(notifyCallback).then(notifySuccessCallback, notifyFailCallback);
+      }
+
+      // console.log(current_notify);
 
     });
 
@@ -56,6 +60,7 @@ $(document).on('turbolinks:load', function() {
   }
 
   function notifyCallback(data) {
+    console.log(data);
     data.new.forEach(function(item){
       $.ajax({
         url: '/add_notify_item',

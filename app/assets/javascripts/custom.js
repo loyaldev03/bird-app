@@ -6,6 +6,12 @@ $(document).on('turbolinks:load', function() {
   $('.start-subscription').click(function(e) {
     e.preventDefault();
     $('#payment-user-info').removeClass('d-none');
+    $("html, body").animate({ scrollTop: $("#billing-information").offset().top - 120 }, 500);
+    if ($(this).hasClass('pro')) {
+      $('#subscription_monthly_10').prop('checked', true);
+    } else {
+      $('#subscription_monthly_7').prop('checked', true);
+    }
   });
 
   const notify = (selector) => {
@@ -107,7 +113,7 @@ $(document).on('turbolinks:load', function() {
 
   load_more_feed();
 
-  $('.like-comment').click(function(){
+  $('.feed-block').on('click', '.like-comment', function(){
     var type = $(this).data('type');
     var id = $(this).data('id');
     var text = $(this).data('like') == "Like" ? "Unlike" : "Like";

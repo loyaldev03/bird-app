@@ -1,3 +1,95 @@
+<div class="tariff text-center">
+  <%= image_tag 'birdfeed-pay.png' %>
+  
+  <div class="row mx-lg-4 mt-2">
+    <div class="col-lg-4">
+      <%= link_to root_path do %>
+        <div class="tariff-item">
+          <h2 class="tariff-title">FREEBIRD</h2>
+          <div class="tariff-price">Free</div>
+          <div class="tariff-thesis">Community no Play</div>
+          
+          <ul class="tariff-points">
+            <li>No Badges </li>
+            <li>No Points ranking</li>
+            <li>No commenting on or liking on forum posts </li>
+            <li>No access to artist feeds</li>
+            <li>30 second track previews  </li>
+            <li>No downloading </li>
+            <li>No playlist creation </li>
+            <li>No custom profile feed</li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-lg-4">
+      <%= link_to "#", class: "start-subscription" do %>
+        <div class="tariff-item">
+          <h2 class="tariff-title">STREAMBIRD</h2>
+          <div class="tariff-price">$6.99 Per Month / $75 Annual</div>
+          <div class="tariff-thesis">As a paid member you will receive:</div>
+          
+          <ul class="tariff-points">
+            <li>Music Downloads </li>
+            <li>Dirtybird music releases before they’re available to the public </li>
+            <li>Birdfeed exclusive Dirtybird releases  </li>
+            <li>Up to 3 months worth of Dirtybird releases archive</li>
+            <li>2 Dirtybird back catalog releases per month</li>
+            <li>Access to </li>
+            <li>Early access to lowest tier tickets for Dirtybird events (sometimes free tickets)</li>
+            <li>Event ticket discounts (sometimes free tickets) Aundy: Early access to lowest tier tickets for Dirtybird events </li>
+            <li>Meet and greets with the artists </li>
+            <li>Discounts on label merchandise.</li>
+            <li>Interact and engage your community of fans  </li>
+            <li>And:</li>
+            <li>Unique badges for usage</li>
+            <li>A overall fan rank</li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-lg-4">
+      <%= link_to "#", class: "start-subscription pro" do %>
+        <div class="tariff-item">
+          <h2 class="tariff-title">DOWNLOAD</h2>
+          <div class="tariff-price">$15.99 Per Month / $175 Annual</div>
+          <div class="tariff-thesis">As a paid member you will receive:</div>
+          
+          <ul class="tariff-points">
+            <li>Music Downloads </li>
+            <li>Dirtybird music releases before they’re available to the public </li>
+            <li>Birdfeed exclusive Dirtybird releases  </li>
+            <li>Up to 3 months worth of Dirtybird releases archive</li>
+            <li>2 Dirtybird back catalog releases per month</li>
+            <li>Access to </li>
+            <li>Early access to lowest tier tickets for Dirtybird events (sometimes free tickets)</li>
+            <li>Event ticket discounts (sometimes free tickets) Aundy: Early access to lowest tier tickets for Dirtybird events </li>
+            <li>Meet and greets with the artists </li>
+            <li>Discounts on label merchandise.</li>
+            <li>Interact and engage your community of fans  </li>
+            <li>And:</li>
+            <li>Unique badges for usage</li>
+            <li>A overall fan rank</li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tariff-bottom">
+    <h3>
+      You can quit at any time
+    </h3>
+    <p>
+      You will be downgraded to a Chirp Free user <br>
+      You’re points and badges will be reset <br>
+      You will keep the feeds you follow although you won’t be able to see them. 
+    </p>
+  </div>
+</div>
+
 <%= render 'devise/shared/billing_info' %>
 
 <div id="payment-user-info" class="d-none mt-2">

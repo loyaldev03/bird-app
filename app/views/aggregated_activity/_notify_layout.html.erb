@@ -43,7 +43,9 @@
         <% when "Post" %>
           your comment "<%= activity['activities'][0]['object'].text.truncate(15) %>"
         <% when "Topic" %>
-          you on topic "<%= activity['activities'][0]['object'].title.truncate(15) %>"
+          you
+          "<%= activity['activities'][0]['object'].try(:text).try(:truncate, 15) %>"
+          on topic "<%= activity['activities'][0]['object'].title.truncate(15) %>"
         <% when "Release" %>
           you on release "<%= activity['activities'][0]['object'].title.truncate(15) %>"
         <% when "User" %>

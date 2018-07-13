@@ -97,7 +97,7 @@ class TracksController < ApplicationController
       current_track = { index: 0, time: 0 }
 
       if current_user
-        Playlist.create(
+        playlist = Playlist.create(
           user: current_user, 
           tracks: tracks.map{|t| t[:id]}.join(','), 
           current_track: "0:0" )

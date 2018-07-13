@@ -27,7 +27,7 @@
       <% else %>
         <div class="user-since">
           <%= image_tag 'icons/user-logo-icon.svg' %>
-          <%= link_to choose_profile_path do %>
+          <%= link_to choose_profile_path(anchor: 'billing-information') do %>
             <%= @user.subscriber_type %>
             <!-- CHIRP  -->
             <%# if @user.braintree_subscription_expires_at && 

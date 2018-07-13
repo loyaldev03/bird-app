@@ -533,11 +533,13 @@ class User < ApplicationRecord
 
     def follow_general_actions
       notification_feed = StreamRails.feed_manager.get_notification_feed(self.id)
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:aggregated]
       news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:flat]
       user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated',self.id)
 
       notification_feed.follow('general_actions', 1)
       news_feed.follow('general_actions', 1)
+      news_aggregated_feed.follow('timeline', self.id)
       user_aggregated_feed.follow('user', self.id)
     end
 end
