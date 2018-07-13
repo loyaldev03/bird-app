@@ -51,6 +51,7 @@ gem 'bulk_insert'
 gem 'transloadit'
 gem 'braintree'
 gem 'metainspector'
+gem "verbs"
 
 gem 'exception_notification'
 gem 'slack-notifier'

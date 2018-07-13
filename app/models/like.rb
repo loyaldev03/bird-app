@@ -3,7 +3,7 @@ class Like < ApplicationRecord
   belongs_to :likeable, polymorphic: true
   
   after_create :add_points, :trigger_likes_count
-  after_destroy :trigger_likes_count, :remove_points, :remove_from_aggregated_feed
+  after_destroy :trigger_likes_count, :remove_points, :remove_from_feed
 
   
   include StreamRails::Activity
@@ -19,7 +19,7 @@ class Like < ApplicationRecord
       end
     elsif self.likeable.try(:user)
 
-      unless self.likeable.user.id != self.user_id
+      if self.likeable.user.id != self.user_id
         notify << StreamRails.feed_manager.get_notification_feed(self.likeable.user.id)
         notify << StreamRails.feed_manager.get_news_feeds(self.likeable.user.id)[:flat]
       end
@@ -46,7 +46,7 @@ class Like < ApplicationRecord
       self.user.change_points( 'like', self.likeable_type, :destroy )
     end
 
-    def remove_from_aggregated_feed
+    def remove_from_feed
       feed = StreamRails.feed_manager.get_user_feed(self.user_id)
       feed.remove_activity("Like:#{self.id}", foreign_id=true)
     end

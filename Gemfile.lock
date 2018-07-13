@@ -945,6 +945,9 @@ GEM
       unf_ext
     unf_ext (0.0.7.5)
     unicode_utils (1.4.0)
+    verbs (2.1.4)
+      activesupport (>= 2.3.4)
+      i18n
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.5.1)
@@ -1014,6 +1017,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
+  verbs
   web-console (>= 3.3.0)
 
 RUBY VERSION

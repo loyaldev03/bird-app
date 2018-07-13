@@ -14,27 +14,27 @@ $(document).on('turbolinks:load', function() {
   var feed = $('.feed-block').data('feed');
   var userId = $('.dropdown-notify-menu').data('currentUser');
 
-  if(feed && feed != "topic") {
 
-    $.ajax({
-      url: '/get_feed_token',
-      dataType: 'JSON',
-      data: { feed: feed, feed_id: feedId, user_id: userId }
-    })
-      .done(function(respond) {
-        var client = stream.connect(respond.key, null, respond.app_id);
+  $.ajax({
+    url: '/get_feed_token',
+    dataType: 'JSON',
+    data: { feed: feed, feed_id: feedId, user_id: userId }
+  })
+    .done(function(respond) {
+      var client = stream.connect(respond.key, null, respond.app_id);
 
+      if(feed && feed != "topic") {
         current_feed = client.feed(feed, feedId, respond.token);
         current_feed.subscribe(feedCallback).then(feedSuccessCallback, feedFailCallback);
+      }
 
-        current_notify = client.feed('notification', userId, respond.notify_token);
-        current_notify.subscribe(notifyCallback).then(notifySuccessCallback, notifyFailCallback);
-      });
+      current_notify = client.feed('notification', userId, respond.notify_token);
+      current_notify.subscribe(notifyCallback).then(notifySuccessCallback, notifyFailCallback);
 
-  }
+    });
+
 
   function feedCallback(data) {
-    console.log(data);
     if ( data.feed == feed+':'+feedId ) {
       data.new.forEach(function(item){
         $.ajax({
@@ -56,7 +56,6 @@ $(document).on('turbolinks:load', function() {
   }
 
   function notifyCallback(data) {
-    console.log(data);
     data.new.forEach(function(item){
       $.ajax({
         url: '/add_notify_item',
@@ -74,4 +73,14 @@ $(document).on('turbolinks:load', function() {
     // console.log('failCallback');
     // console.log(data);
   }
+
+  $('.notify-list').on('click', '.notify-link', function(){
+    var feedGroupId = $(this).data('feedGroupId');
+
+    $.ajax({
+      url: '/is_read',
+      dataType: 'JSON',
+      data: { feed_group_id: feedGroupId }
+    })
+  });
 });

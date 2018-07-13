@@ -38,17 +38,13 @@ class Comment < ApplicationRecord
         notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
       end
 
-    elsif self.commentable_type == "User" && self.commentable_id != self.user_id
-      notify << StreamRails.feed_manager.get_notification_feed(self.commentable_id)
     end
 
     
-
     if self.parent_id.present?
 
       unless self.user_id == self.parent.user_id
         notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
-        # notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
       end
 
     else

@@ -93,15 +93,26 @@
                 <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <%= image_tag "icons/icon-notifications.svg" %>
                   <% if @unseen_count && @unseen_count > 0 %>
-                    <span class="nav-notify-count"><%= @unseen_count %></span>
+                    <span class="nav-notify-count">
+                      <%= @unseen_count < 10 ? @unseen_count : "9+" %>
+                    </span>
                   <% end %>
                 </a>
+
                 <div class="dropdown-menu dropdown-menu-right">
-                  <%= render 'feeds/notify' %>
+                  <div class="notify-menu-header">
+                    <h5>NOTIFICATIONS</h5>
+                    <%= link_to "Mark as read", is_read_path, 
+                        class: "is-read-btn", remote: true %>
+                  </div>
+
+                  <div class="notify-list">
+                    <%= render 'feeds/notify' %>
+                  </div>
                 </div>
               </li>
-
             </div>
+
             <li class="nav-item dropdown dropdown-usermenu">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= image_tag "icons/icon-chevron.svg" %>
@@ -182,7 +193,7 @@
         <div class="modal-body">
           <h5 class="modal-title">Welcome to BirdFeed</h5>
           <p class="modal-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <% #TODO write text here %>
           </p>
           <%= link_to user_facebook_omniauth_authorize_path, 
               class: "modal-button btn-bg-blue" do %>

@@ -9,7 +9,7 @@ $("[id^='topic-post-btn']").show();
 <% if Post.find(@post_id).parent_id.blank? %>
   $('#topic-post-btn-<%= @post_id %>').hide().before(`<%= form %>`);
 <% else %>
-  $('#comment-<%= @post_id%>-inner').append(`<%= form %>`);
+  $('#comment-<%= @post_id%>-outer').append(`<%= form %>`);
 <% end %>
 
 $("#new_post-<%=@post_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});

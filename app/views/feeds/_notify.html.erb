@@ -1,5 +1,3 @@
 <% for activity in @notify_activities %>
-  <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
-    <%= render_activity(activity, prefix: 'notify') %>
-  </div>
+  <%= render_activity(activity, prefix: 'notify') %>
 <% end %>

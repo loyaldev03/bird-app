@@ -109,7 +109,7 @@ class HomeController < ApplicationController
     admins = User.with_role(:admin)
 
     admins.each do |user|
-      next if current_user && user.id = current_user.id
+      next if current_user && user.id == current_user.id
 
       feed = StreamRails.feed_manager.get_notification_feed( user.id )
 

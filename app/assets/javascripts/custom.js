@@ -195,8 +195,6 @@ function dragDropAttach() {
 }
 
 function countChar(editor, id) {
-  console.log(editor);
-  console.log(editor.text().length);
   var len = editor.text().length;
 
   if (len >= 140) {

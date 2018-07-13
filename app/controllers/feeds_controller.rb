@@ -13,9 +13,24 @@ class FeedsController < ApplicationController
     render json: {}, status: :ok
   end
 
+  def is_read
+    mark = params[:feed_group_id].present? ? [params[:feed_group_id]] : true
+    begin
+      feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
+      results = feed.get(mark_read: mark)
+    rescue Faraday::Error::ConnectionFailed
+      results = []
+    end
+
+  end
+
   def get_feed_token
-    token = StreamRails.feed_manager.client.feed(params[:feed], params[:feed_id]).readonly_token
+    if params[:feed].present?
+      token = StreamRails.feed_manager.client.feed(params[:feed], params[:feed_id]).readonly_token
+    end
+
     notify_token = StreamRails.feed_manager.client.feed('notification', params[:user_id]).readonly_token
+    
     render json: { 
                     token: token, 
                     key: ENV['STREAM_API_KEY'], 

@@ -22,10 +22,6 @@ class CommentRelayJob < ApplicationJob
 
     end
 
-    # logger.warn "===================================="
-    # logger.warn channel
-    # logger.warn "object.parent_id #{object.parent_id}"
-
     ActionCable.server.broadcast channel,
       model: object.class.to_s,
       object: template,

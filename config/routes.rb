@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get "add_notify_item", to: "feeds#add_notify_item"
   get "load_more_feed", to: "feeds#load_more"
   get "is_seen", to: "feeds#is_seen"
+  get "is_read", to: "feeds#is_read"
 
   get "chirp_feed", to: "users#chirp_feed"
   get "release_feed", to: "users#release_feed"

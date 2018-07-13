@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
     def set_notification
          request.env['exception_notifier.exception_data'] = {
           "server" => request.env['SERVER_NAME'],
-          "current_user" => current_user
+          "current_user" => "#{current_user.try(:id)} #{current_user.try(:name)} #{current_user.try(:subscription_length)}"
         }
     end
 

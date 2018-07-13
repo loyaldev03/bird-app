@@ -23,4 +23,3 @@ jQuery(document).on 'turbolinks:load', ->
         $('.feed-replies-list .feed-form').remove()
         $('.feed-replies-list').next('.feed-form').remove()
 
-  # console.log(cable)

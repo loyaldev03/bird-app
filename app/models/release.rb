@@ -15,6 +15,7 @@ class Release < ApplicationRecord
 
   after_create :feed_masterfeed
   after_save :change_published_date, only: :update
+  after_destroy :remove_from_general_feed
 
   accepts_nested_attributes_for :tracks, :allow_destroy => true
 
@@ -140,6 +141,7 @@ class Release < ApplicationRecord
 
     steps
   end
+  
 
   def activity_notify
     [StreamRails.feed_manager.get_feed( 'general_actions', 1 )]
@@ -159,6 +161,11 @@ class Release < ApplicationRecord
   end
 
   private
+
+    def remove_from_general_feed
+      feed = StreamRails.feed_manager.get_feed( 'general_actions', 1 )
+      feed.remove_activity("Release:#{self.id}", foreign_id=true)
+    end
 
     def feed_masterfeed
       feed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )

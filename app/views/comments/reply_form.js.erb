@@ -9,7 +9,7 @@ $("[id^='comment-reply-btn']").show();
 <% if Comment.find(@comment_id).parent_id.blank? %>
   $('#comment-reply-btn-<%= @comment_id %>').hide().before(`<%= form %>`);
 <% else %>
-  $('#comment-<%= @comment_id%>-inner').append(`<%= form %>`);
+  $('#comment-<%= @comment_id%>-outer').append(`<%= form %>`);
 <% end %>
 
 $("#new_comment-<%= @comment_hash %> .emoji-area").emojioneArea({
