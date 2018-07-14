@@ -65,6 +65,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @data_feed = current_user.id == @user.id ? "timeline_aggregated" : "user"
 
     fan_vars
 
@@ -129,62 +130,63 @@ class UsersController < ApplicationController
     @tracks = @user.releases_tracks
   end
 
-  def interviews_feed
-    @user = User.find(params[:id])
+  # def interviews_feed
+  #   @user = User.find(params[:id])
 
-    authorize! :read, @user
+  #   authorize! :read, @user
 
-    artist_vars
+  #   artist_vars
 
-    get_feed_from @user.announcements, "Announcement"
+  #   get_feed_from @user.announcements, "Announcement"
 
-    render :home
-  end
+  #   render :home
+  # end
 
-  def videos_feed
-    @user = User.find(params[:id])
+  # def videos_feed
+  #   @user = User.find(params[:id])
 
-    authorize! :read, @user
+  #   authorize! :read, @user
 
-    artist_vars
+  #   artist_vars
 
-    get_feed_from @user.videos, "Addvideo"
+  #   get_feed_from @user.videos, "Addvideo"
 
-    render :home
-  end
+  #   render :home
+  # end
 
-  def others_feed
-    @user = User.find(params[:id])
+  # def others_feed
+  #   @user = User.find(params[:id])
 
-    authorize! :read, @user
+  #   authorize! :read, @user
 
-    artist_vars
+  #   artist_vars
 
-    begin
-      feed = StreamRails.feed_manager.get_notification_feed(@user.id)
-      results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
-      results = []
-    end
+  #   begin
+  #     feed = StreamRails.feed_manager.get_notification_feed(@user.id)
+  #     results = feed.get()['results']
+  #   rescue Faraday::Error::ConnectionFailed
+  #     results = []
+  #   end
     
-    unseen = results.select { |r| r['is_seen'] == false }
-    @unseen_count = unseen.count
+  #   unseen = results.select { |r| r['is_seen'] == false }
+  #   @unseen_count = unseen.count
 
-    if @unseen_count <= 8
-      @activities = @enricher.enrich_aggregated_activities(results[0..7])
-    else
-      @activities = @enricher.enrich_aggregated_activities(unseen)
-    end
+  #   if @unseen_count <= 8
+  #     @activities = @enricher.enrich_aggregated_activities(results[0..7])
+  #   else
+  #     @activities = @enricher.enrich_aggregated_activities(unseen)
+  #   end
 
-    if @user.has_role?(:artist)
-      render :artist 
-    else
-      render :show
-    end
-  end
+  #   if @user.has_role?(:artist)
+  #     render :artist 
+  #   else
+  #     render :show
+  #   end
+  # end
 
   def announcement_feed
     @user = current_user
+    @data_feed = 'announcement_user_feed'
     fan_vars
 
     begin
@@ -194,13 +196,14 @@ class UsersController < ApplicationController
       results = []
     end
 
-    @activities = @enricher.enrich_activities(results)
+    @activities = @enricher.enrich_aggregated_activities(results)
 
     render :show
   end
 
   def release_feed
     @user = current_user
+    @data_feed = 'release_user_feed'
     fan_vars
 
     begin
@@ -210,7 +213,7 @@ class UsersController < ApplicationController
       results = []
     end
 
-    @activities = @enricher.enrich_activities(results)
+    @activities = @enricher.enrich_aggregated_activities(results)
 
     render :show
   end
@@ -224,37 +227,37 @@ class UsersController < ApplicationController
     render :show
   end
 
-  def artists_feed
-    @user = current_user
-    fan_vars
+  # def artists_feed
+  #   @user = current_user
+  #   fan_vars
 
-    begin
-      feed = StreamRails.feed_manager.get_news_feeds(@user.id)[:flat]
-      results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
-      results = []
-    end
+  #   begin
+  #     feed = StreamRails.feed_manager.get_news_feeds(@user.id)[:flat]
+  #     results = feed.get()['results']
+  #   rescue Faraday::Error::ConnectionFailed
+  #     results = []
+  #   end
 
-    @activities = @enricher.enrich_activities(results).select { |a| a['actor'].has_role?(:artist) }
+  #   @activities = @enricher.enrich_activities(results).select { |a| a['actor'].has_role?(:artist) }
 
-    render :show
-  end
+  #   render :show
+  # end
 
-  def friends_feed
-    @user = current_user
-    fan_vars
+  # def friends_feed
+  #   @user = current_user
+  #   fan_vars
 
-    begin
-      feed = StreamRails.feed_manager.get_news_feeds(@user.id)[:flat]
-      results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
-      results = []
-    end
+  #   begin
+  #     feed = StreamRails.feed_manager.get_news_feeds(@user.id)[:flat]
+  #     results = feed.get()['results']
+  #   rescue Faraday::Error::ConnectionFailed
+  #     results = []
+  #   end
 
-    @activities = @enricher.enrich_activities(results).select { |a| !a['actor'].has_role?(:artist) }
+  #   @activities = @enricher.enrich_activities(results).select { |a| !a['actor'].has_role?(:artist) }
 
-    render :show
-  end
+  #   render :show
+  # end
 
   def artist_vars
     @followers = @user.followers

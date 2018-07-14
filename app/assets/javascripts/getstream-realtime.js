@@ -36,6 +36,7 @@ $(document).on('turbolinks:load', function() {
 
 
   function feedCallback(data) {
+    console.log(data);
     if ( data.feed == feed+':'+feedId ) {
       data.new.forEach(function(item){
         $.ajax({

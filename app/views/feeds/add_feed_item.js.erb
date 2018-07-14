@@ -1,8 +1,8 @@
-<% renderer = (@feed == 'user' || @feed == 'timeline') ? "aggregated_activity/userpage_#{ @new_item }" : "activity/commentable_#{ @new_item }" %>
+var feed = $('.feed-block').data('feed');
+var feedId = $('.feed-block').data('feedId');
 
-$('.feed-block').prepend(`
-    <%= escape_javascript(
-      render(partial: renderer, 
-        locals: { activity: @activity } )
-    ) %>
-  `);
+if (feed == '<%= @feed %>' && feedId == '<%= @feed_id %>' ) {
+  $('.feed-block').prepend(`<%= @feed_item %>`);
+
+  $('.no-feed-items').remove();
+}

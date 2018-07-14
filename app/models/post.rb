@@ -82,6 +82,10 @@ class Post < ApplicationRecord
 
         self.user.follows.create(followable_id: self.topic_id, followable_type: "Topic")
         news_aggregated_feed.follow('topic', self.topic_id)
+
+        feed_for_tab = StreamRails.feed_manager
+            .get_feed("topic_user_feed", self.user_id)
+        feed_for_tab.follow( 'topic', self.topic_id )
       end
     end
 

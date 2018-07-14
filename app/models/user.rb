@@ -509,28 +509,42 @@ class User < ApplicationRecord
   end
 
 
-  def self.batch_follow_to_general_actions offset=0, id=nil
+  def self.batch_follow_to_general_actions id=nil
     if id
-      users = [User.find_by_id(id)]
+        StreamRails.feed_manager.client
+            .follow_many( User.intital_payload([User.find_by_id(id)]) )
     else
-      users = all.order(id: :asc).offset(offset).limit(500)
+      find_in_batches(start: 0, batch_size: 200) do |group|
+        StreamRails.feed_manager.client.follow_many( User.intital_payload(group) )
+      end
     end
 
+    User.with_role(:admin).each do |user|
+      notify_feed = StreamRails.feed_manager.get_notification_feed( user.id )
+      notify_feed.unfollow('release_create', '1')
+      notify_feed.unfollow('announcement_create', '1')
+    end
+
+  end
+
+  def follow_general_actions
+    batch_follow_to_general_actions self.id
+  end
+
+  def self.intital_payload group
     payload = []
-    users.each do |user|
+    group.each do |user|
       payload << { source: "notification:#{user.id}", target: 'release_create:1' }
       payload << { source: "notification:#{user.id}", target: 'announcement_create:1' }
       payload << { source: "timeline_aggregated:#{user.id}", target: 'release_create:1' }
       payload << { source: "timeline_aggregated:#{user.id}", target: 'announcement_create:1' }
+      payload << { source: "release_user_feed:#{user.id}", target: 'release_create:1' }
+      payload << { source: "announcement_user_feed:#{user.id}", target: 'announcement_create:1' }
       payload << { source: "timeline_aggregated:#{user.id}", target: "timeline:#{user.id}" }
       payload << { source: "user_aggregated:#{user.id}", target: "user:#{user.id}" }
     end
 
-    StreamRails.feed_manager.client.follow_many(payload)
-  end
-
-  def follow_general_actions
-    batch_follow_to_general_actions 0, self.id
+    payload
   end
 
   private

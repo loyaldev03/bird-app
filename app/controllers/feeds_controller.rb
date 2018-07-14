@@ -43,8 +43,15 @@ class FeedsController < ApplicationController
     params.permit!
     @new_item = params['new_item']['verb'].downcase
     @feed = params['feed']
+    @feed_id = params['feed_id']
 
-    if @feed == 'user' || @feed == 'timeline'
+    sleep 2 #somehow enricher can't find release at once
+
+    if @feed == 'user' || 
+          @feed == 'timeline' || 
+          @feed == 'timeline_aggregated' ||
+          @feed == 'release_user_feed' ||
+          @feed == 'announcement_user_feed'
       @user = User.find_by_id params['feed_id']
 
       @activity = @enricher.enrich_aggregated_activities([
@@ -52,10 +59,16 @@ class FeedsController < ApplicationController
           "activities" => [params['new_item']],
           "activity_count" => 1}
       ]).first
+
+      @feed_item = render_to_string(partial: "aggregated_activity/userpage_#{ @new_item }", 
+          locals: { activity: @activity } )
     else
       @activity = @enricher.enrich_activities([
         params['new_item']
       ]).first
+
+      @feed_item = render_to_string(partial: "activity/commentable_#{ @new_item }", 
+          locals: { activity: @activity } )
     end
 
   end
@@ -64,11 +77,14 @@ class FeedsController < ApplicationController
     params.permit!
     @new_item = params['new_item']['verb'].downcase
 
+    sleep 2 #somehow enricher can't find release at once
+
     @activity = @enricher.enrich_aggregated_activities([
       { "updated_at" => params['new_item']['time'], 
         "activities" => [params['new_item']],
-        "activity_count" => 1}
+        "activity_count" => 1 }
     ]).first
+
   end
 
   def load_more

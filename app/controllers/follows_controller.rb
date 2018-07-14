@@ -11,11 +11,14 @@ class FollowsController < ApplicationController
     follow.user_id = current_user.id
 
     if follow.save
-      # user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
       news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
-      
-      # user_feed.follow( 'user', follow.followable_id )
       news_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
+      
+      unless follow.followable_type == "User"
+        feed_for_tab = StreamRails.feed_manager
+            .get_feed("#{follow.followable_type}_user_feed", follow.user_id)
+        feed_for_tab.follow( follow.followable_type.downcase, follow.followable_id )
+      end
     end
 
     render 'toggle_follow', locals: {
@@ -32,11 +35,14 @@ class FollowsController < ApplicationController
     if follow.user_id == current_user.id
       follow.destroy!
 
-      # user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
       news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
-      
-      # user_feed.unfollow( 'user', follow.followable_id )
       news_aggregated_feed.unfollow( follow.followable_type.downcase, follow.followable_id )
+
+      unless follow.followable_type == "User"
+        feed_for_tab = StreamRails.feed_manager
+            .get_feed("#{follow.followable_type}_user_feed", follow.user_id)
+        feed_for_tab.unfollow( follow.followable_type.downcase, follow.followable_id )
+      end
     end
 
     render 'toggle_follow', locals: {

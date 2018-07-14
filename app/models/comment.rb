@@ -101,7 +101,7 @@ class Comment < ApplicationRecord
         actor: "User:#{self.user_id}",
         verb: "Comment",
         object: "#{self.commentable_type}:#{self.commentable_id}",
-        foreign_id: "Release:#{self.id}",
+        foreign_id: "Comment:#{self.id}",
         time: DateTime.now.iso8601
       }
 
@@ -120,6 +120,12 @@ class Comment < ApplicationRecord
 
         self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
         news_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
+
+        unless self.commentable_type == "User"
+          feed_for_tab = StreamRails.feed_manager
+              .get_feed("#{self.commentable_type.downcase}_user_feed", self.user_id)
+          feed_for_tab.follow( self.commentable_type.downcase, self.commentable_id )
+        end
       end
     end
 

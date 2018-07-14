@@ -30,7 +30,7 @@ class Announcement < ApplicationRecord
         verb: "Release",
         object: "Announcement:#{self.id}",
         foreign_id: "Announcement:#{self.id}",
-        time: published_at.iso8601
+        time: DateTime.now.iso8601
       }
 
       announcement_create_feed.add_activity(activity)

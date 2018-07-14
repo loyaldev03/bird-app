@@ -15,7 +15,7 @@ class Follow < ApplicationRecord
     
     if self.followable_type == 'User'
       notify << StreamRails.feed_manager.get_notification_feed(self.followable_id)
-      notify << StreamRails.feed_manager.get_news_feeds(self.followable_id)[:flat]
+      # notify << StreamRails.feed_manager.get_news_feeds(self.followable_id)[:flat]
     end
 
     notify

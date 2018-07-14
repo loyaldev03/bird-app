@@ -112,9 +112,7 @@
 
     <% else %>
 
-        <%= _activity['verb'] %>
-        <%= _activity['object'].class.to_s %>
-        <%= _activity['foreign_id'].class.to_s %>
+      <% logger.warn "#{_activity['verb'].try(:id)}:#{_activity['verb']} #{_activity['object'].try(:id)}:#{_activity['object']} #{_activity['foreign_id'].try(:id)}:#{_activity['foreign_id']}" %>
 
     <% end %>
 

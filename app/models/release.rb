@@ -156,6 +156,11 @@ class Release < ApplicationRecord
         time: published_at.iso8601
       }
 
+      self.users.each do |user|
+        user_feed = StreamRails.feed_manager.get_user_feed( user.id )
+        user_feed.add_activity(activity)
+      end
+
       release_create_feed.add_activity(activity)
       masterfeed.add_activity(activity)
     end
@@ -169,6 +174,11 @@ class Release < ApplicationRecord
       if published_at_changed?
         feed = StreamRails.feed_manager.get_feed( 'release_create', 1 )
         feed.remove_activity("Release:#{self.id}", foreign_id=true)
+
+        self.users.each do |user|
+          user_feed = StreamRails.feed_manager.get_user_feed( user.id )
+          user_feed.remove_activity("Release:#{self.id}", foreign_id=true)
+        end
 
         activity = {
           actor: "User:#{User.with_role(:admin).first.id}",

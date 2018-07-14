@@ -1,3 +1,5 @@
+<div id="last-item-id" data-item-id="<%= @activities.last["id"] %>" style="display: none;"></div>
+
 <% for activity in @activities %>
   <div class="feed-item">
     <%= render_activity activity %>
