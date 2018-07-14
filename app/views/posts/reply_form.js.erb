@@ -12,6 +12,8 @@ $("[id^='topic-post-btn']").show();
   $('#comment-<%= @post_id%>-outer').append(`<%= form %>`);
 <% end %>
 
+$("html, body").animate({ scrollTop: $("#new_post-<%= @post_hash %>").offset().top - 320 }, 500);
+
 $("#new_post-<%=@post_hash%> .emoji-area").emojioneArea({search: false, recentEmojis: false});
 
 dragDropAttach();

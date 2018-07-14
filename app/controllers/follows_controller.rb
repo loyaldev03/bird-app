@@ -11,10 +11,10 @@ class FollowsController < ApplicationController
     follow.user_id = current_user.id
 
     if follow.save
-      user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
-      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:flat]
+      # user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
       
-      user_feed.follow( 'user', follow.followable_id )
+      # user_feed.follow( 'user', follow.followable_id )
       news_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
     end
 
@@ -32,10 +32,10 @@ class FollowsController < ApplicationController
     if follow.user_id == current_user.id
       follow.destroy!
 
-      user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
-      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:flat]
+      # user_feed = StreamRails.feed_manager.get_user_feed(follow.user_id)
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
       
-      user_feed.unfollow( 'user', follow.followable_id )
+      # user_feed.unfollow( 'user', follow.followable_id )
       news_aggregated_feed.unfollow( follow.followable_type.downcase, follow.followable_id )
     end
 

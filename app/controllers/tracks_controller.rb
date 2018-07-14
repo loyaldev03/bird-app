@@ -101,6 +101,7 @@ class TracksController < ApplicationController
           user: current_user, 
           tracks: tracks.map{|t| t[:id]}.join(','), 
           current_track: "0:0" )
+        current_user.update_attributes(current_playlist_id: playlist.id)
       end
     end
 

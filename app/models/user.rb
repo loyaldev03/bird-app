@@ -509,13 +509,19 @@ class User < ApplicationRecord
   end
 
 
-  def self.batch_follow_to_general_actions offset=0
-    users = all.order(id: :asc).offset(offset).limit(500)
+  def self.batch_follow_to_general_actions offset=0, id=nil
+    if id
+      users = [User.find_by_id(id)]
+    else
+      users = all.order(id: :asc).offset(offset).limit(500)
+    end
 
     payload = []
     users.each do |user|
-      payload << { source: "notification:#{user.id}", target: 'general_actions:1' }
-      payload << { source: "timeline:#{user.id}", target: 'general_actions:1' }
+      payload << { source: "notification:#{user.id}", target: 'release_create:1' }
+      payload << { source: "notification:#{user.id}", target: 'announcement_create:1' }
+      payload << { source: "timeline_aggregated:#{user.id}", target: 'release_create:1' }
+      payload << { source: "timeline_aggregated:#{user.id}", target: 'announcement_create:1' }
       payload << { source: "timeline_aggregated:#{user.id}", target: "timeline:#{user.id}" }
       payload << { source: "user_aggregated:#{user.id}", target: "user:#{user.id}" }
     end
@@ -523,7 +529,9 @@ class User < ApplicationRecord
     StreamRails.feed_manager.client.follow_many(payload)
   end
 
-
+  def follow_general_actions
+    batch_follow_to_general_actions 0, self.id
+  end
 
   private
 
@@ -531,15 +539,4 @@ class User < ApplicationRecord
       self.avatar = primary_avatar(self.name) unless self.avatar.present?
     end
 
-    def follow_general_actions
-      notification_feed = StreamRails.feed_manager.get_notification_feed(self.id)
-      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:aggregated]
-      news_feed = StreamRails.feed_manager.get_news_feeds(self.id)[:flat]
-      user_aggregated_feed = StreamRails.feed_manager.get_feed('user_aggregated',self.id)
-
-      notification_feed.follow('general_actions', 1)
-      news_feed.follow('general_actions', 1)
-      news_aggregated_feed.follow('timeline', self.id)
-      user_aggregated_feed.follow('user', self.id)
-    end
 end

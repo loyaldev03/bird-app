@@ -12,6 +12,8 @@ $("[id^='comment-reply-btn']").show();
   $('#comment-<%= @comment_id%>-outer').append(`<%= form %>`);
 <% end %>
 
+$("html, body").animate({ scrollTop: $("#new_comment-<%= @comment_hash %>").offset().top - 320 }, 500);
+
 $("#new_comment-<%= @comment_hash %> .emoji-area").emojioneArea({
                   search: false,
                   recentEmojis: false,

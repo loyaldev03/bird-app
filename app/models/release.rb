@@ -13,6 +13,7 @@ class Release < ApplicationRecord
   has_and_belongs_to_many :users
   belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"
 
+  after_create :add_to_general_feed
   after_update :change_published_date
   after_destroy :remove_from_general_feed
 
@@ -27,7 +28,7 @@ class Release < ApplicationRecord
   include AlgoliaSearch
 
   include StreamRails::Activity
-  as_activity
+  # as_activity
 
   algoliasearch sanitize: true do
     attribute :title, :catalog, :upc_code, :text
@@ -140,39 +141,42 @@ class Release < ApplicationRecord
 
     steps
   end
-  
-
-  def activity_notify
-    [StreamRails.feed_manager.get_feed( 'general_actions', 1 ),
-     StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
-  end
-
-  def activity_object
-    self
-  end
-
-  #because releases has many users
-  def activity_actor
-    User.with_role(:admin).first
-  end
-
-  def activity_time
-    published_at.iso8601
-  end
 
   private
 
+    def add_to_general_feed
+      release_create_feed = StreamRails.feed_manager.get_feed( 'release_create', 1 )
+      masterfeed = StreamRails.feed_manager.get_feed( 'masterfeed', 1 )
+
+      activity = {
+        actor: "User:#{User.with_role(:admin).first.id}",
+        verb: "Release",
+        object: "Release:#{self.id}",
+        foreign_id: "Release:#{self.id}",
+        time: published_at.iso8601
+      }
+
+      release_create_feed.add_activity(activity)
+      masterfeed.add_activity(activity)
+    end
+
     def remove_from_general_feed
-      feed = StreamRails.feed_manager.get_feed( 'general_actions', 1 )
+      feed = StreamRails.feed_manager.get_feed( 'release_create', 1 )
       feed.remove_activity("Release:#{self.id}", foreign_id=true)
     end
 
     def change_published_date
       if published_at_changed?
-        feed = StreamRails.feed_manager.get_feed( 'general_actions', 1 )
+        feed = StreamRails.feed_manager.get_feed( 'release_create', 1 )
         feed.remove_activity("Release:#{self.id}", foreign_id=true)
 
-        activity = create_activity
+        activity = {
+          actor: "User:#{User.with_role(:admin).first.id}",
+          verb: "Release",
+          object: "Release:#{self.id}",
+          foreign_id: "Release:#{self.id}",
+          time: published_at.iso8601
+        }
 
         feed.add_activity(activity)
       end

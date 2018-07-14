@@ -5,7 +5,7 @@ $(document).on('turbolinks:load', function() {
   var feed = $('.feed-block').data('feed');
   var userId = $('.dropdown-notify-menu').data('currentUser');
 
-  
+
   $.ajax({
     url: '/get_feed_token',
     dataType: 'JSON',
@@ -22,18 +22,15 @@ $(document).on('turbolinks:load', function() {
         }
       }
 
-      if(feed && feed != "topic" && feed_not_set) {
+      if(feed && feedId && feed != "topic" && feed_not_set) {
         current_feed = client.feed(feed, feedId, respond.token);
         current_feed.subscribe(feedCallback).then(feedSuccessCallback, feedFailCallback);
       }
 
       if (typeof current_notify === 'undefined') {
-        console.log('CURRENT_NOTIFY');
         current_notify = client.feed('notification', userId, respond.notify_token);
         current_notify.subscribe(notifyCallback).then(notifySuccessCallback, notifyFailCallback);
       }
-
-      // console.log(current_notify);
 
     });
 

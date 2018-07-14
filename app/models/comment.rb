@@ -9,8 +9,7 @@ class Comment < ApplicationRecord
   has_many :feed_images, as: :feedable, dependent: :destroy
   accepts_nested_attributes_for :feed_images
 
-  before_create :autofollow_commentable_feed
-  after_create :add_points, :increment_count
+  after_create :add_to_feeds, :add_points, :increment_count
   after_destroy :decrement_count, :remove_points
   after_create_commit { CommentRelayJob.perform_later(self) if self.parent_id.present? }
 
@@ -19,7 +18,7 @@ class Comment < ApplicationRecord
   attr_accessor :comment_hash
 
   include StreamRails::Activity
-  as_activity
+  # as_activity
 
   def activity_notify
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
@@ -42,8 +41,7 @@ class Comment < ApplicationRecord
 
     
     if self.parent_id.present?
-
-      unless self.user_id == self.parent.user_id
+      unless self.user_id == self.parent.user_id || self.parent.user.followed( self.commentable ).blank?
         notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
       end
 
@@ -57,14 +55,6 @@ class Comment < ApplicationRecord
 
     notify
   end
-
-  def activity_object
-    self.commentable
-  end
-
-  # def activity_extra_data
-  #   {'parent_id' => self.parent_id}
-  # end
 
   def activity_should_sync?
     if (self.user.has_role?(:artist) || self.user.has_role?(:admin)) && 
@@ -105,18 +95,31 @@ class Comment < ApplicationRecord
       end
     end
 
-    def autofollow_commentable_feed
-      if self.user_id != self.commentable_id && 
-          self.commentable_type != 'User' &&
-          self.user.followed( self.commentable ).blank?
-        # user_feed = StreamRails.feed_manager.get_user_feed(self.user_id)
-        # notify_feed = StreamRails.feed_manager.get_notification_feed( self.user_id)
-        news_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:flat]
+    def add_to_feeds
+      user_feed = StreamRails.feed_manager.get_user_feed( self.user_id )
+      activity = {
+        actor: "User:#{self.user_id}",
+        verb: "Comment",
+        object: "#{self.commentable_type}:#{self.commentable_id}",
+        foreign_id: "Release:#{self.id}",
+        time: DateTime.now.iso8601
+      }
+
+      activity_notify.each do |feed| 
+        logger.warn "FEED"
+        logger.warn feed.inspect
+        feed.add_activity(activity)
+      end
+
+      user_feed.add_activity(activity) if activity_should_sync?
+
+      return if self.user_id == self.commentable_id && self.commentable_type == 'User'
+
+      if self.user.followed( self.commentable ).blank?
+        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]
 
         self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
-        # user_feed.follow(self.commentable_type.downcase, self.commentable_id)
-        # notify_feed.follow(self.commentable_type.downcase, self.commentable_id)
-        news_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        news_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
       end
     end
 

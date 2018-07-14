@@ -76,11 +76,10 @@ $(document).on('turbolinks:load', function() {
   $('.feed-replies-list').each(function(){
       $(this).find(".comment-inner").hide();
       $(this).find(".comment-inner").slice(-3).show();
-    // });
   });
 
   $('.show-more-comments').click(function(){
-    $(this).siblings('.feed-replies-list').find('div').show();
+    $(this).siblings('.feed-replies-list').find('.comment-inner').show();
     $(this).hide();
     return false;
   });

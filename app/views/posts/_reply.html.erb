@@ -4,7 +4,7 @@
 <% end %>
 
 <% if comment.user == comment.topic.user %>
-  <% to_right = "d-flex flex-row-reverse" %>
+  <% to_right = "display: flex; flex-direction: row-reverse;" %>
 <% end %>
 
 <% if comment.reports.unsolved.present? && current_user && current_user.has_role?(:admin) %>
@@ -12,7 +12,7 @@
 <% end %>
 
 <div id="comment-<%= comment.id %>-outer">
-  <div id="comment-<%= comment.id %>-inner" class="comment-inner text-left <%= "#{to_right} #{unsolved}" %>">
+  <div id="comment-<%= comment.id %>-inner" class="comment-inner text-left" style='<%= "#{to_right} #{unsolved}" %>'>
     <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
 
     <div class="comment-body">

@@ -10,7 +10,7 @@ class Post < ApplicationRecord
   has_many :feed_images, as: :feedable, dependent: :destroy
   accepts_nested_attributes_for :feed_images
 
-  after_create :increment_count, :add_points
+  after_create :increment_count, :add_points, :autofollow_topic
   after_destroy :decrement_count, :remove_points
   after_create_commit { CommentRelayJob.perform_later(self) }
 
@@ -32,10 +32,9 @@ class Post < ApplicationRecord
               StreamRails.feed_manager.get_feed('topic', self.topic_id)]
 
     if self.parent_id.present?
-      unless self.user_id == self.parent.user_id
+      unless self.user_id == self.parent.user_id || self.user.followed( self.topic ).blank?
         notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
       end
-      # notify << StreamRails.feed_manager.get_news_feeds(self.parent.user_id)[:flat]
     end
 
     notify
@@ -74,6 +73,15 @@ class Post < ApplicationRecord
       while self_parent.present?
         self_parent.decrement! :replies_count
         self_parent = self_parent.parent
+      end
+    end
+
+    def autofollow_topic
+      if self.user.followed( self.topic ).blank?
+        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]
+
+        self.user.follows.create(followable_id: self.topic_id, followable_type: "Topic")
+        news_aggregated_feed.follow('topic', self.topic_id)
       end
     end
 
