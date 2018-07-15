@@ -2,11 +2,19 @@
   <% bg_color = "feed-owner" %>
 <% end %>
 
-<% if comment.user == comment.commentable %>
-  <% to_right = "display: flex; flex-direction: row-reverse;" %>
+<% if comment.class.to_s == "Comment" %>
+  <% if comment.user == comment.commentable %>
+    <% to_right = "display: flex; flex-direction: row-reverse;" %>
+  <% end %>
+<% else %>
+  <% if comment.user == comment.topic.user %>
+    <% to_right = "display: flex; flex-direction: row-reverse;" %>
+  <% end %>
 <% end %>
 
-<% if comment.reports.unsolved.present? && current_user && current_user.has_role?(:admin) %>
+<% if comment.reports.unsolved.present? && 
+      current_user && 
+      current_user.has_role?(:admin) %>
   <% unsolved = "comment-unsolved" %>
 <% end %>
 
@@ -32,77 +40,31 @@
         <% end %>
       </div>
 
-      <%= render partial: 'likes/like_button', locals: { object: comment,  style: 'thumbup-reply' } %>
+      <%= render 'likes/likes_count_with_thumb', object: comment %>
 
-      <button type="button" data-toggle="collapse" data-target="#comment-<%= comment.id %>-controls" aria-expanded="false" aria-controls="collapseExample" class="jp-release-btn">
-        &middot; &middot; &middot;
-      </button>
-
-      <ul id="comment-<%= comment.id %>-controls" class="collapse comment-controls">
-        <% if current_user && current_user.id == comment.user_id %>
-          <li>
-            <%= link_to edit_comment_path(comment), remote: true do %>
-              Edit
-            <% end %>
-          </li>
-
-          <li>
-            <%= link_to comment, method: :delete, remote: true, 
-                  data: { confirm: "Are you sure you want to delete your comment?" } do %>
-              Delete
-            <% end %>
-          </li>
-        <% end %>
-
-        <li>
-          <a href="#" data-toggle="modal" data-target="#report<%= comment.id %>Modal">Report</a>
-
-          <% content_for :body_area do %>
-            <div class="modal modal-blured" id="report<%= comment.id %>Modal" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-dialog-wide" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body w-100">
-                    <h5 class="modal-title">Describe the problem</h5>
-
-                    <%= form_tag report_path, remote: true do %>
-                      <%= label_tag :text, "Text", class: "sr-only" %>
-                      <%= text_area_tag :text, nil, class: "form-control mb-1" %>
-                      <%= hidden_field_tag :type, "Comment" %>
-                      <%= hidden_field_tag :id, comment.id %>
-                      <%= hidden_field_tag :id, comment.id %>
-                      <%= submit_tag "Report", class: "btn c-btn-blue" %>
-                    <% end %>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </li>
-      </ul>
+      <%= render 'comments/comment_controls', object: comment %>
 
       <div class="comment-substring">
 
         <strong>
           <% if current_user %>
-            <% like = current_user.already_liked(comment).present? ? "Unlike" : "Like" %>
-            <a href="#" class="like-comment" data-type="Comment" data-id="<%= comment.id %>" data-like="<%= like %>">
-              <%= like %>
+            <%= render partial: 'likes/like_button', 
+                locals: { object: comment,  style: 'thumbup-reply' } %>
+            <%# like = current_user.already_liked(comment).present? ? "Unlike" : "Like" %>
+            <!-- <a href="#" class="like-comment" data-type="<%#= comment.class.to_s %>" data-id="<%#= comment.id %>" data-like="<%#= #like %>"> -->
+              <%#= like %>
             </a>
           <% else %>
             Like
           <% end %>
           &middot;
           <%= link_to comment_reply_form_path( 
+              parent_id: comment.parent_id,
               comment_id: comment.id, 
-              commentable_id: comment.commentable_id,
-              commentable_type: comment.commentable_type ),
-              remote: true, id: "comment-#{comment.id}" do %>
+              commentable_id: comment.try(:commentable_id),
+              commentable_type: comment.try(:commentable_type),
+              comment_topic: comment.try(:topic_id) ),
+              remote: true, id: "comment-#{comment.id}-link" do %>
             Reply
           <% end %>
           &middot;
@@ -114,6 +76,6 @@
   </div>
 
   <div class="nested-messages">
-    <%= render comment.replies.order(created_at: :asc) %>
+    <%= (render partial: 'comments/comment', collection: comment.replies.order(created_at: :asc)) %>
   </div>
 </div>

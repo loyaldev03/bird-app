@@ -85,9 +85,7 @@ Rails.application.routes.draw do
 
 
   resources :topics
-  resources :posts do
-    get 'reply_form'
-  end
+  resources :posts
 
   resources :follows
   resources :comments do

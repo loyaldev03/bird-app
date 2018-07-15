@@ -21,7 +21,7 @@ class Post < ApplicationRecord
   include AlgoliaSearch
 
   algoliasearch sanitize: true do
-    attribute :text
+    attribute :body
   end
 
   include StreamRails::Activity

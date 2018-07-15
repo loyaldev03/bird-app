@@ -24,8 +24,8 @@
         <%= link_to _activity['object'] do %>
           <% if _activity['object'].class.to_s == "Post" %>
 
-            <% if _activity['object'].text.present? %>
-              <%= _activity['object'].text.truncate(20) %>
+            <% if _activity['object'].body.present? %>
+              <%= _activity['object'].body.truncate(20) %>
             <% else %>
               with Picture
             <% end %>

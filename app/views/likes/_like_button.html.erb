@@ -14,19 +14,13 @@
   <% end %>
 <% else %>
   <%= case style 
-  when 'thumbup'
-    image_tag('icons/like-thumbup.svg')
-  when 'thumbup-reply'
-    image_tag('icons/like-thumbup.svg')
   when 'release'
-    image_tag('icons/like-release.svg', class: "like-button", title: "As a free member you don’t have that privilage, join now to participate")
+    image_tag('icons/like-release.svg', class: "like-button", title: "As a free member you don’t have that privilege, join now to participate")
   end %>
 <% end %>
 
-<% if style == 'thumbup' %>
-  <%= render 'likes/likes_count', object: object %>
-<% end %>
+<% likes_count = object.try(:likes_count) ? object.likes_count : object.likes.count %>
 
-<% if style == 'release' || style == 'thumbup-reply' %>
+<% if style == 'thumbup' || style == 'release' %>
   <%= render 'likes/likes_count_slim', object: object %>
 <% end %>

@@ -295,7 +295,7 @@ class BirdOldMerge
         sql = '
           SELECT
             title,
-            text,
+            text as body,
             user_id,
             pinned,
             locked,

@@ -1,0 +1,11 @@
+<span id='<%= "likes-count-#{object.class.to_s}-#{object.id}" %>'>
+  <% if current_user.already_liked(object).present? %>
+    <%= image_tag 'icons/like-thumbup.svg' %>
+  <% else %>
+    <%= image_tag 'icons/like-thumbempty.svg' %>
+  <% end %>
+
+  <% likes_count = object.try(:likes_count) ? object.likes_count : object.likes.count %>
+
+  <span class="likes-count"><%= likes_count %></span>
+</span>

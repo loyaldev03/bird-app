@@ -17,7 +17,7 @@
 
 <% if activity['object'].class == Post %>
   <em>post</em>
-  <%= activity['object'].text.truncate(20) %>
+  <%= activity['object'].body.truncate(20) %>
   <em>on</em>
   <%= link_to activity['object'].topic.try(:title).try(:truncate, 25), activity['object'].topic %>
 <% end %>

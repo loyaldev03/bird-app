@@ -124,7 +124,6 @@ class HomeController < ApplicationController
       feed.add_activity(activity)
     end
 
-    flash[:notice] = 'Report was sent'
   end
 
 end

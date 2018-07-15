@@ -6,7 +6,7 @@
 $('.feed-item .feed-form').remove();
 $("[id^='comment-reply-btn']").show();
 
-<% if Comment.find(@comment_id).parent_id.blank? %>
+<% if @grandparent_id.blank? %>
   $('#comment-reply-btn-<%= @comment_id %>').hide().before(`<%= form %>`);
 <% else %>
   $('#comment-<%= @comment_id%>-outer').append(`<%= form %>`);

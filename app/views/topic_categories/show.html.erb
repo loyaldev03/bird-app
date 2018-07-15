@@ -55,8 +55,8 @@
               <%= f.hidden_field :category_id, value: params[:id] %>
               <%= f.label :title, class: "sr-only" %>
               <%= f.text_field :title, placeholder: "Type the title here", required: true %>
-              <%= f.label :text, class: "sr-only" %>
-              <%= f.text_area :text, rows: 10, placeholder: "Type text", 
+              <%= f.label :body, class: "sr-only" %>
+              <%= f.text_area :body, rows: 10, placeholder: "Type text", 
                   max: 200, required: true, class: "emoji-area" %>
 
               <div class="modal-footer">

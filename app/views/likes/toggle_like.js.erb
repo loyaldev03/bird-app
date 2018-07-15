@@ -1,14 +1,6 @@
 var button = $('<%= "#like-#{like.likeable_type}-#{like.likeable_id}" %>');
 
-<% if style == 'thumbup' %>
-  button.siblings('.likes-count').replaceWith(`
-        <%= escape_javascript(
-          render 'likes/likes_count', object: like.likeable 
-        ) %>
-    `);
-<% end %>
-
-<% if style == 'release' || style == 'thumbup-reply' %>
+<% if style == 'release' || style == 'thumbup' %>
   button.siblings('.likes-count').replaceWith(`
         <%= escape_javascript(
           render 'likes/likes_count_slim', object: like.likeable 
@@ -16,6 +8,13 @@ var button = $('<%= "#like-#{like.likeable_type}-#{like.likeable_id}" %>');
     `);
 <% end %>
 
+<% if style == 'thumbup-reply' %>
+  $('<%= "#likes-count-#{like.likeable_type}-#{like.likeable_id}" %>').replaceWith(`
+      <%= escape_javascript(
+        render( 'likes/likes_count_with_thumb', object: like.likeable )
+      ) %>
+    `);
+<% end %>
 
 <% if action_name == 'create' %>
   button.replaceWith(`

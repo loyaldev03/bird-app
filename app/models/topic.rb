@@ -5,14 +5,14 @@ class Topic < ApplicationRecord
   has_many :likes, as: :likeable
   has_many :posts
 
-  validates :user_id, :category_id, :title, :text, presence: true
+  validates :title, :body, presence: true
 
   after_create :autofollow
 
   include AlgoliaSearch
 
   algoliasearch sanitize: true do
-    attribute :title, :text
+    attribute :title, :body
   end
 
   include StreamRails::Activity

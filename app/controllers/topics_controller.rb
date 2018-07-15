@@ -20,9 +20,10 @@ class TopicsController < ApplicationController
     else
       @category = @topic.category
     end
-    @new_post = Post.new
+    @new_comment = Post.new
+    @topic_id = @topic.id
 
-    @new_post.feed_images.build
+    @new_comment.feed_images.build
 
     breadcrumb @category.title, chirp_path(@category), match: :exact
     breadcrumb @topic.title, chirp_topic_path(@category, @topic), match: :exact
@@ -44,6 +45,6 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:text, :title, :category_id)
+    params.require(:topic).permit(:body, :title, :category_id)
   end
 end

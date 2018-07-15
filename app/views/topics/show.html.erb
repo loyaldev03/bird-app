@@ -14,7 +14,7 @@
   <% end %>
 
   <h1><%= @topic.title %></h1>
-  <p class="topic-text"><%= @topic.text.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %></p>
+  <p class="topic-text"><%= @topic.body.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %></p>
   
   <div class="text-right mr-4"><%= render 'follows/follow_button', object: @topic %></div>
 
@@ -22,5 +22,5 @@
     <%= render @topic.posts.parents_posts.order(created_at: :desc) %>
   </div>
 
-  <%= render 'form', parent_id: nil %>
+  <%= render 'comments/form', parent_id: nil %>
 </div>

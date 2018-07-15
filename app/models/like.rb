@@ -53,7 +53,7 @@ class Like < ApplicationRecord
 
     def trigger_likes_count
       case self.likeable_type
-      when "Comment" || "Video"
+      when "Comment" || "Post" || "Video"
         self.likeable.update_attributes(likes_count: self.likeable.likes.count)
       end
     end

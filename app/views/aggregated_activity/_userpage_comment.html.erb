@@ -1,64 +1,20 @@
 <% for _activity in activity['activities'] %>
-  <div class="feed-item">
 
     <% if _activity['foreign_id'].class.to_s == "Comment" %>
 
       <% if _activity['foreign_id'].commentable_type == "User" && 
             _activity['foreign_id'].commentable_id == @user.id %>
 
-        <%= link_to image_tag(_activity['actor'].avatar.thumb.url, class: "post-user-avatar"), _activity['actor'], class: "post-owner" %>
-
-        <div id="message-<%= _activity['foreign_id'].id %>"></div>
-
-        <p class="feed-posted">Posted <%= time_ago_in_words(_activity['time'].in_time_zone) %> ago</p>
-
-        <div class="feed-item-body">
-          <div class="feed-name">
-            <%= link_to _activity['foreign_id'].user.name.split.map(&:capitalize).join(' '), _activity['foreign_id'].user %>&nbsp;
-          </div>
-          <%= comment_with_meta_data(_activity['foreign_id'].body).html_safe %>
-
-          <div class="comment-footer">
-            <span>
-              <%= render partial: 'likes/like_button', locals: { object: _activity['foreign_id'],  style: 'thumbup' } %>
-            </span>
-
-            <div class="comment-footer-divider"></div>
-
-            <span>
-              <%= image_tag('icons/icon-comment.svg', title: 'Comments', class: "align-top") %>
-              Comment 
-              (<span class="comments-count"><%= _activity['foreign_id'].try(:replies_count) %></span>)
-            </span>
-          </div>
-        </div>
-
-        <div id="comment-<%= _activity['foreign_id'].id %>-replies" class="<%= 'feed-replies' unless (!current_user && _activity['foreign_id'].replies.empty?) %>">
-          <% if _activity['foreign_id'].replies_count.to_i > 3 %>
-            <a href="#" class="show-more-comments">View more comments (<%= _activity['foreign_id'].replies_count - 3 %>)</a>
-          <% end %>
-
-          <div class="feed-replies-list">
-            <% if _activity['foreign_id'].replies.any? %>
-              <%= render _activity['foreign_id'].replies.order(created_at: :asc) %>
-            <% end %>
-          </div>
-
-          <% if current_user %>
-            <%= link_to "Reply", 
-              comment_reply_form_path( 
-                comment_id: _activity['foreign_id'].id, 
-                commentable_id: _activity['foreign_id'].commentable_id,
-                commentable_type: _activity['foreign_id'].commentable_type ), 
-              remote: true, class: "btn c-btn-white btn-wide", id: "comment-reply-btn-#{_activity['foreign_id'].id}" %>
-          <% end %>
-        </div>
+        <%= render partial: 'comments/initial_comment',
+            locals: { user: _activity['actor'], comment: _activity['foreign_id'] } %>
+        
 
       <% else %>
-
-        <p class="feed-posted"> 
-          <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-        </p>
+      
+        <div class="feed-item">
+          <p class="feed-posted"> 
+            <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+          </p>
 
           <%= link_to _activity['actor'] do %>
             <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
@@ -78,16 +34,16 @@
             <%= link_to _activity['foreign_id'].commentable_type.downcase, 
                 _activity['foreign_id'].commentable %>
           </strong>
+        </div>
 
       <% end %>
 
-
     <% elsif _activity['foreign_id'].class.to_s == "Like" %>
 
-      
-      <p class="feed-posted"> 
-        <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-      </p>
+      <div class="feed-item">
+        <p class="feed-posted"> 
+          <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+        </p>
 
 
         <%= link_to _activity['actor'] do %>
@@ -108,7 +64,7 @@
           <%= link_to _activity['object'].commentable_type.downcase, 
               _activity['object'].commentable %>
         </strong>
-
+      </div>
 
     <% else %>
 
@@ -117,5 +73,4 @@
     <% end %>
 
     <hr class="feed-divider">
-  </div>
 <% end %>

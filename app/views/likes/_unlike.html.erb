@@ -1,25 +1,18 @@
-<% 
-  image = case style
-  when 'thumbup' then 'icons/like-thumbdown.svg' 
-  when 'thumbup-reply' then 'icons/like-thumbdown.svg' 
-  when 'release' then 'icons/liked-release.svg' 
-  else 'icons/liked.svg' end
-%>
-
 <% if style == 'release' %>
 
   <%= link_to like_path(like, style: style), 
         id: "like-#{like.likeable_type}-#{like.likeable_id}",
         method: :delete, remote: true, class: "like-button" do %>
     <%= 'YOU LIKED IT' %>
-    <%= image_tag image %>
+    <%= image_tag 'icons/liked-release.svg' %>
   <% end %>
 
 <% else %>
 
-  <%= link_to image_tag(image), like_path(like, style: style), 
+  <%= link_to like_path(like, style: style), 
       id: "like-#{like.likeable_type}-#{like.likeable_id}",
-      method: :delete, remote: true, class: "like-button"
-  %>
-
+      method: :delete, remote: true, class: "like-button" do %>
+    Unlike
+  <% end %>
+  
 <% end %>

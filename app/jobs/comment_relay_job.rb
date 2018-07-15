@@ -10,8 +10,8 @@ class CommentRelayJob < ApplicationJob
 
     elsif object.class.to_s == "Post" && object.parent_id.present?
 
-      template = renderer.render(partial: 'posts/reply', 
-          locals: { reply: object })
+      template = renderer.render(partial: 'comments/comment', 
+          locals: { comment: object })
       channel = "topic:#{object.topic_id}"
 
     else

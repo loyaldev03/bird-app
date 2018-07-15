@@ -1,4 +1,8 @@
-$('#comment-<%= @comment.id%>-inner').html("<%= escape_javascript(render 'comments/edit_form') %>");
+<% if @comment.parent_id.present? %>
+  $('#comment-<%= @comment.id%>-inner').html("<%= escape_javascript(render 'comments/edit_form') %>");
+<% else %>
+  $('#feed-item-text-<%= @comment.id%>').html("<%= escape_javascript(render 'comments/edit_form') %>");
+<% end %>
 
 $("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({
                   search: false,

@@ -45,7 +45,7 @@ class FeedsController < ApplicationController
     @feed = params['feed']
     @feed_id = params['feed_id']
 
-    sleep 2 #somehow enricher can't find release at once
+    sleep 3 #somehow new record not in the database yet
 
     if @feed == 'user' || 
           @feed == 'timeline' || 
@@ -60,12 +60,16 @@ class FeedsController < ApplicationController
           "activity_count" => 1}
       ]).first
 
+
       @feed_item = render_to_string(partial: "aggregated_activity/userpage_#{ @new_item }", 
           locals: { activity: @activity } )
     else
       @activity = @enricher.enrich_activities([
         params['new_item']
       ]).first
+      logger.warn "--------------------------------------------------"
+      logger.warn Release.find params['new_item']['object'].split(":")[1]
+      logger.warn Comment.find params['new_item']['foreign_id'].split(":")[1]
 
       @feed_item = render_to_string(partial: "activity/commentable_#{ @new_item }", 
           locals: { activity: @activity } )
@@ -77,7 +81,7 @@ class FeedsController < ApplicationController
     params.permit!
     @new_item = params['new_item']['verb'].downcase
 
-    sleep 2 #somehow enricher can't find release at once
+    sleep 3 #somehow new record not in the database yet
 
     @activity = @enricher.enrich_aggregated_activities([
       { "updated_at" => params['new_item']['time'], 

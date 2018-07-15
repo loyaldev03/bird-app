@@ -1,5 +1,5 @@
 ActiveAdmin.register Topic do
 
-  permit_params :title, :text, :category_id, :see_to_all
+  permit_params :title, :body, :category_id, :see_to_all
   
 end

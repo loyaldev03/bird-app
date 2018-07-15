@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180711114754) do
+ActiveRecord::Schema.define(version: 20180715080112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 20180711114754) do
 
   create_table "posts", force: :cascade do |t|
     t.string "title"
-    t.text "text"
+    t.text "body"
     t.string "image_url"
     t.datetime "published_at"
     t.datetime "created_at", null: false
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 20180711114754) do
     t.integer "parent_id"
     t.integer "replies_count", default: 0
     t.datetime "edited_at"
+    t.integer "likes_count"
   end
 
   create_table "rates", force: :cascade do |t|
@@ -396,7 +397,7 @@ ActiveRecord::Schema.define(version: 20180711114754) do
 
   create_table "topics", force: :cascade do |t|
     t.string "title"
-    t.text "text"
+    t.text "body"
     t.integer "user_id"
     t.boolean "pinned"
     t.boolean "locked"

@@ -20,7 +20,7 @@ class PostsController < ApplicationController
 
     @topic = Topic.find(params[:post][:topic_id])
 
-    if params[:post][:text].blank? && params[:post][:feed_images_attributes].blank?
+    if params[:post][:body].blank? && params[:post][:feed_images_attributes].blank?
       redirect_to @topic and return
     end
 
@@ -35,7 +35,9 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @post = Post.find(params[:id])
+    @comment = Post.find(params[:id])
+
+    render "comments/edit" 
   end
 
   def update
@@ -55,18 +57,10 @@ class PostsController < ApplicationController
     flash[:notice] = 'Post was deleted'
   end
 
-  def reply_form
-    @post_id = params[:post_id]
-    @topic_id = params[:topic_id]
-    @post_hash = SecureRandom.hex
-    @new_post = Post.new
-    @new_post.feed_images.build
-  end
-
   protected
 
     def post_params
-      params.require(:post).permit(:text, :topic_id, :parent_id, :post_hash,
+      params.require(:post).permit(:body, :topic_id, :parent_id, :post_hash,
         feed_images_attributes: [:id, :feedable_id, :feedable_type, :image, :_destroy])
     end
 end
