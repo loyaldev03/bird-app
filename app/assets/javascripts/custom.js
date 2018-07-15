@@ -74,12 +74,15 @@ $(document).on('turbolinks:load', function() {
   });
 
   $('.feed-replies-list').each(function(){
-      $(this).find(".comment-inner").hide();
-      $(this).find(".comment-inner").slice(-3).show();
+      $(this).find(".comment-inner").hide()
+          .siblings('.nested-messages').addClass('replies-hidden');
+      $(this).find(".comment-inner").slice(-3).show()
+          .siblings('.nested-messages').removeClass('replies-hidden');
   });
 
   $('.show-more-comments').click(function(){
-    $(this).siblings('.feed-replies-list').find('.comment-inner').show();
+    $(this).siblings('.feed-replies-list').find('.comment-inner').show()
+        .siblings('.nested-messages').removeClass('replies-hidden');
     $(this).hide();
     return false;
   });
@@ -129,6 +132,13 @@ $(document).on('turbolinks:load', function() {
     $("#like-"+type+"-"+id)[0].click();
     return false;
   });
+
+  $( '.dropdown' ).on( 'show.bs.dropdown', function() {
+    $( this ).find( '.dropdown-menu' ).first().stop( true, true ).slideDown( 150 );
+  } );
+  $('.dropdown').on( 'hide.bs.dropdown', function(){
+    $( this ).find( '.dropdown-menu' ).first().stop( true, true ).slideUp( 150 );
+  } );
 });
 
 var load_more_feed = function(){

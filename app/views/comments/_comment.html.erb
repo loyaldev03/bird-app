@@ -50,10 +50,6 @@
           <% if current_user %>
             <%= render partial: 'likes/like_button', 
                 locals: { object: comment,  style: 'thumbup-reply' } %>
-            <%# like = current_user.already_liked(comment).present? ? "Unlike" : "Like" %>
-            <!-- <a href="#" class="like-comment" data-type="<%#= comment.class.to_s %>" data-id="<%#= comment.id %>" data-like="<%#= #like %>"> -->
-              <%#= like %>
-            </a>
           <% else %>
             Like
           <% end %>
@@ -75,7 +71,7 @@
     </div>
   </div>
 
-  <div class="nested-messages">
+  <div class="nested-messages <%= "replies" if comment.replies.present? && comment.parent.parent_id.blank? %>">
     <%= (render partial: 'comments/comment', collection: comment.replies.order(created_at: :asc)) %>
   </div>
 </div>
