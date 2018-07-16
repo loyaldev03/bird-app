@@ -1,20 +1,15 @@
 <% if style == 'release' %>
-
-  <%= link_to likes_path(likeable_type: like[:likeable_type], 
-        likeable_id: like[:likeable_id], style: style), 
-        id: "like-#{like[:likeable_type]}-#{like[:likeable_id]}",
-        method: :post, remote: true, class: "like-button" do %>
-    <%= "LIKE" %>
-    <%= image_tag 'icons/like.svg' %>
-  <% end %>
-
+  <% content = "LIKE #{image_tag 'icons/like-release.svg'}" %>
+<% elsif style == 'thumbup' || style == 'thumbup-reply' %>
+  <% content = "Like" %>
 <% else %>
+  <% content = image_tag 'icons/like.svg' %>
+<% end %>
 
-  <%= link_to likes_path(likeable_type: like[:likeable_type], 
+
+<%= link_to likes_path(likeable_type: like[:likeable_type], 
       likeable_id: like[:likeable_id], style: style), 
       id: "like-#{like[:likeable_type]}-#{like[:likeable_id]}",
       method: :post, remote: true, class: "like-button" do %>
-   Like
-  <% end %>
-
+  <%= content.html_safe %>
 <% end %>

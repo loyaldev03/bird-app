@@ -1,18 +1,14 @@
 <% if style == 'release' %>
-
-  <%= link_to like_path(like, style: style), 
-        id: "like-#{like.likeable_type}-#{like.likeable_id}",
-        method: :delete, remote: true, class: "like-button" do %>
-    <%= 'YOU LIKED IT' %>
-    <%= image_tag 'icons/liked-release.svg' %>
-  <% end %>
-
+  <% content = "YOU LIKED IT #{image_tag 'icons/liked-release.svg'}" %>
+<% elsif style == 'thumbup' || style == 'thumbup-reply' %>
+  <% content = "Unike" %>
 <% else %>
+  <% content = image_tag 'icons/liked.svg' %>
+<% end %>
 
-  <%= link_to like_path(like, style: style), 
-      id: "like-#{like.likeable_type}-#{like.likeable_id}",
-      method: :delete, remote: true, class: "like-button" do %>
-    Unlike
-  <% end %>
-  
+
+<%= link_to like_path(like, style: style), 
+    id: "like-#{like.likeable_type}-#{like.likeable_id}",
+    method: :delete, remote: true, class: "like-button" do %>
+  <%= content.html_safe %>
 <% end %>

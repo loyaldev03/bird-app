@@ -1,6 +1,7 @@
 <% style = style.present? ? style : nil %>
 
 <% if current_user %>
+
   <% if current_user.already_liked(object).present? %>
     <%= render partial: 'likes/unlike',
         locals: {
@@ -12,11 +13,18 @@
             like: { likeable_id: object.id, likeable_type: object.class.to_s },
             style: style } %>
   <% end %>
+
 <% else %>
+
   <%= case style 
-  when 'release'
-    image_tag('icons/like-release.svg', class: "like-button", title: "As a free member you don’t have that privilege, join now to participate")
+      when 'release'
+        image_tag('icons/like-release.svg', class: "like-button", 
+            title: "As a free member you don’t have that privilege, join now to participate")
+      else
+        image_tag('icons/like.svg', class: "like-button", 
+            title: "As a free member you don’t have that privilege, join now to participate")
   end %>
+
 <% end %>
 
 <% likes_count = object.try(:likes_count) ? object.likes_count : object.likes.count %>

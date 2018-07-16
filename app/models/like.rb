@@ -4,8 +4,10 @@ class Like < ApplicationRecord
   
   after_create :add_points, :trigger_likes_count
   after_destroy :trigger_likes_count, :remove_points, :remove_from_feed
-
   
+  after_create_commit { LikeRelayJob.perform_later(self,'create') }
+  before_destroy { LikeRelayJob.perform_later(self,'destroy') }
+
   include StreamRails::Activity
   as_activity
 

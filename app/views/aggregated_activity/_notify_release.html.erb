@@ -1,56 +1,60 @@
-<% if DateTime.parse( activity['activities'][0]['time'] ).in_time_zone < DateTime.now %>
-  <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
-    <%= link_to activity['activities'][0]['object'] do %>
-      <%= image_tag activity['activities'][0]['object'].avatar.url, 
-          class: "notify-release-avatar align-top" %>
+<% if activity['activities'][0]['foreign_id'].class.to_s == 'Release' %>
+  <% if DateTime.parse( activity['activities'][0]['time'] ).in_time_zone < DateTime.now %>
+    <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
+      <%= link_to activity['activities'][0]['object'] do %>
+        <%= image_tag activity['activities'][0]['object'].avatar.url, 
+            class: "notify-release-avatar align-top" %>
 
-      <div class="notify-item">
-        <% if activity['activities'][0]['object'].class.to_s == "Release" %>
+        <div class="notify-item">
+          <% if activity['activities'][0]['object'].class.to_s == "Release" %>
 
-          <span class="notify-release-caption">
-            NEW 
-            <%= activity['activities'][0]['object'].class.to_s.upcase %>
-          </span>
+            <span class="notify-release-caption">
+              NEW 
+              <%= activity['activities'][0]['object'].class.to_s.upcase %>
+            </span>
 
-          Available Now for Stream & Download!
+            Available Now for Stream & Download!
+
+            <br>
+          <% end %>
+          
+          <strong><%= activity['activities'][0]['object'].title %></strong>
+
+          <% if activity['activities'][0]['object'].class.to_s == "Release" %>
+            
+            <span class="notify-author">
+              by
+              <% if activity['activities'][0]['object'].artist_as_string && 
+                    activity['activities'][0]['object'].artist.present? %>
+                <%= activity['activities'][0]['object'].artist %>
+              <% elsif activity['activities'][0]['object'].users.any? %>
+                <% activity['activities'][0]['object'].users.each do |artist| %>
+                    <%= artist.name %>
+                <% end %>
+              <% elsif activity['activities'][0]['object'].artist.present? %>
+                <%= activity['activities'][0]['object'].artist %>
+              <% end %>
+            </span>
+
+          <% end %>
 
           <br>
-        <% end %>
-        
-        <strong><%= activity['activities'][0]['object'].title %></strong>
-
-        <% if activity['activities'][0]['object'].class.to_s == "Release" %>
-
           
-          <span class="notify-author">
-            by
-            <% if activity['activities'][0]['object'].artist_as_string && 
-                  activity['activities'][0]['object'].artist.present? %>
-              <%= activity['activities'][0]['object'].artist %>
-            <% elsif activity['activities'][0]['object'].users.any? %>
-              <% activity['activities'][0]['object'].users.each do |artist| %>
-                  <%= artist.name %>
-              <% end %>
-            <% elsif activity['activities'][0]['object'].artist.present? %>
-              <%= activity['activities'][0]['object'].artist %>
-            <% end %>
+          <span class="notify-time">
+            <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
           </span>
-
-        <% end %>
-
-        <br>
-        
-        <span class="notify-time">
-          <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-        </span>
-      </div>
-    <% end %>
+        </div>
+      <% end %>
 
 
-    <%# activity['activities'].each do |release| %>
-      <%#= release['foreign_id'].class.to_s %>
-    <%# end %>
-  </div>
+      <%# activity['activities'].each do |release| %>
+        <%#= release['foreign_id'].class.to_s %>
+      <%# end %>
+    </div>
 
-  <hr style="margin: 2px 0 0;">
+    <hr style="margin: 2px 0 0;">
+  <% end %>
+<% else %>
+  <%= render partial: 'aggregated_activity/notify_layout', 
+      locals: { activity: activity } %>
 <% end %>
