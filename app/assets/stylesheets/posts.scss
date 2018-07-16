@@ -7,20 +7,21 @@
   text-align: left;
   position: relative;
 
+  &:after {
+    content:'';
+    position: absolute;
+    left: -10px;
+    top: 10px;
+    width: 2px;
+    height: calc(100% - 20px);
+    background-color: #3ed4e0;
+  }
+
   &.replies {
-    & > div > .nested-messages:before {
-      content:'';
-      position: absolute;
-      left: -33px;
-      top: 0;
-      width: 2px;
-      height: 100%;
-      background-color: #3ed4e0;
-    }
 
     &:before {
       position: absolute;
-      left: -28px;
+      left: -33px;
       top: 7px;
       content: asset-data-url("icons/reply-arrow.png");
     }
@@ -35,7 +36,7 @@
     height: 26px;
   }
 
-  .nested-messages .nested-messages {
+  .nested-messages .nested-messages .nested-messages .nested-messages {
     margin-left: 0;
   }
 

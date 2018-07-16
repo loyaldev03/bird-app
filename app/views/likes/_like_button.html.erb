@@ -16,10 +16,16 @@
 
 <% else %>
 
+  <% likes_count = object.try(:likes_count) ? object.likes_count : object.likes.count %>
+
   <%= case style 
       when 'release'
         image_tag('icons/like-release.svg', class: "like-button", 
             title: "As a free member you don’t have that privilege, join now to participate")
+      when 'thumbup'
+        "Like (#{likes_count})"
+      when 'thumbup-reply'
+        Like
       else
         image_tag('icons/like.svg', class: "like-button", 
             title: "As a free member you don’t have that privilege, join now to participate")
@@ -27,7 +33,6 @@
 
 <% end %>
 
-<% likes_count = object.try(:likes_count) ? object.likes_count : object.likes.count %>
 
 <% if style == 'thumbup' || style == 'release' %>
   <%= render 'likes/likes_count_slim', object: object %>

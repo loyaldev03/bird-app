@@ -1,4 +1,6 @@
 .dropdown-notify-menu {
+  padding: 5px 5px 0 0;
+
   & > a img {
     vertical-align: top;
     margin-top: 2px;
@@ -9,7 +11,7 @@
     padding: 0;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     border: none;
-    right: -25px !important;
+    right: -19px !important;
     top: 33px;
 
     &:before {
@@ -47,8 +49,8 @@
     z-index: 3;
     background-color: #ff7272;
     border-radius: 15px;
-    top: -10px;
-    left: -15px;
+    top: -5px;
+    left: 5px;
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -93,17 +95,17 @@
 }
 
 .notify-list {
-  max-height: 400px;
+  max-height: 430px;
   overflow: scroll;
 }
 
 .notify-item {
   display: inline-block; 
   width: calc(100% - 48px); 
-  line-height: 12px; 
+  line-height: 13px; 
   font-size: 12px; 
   margin-left: 5px;
-  white-space: nowrap;
+  padding-bottom: 13px;
 
   .notify-object {
     font-weight: normal; 
@@ -123,8 +125,9 @@
     color: #6e6e6e; 
     font-size: 11px; 
     text-transform: lowercase; 
-    margin: 0; 
-    padding-top: 3px;
+    position: absolute;
+    bottom: 4px;
+    left: auto;
   }
 
   &.is_read {

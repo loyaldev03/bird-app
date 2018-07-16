@@ -89,29 +89,30 @@
               <%= link_to image_tag(current_user.avatar.thumb, class: "user-avatar"), root_path %>
               <span><%= link_to current_user.name, root_path %></span>
 
-              <li class="nav-item dropdown dropdown-notify-menu" data-current-user="<%= current_user.id %>">
-                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <%= image_tag "icons/icon-notifications.svg" %>
-                  <% if @unseen_count && @unseen_count > 0 %>
-                    <span class="nav-notify-count">
-                      <%= @unseen_count < 10 ? @unseen_count : "9+" %>
-                    </span>
-                  <% end %>
-                </a>
-
-                <div class="dropdown-menu dropdown-menu-right">
-                  <div class="notify-menu-header">
-                    <h5>NOTIFICATIONS</h5>
-                    <%= link_to "Mark as read", is_read_path, 
-                        class: "is-read-btn", remote: true %>
-                  </div>
-
-                  <div class="notify-list">
-                    <%= render 'feeds/notify' %>
-                  </div>
-                </div>
-              </li>
             </div>
+            
+            <li class="nav-item dropdown dropdown-notify-menu" data-current-user="<%= current_user.id %>">
+              <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= image_tag "icons/icon-notifications.svg" %>
+                <% if @unseen_count && @unseen_count > 0 %>
+                  <span class="nav-notify-count">
+                    <%= @unseen_count < 10 ? @unseen_count : "9+" %>
+                  </span>
+                <% end %>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right">
+                <div class="notify-menu-header">
+                  <h5>NOTIFICATIONS</h5>
+                  <%= link_to "Mark as read", is_read_path, 
+                      class: "is-read-btn", remote: true %>
+                </div>
+
+                <div class="notify-list">
+                  <%= render 'feeds/notify' %>
+                </div>
+              </div>
+            </li>
 
             <li class="nav-item dropdown dropdown-usermenu">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

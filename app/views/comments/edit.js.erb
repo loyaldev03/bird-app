@@ -1,10 +1,16 @@
+$('.feed-item .feed-form').remove();
+$('form.edit_<%= @comment.class.to_s.downcase %>').remove();
+$("[id^='comment-reply-btn']").show();
+$('.comment-controls').collapse('hide');
+
 <% if @comment.parent_id.present? %>
-  $('#comment-<%= @comment.id%>-inner').html("<%= escape_javascript(render 'comments/edit_form') %>");
+  $('#comment-<%= @comment.id%>-inner').append("<%= escape_javascript(render 'comments/edit_form') %>");
 <% else %>
-  $('#feed-item-text-<%= @comment.id%>').html("<%= escape_javascript(render 'comments/edit_form') %>");
+  $('#feed-item-text-<%= @comment.id%>').append("<%= escape_javascript(render 'comments/edit_form') %>");
 <% end %>
 
-$("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({
+
+$("#edit_<%= @comment.class.to_s.downcase %>_<%=@comment.id%> .emoji-area").emojioneArea({
                   search: false,
                   recentEmojis: false,
                   pickerPosition: 'bottom',
@@ -14,6 +20,6 @@ $("#edit_comment_<%=@comment.id%> .emoji-area").emojioneArea({
                    }
                  }
       });
-countChar( $("#edit_comment_<%=@comment.id%> .emojionearea-editor"), <%= @comment.id %> );
-
+countChar( $("#edit_<%= @comment.class.to_s.downcase %>_<%=@comment.id%> .emojionearea-editor"), <%= @comment.id %> );
+$('.emojionearea-editor').height($('#<%= @comment.class.to_s.downcase %>_body').outerHeight());
 dragDropAttach();

@@ -18,7 +18,7 @@
   <% unsolved = "comment-unsolved" %>
 <% end %>
 
-<div id="comment-<%= comment.id %>-outer">
+<div id="comment-<%= comment.id %>-outer" class="comment-outer">
   <div id="comment-<%= comment.id %>-inner" class="comment-inner text-left" style='<%= "#{to_right} #{unsolved}" %>'>
     <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
 
@@ -47,12 +47,8 @@
       <div class="comment-substring">
 
         <strong>
-          <% if current_user %>
-            <%= render partial: 'likes/like_button', 
-                locals: { object: comment,  style: 'thumbup-reply' } %>
-          <% else %>
-            Like
-          <% end %>
+          <%= render partial: 'likes/like_button', 
+              locals: { object: comment,  style: 'thumbup-reply' } %>
           &middot;
           <%= link_to comment_reply_form_path( 
               parent_id: comment.parent_id,
@@ -71,7 +67,11 @@
     </div>
   </div>
 
-  <div class="nested-messages <%= "replies" if comment.replies.present? && comment.parent.parent_id.blank? %>">
+  <div class="nested-messages <%= "replies" if comment.replies.present? %>">
     <%= (render partial: 'comments/comment', collection: comment.replies.order(created_at: :asc)) %>
+
+    <% if comment.replies.count > 3 %>
+      <a href="#" class="show-more-comments">View more comments (<%= comment.replies.count - 3 %>)</a>
+    <% end %>
   </div>
 </div>

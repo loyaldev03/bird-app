@@ -11,7 +11,10 @@ jQuery(document).on 'turbolinks:load', ->
         console.log(data)
         if data.parent_id
           if $('#comment-' + data.parent_id + '-inner').length > 0
-            $('#comment-' + data.parent_id + '-inner').next('.nested-messages').append data.object
+            $('#comment-' + data.parent_id + '-inner')
+              .next('.nested-messages')
+              .append data.object
+              .addClass 'replies'
           else
             $('#comment-' + data.parent_id + '-replies .feed-replies-list').append data.object
         else

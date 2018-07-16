@@ -44,15 +44,15 @@
 
   <div id="comment-<%= comment.id %>-replies" class="<%= 'feed-replies' unless (!current_user && comment.replies.empty?) %>">
 
-    <% if comment.replies_count.to_i > 3 %>
-      <a href="#" class="show-more-comments">View more comments (<%= comment.replies_count - 3 %>)</a>
-    <% end %>
-
     <div class="feed-replies-list">
       <% if comment.replies.any? %>
         <%= (render partial: 'comments/comment', collection: comment.replies.order(created_at: :asc)) %>
       <% end %>
     </div>
+    
+    <% if comment.replies.count > 3 %>
+      <a href="#" class="show-more-comments">View more comments (<%= comment.replies.count - 3 %>)</a>
+    <% end %>
 
     <% if current_user %>
       <%= link_to "Reply", 

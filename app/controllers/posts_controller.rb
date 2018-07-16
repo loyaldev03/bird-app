@@ -44,17 +44,23 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @post.edited_at = DateTime.now
 
-    @post.update_attributes(post_params) if current_user.id == @post.user_id
-
-    flash[:notice] = 'Post was updated'
+    if current_user.id == @post.user_id
+      @post.update_attributes(post_params) 
+      flash[:notice] = 'Comment was updated'
+    else
+      flash[:alert] = "Comment wasn't updated"
+    end
   end
 
   def destroy
     @post = Post.find(params[:id])
-
-    @post.destroy if current_user.id == @post.user_id
-
-    flash[:notice] = 'Post was deleted'
+    
+    if current_user.id == @post.user_id
+      @post.destroy 
+      flash[:notice] = 'Comment was deleted'
+    else
+      flash[:alert] = "Comment wasn't deleted"
+    end
   end
 
   protected

@@ -4,6 +4,7 @@
           ) %>
 
 $('.feed-item .feed-form').remove();
+$('form.edit_<%= @new_comment.class.to_s.downcase %>').remove();
 $("[id^='comment-reply-btn']").show();
 
 <% if @grandparent_id.blank? %>

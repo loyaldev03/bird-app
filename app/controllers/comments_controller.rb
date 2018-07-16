@@ -58,17 +58,25 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @comment.edited_at = DateTime.now
 
-    @comment.update_attributes(comment_params) if current_user.id == @comment.user_id
+    if current_user.id == @comment.user_id
+      @comment.update_attributes(comment_params) 
+      flash[:notice] = 'Comment was updated'
+    else
+      flash[:alert] = "Comment wasn't updated"
+    end
 
-    flash[:notice] = 'Comment was updated'
   end
 
   def destroy
     @comment = Comment.find(params[:id])
+    
+    if current_user.id == @comment.user_id
+      @comment.destroy 
+      flash[:notice] = 'Comment was deleted'
+    else
+      flash[:alert] = "Comment wasn't deleted"
+    end
 
-    @comment.destroy if current_user.id == @comment.user_id
-
-    flash[:notice] = 'comment was deleted'
   end
  
   def reply_form

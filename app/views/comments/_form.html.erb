@@ -10,11 +10,13 @@
     <%= f.label :body, "Text", class: "sr-only" %>
     <%= f.text_area :body, class: "form-control mb-1 emoji-area",
           id: "comment_body#{('-'+parent_id) if parent_id}", 
-          placeholder: "Leave a comment" %>
+          placeholder: "Leave a comment",
+          rows: 1 %>
 
     <%= render 'layouts/image_attach', object: f %>
 
     <%= f.submit "Send", class: "btn c-btn-blue btn-wide" %>
+    <button type="submit" class="btn c-btn-white cancel-comment mr-2">Cancel</button>
     <span id="chars<%= @comment_hash %>">140</span> characters left
   <% end %>
 </div>
