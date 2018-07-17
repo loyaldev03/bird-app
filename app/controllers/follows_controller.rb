@@ -16,7 +16,7 @@ class FollowsController < ApplicationController
       
       unless follow.followable_type == "User"
         feed_for_tab = StreamRails.feed_manager
-            .get_feed("#{follow.followable_type}_user_feed", follow.user_id)
+            .get_feed("#{follow.followable_type.downcase}_user_feed", follow.user_id)
         feed_for_tab.follow( follow.followable_type.downcase, follow.followable_id )
       end
     end
@@ -40,7 +40,7 @@ class FollowsController < ApplicationController
 
       unless follow.followable_type == "User"
         feed_for_tab = StreamRails.feed_manager
-            .get_feed("#{follow.followable_type}_user_feed", follow.user_id)
+            .get_feed("#{follow.followable_type.downcase}_user_feed", follow.user_id)
         feed_for_tab.unfollow( follow.followable_type.downcase, follow.followable_id )
       end
     end

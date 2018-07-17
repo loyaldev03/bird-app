@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   include ReleasesHelper
   
   before_action :authenticate_user!, except: [
-        :index, :show, :parse_youtube, :admin, :artist, :announcements_feed,
+        :index, :parse_youtube, :admin, :artist, :announcements_feed,
         :interviews_feed, :videos_feed, :others_feed, :artists, :leaderboard,
         :load_more, :get_tracks, :artist_releases, :artist_tracks, :badges]
 

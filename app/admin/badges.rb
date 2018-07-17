@@ -48,7 +48,7 @@ ActiveAdmin.register Badge do
         end
 
         a.input :active, 
-            hint: hint.html_safe
+            hint: hint.try(:html_safe)
 
         a.actions
       end
