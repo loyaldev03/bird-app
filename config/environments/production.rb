@@ -99,5 +99,6 @@ Rails.application.config.middleware.use ExceptionNotification::Rack,
     :channel => "#general",
     :additional_parameters => {
       :mrkdwn => true
-    }
+    },
+    :backtrace_lines => 1
   }
