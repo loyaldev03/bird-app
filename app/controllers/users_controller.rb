@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         :artist, :artists, :admin, :friends, :idols, :choose_profile, 
         :announcement_feed, :release_feed, :chirp_feed, :artists_feed, 
         :friends_feed, :others_feed, :artist_releases , :artist_tracks, 
-        :badges]
+        :badges, :get_more_credits]
 
   before_action :set_enricher
   before_action :set_userpage_feed, only: [:admin, :artist]
@@ -307,6 +307,12 @@ class UsersController < ApplicationController
   end
 
   def choose_profile
+  end
+
+  def get_more_credits
+    #TODO add notify if 1 day left
+    redirect_to home_path and return unless current_user.active_subscription? 
+    render 'users/success_credits_buy' if params[:success]
   end
 
   def get_feed_from objects, verb, target

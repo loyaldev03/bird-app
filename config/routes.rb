@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post '/rate' => 'rater#create', :as => 'rate'
   get "leaderboard", to: "users#leaderboard"
   get "choose_profile", to: "users#choose_profile"
+  get "get_more_credits", to: "users#get_more_credits"
   delete "cancel_subscription", to: "users#cancel_subscription"
   get "home", to: "users#home"
 

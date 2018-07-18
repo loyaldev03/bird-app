@@ -151,6 +151,33 @@ $(document).on('turbolinks:load', function() {
     $("[id^='comment-reply-btn']").show();
     return false;
   });
+
+  $('.credits-link').click(function(){
+    $('.credits-purchasing .credits-count').text($(this).data('credits'));
+    $('#credits_count').val($(this).data('credits'));
+    $('.credits-purchasing').fadeIn();
+    $("html, body").animate({ scrollTop: $(".credits-purchasing").offset().top - 120 }, 500);
+    return false;
+  });
+
+  $('.change-credits').click(function(){
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    return false;
+  });
+
+  $('.update-cc').click(function(){
+    $('#payment-user-info').removeClass('d-none');
+    braintree.setup(clientToken, "dropin", {
+      container: "payment-form",
+      paypal: {
+        button: {
+          type: "checkout"
+        }
+      },
+      onError: function(payload) {
+      }
+    });
+  });
 });
 
 var load_more_feed = function(){

@@ -91,14 +91,13 @@ Rails.application.configure do
 
   config.web_socket_server_url = "wss://dirtybirdrec.herokuapp.com/cable" 
   config.action_cable.allowed_request_origins = ['https://dirtybirdrec.herokuapp.com', 'http://dirtybirdrec.herokuapp.com']
-end
 
-Rails.application.config.middleware.use ExceptionNotification::Rack,
-  :slack => {
-    :webhook_url => ENV['SLACK_WEBHOOK_URL'],
-    :channel => "#general",
-    :additional_parameters => {
-      :mrkdwn => true
-    },
-    :backtrace_lines => 1
-  }
+  config.middleware.use ExceptionNotification::Rack,
+    :slack => {
+      :webhook_url => ENV['SLACK_GENERAL'],
+      :additional_parameters => {
+        :mrkdwn => true
+      },
+      :backtrace_lines => 1
+    }
+end

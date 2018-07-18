@@ -2,6 +2,56 @@ class Callbacks::BraintreeController < ApplicationController
   protect_from_forgery with: :null_session, only: [:analytics_notify]
 
   def nonce
+    #buy more credits logic
+    if params[:credits_count].present?
+      unless current_user.braintree_customer
+        flash[:error] = 'You should be subscribed first'
+        redirect_to choose_profile_path and return
+      end
+
+      if params[:payment_method_nonce].present? && current_user.braintree_subscription
+        payment_method = Braintree::PaymentMethod.update(
+          current_user.braintree_subscription.payment_method_token,
+          payment_method_nonce: params[:payment_method_nonce]
+        )
+
+        if payment_method.success?
+        else
+          flash[:error] = 'Failed to update payment method. You cannot currently change from Credit Card to PayPal billing. If you are still having issues, contact support.'
+          redirect_to choose_profile_path and return
+        end
+      end
+      
+      result = Braintree::Transaction.sale(
+        :amount => params[:credits_count].to_f,
+        :payment_method_token => current_user.braintree_customer.payment_methods[0].token,
+        :options => {
+          :submit_for_settlement => true
+        }
+      )
+
+      if result.success?
+        current_user.increment!(:download_credits, params[:credits_count].to_i)
+
+        if payment_method.present?
+          flash[:notice] = "#{params[:credits_count]} redits was added"
+        else
+          flash[:notice] = "Payment method updated and #{params[:credits_count]} credits added"
+        end
+      else
+        flash[:error] = 'Error when adding credits. If unexpected, contact support.'
+        redirect_to get_more_credits_path and return
+      end
+
+      notification = "Order!"
+      notification << " #{current_user.try(:name)}(#{current_user.try(:id)})"
+      notification << "subscr: #{params[:subscription]}" if params[:subscription].present?
+      notification << "subscr: #{params[:credits_count]}" if params[:credits_count].present?
+      SLACK.ping notification
+
+      redirect_to get_more_credits_path( success: true ) and return
+    end
+ 
     if params[:payment_method_nonce].blank?
       # Honeybadger.notify(
       #   error_class: 'MissingNonce',
@@ -51,6 +101,7 @@ class Callbacks::BraintreeController < ApplicationController
       elsif params[:subscription] == 'monthly_7'
         plan_id = ENV['BRAINTREE_MONTHLY_PLAN_7_ID']
       elsif params[:subscription] == 'monthly_10'
+        download_credits = 30
         plan_id = ENV['BRAINTREE_MONTHLY_PLAN_10_ID']  
       else
         throw "Couldn't find plan for subscription #{params[:subscription]}"
@@ -65,7 +116,8 @@ class Callbacks::BraintreeController < ApplicationController
         current_user.update!(
           braintree_subscription_id: result.subscription.id,
           subscription_started_at: Date.today,
-          subscription_length: params[:subscription]
+          subscription_length: params[:subscription],
+          download_credits: download_credits
         )
           # subscribed: true,
 

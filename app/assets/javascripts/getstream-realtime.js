@@ -5,13 +5,14 @@ $(document).on('turbolinks:load', function() {
   var feed = $('.feed-block').data('feed');
   var userId = $('.dropdown-notify-menu').data('currentUser');
 
-
   $.ajax({
     url: '/get_feed_token',
     dataType: 'JSON',
     data: { feed: feed, feed_id: feedId, user_id: userId }
   })
     .done(function(respond) {
+      if (!respond.notify_token) return false;
+
       var client = stream.connect(respond.key, null, respond.app_id);
       var feed_not_set = false;
 

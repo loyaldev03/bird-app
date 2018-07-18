@@ -1,0 +1,96 @@
+<div class="credits-pane mt-lg-4">
+  <%= image_tag 'birdfeed-red.png' %>
+  <h2>GET MORE CREDITS</h2>
+  <div class="credits-subtitle">
+    How many would you like to purchase?
+  </div>
+
+
+    <div class="row credits-grid">
+      <div class="col-lg-4">
+        <div class="credits-count">5</div>
+        <div class="credits-subtitle mb-2">credits</div>
+        <button class="btn c-btn-blue credits-link" data-credits="5">Purchase $5.00</button>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="credits-count">10</div>
+        <div class="credits-subtitle mb-2">credits</div>
+        <button class="btn c-btn-blue credits-link" data-credits="10">Purchase $10.00</button>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="credits-count">20</div>
+        <div class="credits-subtitle mb-2">credits</div>
+        <button class="btn c-btn-blue credits-link" data-credits="20">Purchase $20.00</button>
+      </div>
+    </div>
+
+  <%= link_to "Learn how credits work", "#", class: "credits-info" %>
+</div>
+
+<div class="credits-purchasing">
+  <div class="credits-purchasing-title">
+    <div class="column-1">YOU ARE PURCHASING</div>
+    <div>
+      <div class="text-center">
+        <div class="credits-count">20</div>
+        <div class="credits-subtitle mb-2">credits</div>
+      </div>
+    </div>
+    <a href="#" class="change-credits credits-info ml-2">Change</a>
+  </div>
+
+  <p> Subscription Type:
+    <% if current_user.subscription_type == 'member' %>
+      <% if current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
+            current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_7_ID'] ||
+            current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_10_ID'] %>
+        Monthly
+      <% elsif current_user.braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
+               current_user.braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_100_ID'] %>
+        Annual
+      <% end %>
+    <% end %>
+    <%= current_user.subscription_type.titleize %>
+  </p>
+
+  <p> Next Bill Date:
+    <%= current_user.braintree_subscription.next_billing_date %>
+    for $<%= current_user.braintree_subscription.next_bill_amount %>
+  </p>
+  <p> Card:
+    <img src="<%= current_user.braintree_customer.payment_methods.first.image_url %>" width=37 height=25>
+    <% if current_user.braintree_customer.payment_methods.first.respond_to?(:last_4) %>
+      ending in <%= current_user.braintree_customer.payment_methods.first.last_4 %> <br>
+      <button class="btn btn-default update-cc mt-2">Update Credit Card</button>
+    <% end %>
+  </p>
+  <p>
+    If you're having issues with your account, please <%= link_to 'Contact Support', contacts_path %>!</p>
+  </p>
+
+  <%= form_tag callbacks_braintree_nonce_path, id: "subscribe-form" do |f| %>
+    <%= hidden_field_tag :credits_count %>
+
+    <div id="payment-user-info" class="d-none">
+      <div class="form-group text-muted">
+        <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
+          <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
+        </a>
+      </div>
+
+      <div class="form-group" id="payment-form">
+      </div>
+    </div>
+
+    <%= submit_tag 'Purchase', class: 'btn c-btn-blue' %>
+  <% end %>
+
+</div>
+
+<script>
+  var clientToken = "<%= Braintree::ClientToken.generate %>";
+
+  $('.credits-dropdown').collapse('hide');
+</script>

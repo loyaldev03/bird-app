@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
       if current_user.braintree_subscription_expires_at && 
           (current_user.subscription_length == 'monthly_10' ||
            current_user.subscription_length == 'monthly_old')
-        @credits = 10 - current_user.downloads.where("created_at > ?", current_user.braintree_subscription_expires_at - 1.month).count
+        @credits = current_user.download_credits
       else
         @credits = nil
       end
@@ -77,10 +77,10 @@ class ApplicationController < ActionController::Base
   protected
 
     def set_notification
-         request.env['exception_notifier.exception_data'] = {
-          "server" => request.env['SERVER_NAME'],
-          "current_user" => "#{current_user.try(:id)} #{current_user.try(:name)} #{current_user.try(:subscription_length)}"
-        }
+      request.env['exception_notifier.exception_data'] = {
+        "server" => request.env['SERVER_NAME'],
+        "current_user" => "#{current_user.try(:id)} #{current_user.try(:name)} #{current_user.try(:subscription_length)}"
+      }
     end
 
     def set_online

@@ -1,0 +1,70 @@
+.credits-pane {
+  max-width: 680px; 
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.16); 
+  border-radius: 10px; 
+  padding: 30px 20px 20px; 
+  text-align: center;
+  background-image: asset-data-url("egg-bg.png");
+  margin: 0 auto;
+  
+  h2 {
+    color: #585858;
+    font-size: 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 4px 0 0;
+  }
+}
+
+.credits-subtitle {
+  color: #777777;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.credits-count {
+  color: #5c5c5c;
+  font-size: 71px;
+  line-height: 71px;
+  font-weight: 900;
+}
+
+.credits-grid {
+  max-width: 400px; 
+  margin: 15px auto 0;
+
+  & > div {
+    border-right: 1px solid #707070;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+
+.credits-info {
+  color: #ff6464;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 15px;
+  display: inline-block;
+}
+
+.credits-purchasing {
+  width: 450px;
+  margin: 50px auto 0;
+  display: none;
+  margin-bottom: 140px;
+}
+
+.credits-purchasing-title {
+  display: flex;
+  align-items: center;
+
+  .column-1 {
+    color: #585858;
+    font-size: 25px;
+    font-weight: 700;
+    margin-right: 25px;
+  }
+}

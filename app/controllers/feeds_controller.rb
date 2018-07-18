@@ -1,6 +1,6 @@
 class FeedsController < ApplicationController
   before_action :set_enricher
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:get_feed_token]
 
   def is_seen
     begin
@@ -29,8 +29,10 @@ class FeedsController < ApplicationController
       token = StreamRails.feed_manager.client.feed(params[:feed], params[:feed_id]).readonly_token
     end
 
-    notify_token = StreamRails.feed_manager.client.feed('notification', params[:user_id]).readonly_token
-    
+    if params[:user_id].present?
+      notify_token = StreamRails.feed_manager.client.feed('notification', params[:user_id]).readonly_token
+    end
+
     render json: { 
                     token: token, 
                     key: ENV['STREAM_API_KEY'], 
@@ -67,9 +69,6 @@ class FeedsController < ApplicationController
       @activity = @enricher.enrich_activities([
         params['new_item']
       ]).first
-      logger.warn "--------------------------------------------------"
-      logger.warn Release.find params['new_item']['object'].split(":")[1]
-      logger.warn Comment.find params['new_item']['foreign_id'].split(":")[1]
 
       @feed_item = render_to_string(partial: "activity/commentable_#{ @new_item }", 
           locals: { activity: @activity } )

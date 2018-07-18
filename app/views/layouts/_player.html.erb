@@ -17,7 +17,7 @@
             <div class="jp-volume-bar">
               <div class="jp-volume-bar-value"></div>
             </div>
-      <!--       <div class="jp-seek-bar" style="width: 150px">
+             <!-- <div class="jp-seek-bar" style="width: 150px">
               <div class="jp-play-bar"></div>
             </div> -->
             <!-- <button class="jp-volume-max" role="button" tabindex="5">max</button> -->
@@ -44,7 +44,18 @@
             current_user.has_role?(:artist) ) %>
 
         <% if @credits %>
-          <span class="jp-credits"><%= pluralize(@credits, "Credit") %></span>
+          <div class="credits-menu">
+            <button type="button" data-toggle="collapse" data-target="#credits-count" aria-expanded="false" aria-controls="collapseExample" class="credits-btn">
+              <%= pluralize(@credits, "Credit") %>
+            </button>
+
+            <div id="credits-count" class="collapse credits-dropdown">
+              <span class="text-nowrap mb-1 d-inline-block">
+                You have <%= @credits %> download credits
+              </span>
+              <%=link_to "Buy More", get_more_credits_path, class: "btn c-btn-blue c-btn-sm" %>
+            </div>
+          </div>
         <% end %>
 
         <button id="jp-playlist-btn" class="mr-4">
@@ -490,7 +501,7 @@
   }
 
   function changePlayerTitle(t) {
-    $('.jp-title').html('<strong>Now playing:</strong> <a href="/releases/' + t.release_id + '">' + t.track_number + '. ' + t.title + ' - <b>' + t.artists + '</b></a>');
+    $('.jp-title').html('<a href="/releases/' + t.release_id + '">' + t.track_number + '. ' + t.title + ' - <b>' + t.artists + '</b></a>');
     $.get('/fill_track_title', {track_id: t.id});
   }
 

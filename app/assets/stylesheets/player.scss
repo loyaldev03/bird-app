@@ -187,8 +187,43 @@
   margin: 0 5px;
 }
 
-.jp-credits {
+.credits-menu {
+  position: relative;
+}
+
+.credits-btn {
   color: #ff7e7e;
   font-size: 10px;
-  padding: 12px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.credits-dropdown {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  background-color: white;
+  padding: 10px 15px;
+  color: #222;
+  font-family: "Titillium Web";
+  font-size: 10px;
+  font-weight: 700;
+  transform: translateX(-50%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid white;
+    top: -20px;
+    right: calc(50% - 5px);
+    z-index: 3;
+  }
 }

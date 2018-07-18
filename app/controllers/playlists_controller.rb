@@ -1,6 +1,6 @@
 class PlaylistsController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:sync_playlist]
 
   def show
     playlist = Playlist.find params[:id]

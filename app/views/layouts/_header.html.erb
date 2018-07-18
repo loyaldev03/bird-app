@@ -88,7 +88,6 @@
             <div class="header-user">
               <%= link_to image_tag(current_user.avatar.thumb, class: "user-avatar"), root_path %>
               <span><%= link_to current_user.name, root_path %></span>
-
             </div>
             
             <li class="nav-item dropdown dropdown-notify-menu" data-current-user="<%= current_user.id %>">

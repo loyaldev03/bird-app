@@ -427,6 +427,7 @@ class User < ApplicationRecord
       subscriptions = braintree_customer.payment_methods.map(&:subscriptions).flatten.select { |s| s.status == 'Active' }
 
       if subscriptions.size > 1
+        SLACK.ping "User #{id} has multiple active subscriptions!"
         # Honeybadger.notify("User #{id} has multiple active subscriptions!")
       end
 
