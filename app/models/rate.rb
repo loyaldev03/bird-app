@@ -1,6 +1,8 @@
 class Rate < ActiveRecord::Base
   belongs_to :rater, :class_name => "User"
   belongs_to :rateable, :polymorphic => true
+  has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
 
   #attr_accessible :rate, :dimension
 

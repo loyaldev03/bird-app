@@ -3,6 +3,7 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   has_many :likes, as: :likeable
   has_many :reports, as: :reportable
+  has_many :comments, as: :commentable
   belongs_to :parent,  class_name: "Comment", optional: true
   has_many   :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
   
@@ -11,7 +12,7 @@ class Comment < ApplicationRecord
 
   after_create :add_to_feeds, :add_points, :increment_count
   after_destroy :decrement_count, :remove_points
-  after_create_commit { CommentRelayJob.perform_later(self) if self.parent_id.present? }
+  after_create_commit :comment_relay_job
 
   validates :user_id, presence: true
 
@@ -23,32 +24,27 @@ class Comment < ApplicationRecord
   def activity_notify
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
 
-    if self.commentable.try(:users)
+    # for releases & announcements
+    if commentable.try(:users)
 
-      self.commentable.users.map do |user|
-        unless self.user_id == user.id
+      commentable.users.map do |user|
+        unless user_id == user.id
           notify << StreamRails.feed_manager.get_notification_feed(user.id)
         end
       end
 
-    elsif self.commentable.try(:user)
+    elsif commentable.try(:user)
 
-      unless self.user_id == self.commentable.user.id
-        notify <<StreamRails.feed_manager.get_notification_feed(self.commentable.user.id)
+      unless user_id == commentable.user.id
+        notify <<StreamRails.feed_manager.get_notification_feed(commentable.user.id)
       end
 
     end
 
-    
-    if self.parent_id.present?
-      unless self.user_id == self.parent.user_id || self.parent.user.followed( self.commentable ).blank?
-        notify << StreamRails.feed_manager.get_notification_feed(self.parent.user_id)
-      end
-
-    else
-
-      unless self.commentable_type == "User" && self.commentable_id == self.user_id
-        notify << StreamRails.feed_manager.get_feed( self.commentable_type.downcase, self.commentable_id )
+    if parent_id.present?
+      
+      unless user_id == parent.user_id
+        notify << StreamRails.feed_manager.get_notification_feed(parent.user_id)
       end
 
     end
@@ -56,28 +52,28 @@ class Comment < ApplicationRecord
     notify
   end
 
-  def activity_should_sync?
-    if (self.user.has_role?(:artist) || self.user.has_role?(:admin)) && 
-        self.commentable_type == "User" && 
-        self.commentable_id == self.user_id &&
-        self.parent_id.present?
-      false
-    else
-      true
-    end
+  def parents_comments
+    Comment.where(parent_id: nil, 
+                  commentable_type: "Comment", 
+                  commentable_id: id)
+           .order(created_at: :asc)
   end
 
   private
 
     def add_points
-      self.user.change_points( 'comment', self.commentable_type )
+      user.change_points( 'comment', commentable_type )
     end
 
     def remove_points
-      self.user.change_points( 'comment', self.commentable_type, :destroy )
+      user.change_points( 'comment', commentable_type, :destroy )
     end
 
     def increment_count
+      if %w(Comment Post).include? commentable_type
+        commentable.increment! :replies_count
+      end
+
       self_parent = parent
 
       while self_parent.present?
@@ -87,6 +83,10 @@ class Comment < ApplicationRecord
     end
 
     def decrement_count
+      if %w(Comment Post).include? commentable_type
+        commentable.decrement! :replies_count
+      end
+
       self_parent = parent
 
       while self_parent.present?
@@ -95,36 +95,55 @@ class Comment < ApplicationRecord
       end
     end
 
+    def comment_relay_job
+      unless %w(User Release Announcement).include? commentable_type
+        CommentRelayJob.perform_later(self)
+      end
+    end
+
     def add_to_feeds
-      user_feed = StreamRails.feed_manager.get_user_feed( self.user_id )
+      user_feed = StreamRails.feed_manager.get_user_feed( user_id )
       activity = {
-        actor: "User:#{self.user_id}",
+        actor: "User:#{user_id}",
         verb: "Comment",
-        object: "#{self.commentable_type}:#{self.commentable_id}",
-        foreign_id: "Comment:#{self.id}",
+        object: "#{commentable_type}:#{commentable_id}",
+        foreign_id: "Comment:#{id}",
         time: DateTime.now.iso8601
       }
 
-      activity_notify.each do |feed| 
-        logger.warn "FEED"
-        logger.warn feed.inspect
+      activity_notify.each do |feed|
         feed.add_activity(activity)
       end
 
-      user_feed.add_activity(activity) if activity_should_sync?
+      if %w(User Release Announcement).include? commentable_type
+        user_feed.add_activity(activity)
+        # StreamRails.feed_manager
+        #     .get_feed( commentable_type.downcase, commentable_id )
+        #     .add_activity(activity)
+      end
 
-      return if self.user_id == self.commentable_id && self.commentable_type == 'User'
+      # autofollow
+      return if user_id == commentable_id && commentable_type == 'User'
+      return if user_id == commentable.try(:user_id)
 
-      if self.user.followed( self.commentable ).blank?
-        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(self.user_id)[:aggregated]
+      if user.followed( commentable ).blank?
+        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(user_id)[:aggregated]
 
-        self.user.follows.create(followable_id: self.commentable_id, followable_type: self.commentable_type)
-        news_aggregated_feed.follow(self.commentable_type.downcase, self.commentable_id)
+        if %w(User Release Announcement).include? commentable_type
+          user.follows.create(followable_id: commentable_id, followable_type: commentable_type)
+          news_aggregated_feed.follow(commentable_type.downcase, commentable_id)
+        end
 
-        unless self.commentable_type == "User"
+        if commentable_type == 'Post'
           feed_for_tab = StreamRails.feed_manager
-              .get_feed("#{self.commentable_type.downcase}_user_feed", self.user_id)
-          feed_for_tab.follow( self.commentable_type.downcase, self.commentable_id )
+              .get_feed("topic_user_feed", user_id)
+          feed_for_tab.follow( "topic", commentable.topic_id )
+        end
+
+        if %w(Release Announcement).include? commentable_type
+          feed_for_tab = StreamRails.feed_manager
+              .get_feed("#{commentable_type.downcase}_user_feed", user_id)
+          feed_for_tab.follow( commentable_type.downcase, commentable_id )
         end
       end
     end

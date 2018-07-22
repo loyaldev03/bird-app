@@ -20,10 +20,9 @@ class TopicsController < ApplicationController
     else
       @category = @topic.category
     end
-    @new_comment = Post.new
-    @topic_id = @topic.id
+    @new_post = Post.new
 
-    @new_comment.feed_images.build
+    @new_post.feed_images.build
 
     breadcrumb @category.title, chirp_path(@category), match: :exact
     breadcrumb @topic.title, chirp_topic_path(@category, @topic), match: :exact

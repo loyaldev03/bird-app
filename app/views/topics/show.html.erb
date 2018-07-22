@@ -19,8 +19,8 @@
   <div class="text-right mr-4"><%= render 'follows/follow_button', object: @topic %></div>
 
   <div class="feed-block" data-feed="topic" data-feed-id="<%= @topic.id %>">
-    <%= render @topic.posts.parents_posts.order(created_at: :desc) %>
+    <%= render @topic.posts.order(created_at: :desc) %>
   </div>
 
-  <%= render 'comments/form', parent_id: nil %>
+  <%= render 'posts/form' %>
 </div>

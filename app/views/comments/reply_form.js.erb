@@ -1,16 +1,17 @@
 <% form = escape_javascript(
             render(partial:'comments/form', 
-              locals: { post: @new_comment, parent_id: @comment_id })
+              locals: { post: @new_comment, parent_id: @parent_id })
           ) %>
 
 $('.feed-item .feed-form').remove();
-$('form.edit_<%= @new_comment.class.to_s.downcase %>').remove();
+$('form.edit_comment>').remove();
 $("[id^='comment-reply-btn']").show();
 
-<% if @grandparent_id.blank? %>
-  $('#comment-reply-btn-<%= @comment_id %>').hide().before(`<%= form %>`);
+<% if @parent_id.blank? %>
+  $('#comment-reply-btn-<%= @commentable_id %>').hide()
+  $('#<%= "#{@commentable_type.downcase}-#{@commentable_id}" %>-replies').append(`<%= form %>`);
 <% else %>
-  $('#comment-<%= @comment_id%>-outer').append(`<%= form %>`);
+  $('#comment-<%= @parent_id %>-outer').append(`<%= form %>`);
 <% end %>
 
 $("html, body").animate({ scrollTop: $("#new_comment-<%= @comment_hash %>").offset().top - 320 }, 500);

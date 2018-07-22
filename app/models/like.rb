@@ -1,6 +1,8 @@
 class Like < ApplicationRecord
   belongs_to :user
   belongs_to :likeable, polymorphic: true
+  has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
   
   after_create :add_points, :trigger_likes_count
   after_destroy :trigger_likes_count, :remove_points, :remove_from_feed
@@ -36,6 +38,13 @@ class Like < ApplicationRecord
 
   def activity_verb
     self.likeable.class.to_s
+  end
+
+  def activity_should_sync?
+    no_sync = %w(Follow BadgeLevel Download Like Rate Video Share)
+    return false if no_sync.include? self.likeable.class.to_s
+
+    true
   end
 
   private

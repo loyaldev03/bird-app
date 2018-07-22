@@ -206,7 +206,7 @@ var load_more_feed = function(){
           case 'user':
             feed = "user_aggregated";
             break;
-          case 'timeline':
+          case 'timeline_aggregated':
             feed = "timeline_aggregated";
             break;
           case 'release':

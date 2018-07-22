@@ -61,7 +61,7 @@
   left: 0;
 }
 
-.feed-replies {
+.feed-comment-replies {
   background: #f7f7f7;
   padding: 20px;
   margin-top: 8px;
@@ -72,6 +72,13 @@
   .like-button img {
     vertical-align: middle;
   }
+}
+
+.feed-item-replies {
+  background: #f7f7f7;
+  padding: 8px 20px;
+  margin-top: 8px;
+  text-align: center;
 }
 
 .feed-owner {

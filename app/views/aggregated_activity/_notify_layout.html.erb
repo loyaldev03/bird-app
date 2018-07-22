@@ -6,7 +6,13 @@
 
   <% actors = activity['activities'].map { |a| a['actor'].name }.uniq %>
 
-  <%= link_to activity['activities'][0]['object'], class: "notify-link", 
+  <% if activity['activities'][0]['object'].class.to_s == "BadgeLevel" %>
+    <% notify_link = activity['activities'][0]['object'].user %>
+  <% else %>
+    <% notify_link = activity['activities'][0]['object'] %>
+  <% end %>
+
+  <%= link_to notify_link, class: "notify-link", 
       data: { feed: { group: { id: activity['id'] } } } do %>
     <div class="notify-item <%= activity['is_read'] ? "is_read" : "" %>">
       <strong>
@@ -48,6 +54,8 @@
           you on release "<%= activity['activities'][0]['object'].title.truncate(15) %>"
         <% when "User" %>
           you on your page
+        <% else %>
+          your <%= activity['activities'][0]['object'].class.to_s %>
         <% end %>
       </span>
 

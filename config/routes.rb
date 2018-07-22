@@ -89,9 +89,9 @@ Rails.application.routes.draw do
   resources :posts
 
   resources :follows
-  resources :comments do
-    get 'reply_form'
-  end
+  resources :comments
+  get 'comment_reply_form', to: 'comments#reply_form'
+
   resources :likes
 
   resources :chirp, controller: 'topic_categories', only: [:show, :index] do

@@ -66,7 +66,7 @@ class PostsController < ApplicationController
   protected
 
     def post_params
-      params.require(:post).permit(:body, :topic_id, :parent_id, :post_hash,
+      params.require(:post).permit(:body, :topic_id, :parent_id,
         feed_images_attributes: [:id, :feedable_id, :feedable_type, :image, :_destroy])
     end
 end

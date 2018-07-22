@@ -198,8 +198,8 @@
               <%= f.hidden_field :commentable_type, value: "User" %>
               <%= f.hidden_field :commentable_id, value: @user.id %>
 
-              <%= f.label :user_id, class: "sr-only" %>
               <% if current_user.has_role?(:admin) %>
+                <%= f.label :user_id, class: "sr-only" %>
                 <%= f.select :user_id, 
                     [[ @user.name, @user.id ], [current_user.name, current_user.id]],
                     { selected: @user.id },

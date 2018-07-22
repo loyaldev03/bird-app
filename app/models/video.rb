@@ -1,6 +1,7 @@
 class Video < ApplicationRecord
   belongs_to :user
   has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
 
   validates :user_id, :title, :video_link, presence: true
 

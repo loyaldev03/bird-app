@@ -41,6 +41,8 @@ class User < ApplicationRecord
   has_many :videos
   accepts_nested_attributes_for :videos, :allow_destroy => true
 
+  has_many :shares
+
   has_many :follows
   has_many :followed_users, through: :follows, source: :followable, source_type: "User"
 
@@ -127,27 +129,19 @@ class User < ApplicationRecord
     return unless cahced_active_subscription?
     
     kind_name = case action_model
-    when "Comment"
-      types = ["Release", "Track"]
-      "music"
-    when "Announcement"
-      types = ["Release", "Track"]
-      "music"
-    when "Release"
-      types = ["Release", "Track"]
-      "music"
-    when "Track"
-      types = ["Release", "Track"]
-      "music"
-    when "Topic"
-      types = ["Topic"]
-      "forum"
-    when "Post"
-      types = ["Post"]
-      "forum"
-    when "User"
-      types = ["User"]
-      "community"
+    when "Comment"      then "music"
+    when "Announcement" then "music"
+    when "Release"      then "music"
+    when "Track"        then "music"
+    when "Download"     then "music"
+    when "Topic"        then "forum"
+    when "Post"         then "forum"
+    when "User"         then "community"
+    when "Follow"       then "community"
+    when "Like"         then "community"
+    when "Rate"         then "community"
+    when "Video"        then "community"
+    when "BadgeLevel"   then "community"
     end
 
     if income_action_type == 'member_over_time'

@@ -39,7 +39,6 @@ class CommentsController < ApplicationController
     if current_user.has_role?(:admin)
       @comment.user_id = params[:comment][:user_id] || current_user.id
     elsif @comment.commentable_type == "User" &&
-            @comment.parent.nil? &&
             @comment.commentable_id != current_user.id
       redirect_back(fallback_location: root_path) and return
     else
@@ -80,19 +79,11 @@ class CommentsController < ApplicationController
   end
  
   def reply_form
-    @grandparent_id = params[:parent_id]
-    @comment_id = params[:comment_id]
+    @parent_id = params[:parent_id]
     @commentable_id = params[:commentable_id]
     @commentable_type = params[:commentable_type]
-    @topic_id = params[:comment_topic]
     @comment_hash = SecureRandom.hex
-
-    if @topic_id.present?
-      @new_comment = Post.new
-    else
-      @new_comment = Comment.new
-    end
-
+    @new_comment = Comment.new
     @new_comment.feed_images.build
   end
 

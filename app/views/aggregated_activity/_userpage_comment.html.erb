@@ -1,77 +1,82 @@
 <% for _activity in activity['activities'] %>
 
-    <% if _activity['foreign_id'].class.to_s == "Comment" %>
+  <% if _activity['foreign_id'].class.to_s == "Comment" %>
 
-      <% if _activity['foreign_id'].commentable_type == "User" && 
-            _activity['foreign_id'].commentable_id == @user.id %>
+    <% if _activity['foreign_id'].commentable_type == "User" && 
+          _activity['foreign_id'].commentable_id == @user.id %>
 
-        <%= render partial: 'comments/initial_comment',
-            locals: { user: _activity['actor'], comment: _activity['foreign_id'] } %>
-        
-
-      <% else %>
+      <%= render partial: 'comments/initial_comment',
+          locals: { user: _activity['actor'], comment: _activity['foreign_id'] } %>
       
-        <div class="feed-item">
-          <p class="feed-posted"> 
-            <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
-          </p>
-
-          <div class="t-wide">
-            <%= link_to _activity['actor'] do %>
-              <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
-              <strong><%= _activity['actor'].name %>:</strong>
-            <% end %>
-
-            
-            added a comment
-
-            <strong>
-              <%= link_to _activity['foreign_id'].body.truncate(30), _activity['foreign_id'] %>
-            </strong>
-
-            on
-
-            <strong>
-              <%= link_to _activity['foreign_id'].commentable_type.downcase, 
-                  _activity['foreign_id'].commentable %>
-            </strong>
-          </div>
-        </div>
-      <% end %>
-
-    <% elsif _activity['foreign_id'].class.to_s == "Like" %>
-
+    <% else %>
+    
       <div class="feed-item">
         <p class="feed-posted"> 
           <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
         </p>
 
+        <div class="t-wide">
+          <%= link_to _activity['actor'] do %>
+            <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
+            <strong><%= _activity['actor'].name %>:</strong>
+          <% end %>
 
-        <%= link_to _activity['actor'] do %>
-          <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
-          <strong><%= _activity['actor'].name %>:</strong>
-        <% end %>
+          added a comment
 
-        
-        <span class="t-wide">Has liked a comment </span>
+          <strong>
+            <%= link_to _activity['foreign_id'].body.truncate(30), _activity['foreign_id'] %>
+          </strong>
 
-        <strong>
-          <%= link_to _activity['object'].body.truncate(30), _activity['object'] %>
-        </strong>
+          on
 
-        on
+          <strong>
+            <%= link_to _activity['foreign_id'].commentable_type.downcase, 
+                _activity['foreign_id'].commentable %>
+          </strong>
+        </div>
 
-        <strong>
-          <%= link_to _activity['object'].commentable_type.downcase, 
-              _activity['object'].commentable %>
-        </strong>
+        <%= render 'comments/feed_item', object: _activity['foreign_id'] %>
+
+        <hr class="feed-divider">
       </div>
-
-    <% else %>
-
-      <% logger.warn "#{_activity['verb'].try(:id)}:#{_activity['verb']} #{_activity['object'].try(:id)}:#{_activity['object']} #{_activity['foreign_id'].try(:id)}:#{_activity['foreign_id']}" %>
 
     <% end %>
 
-    <hr class="feed-divider">
+  <% elsif _activity['foreign_id'].class.to_s == "Like" %>
+
+    <div class="feed-item">
+      <p class="feed-posted"> 
+        <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
+      </p>
+
+      <%= link_to _activity['actor'] do %>
+        <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>
+        <strong><%= _activity['actor'].name %>:</strong>
+      <% end %>
+
+      
+      <span class="t-wide">Has liked a comment </span>
+
+      <strong>
+        <%= link_to _activity['object'].body.truncate(30), _activity['object'] %>
+      </strong>
+
+      on
+
+      <strong>
+        <%= link_to _activity['object'].commentable_type.downcase, 
+            _activity['object'].commentable %>
+      </strong>
+
+      <%= render 'comments/feed_item', object: _activity['foreign_id'] %>
+
+      <hr class="feed-divider">
+    </div>
+
+  <% else %>
+
+    <% logger.warn "#{_activity['verb'].try(:id)}:#{_activity['verb']} #{_activity['object'].try(:id)}:#{_activity['object']} #{_activity['foreign_id'].try(:id)}:#{_activity['foreign_id']}" %>
+
+  <% end %>
+
 <% end %>

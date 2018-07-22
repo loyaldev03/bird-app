@@ -54,17 +54,25 @@ class HomeController < ApplicationController
   end
 
   def share
+    if params[:subtype] && params[:subtype_id]
+      object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
+      _object_id = params[:subtype_id]
+      verb = params[:subtype].capitalize
+    else
+      object = "#{params[:type].capitalize}:#{params[:type_id]}"
+      _object_id = params[:type_id]
+      verb = params[:type].capitalize
+    end
+
+    share = Share.create(
+          user_id: current_user.try(:id),
+          shareable_type: verb,
+          shareable_id: _object_id,
+          social: params[:social]
+      )
+
     if current_user
       feed = StreamRails.feed_manager.get_user_feed( current_user.id )
-
-      if params[:subtype] && params[:subtype_id]
-        object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
-        verb = params[:subtype].capitalize
-      else
-        object = "#{params[:type].capitalize}:#{params[:type_id]}"
-        verb = params[:type].capitalize
-      end
-
       activity = {
         actor: "User:#{current_user.id}",
         verb: verb,

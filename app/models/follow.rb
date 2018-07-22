@@ -1,6 +1,8 @@
 class Follow < ApplicationRecord
   belongs_to :user
   belongs_to :followable, polymorphic: true
+  has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
   validates :user_id, :followable_id, :followable_type, presence: true
 
   after_create :add_points#, :feed_release_topic_announcement

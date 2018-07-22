@@ -38,6 +38,8 @@
     <%= render partial: 'aggregated_activity/big_release', 
         locals: { release: release, style: "dark" }  %>
 
+    <%#= render 'comments/feed_item', object: release %>
+
   <% elsif activity['activities'][0]['foreign_id'].class.to_s == "Announcement" %>
     <% announcement = activity['activities'][0]['foreign_id'] %>
 
@@ -61,6 +63,8 @@
 
     <%= render partial: 'aggregated_activity/big_release', 
         locals: { release: announcement, style: announcement.bg_color }  %>
+
+    <%#= render 'comments/feed_item', object: announcement %>
   <% else %>
 
     <% release = ReleasePresenter.new(activity['activities'][0]['object'], current_user) %>
@@ -100,7 +104,9 @@
     <%= render partial: 'aggregated_activity/big_release', 
         locals: { release: release, style: "light" }  %>
 
+    <%= render 'comments/feed_item', object: release %>
   <% end %>
+
 
   <hr class="feed-divider">
 </div>

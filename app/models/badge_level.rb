@@ -1,6 +1,8 @@
 class BadgeLevel < ApplicationRecord
   belongs_to :badge, inverse_of: :badge_levels
   belongs_to :user, inverse_of: :badge_levels
+  has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
 
   include StreamRails::Activity
   as_activity

@@ -6,7 +6,7 @@
   <% if comment.user == comment.commentable %>
     <% to_right = "display: flex; flex-direction: row-reverse;" %>
   <% end %>
-<% else %>
+<% elsif comment.class.to_s == "Post" %>
   <% if comment.user == comment.topic.user %>
     <% to_right = "display: flex; flex-direction: row-reverse;" %>
   <% end %>
@@ -50,13 +50,11 @@
           <%= render partial: 'likes/like_button', 
               locals: { object: comment,  style: 'thumbup-reply' } %>
           &middot;
-          <%= link_to comment_reply_form_path( 
-              parent_id: comment.parent_id,
-              comment_id: comment.id, 
-              commentable_id: comment.try(:commentable_id),
-              commentable_type: comment.try(:commentable_type),
-              comment_topic: comment.try(:topic_id) ),
-              remote: true, id: "comment-#{comment.id}-link" do %>
+          <%= link_to comment_reply_form_path(
+                parent_id: comment.id,
+                commentable_id: comment.commentable_id,
+                commentable_type: comment.commentable_type
+              ), remote: true, id: "comment-#{comment.id}-link" do %>
             Reply
           <% end %>
           &middot;

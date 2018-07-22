@@ -1,4 +1,8 @@
 <% for _activity in activity['activities'] %>
+  <% if _activity['object'].class.to_s == 'BadgeLevel' %>
+    <% _activity['object'] = _activity['object'].badge %>
+  <% end %>
+  
   <div class="feed-item">
     <p class="feed-posted"> 
       <%= time_ago_in_words(activity['updated_at'].in_time_zone) %> ago
@@ -18,26 +22,29 @@
 
     </div>
 
-      <div class="item-wide feed-release">
+    <div class="item-wide feed-release">
 
-        <%= link_to image_tag(_activity['object'].image.thumb), 
-              _activity['actor'], class: "item-avatar" %>
+      <%= link_to image_tag(_activity['object'].image.thumb), 
+            _activity['actor'], class: "item-avatar" %>
 
-        <div class="item-body">
-          <h3>
-            <%= link_to _activity['object'].name.truncate(70).upcase, 
-                  _activity['actor'] %>
-          </h3>
+      <div class="item-body">
+        <h3>
+          <%= link_to _activity['object'].name.truncate(70).upcase, 
+                _activity['actor'] %>
+        </h3>
 
-          <p><strong>Type:</strong> <%= _activity['object'].badge_kind.name %></p>
+        <p><strong>Type:</strong> <%= _activity['object'].badge_kind.name %></p>
 
-          <p class="item-text">
-            <%= strip_tags(_activity['object'].message).truncate(220) %>
-          </p>
+        <p class="item-text">
+          <%= strip_tags(_activity['object'].message).truncate(220) %>
+        </p>
 
-        </div>
       </div>
+    </div>
       
+    <%= render 'comments/feed_item', object: _activity['foreign_id'] %>
+
     <hr class="feed-divider">
   </div>
+
 <% end %>
