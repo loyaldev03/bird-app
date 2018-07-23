@@ -117,9 +117,12 @@ class Comment < ApplicationRecord
 
       if %w(User Release Announcement).include? commentable_type
         user_feed.add_activity(activity)
-        # StreamRails.feed_manager
-        #     .get_feed( commentable_type.downcase, commentable_id )
-        #     .add_activity(activity)
+      end
+
+      if %w(Release Announcement).include? commentable_type
+        StreamRails.feed_manager
+            .get_feed( commentable_type.downcase, commentable_id )
+            .add_activity(activity)
       end
 
       # autofollow
