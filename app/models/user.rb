@@ -523,7 +523,7 @@ class User < ApplicationRecord
   end
 
   def follow_general_actions
-    batch_follow_to_general_actions self.id
+    User.batch_follow_to_general_actions self.id
   end
 
   def self.intital_payload group
