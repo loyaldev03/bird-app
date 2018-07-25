@@ -97,7 +97,7 @@ class BirdOldMerge
     #   t.date "subscription_started_at"
     #   t.integer "subscription_length", default: 0, null: false
     
-    #   t.string "city"
+    #   t.string "address_city"
     #   t.string "last_name"
     #   t.integer "old_id"
     #   t.boolean "drip_source"
@@ -136,7 +136,12 @@ class BirdOldMerge
           provider,
           uid,
           subscription_started_at,
-          address_city as city,
+          address_zip,
+          address_city,
+          address_country,
+          address_state,
+          address_line_1 as address_street,
+          address_line_2 as address_quarter,
           last_name,
 
 

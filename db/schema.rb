@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180720130319) do
+ActiveRecord::Schema.define(version: 20180724123146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -484,7 +484,7 @@ ActiveRecord::Schema.define(version: 20180720130319) do
     t.string "provider"
     t.string "uid"
     t.date "subscription_started_at"
-    t.string "city"
+    t.string "address_city"
     t.string "last_name"
     t.integer "old_id"
     t.boolean "drip_source"
@@ -494,6 +494,12 @@ ActiveRecord::Schema.define(version: 20180720130319) do
     t.integer "subscription_length", default: 0, null: false
     t.integer "current_playlist_id"
     t.integer "download_credits", default: 30, null: false
+    t.string "address_zip"
+    t.string "address_street"
+    t.string "address_street_number"
+    t.string "address_quarter"
+    t.string "address_state"
+    t.string "address_country"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

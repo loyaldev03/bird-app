@@ -17,7 +17,7 @@
       <div class="userpage-name left-name">
         <h1><%= @user.name.upcase %></h1>
         <span>
-          <%= "#{@user.city} / " %>
+          <%= "#{@user.address_city} / " %>
           <b><%= "#{@user.followers.count} #{'Follower'.pluralize(@user.followers.count)}" %></b>
         </span>
       </div>

@@ -95,10 +95,14 @@ class ApplicationController < ActionController::Base
 
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [
-          :first_name, :last_name, :provider, :uid, :city, :shipping_address, 
+          :first_name, :last_name, :provider, :uid, :shipping_address, 
+          :address_zip, :address_country, :address_state, :address_city,
+          :address_street, :address_street_number, :address_quarter,
           :birthdate, :gender, :t_shirt_size])
       devise_parameter_sanitizer.permit(:account_update, keys: [
-          :first_name, :last_name, :provider, :uid, :city, :shipping_address, 
+          :first_name, :last_name, :provider, :uid, :shipping_address,
+          :address_zip, :address_country, :address_state, :address_city,
+          :address_street, :address_street_number, :address_quarter,
           :birthdate, :gender, :t_shirt_size])
     end
 

@@ -484,7 +484,7 @@ class User < ApplicationRecord
 
   def additional_info_set?
     [
-      city,
+      address_city,
       shipping_address,
       birthdate,
       t_shirt_size
