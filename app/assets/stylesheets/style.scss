@@ -8,12 +8,16 @@
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  &:hover {
+  &.btn-disabled:hover {
+    color: $t-color;
+  }
+
+  &:not(.btn-disabled):hover {
     background-color: $t-color;
     color: $b-color;
     box-shadow: inset 0 0 2px 0px $b-color;
   }
-  &:focus, &:active {
+  &:not(.btn-disabled):focus, &:not(.btn-disabled):active {
     background-color: $a-color;
     color: $t-color;
   }
@@ -135,6 +139,23 @@ strong {
 .big-c-buttons {
   a, button, input[type='submit'] {
     font-size: 13px;
+  }
+}
+
+.btn-disabled {
+  cursor: default !important;
+}
+
+.c-btn-group {
+  .btn {
+    
+    &:first-child {
+      border-radius: 6px 0 0 6px;
+    }
+
+    &:last-child {
+      border-radius: 0 6px 6px 0;
+    }
   }
 }
 

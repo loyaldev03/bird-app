@@ -1,0 +1,44 @@
+<%= render 'users/user_header_music' %>
+
+<div class="row">
+  <div class="col-lg-3">
+    <div class="playlist-nav">
+      <div class="playlist-nav-header">
+        <div class="user-nav">
+            <div class="c-btn-group">
+              <%= link_to "Feed", @user, class: "btn btn-wide c-btn-blue" %><!--
+           --><%= link_to "Music", playlist_path(@user), 
+                  class: "btn btn-wide c-btn-black btn-disabled" %>
+            </div>
+        </div>
+
+        <%= image_tag 'player1.png' %>
+      </div>
+
+      <div class="playlist-nav-body">
+        <ul>
+          <!-- <li>All Releases</li> -->
+          <!-- <li>Exclusive Only</li> -->
+          <!-- <li class="playlist-nav-subheader">Playlists</li> -->
+          <!-- <li>Friends Playlists</li> -->
+          <li class="playlist-nav-subheader">Library&nbsp;</li>
+          <li>Your Playlists</li>
+          <!-- <li>Favorited Tracks</li> -->
+          <!-- <li>Favorited Releases</li> -->
+          <!-- <li>Recently Played</li> -->
+          <li class="playlist-nav-subheader">Playlists&nbsp;</li>
+          <% for playlist in @playlists %>
+            <li>
+              <%= link_to playlist.name, playlist_get_1_path(playlist),
+                  id: "playlist-#{playlist.id}", remote: true %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-9">
+    <div class="music-block"></div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+var tracks = <%= raw @tracks.to_json %>;
+
+setPlaylist(tracks, true, <%= @current_track.to_i %>);
+$('.jp-playlist-name').html(`
+    <%= escape_javascript(
+        render partial: 'playlists/change_name', 
+            locals: { playlist: @playlist } ) %>
+`);
+
+$('.user-playlist-items li').removeClass('active');
+$('#select-playlist-<%= @playlist.id %>').parent().addClass('active');
+$('#jp-playlist-popover').removeClass('show');

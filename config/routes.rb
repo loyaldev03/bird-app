@@ -75,7 +75,10 @@ Rails.application.routes.draw do
   get 'get_tracks', to: 'tracks#get_tracks'
   get 'get_artist_tracks/:id', to: 'users#get_tracks', as: 'get_artist_tracks'
 
-  resources :playlists
+  resources :playlists do
+    get 'get_playlist'
+    get 'get_1'
+  end
   post "sync_playlist", to: "playlists#sync_playlist"
 
   namespace :callbacks do

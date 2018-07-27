@@ -106,24 +106,12 @@ class ReleasesController < ApplicationController
 
     release_presenter.tracks.each do |track|
 
-      if track.artist_as_string && track.artist.present?
-        artists = track.artist
-      elsif track.users.any?
-        track.users.each do |u|
-          artists = track.users.map(&:name).join(' & ')
-        end
-      elsif track.artist.present?
-        artists = track.artist
-      else
-        artists = 'Various Artists'
-      end
-
       @tracks << { 
         release_id: release_presenter.id,
         track_number: track.track_number,
         id: track.id,
         title: track.title, 
-        artists: artists, 
+        artists: track.artists, 
         mp3: track.stream_uri
       }
     end

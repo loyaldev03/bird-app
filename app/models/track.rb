@@ -197,6 +197,18 @@ class Track < ApplicationRecord
     false
   end
 
+  def artists
+    if artist_as_string && artist.present?
+      artist
+    elsif users.any?
+      users.map(&:name).join(' & ')
+    elsif artist.present?
+      artist
+    else
+      'Various Artists'
+    end
+  end
+
   private
 
     def step_name

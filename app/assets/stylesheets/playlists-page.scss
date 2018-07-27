@@ -1,0 +1,167 @@
+.playlist-nav {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+  margin-left: -15px;
+  background: asset-data-url("egg-bg.png");
+  background-size: 140%;
+  background-position-x: 85px;
+}
+
+.playlist-nav-header {
+  padding-top: 25px;
+  text-align: center;
+
+  .user-nav {
+    margin-left: 0;
+  }
+}
+
+.playlist-nav-body {
+  ul {
+    list-style-type: none;
+    padding-left: 15px;
+    padding-bottom: 20px;
+  }
+
+  li {
+    color: #1f1c1c;
+    font-size: 19px;
+    font-weight: 700;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 15px;
+
+    a {
+      color: #1f1c1c;
+    }
+
+    &.active {
+      background-color: #f4f4f4;
+      
+      a {
+        color: #3ed4e0;
+      }
+    }
+  }
+}
+
+li.playlist-nav-subheader {
+  color: #ff7272;
+  font-weight: 900;
+  letter-spacing: 0.47px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content:'';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: #ffbaba;
+    top: 50%;
+    left: auto;
+  }
+}
+
+.user-music-present {
+  margin-top: -24px;
+  margin-right: -15px;
+  margin-left: -15px;
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  z-index: 2;
+
+  .user-bgrd {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #0b0b0b;
+    height: 100%;
+    width: 100%;
+
+    & > img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .userpage-avatar {
+    top: 9px;
+    z-index: 3;
+  }
+
+  .user-info {
+    align-items: center;
+    height: 56px;
+    margin-top: 144px;
+    padding-bottom: 0;
+    background-color: rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 2;
+  }
+
+  .follow-button {
+    top: 15px;
+  }
+
+  .user-since {
+    margin: 0 0 0 15px;
+  }
+}
+
+.playlist-items {
+  width: 100%;
+  font-size: 19px;
+
+  th {
+    color: #1f1c1c;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px;
+  }
+
+  tr {
+    border-bottom: 1px solid rgba(112, 112, 112, 0.26);
+  }
+  
+  td {
+    padding: 10px;
+  }
+
+  .release-link {
+    color: #ff7272;
+  }
+}
+
+.playlist-add-track {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.playlist-download-track {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 220px;
+}
+
+.playlist-title {
+  color: #4a4a4a;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.72px;
+}
+
+.playlist-covers {
+  width: 160px;
+}

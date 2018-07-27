@@ -45,22 +45,14 @@ class TracksController < ApplicationController
         current_user.update_attributes(current_playlist_id: playlist.id)
       end
 
-      playlist.tracks.to_s.split(',').each do |track_id|
-        track_presenter = TrackPresenter.new(Track.find( track_id ), current_user)
-
-        if track_presenter.artist_as_string && track_presenter.artist.present?
-          artists = track_presenter.artist
-        elsif track_presenter.users.any?
-          artists = track_presenter.users.map(&:name).join(' feat. ')
-        else
-          artists = track_presenter.artist
-        end
+      playlist.tracks.each do |_track|
+        track_presenter = TrackPresenter.new(_track, current_user)
 
         tracks << {
           id: track_presenter.id,
           track_number: track_presenter.track_number,
           title: track_presenter.title, 
-          artists: artists,
+          artists: track_presenter.artists,
           mp3: track_presenter.stream_uri,
           release_id: track_presenter.release_id,
           waveform: track_presenter.waveform_image_uri
@@ -77,18 +69,10 @@ class TracksController < ApplicationController
       tracks = Track.where.not('sample_uri is NULL').order(created_at: :asc).last(1).map do |track|
         track_presenter = TrackPresenter.new(track, current_user)
 
-        if track_presenter.artist_as_string && track_presenter.artist.present?
-          artists = track_presenter.artist
-        elsif track_presenter.users.any?
-          artists = track_presenter.users.map(&:name).join(' feat. ')
-        else
-          artists = track_presenter.artist
-        end
-
         { id: track_presenter.id,
           track_number: track_presenter.track_number,
           title: track_presenter.title, 
-          artists: artists,
+          artists: track_presenter.artists,
           mp3: track_presenter.stream_uri,
           release_id: track_presenter.release_id,
           waveform: track_presenter.waveform_image_uri }

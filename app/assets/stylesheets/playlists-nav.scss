@@ -59,6 +59,8 @@
   border: none;
   cursor: pointer;
   outline: none;
+  position: relative;
+  z-index: 2;
 
   img {
     padding: 12px;

@@ -1,6 +1,13 @@
 <div class="jp-audio" id="cPlayer" data-turbolinks-permanent>
   <div class="container">
     <div class="jp-interface">
+      <% if current_user %>
+        <%= link_to playlist_path(current_user), class: "btn c-btn-white jp-player-btn" do %>
+          <%= image_tag 'icons/play.png' %>
+          PLAYER
+        <% end %>
+      <% end %>
+      
       <div class="jp-controls">
         <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
         <button class="jp-previous" role="button" tabindex="0"></button>
@@ -84,13 +91,11 @@
 
           <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
             <% for playlist in current_user.playlists %>
-              <%= link_to playlist.name, playlist, class: "jp-release-add", remote: true %>
+              <%= link_to playlist.name, playlist_get_playlist_path(playlist), 
+                  remote: true %>
               <br>
             <% end %>
           </div>
-
-
-          <!-- <a href="#">Load playlist</a> -->
         </div>
       <% else %>
 
@@ -130,7 +135,7 @@
       currentTrackIndex = respond.current_track.index;
       var time = respond.current_track.time;
       var playlist_name_form = respond.playlist_name_form;
-      $('.jp-playlist-name').html(playlist_name_form+'<span>Created by '+respond.creator+'</span>');
+      $('.jp-playlist-name').html(playlist_name_form);
       setPlaylist(respond.tracks, false, currentTrackIndex, time);
   });
 
@@ -169,7 +174,6 @@
   }
 
   timerAndLoadingForAudio(cpAudio);
-
 
   function syncPlaylist(playlist, currentTrack, time=0){
     var tracks_ids = playlist.map(x => x['id']).join(',');
@@ -265,7 +269,6 @@
       return;
     };
 
-
     if (playlist.length - 1 >= currentTrack) {
       currentTrackIndex = currentTrack;
     } else {
@@ -291,7 +294,8 @@
           .siblings('.jp-duration-track')
           .text(secondsToHms(cpAudio.getDuration()));
 
-      if(playlist[currentTrackIndex + 1] != undefined) {
+      if(playlist[currentTrackIndex + 1] != undefined &&
+          playlist[currentTrackIndex + 1].mp3) {
         cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
       }
     });

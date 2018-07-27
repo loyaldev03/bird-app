@@ -57,4 +57,17 @@
 
     <%= render 'follows/follow_button', object: @user %>
   </div>
+
+  <% if current_user.id == @user.id %>
+    <div class="user-nav">
+      <% if current_page?(playlists_path) %>
+        <% btn_style = ['c-btn-blue btn-disabled', 'c-btn-white'] %>
+        <% else %>
+        <% btn_style = ['c-btn-white', 'c-btn-blue btn-disabled'] %>
+      <% end %>
+
+        <%= link_to "Music", playlist_path(current_user), class: "btn btn-wide #{btn_style[0]} mr-2" %>
+        <%= link_to "Feed", @user, class: "btn btn-wide #{btn_style[1]}" %>
+    </div>
+  <% end %>
 </div>

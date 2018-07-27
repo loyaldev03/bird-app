@@ -23,17 +23,7 @@
           <% if activity['activities'][0]['object'].class.to_s == "Release" %>
             
             <span class="notify-author">
-              by
-              <% if activity['activities'][0]['object'].artist_as_string && 
-                    activity['activities'][0]['object'].artist.present? %>
-                <%= activity['activities'][0]['object'].artist %>
-              <% elsif activity['activities'][0]['object'].users.any? %>
-                <% activity['activities'][0]['object'].users.each do |artist| %>
-                    <%= artist.name %>
-                <% end %>
-              <% elsif activity['activities'][0]['object'].artist.present? %>
-                <%= activity['activities'][0]['object'].artist %>
-              <% end %>
+              by <%= activity['activities'][0]['object'].artists %>
             </span>
 
           <% end %>

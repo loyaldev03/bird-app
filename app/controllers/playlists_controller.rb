@@ -1,36 +1,33 @@
 class PlaylistsController < ApplicationController
 
   before_action :authenticate_user!, except: [:sync_playlist]
+  before_action :set_notifications, only: [:show]
 
   def show
-    playlist = Playlist.find params[:id]
-    current_user.update_attributes(current_playlist_id: playlist.id)
+    @user = User.find params[:id]
+    @playlists = current_user.playlists
+  end
 
-    @playlist_id = playlist.id
+  def get_1
+    @playlist = Playlist.find params[:playlist_id]
+  end
+
+  def get_playlist
+    @playlist = Playlist.find params[:playlist_id]
+    @current_track = params[:current_track] || 0
+    current_user.update_attributes(current_playlist_id: @playlist.id)
 
     @tracks = []
 
-    playlist.tracks.to_s.split(',').each do |track_id|
-      track = TrackPresenter.new(Track.find( track_id ), current_user)
-
-      if track.artist_as_string && track.artist.present?
-        artists = track.artist
-      elsif track.users.any?
-        track.users.each do |u|
-          artists = track.users.map(&:name).join(' & ')
-        end
-      elsif track.artist.present?
-        artists = track.artist
-      else
-        artists = 'Various Artists'
-      end
+    @playlist.tracks.each do |_track|
+      track = TrackPresenter.new(_track, current_user)
 
       @tracks << { 
         release_id: track.release.id,
         track_number: track.track_number,
         id: track.id,
         title: track.title, 
-        artists: artists, 
+        artists: track.artists, 
         mp3: track.stream_uri
       }
     end
@@ -52,7 +49,7 @@ class PlaylistsController < ApplicationController
   def sync_playlist
     if current_user && current_user.current_playlist.present?
       current_user.current_playlist.update_attributes(
-        tracks: params[:tracks],
+        tracks_ids: params[:tracks],
         current_track: "#{params[:current_track_id]}:#{params[:time] || 0}")
     end
 
