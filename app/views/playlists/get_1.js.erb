@@ -1,4 +1,0 @@
-$('.music-block').html("<%= escape_javascript(render 'playlists/list') %>");
-$('.music-block').find('.star').each(ratyRate);
-$("[id^=playlist]").parent('li').removeClass('active');
-$('#playlist-<%= @playlist.id %>').parent('li').addClass('active');

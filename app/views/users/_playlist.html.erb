@@ -10,11 +10,9 @@
     <ol class="light-scroll user-playlist-items">
       <% for playlist in @user.playlists %>
         <li class="<%= current_user.current_playlist_id == playlist.id ? 'active' : '' %>">
-          <%= link_to playlist_get_playlist_path(playlist), 
-              remote: true, 
-              id: "select-playlist-#{playlist.id}" do %>
+          <button class="select-playlist" data-playlist-id="<%= playlist.id %>">
             <%= "#{playlist.name}: #{pluralize(playlist.tracks_count, "Track")}" %>
-          <% end %>
+          </button>
         </li>
       <% end %>
     </ol>

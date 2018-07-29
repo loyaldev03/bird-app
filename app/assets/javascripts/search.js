@@ -70,7 +70,6 @@ $(document).on('turbolinks:load', function() {
     
     $('#aa-search-input').focus();
   });
-
 });
 
 

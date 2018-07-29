@@ -91,8 +91,9 @@
 
           <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
             <% for playlist in current_user.playlists %>
-              <%= link_to playlist.name, playlist_get_playlist_path(playlist), 
-                  remote: true %>
+              <button class="select-playlist" data-playlist-id="<%= playlist.id %>">
+                <%= "#{playlist.name}: #{pluralize(playlist.tracks_count, "Track")}" %>
+              </button>
               <br>
             <% end %>
           </div>
@@ -130,17 +131,24 @@
 
   trackLoading(true);
   
-  $.ajax( "/get_tracks" )
+  $.ajax( "/playlist_load" )
     .done(function(respond) {
-      currentTrackIndex = respond.current_track.index;
-      var time = respond.current_track.time;
-      var playlist_name_form = respond.playlist_name_form;
-      $('.jp-playlist-name').html(playlist_name_form);
+      var time;
+
+      if (respond.current_track) {
+        currentTrackIndex = respond.current_track.index;
+        time = respond.current_track.time;
+      } else {
+        currentTrackIndex = 0; time = 0;
+      }
+
+      $('.jp-playlist-name').html(respond.playlist_name_form);
       setPlaylist(respond.tracks, false, currentTrackIndex, time);
   });
 
   var start = new Date().getTime();;
   var sent = false;
+
   function timerAndLoadingForAudio(audio) {
 
     audio.on('audioprocess', function () {
@@ -175,6 +183,67 @@
 
   timerAndLoadingForAudio(cpAudio);
 
+  function setPlaylist(tracks, play=false, currentTrack=0, currentTime=0, virtual=false) {
+
+    playlist = tracks; //setting common playlist variable;
+
+    trackLoading(true);
+
+    if(playlist.length < 1) {
+      trackLoading(false);
+      return;
+    };
+
+    if (playlist.length - 1 >= currentTrack) {
+      currentTrackIndex = currentTrack;
+    } else {
+      currentTrackIndex = playlist.length - 1;
+    }
+
+    if (!virtual) {
+      $('.jp-playlist ul').html('');
+
+      playlist.forEach(function(track) {
+        $('.jp-playlist ul').append(playlistItem(track)).trigger('change');
+      });
+
+      $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
+    }
+
+    cpAudio.load(playlist[currentTrackIndex].mp3);
+
+    cpAudio.on('ready', function(){
+
+      cpAudio.skip(currentTime);
+      $('.jp-current-time').text(secondsToHms(currentTime));
+      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
+      $(`[data-track=${playlist[currentTrackIndex].id}]`)
+          .siblings('.jp-duration-track')
+          .text(secondsToHms(cpAudio.getDuration()));
+
+      if(playlist[currentTrackIndex + 1] != undefined &&
+          playlist[currentTrackIndex + 1].mp3) {
+        cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
+      }
+    });
+    
+    if(play) {
+      cpAudio.on('ready', function(){
+        cpAudio.play();
+        $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
+      });
+
+      $('.jp-audio .jp-play').addClass('jp-playing');
+      $('.jp-play-release').addClass('jp-playing');
+    }
+
+    if (!virtual) {
+      syncPlaylist(playlist, currentTrackIndex);
+    }
+
+    changePlayerTitle(playlist[currentTrackIndex]);
+  }
+
   function syncPlaylist(playlist, currentTrack, time=0){
     var tracks_ids = playlist.map(x => x['id']).join(',');
 
@@ -194,6 +263,35 @@
 
   $('.jp-audio .jp-next').click(function(){
     playNext();
+  });
+
+  $('html, body').on('click', '.select-playlist', function(e){
+    e.preventDefault();
+    var playlistId = $(this).data('playlistId');
+    $('.select-playlist').parent('li').removeClass('active');
+    $(".select-playlist[data-playlist-id='" + playlistId + "']")
+      .parent('li')
+      .addClass('active');
+
+    $.ajax({ 
+        url: "/playlist_load",
+        dataType: 'JSON',
+        data: { playlist_id: playlistId }
+      })
+      .done(function(respond) {
+        var time;
+
+        if (respond.current_track) {
+          currentTrackIndex = respond.current_track.index;
+          time = respond.current_track.time;
+        } else {
+          currentTrackIndex = 0; time = 0;
+        }
+
+        $('.jp-playlist-name').html(respond.playlist_name_form);
+        setPlaylist(respond.tracks, true, currentTrackIndex);
+        $('#jp-playlist-popover').removeClass('show');
+    });
   });
 
   $('.jp-audio').on('change', '.jp-playlist', function(){
@@ -256,63 +354,6 @@
     currentTrackIndex = 0;
     playlist = [];
     $('.jp-playlist ul').html('');
-  }
-
-  function setPlaylist(tracks, play=false, currentTrack=0, currentTime=0) {
-
-    playlist = tracks; //setting common playlist variable;
-
-    trackLoading(true);
-
-    if(playlist.length < 1) {
-      trackLoading(false);
-      return;
-    };
-
-    if (playlist.length - 1 >= currentTrack) {
-      currentTrackIndex = currentTrack;
-    } else {
-      currentTrackIndex = playlist.length - 1;
-    }
-
-    $('.jp-playlist ul').html('');
-
-    playlist.forEach(function(track) {
-      $('.jp-playlist ul').append(playlistItem(track)).trigger('change');
-    });
-
-    $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
-
-    cpAudio.load(playlist[currentTrackIndex].mp3);
-
-    cpAudio.on('ready', function(){
-
-      cpAudio.skip(currentTime);
-      $('.jp-current-time').text(secondsToHms(currentTime));
-      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
-      $(`[data-track=${playlist[currentTrackIndex].id}]`)
-          .siblings('.jp-duration-track')
-          .text(secondsToHms(cpAudio.getDuration()));
-
-      if(playlist[currentTrackIndex + 1] != undefined &&
-          playlist[currentTrackIndex + 1].mp3) {
-        cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
-      }
-    });
-    
-    if(play) {
-      cpAudio.on('ready', function(){
-        cpAudio.play();
-        $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
-      });
-
-      $('.jp-audio .jp-play').addClass('jp-playing');
-      $('.jp-play-release').addClass('jp-playing');
-    }
-
-    syncPlaylist(playlist, currentTrackIndex);
-
-    changePlayerTitle(playlist[currentTrackIndex]);
   }
 
   function removeFromPlaylist(index) {

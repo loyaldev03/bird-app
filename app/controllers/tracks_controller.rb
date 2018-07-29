@@ -12,97 +12,36 @@ class TracksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to track.release }
       format.json {
-        render json: { 
-          track: { 
-            id: track_presenter.id,
-            track_number: track_presenter.track_number,
-            title: track_presenter.title, 
-            artists: artists,
-            mp3: track_presenter.stream_uri,
-            release_id: track_presenter.release_id,
-            waveform: track_presenter.waveform_image_uri
-          } 
-        }
+        render json: track_as_json(track_presenter)
       }
     end
   end
 
-  def get_tracks
-    if current_user && current_user.playlists.present?
-      tracks = []
+  def liked
+    @tracks = current_user.liked_by_type('Track').map do |_track|
+      track_presenter = TrackPresenter.new(_track, current_user)
+    end
+  end
 
-      if params[:playlist].present?
-        playlist = Playlist.find params[:playlist]
-      elsif current_user.current_playlist_id.present?
-        playlist = current_user.current_playlist
-
-        unless playlist
-          playlist = current_user.playlists.order(updated_at: :desc).first
-          current_user.update_attributes(current_playlist_id: playlist.id)
-        end
-      else
-        playlist = current_user.playlists.order(updated_at: :desc).first
-        current_user.update_attributes(current_playlist_id: playlist.id)
-      end
-
-      playlist.tracks.each do |_track|
-        track_presenter = TrackPresenter.new(_track, current_user)
-
-        tracks << {
-          id: track_presenter.id,
-          track_number: track_presenter.track_number,
-          title: track_presenter.title, 
-          artists: track_presenter.artists,
-          mp3: track_presenter.stream_uri,
-          release_id: track_presenter.release_id,
-          waveform: track_presenter.waveform_image_uri
-        }
-      end
-
-      if playlist.current_track.present?
-        current_track_data = playlist.current_track.split(':')
-        current_track = { index: current_track_data[0].to_i, time: current_track_data[1].to_i }
-      else
-        current_track = { index: 0, time: 0 }
-      end
-    else
-      tracks = Track.where.not('sample_uri is NULL').order(created_at: :asc).last(1).map do |track|
-        track_presenter = TrackPresenter.new(track, current_user)
-
-        { id: track_presenter.id,
-          track_number: track_presenter.track_number,
-          title: track_presenter.title, 
-          artists: track_presenter.artists,
-          mp3: track_presenter.stream_uri,
-          release_id: track_presenter.release_id,
-          waveform: track_presenter.waveform_image_uri }
-      end
-
-      current_track = { index: 0, time: 0 }
-
-      if current_user
-        playlist = Playlist.create(
-          user: current_user, 
-          tracks: tracks.map{|t| t[:id]}.join(','), 
-          current_track: "0:0" )
-        current_user.update_attributes(current_playlist_id: playlist.id)
-      end
+  def play
+    if params[:playlist_id].present?
+      @source = 'playlist'
+      tracks = Playlist.find(params[:playlist_id].tracks)
+    elsif params[:track_id].present?
+      @source = 'track'
+      tracks = [Track.find(params[:track_id])]
+    elsif params[:user_id].present?
+      @source = 'user'
+      tracks = User.find(params[:user_id].tracks)
+    elsif params[:release_id].present?
+      @source = 'release'
+      tracks = Release.find(params[:release_id].tracks)
     end
 
-    if current_user
-      playlist_name_form = render_to_string( 
-          partial: 'playlists/change_name', 
-          locals: { playlist: playlist } )
-      creator = current_user.current_playlist.user.name 
-    else
-      playlist_name_form = ""
-      creator = ""
+    @tracks = tracks.map do |_track|
+      track = TrackPresenter.new(_track, current_user)
+      track_as_json(track)
     end
-
-    render json: { tracks: tracks, 
-            current_track: current_track,
-            playlist_name_form: playlist_name_form,
-            creator: creator}
   end
 
   def fill_track_title
@@ -146,4 +85,16 @@ class TracksController < ApplicationController
 
     render json: {}
   end
+
+  private 
+
+    def track_as_json track
+      { id: track.id,
+        track_number: track.track_number,
+        title: track.title, 
+        artists: track.artists,
+        mp3: track.stream_uri,
+        release_id: track.release_id,
+        waveform: track.waveform_image_uri }
+    end
 end

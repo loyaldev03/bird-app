@@ -121,6 +121,10 @@ class User < ApplicationRecord
     likes.where("likeable_id = ? AND likeable_type = ?", object.id, object.class.to_s).first
   end
 
+  def liked_by_type type
+    liked_ids = "SELECT likeable_id FROM likes WHERE user_id = #{id} AND likeable_type = '#{type}'"
+    type.constantize.where("id IN (#{liked_ids})")
+  end
 
   def change_points(income_action_type, action_model, destroy=nil)
     #points #TODO BadgePoint(badge_id) not needed

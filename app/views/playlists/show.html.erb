@@ -23,13 +23,16 @@
           <!-- <li>Friends Playlists</li> -->
           <li class="playlist-nav-subheader">Library&nbsp;</li>
           <li>Your Playlists</li>
-          <!-- <li>Favorited Tracks</li> -->
+          <li>
+            <%= link_to "Favorited Tracks", tracks_liked_path,
+                id: "favorited-tracks", remote: true %>
+          </li>
           <!-- <li>Favorited Releases</li> -->
           <!-- <li>Recently Played</li> -->
           <li class="playlist-nav-subheader">Playlists&nbsp;</li>
           <% for playlist in @playlists %>
             <li>
-              <%= link_to playlist.name, playlist_get_1_path(playlist),
+              <%= link_to playlist.name, playlist_get_path(playlist),
                   id: "playlist-#{playlist.id}", remote: true %>
             </li>
           <% end %>

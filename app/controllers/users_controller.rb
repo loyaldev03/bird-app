@@ -344,18 +344,18 @@ class UsersController < ApplicationController
     @idols = @user.followed_users.with_role(:artist)
   end
 
-  def get_tracks
-    user = User.find(params[:id])
-    @tracks = user.tracks.order(track_number: :asc).map do |track|
-      TrackPresenter.new(track, current_user)
-    end
+  # def get_tracks
+  #   user = User.find(params[:id])
+  #   @tracks = user.tracks.order(track_number: :asc).map do |track|
+  #     TrackPresenter.new(track, current_user)
+  #   end
 
-    # if current_user && current_user.current_playlist.present?
-    #   current_user.current_playlist.update_attributes(
-    #     tracks: user.tracks.map{|t| t[:id]}.join(','),
-    #     current_track: "0:0")
-    # end
-  end
+  #   # if current_user && current_user.current_playlist.present?
+  #   #   current_user.current_playlist.update_attributes(
+  #   #     tracks: user.tracks.map{|t| t[:id]}.join(','),
+  #   #     current_track: "0:0")
+  #   # end
+  # end
 
   def cancel_subscription
     current_user.cancel_braintree_subscription

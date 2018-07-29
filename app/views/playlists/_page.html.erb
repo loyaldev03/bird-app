@@ -1,17 +1,21 @@
 <div class="playlist-header">
-  <%= link_to playlist_get_playlist_path(@playlist.id), remote: true do %>
-    <%= image_tag 'icons/play-big.png' %>
+  <% if @playlist.present? %>
+    <%= link_to tracks_play_path(playlist_id: @playlist.id), remote: true do %>
+      <%= image_tag 'icons/play-big.png' %>
+    <% end %>
   <% end %>
 
-  <%= render 'tracks/covers', object: @playlist.tracks %>
+  <%= render 'tracks/covers', object: tracks %>
 
-  <div class="playlist-title">
-    <%= @playlist.name %>
-  </div>
+  <% if @playlist.present? %>
+    <div class="playlist-title">
+      <%= @playlist.name %>
+    </div>
 
-  <div class="playlist-owner">
-    <%= @playlist.user.name %>
-  </div>
+    <div class="playlist-owner">
+      <%= @playlist.user.name %>
+    </div>
+  <% end %>
 </div>
 <table class="playlist-items">
   <tr>
@@ -23,16 +27,15 @@
     <th>Rating</th>
     <th></th>
   </tr>
-  <% for _track in @playlist.tracks %>
+  <% for _track in tracks %>
     <% track = TrackPresenter.new(_track, current_user) %>
     <tr class='playlist-item'>
       <td>
-        <%= link_to playlist_get_playlist_path(
-              playlist_id: @playlist.id, 
-              current_track: @playlist.tracks.index(_track)
-            ), remote: true do %>
-          <%= image_tag 'icons/play-sm.png' %>
-        <% end %>
+        <%= link_to "", tracks_play_path(track_id: track.id), 
+            class: "playlist-play-track-#{track.id}",
+            remote: true %>
+          <%#= image_tag 'icons/play-sm.png' %>
+        <%# end %>
       </td>
       <td><%= track.title %></td>
       <td><%= track.artists %></td>

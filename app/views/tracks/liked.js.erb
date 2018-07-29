@@ -1,0 +1,7 @@
+$('.music-block').html(`
+    <%= escape_javascript(
+        render partial: 'playlists/page', 
+               locals: { tracks: @tracks }) %>`);
+$('.music-block').find('.star').each(ratyRate);
+$(".playlist-nav-body li").removeClass('active');
+$('#favorited-tracks').parent('li').addClass('active');
