@@ -71,6 +71,8 @@ class Ability
       can :crud, Like
       can [:crud, :show, :edit, :reply_form], Comment
 
+      can :manage, Playlist, user_id: user.id
+
       # can :access, :ckeditor
     # Performed checks for actions:
       # can [:read, :create, :destroy], Ckeditor::Picture
@@ -94,6 +96,8 @@ class Ability
         can :crud, Follow
         can :crud, Like
         can [:crud, :show, :edit, :reply_form], Comment
+
+        can :manage, Playlist, user_id: user.id
       end
     end
   end

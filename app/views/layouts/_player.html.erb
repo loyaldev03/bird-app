@@ -132,21 +132,29 @@
   trackLoading(true);
   
   $.ajax( "/playlist_load" )
-    .done(function(respond) {
+    .done(function(data) {
       var time;
 
-      if (respond.current_track) {
-        currentTrackIndex = respond.current_track.index;
-        time = respond.current_track.time;
+      if (data.current_track) {
+        currentTrackIndex = data.current_track.index;
+        time = data.current_track.time;
       } else {
         currentTrackIndex = 0; time = 0;
       }
 
-      $('.jp-playlist-name').html(respond.playlist_name_form);
-      setPlaylist(respond.tracks, false, currentTrackIndex, time);
-  });
+      $('.jp-playlist-name').html(data.playlist_name_form);
+      setPlaylist(data.tracks, {
+        play: false, 
+        currentTrack: currentTrackIndex, 
+        currentTime: time, 
+        virtual: false, 
+        newPlaylist: true, 
+        sourceType: 'playlist', 
+        sourceId: data.playlist_id
+      });
+    });
 
-  var start = new Date().getTime();;
+  var start = new Date().getTime();
   var sent = false;
 
   function timerAndLoadingForAudio(audio) {
@@ -160,8 +168,8 @@
             .text(secondsToHms(current_time));
 
         var duration = audio.getDuration();
-        if(current_time/duration < 0.8) {sent = false}
-        if(current_time/duration > 0.8 && !sent){
+        if (current_time/duration < 0.8) {sent = false}
+        if (current_time/duration > 0.8 && !sent){
           $.ajax({
             url: '/track_listened',
             dataType: 'JSON',
@@ -174,8 +182,6 @@
       }
     });
 
-
-
     audio.on('ready', function(){
       trackLoading(false);
     });
@@ -183,78 +189,55 @@
 
   timerAndLoadingForAudio(cpAudio);
 
-  function setPlaylist(tracks, play=false, currentTrack=0, currentTime=0, virtual=false) {
+  function setPlaylist(tracks=[], options={}) {
+    var play = options.play;
+    var currentTrack = options.currentTrack;
+    var currentTime = options.currentTime || 0;
+    var virtual = options.virtual;
+    var newPlaylist = options.newPlaylist;
+    var sourceType = options.sourceType || null;
+    var sourceId = options.sourceId || null;
 
-    playlist = tracks; //setting common playlist variable;
-
-    trackLoading(true);
-
-    if(playlist.length < 1) {
-      trackLoading(false);
-      return;
-    };
-
-    if (playlist.length - 1 >= currentTrack) {
+    if (currentTrack !== undefined) {
       currentTrackIndex = currentTrack;
+    }
+
+    if (virtual) {
+      playlist = tracks; //setting common playlist variable;
+      playerLoad(currentTime, virtual);
+    } else if (newPlaylist) {
+      playlist = tracks; //setting common playlist variable;
+      addItemsToPlaylist({newPlaylist: true, sourceType: sourceType, sourceId: sourceId});
+      playerLoad(currentTime, virtual);
     } else {
-      currentTrackIndex = playlist.length - 1;
+      playlist.concat(tracks);
+      addItemsToPlaylist({tracks: tracks, sourceType: sourceType, sourceId: sourceId});
+      syncPlaylist(playlist, null);
+      return false;
     }
 
-    if (!virtual) {
-      $('.jp-playlist ul').html('');
-
-      playlist.forEach(function(track) {
-        $('.jp-playlist ul').append(playlistItem(track)).trigger('change');
-      });
-
-      $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
-    }
-
-    cpAudio.load(playlist[currentTrackIndex].mp3);
-
-    cpAudio.on('ready', function(){
-
-      cpAudio.skip(currentTime);
-      $('.jp-current-time').text(secondsToHms(currentTime));
-      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
-      $(`[data-track=${playlist[currentTrackIndex].id}]`)
-          .siblings('.jp-duration-track')
-          .text(secondsToHms(cpAudio.getDuration()));
-
-      if(playlist[currentTrackIndex + 1] != undefined &&
-          playlist[currentTrackIndex + 1].mp3) {
-        cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
-      }
-    });
-    
-    if(play) {
+    if (play) { 
       cpAudio.on('ready', function(){
         cpAudio.play();
-        $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
+        updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
+        return false;
       });
-
-      $('.jp-audio .jp-play').addClass('jp-playing');
-      $('.jp-play-release').addClass('jp-playing');
     }
 
-    if (!virtual) {
-      syncPlaylist(playlist, currentTrackIndex);
-    }
-
-    changePlayerTitle(playlist[currentTrackIndex]);
+    updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
   }
 
   function syncPlaylist(playlist, currentTrack, time=0){
-    var tracks_ids = playlist.map(x => x['id']).join(',');
+    var tracksIds = playlist.map(x => x['id']).join(',');
 
     $.post('/sync_playlist', 
-      { tracks: tracks_ids,
+      { tracks: tracksIds,
         current_track_id: currentTrack,
         time: time});
   }
 
   $('.jp-audio .jp-play').click(function(){
-    playButton();
+    playButton(this);
   });
 
   $('.jp-audio .jp-previous').click(function(){
@@ -265,7 +248,7 @@
     playNext();
   });
 
-  $('html, body').on('click', '.select-playlist', function(e){
+  $("body").on('click', '.select-playlist', function(e){
     e.preventDefault();
     var playlistId = $(this).data('playlistId');
     $('.select-playlist').parent('li').removeClass('active');
@@ -278,18 +261,26 @@
         dataType: 'JSON',
         data: { playlist_id: playlistId }
       })
-      .done(function(respond) {
+      .done(function(data) {
         var time;
 
-        if (respond.current_track) {
-          currentTrackIndex = respond.current_track.index;
-          time = respond.current_track.time;
+        if (data.current_track) {
+          currentTrackIndex = data.current_track.index;
+          time = data.current_track.time;
         } else {
           currentTrackIndex = 0; time = 0;
         }
 
-        $('.jp-playlist-name').html(respond.playlist_name_form);
-        setPlaylist(respond.tracks, true, currentTrackIndex);
+        $('.jp-playlist-name').html(data.playlist_name_form);
+        setPlaylist(data.tracks, {
+          play: true, 
+          currentTrack: currentTrackIndex, 
+          currentTime: time, 
+          virtual: false, 
+          newPlaylist: true, 
+          sourceType: 'playlist', 
+          sourceId: playlistId
+        });
         $('#jp-playlist-popover').removeClass('show');
     });
   });
@@ -305,7 +296,7 @@
   });
 
   $('.jp-playlist').on('click', '.jp-playlist-item', function(){
-    playlistItemClick($('.jp-playlist-item').index(this));
+    playButton(this);
   });
 
   $('.jp-playlist').on('click', '.jp-playlist-item-remove', function(){
@@ -313,42 +304,6 @@
     removeFromPlaylist(index);
   });
 
-
-
-  function playlistItemClick(index) {
-    trackLoading(true);
-
-    $('.jp-current-time').text(secondsToHms(0));
-    $('.jp-duration').text(secondsToHms(0));
-
-    cpAudio.load(playlist[index].mp3);
-
-    currentTrackIndex = index;
-
-    changePlayerTitle(playlist[index]);
-
-    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
-    $($('.jp-playlist li').get(index)).find('.jp-playlist-item').addClass('jp-playlist-current');
-
-    $('.jp-current-time-track').text(secondsToHms(0));
-
-
-    cpAudio.on('ready', function(){
-      cpAudio.play();
-      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
-
-      if(playlist[currentTrackIndex + 1] != undefined) {
-        cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
-      }
-    });
-
-    $('.jp-audio .jp-play').addClass('jp-playing');
-    $('.jp-play-release').addClass('jp-playing');
-    $('.jp-play-track').removeClass('jp-playing');
-    $(`[data-track=${playlist[index].id}]`).addClass('jp-playing');
-
-    syncPlaylist(playlist, currentTrackIndex);
-  }
 
   function newPlaylist() {
     currentTrackIndex = 0;
@@ -363,186 +318,166 @@
     $('.jp-playlist').trigger('change');
     playlist.splice(index,1);
     if (active) {
-      currentTrackIndex--;
       if(currentTrackIndex < 0) {currentTrackIndex = 0}
       playNext(true);
+      currentTrackIndex--;
     }
 
     syncPlaylist(playlist, currentTrackIndex);
   }
 
-  function playButton() {
-    if(cpAudio.isPlaying()) {
-      cpAudio.pause();
-      $('.jp-audio .jp-play').removeClass('jp-playing');
-      $('.jp-play-release').removeClass('jp-playing');
-      $('.jp-play-track').removeClass('jp-playing');
-    } else {
-      cpAudio.play();
-      $('.jp-audio .jp-play').addClass('jp-playing');
-      $('.jp-play-release').addClass('jp-playing');
-      updateCPlayerState();
-    }
-  }
+  function playButton(button) {
+    var topData = $('.jp-audio .jp-play').data();
+    var btnData = $(button).data();
+    var sameSource = topData.sourceType == btnData.sourceType && 
+                     topData.sourceId == btnData.sourceId;
+    var sameIndex = topData.trackIndex == btnData.trackIndex;
 
-  function playTrack(id) {
-    $('.jp-play-track').not(`[data-track=${id}]`).removeClass('jp-playing');
+    if ( (sameSource && btnData.trackIndex === undefined) ||
+         (sameSource && btnData.trackIndex !== undefined && sameIndex) ) {
+      console.log('same source without track or same source with same track');
+      cpAudio.isPlaying() ? cpAudio.pause() : cpAudio.play();
+      updatePlayerState(topData.sourceType, topData.sourceId, topData.trackIndex, !!btnData.virtual);
+    } else if (sameSource && btnData.trackIndex !== undefined && !sameIndex) {
+      console.log('same source with other track');
+      currentTrackIndex = btnData.trackIndex;
+      playerLoad(0, !!btnData.virtual);
 
-    if(playlist.length > 0 && playlist[currentTrackIndex].id == id) {
-      if(cpAudio.isPlaying()) {
-        cpAudio.pause();
-        $(`[data-track=${id}]`).removeClass('jp-playing');
-        $('.jp-audio .jp-play').removeClass('jp-playing');
-      } else {
+      cpAudio.on('ready', function(){
         cpAudio.play();
-        $(`[data-track=${id}]`).addClass('jp-playing');
-        $('.jp-audio .jp-play').addClass('jp-playing');
-      }
+        updatePlayerState(btnData.sourceType, btnData.sourceId, btnData.trackIndex, !!btnData.virtual);
+      });
     } else {
-      trackLoading(true);
-      
-      $.ajax({ url: `/tracks/${id}`, dataType: 'JSON' })
-      .done(function(respond) {
-        addToPlaylist([respond.track]);
-        $(`[data-track=${id}]`).addClass('jp-playing');
-        $('.jp-audio .jp-play').addClass('jp-playing');
-
-        $(`[data-track=${id}]`)
-            .siblings('.jp-duration-track')
-            .text(secondsToHms(cpAudio.getDuration()));
+      console.log('other source');
+      $.ajax({
+          url: '/tracks_play',
+          dataType: 'JSON',
+          data: { source_type: btnData.sourceType, source_id: btnData.sourceId }
+        })
+        .done(function(data){
+          setPlaylist(data.tracks, {
+            play: true, 
+            currentTrack: btnData.trackIndex || 0, 
+            currentTime: 0, 
+            virtual: !!btnData.virtual, 
+            newPlaylist: true, 
+            sourceType: btnData.sourceType, 
+            sourceId: btnData.sourceId
+          });
       });
     }
   }
 
-  function playRelease(id) {
-    $('.jp-play-release').not(`[data-release=${id}]`).removeClass('jp-playing');
-  }
+  // function playRelease(id) {}
 
-  function playlistItem(track) {
-    return ` <li>
-              <div>
-                <a href="javascript:;" class="jp-playlist-item-remove">-</a>
-                <a href="javascript:;" class="jp-playlist-item" tabindex="0">` + track.title + ` - ` + track.artists + `</a>
-              </div>
-            </li>`
-  } 
-
-  function addToPlaylist(tracks, play=true) {
-    trackLoading(true);
-
-    $('.jp-current-time').text(secondsToHms(0));
-    $('.jp-duration').text(secondsToHms(0));
-    $('.jp-current-time-track').text(secondsToHms(0));
-    tracks.forEach(function(track){
-      playlist.push(track);
-      $('.jp-playlist ul').append(playlistItem(track)).trigger('change');
-    }); 
-    
-    currentTrackIndex++;
-    var track = tracks[0];
-    changePlayerTitle(track);
-
-    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
-    $('.jp-playlist li').last().find('.jp-playlist-item').addClass('jp-playlist-current');
-
-    cpAudio.load(track.mp3);
-
-    cpAudio.on('ready', function(){
-      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
-      $(`[data-track=${track.id}]`)
-          .siblings('.jp-duration-track')
-          .text(secondsToHms(cpAudio.getDuration()));
-      if(play) cpAudio.play();
-    });
-
-    syncPlaylist(playlist, currentTrackIndex);
-  }
-
-  function playNext(paused=false) {
-    if(playlist[currentTrackIndex + 1] == undefined) {
-      cpAudio.pause();
-      $('.jp-play').removeClass('jp-playing');
-      return false;
+  function playlistItem(track, sourceType, sourceId, index) {
+    var _class, _data;
+    if (index) {
+      _class = `index-${index}`;
+      _data = `data-track-index="${index}"`;
+    } else {
+      _class = `track-${track.id}`;
+      _data = `data-track-id="${track.id}" data-track-index="${index}"`;
     }
 
+    return `<li>
+              <div>
+                <a href="javascript:;" class="jp-playlist-item-remove">-</a>
+                <a href="javascript:;" class="jp-playlist-item play-${sourceType}-${sourceId}-${_class}" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="0">${track.title} - ${track.artists}</a>
+              </div>
+            </li>`
+  }
+
+  function addItemsToPlaylist(options={}) {
+    var newPlaylist = options.newPlaylist;
+    var sourceType = options.sourceType;
+    var sourceType = options.sourceType;
+    var sourceId = options.sourceId;
+    var tracks = newPlaylist ? playlist : options.tracks;
+    if (newPlaylist) {
+      $('.jp-playlist ul').html('');
+    }
+    tracks.forEach(function(track) {
+      var i = $('.jp-playlist .jp-playlist-item').last().data('trackIndex') + 1 || 0;
+      $('.jp-playlist ul')
+        .append(playlistItem(track, sourceType, sourceId, i))
+        .trigger('change');
+    });
+  }
+
+  function playerLoad(currentTime=0, virtual=false) {
     trackLoading(true);
 
-    currentTrackIndex++;
-
-    $('.jp-duration').text(secondsToHms(0));
-    $('.jp-current-time').text(secondsToHms(0));
-    $('.jp-current-time-track').text(secondsToHms(0));
+    if (playlist.length < 1) {
+      trackLoading(false);
+      return;
+    };
 
     cpAudio.load(playlist[currentTrackIndex].mp3);
-
     changePlayerTitle(playlist[currentTrackIndex]);
 
-    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
-    $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
-
     cpAudio.on('ready', function(){
-      if(!paused) cpAudio.play();
+      trackLoading(false);
+      
+      cpAudio.skip(currentTime);
+      $('.jp-current-time').text(secondsToHms(currentTime));
       $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
+      $(`[data-track=${playlist[currentTrackIndex].id}]`)
+          .siblings('.jp-duration-track')
+          .text(secondsToHms(cpAudio.getDuration()));
 
-      if(playlist[currentTrackIndex + 1] != undefined) {
+      if(playlist[currentTrackIndex + 1] != undefined &&
+          playlist[currentTrackIndex + 1].mp3) {
         cpAudio2.load(playlist[currentTrackIndex + 1].mp3);
       }
     });
 
-    $(`[data-track=${playlist[currentTrackIndex].id}]`)
-        .siblings('.jp-duration-track')
-        .text(secondsToHms(cpAudio.getDuration()));
-
-    if(!paused) {
-      $('.jp-audio .jp-play').addClass('jp-playing');
-      $('.jp-play-release').addClass('jp-playing');
-      $('.jp-play-track').removeClass('jp-playing');
-      $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
+    if (!virtual) {
+      syncPlaylist(playlist, currentTrackIndex);
     }
-
-    syncPlaylist(playlist, currentTrackIndex);
   }
 
+  function playNext(paused=false) {
+    var sourceType = $('.jp-audio .jp-play').data('sourceType');
+    var sourceId = $('.jp-audio .jp-play').data('sourceId');
+    var virtual = $('.jp-audio .jp-play').data('virtual');
+
+    if (playlist[currentTrackIndex + 1] == undefined) {
+      return false;
+    }
+
+    currentTrackIndex++;
+    playerLoad(0, virtual);
+
+
+    if (paused) {
+      updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
+    } else {
+      cpAudio.on('ready', function(){
+        cpAudio.play();
+        updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
+      });
+    }
+  }
 
   cpAudio.on("finish", playNext);
 
-
   function playPrevious() {
+    var sourceType = $('.jp-audio .jp-play').data('sourceType');
+    var sourceId = $('.jp-audio .jp-play').data('sourceId');
+    var virtual = $('.jp-audio .jp-play').data('virtual');
 
-    if(playlist[currentTrackIndex-1] == undefined) {
+    if (playlist[currentTrackIndex - 1] == undefined) {
       return false;
     }  
 
-    trackLoading(true);
-
     currentTrackIndex--;
+    playerLoad(0, virtual);
 
-    $('.jp-duration').text(secondsToHms(0));
-    $('.jp-current-time').text(secondsToHms(0));
-    $('.jp-current-time-track').text(secondsToHms(0));
-
-    cpAudio.load(playlist[currentTrackIndex].mp3);
-    changePlayerTitle(playlist[currentTrackIndex]);
-
-    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
-    $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
-
-    
     cpAudio.on('ready', function(){
       cpAudio.play();
-      $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
+      updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
     });
-
-    $(`[data-track=${playlist[currentTrackIndex].id}]`)
-        .siblings('.jp-duration-track')
-        .text(secondsToHms(cpAudio.getDuration()));
-
-    $('.jp-audio .jp-play').addClass('jp-playing');
-    $('.jp-play-release').addClass('jp-playing');
-    $('.jp-play-track').removeClass('jp-playing');
-    $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
-
-    syncPlaylist(playlist, currentTrackIndex);
   }
 
   function changePlayerTitle(t) {
@@ -554,9 +489,11 @@
     if(state) {
       $('.track-load').show();
       $('.jp-audio .jp-play').hide();
+      $('.jp-progress-container').addClass('loading');
     } else {
       $('.track-load').hide();
       $('.jp-audio .jp-play').show();
+      $('.jp-progress-container').removeClass('loading');
     }
   }
 
@@ -619,13 +556,43 @@
     return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
   }
 
-  function updateCPlayerState() {
-    let track_buttons = $('.jp-play-track');
+  //should be called after play action if play
+  function updatePlayerState(
+              sourceType = $('.jp-audio .jp-play').data('sourceType'), 
+              sourceId = $('.jp-audio .jp-play').data('sourceId'), 
+              trackIndex,
+              virtual = $('.jp-audio .jp-play').data('virtual')) {
+    if (!sourceType) return false;
 
-    if(track_buttons.length > 0) {
-      if(cpAudio.isPlaying()) {
-        $(`[data-track=${playlist[currentTrackIndex].id}]`).addClass('jp-playing');
-      }
+    var trackId;
+
+    if (trackIndex !== undefined) {
+      trackId = playlist[trackIndex].id;
+    } else {
+      trackId = $('.jp-audio .jp-play').data('trackId');
+      trackIndex = $('.jp-audio .jp-play').data('trackIndex');
+    }
+
+    $('.jp-audio .jp-play').data({ 
+          sourceType: sourceType, 
+          sourceId: sourceId, 
+          trackId: trackId,
+          trackIndex: trackIndex,
+          virtual: virtual
+        });
+
+    $('.jp-audio .jp-play').removeClass('jp-playing');
+    $("[class^='play-']").removeClass('playing');
+    if (cpAudio.isPlaying()) {
+      $('.jp-audio .jp-play').addClass('jp-playing');
+      $(`.play-${sourceType}-${sourceId}`).addClass('playing');
+      $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing');
+      $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing');
+    }
+
+    if (!virtual) {
+      $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
+      $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
     }
   }
 
@@ -653,38 +620,4 @@
   $('.jp-volume-btn').click(() => {
     $('.jp-volume').toggleClass('d-flex').toggleClass('d-none');
   });
-
-  // window.addEventListener('click', function(e){   
-  //   if (!document.getElementsByClassName('jp-playlist')[0].contains(e.target) &&
-  //         !document.getElementById('jp-playlist-btn').contains(e.target) &&
-  //         e.target.className != 'jp-playlist-item-remove' ){
-  //     $('.jp-playlist').slideUp(300);
-  //   }
-  // });
-
-  // window.addEventListener('click', function(e){   
-  //   if (!document.getElementsByClassName('jp-release-playlist')[0].contains(e.target) &&
-  //         !document.getElementById('jp-release-playlist-btn').contains(e.target) &&
-  //         e.target.className != 'jp-playlist-item-remove' ){
-  //     $('.jp-release-playlist').slideUp(300);
-  //   }
-  // });
-
-  // $('#jp_container_1').mouseover(function() {
-    // $('.jp-audio').css({'top': '0px'});
-    // $('#jp_container_1').css({'top': '0px'});
-    // $(this).css({'top': '0px'});
-    // $('.navbar').css('top', '40px');
-    // $('.main-container main').css('padding-top', '100px');
-    // $('.jp-controls').css('opacity', '1');
-    // $('.jp-details').css('top', '0px');
-  // });
-
-  // $('#jp_container_1').mouseout(function() {
-  //   $(this).css({'top': '-20px'});
-  //   $('.navbar').css('top', '20px');
-  //   $('header').css('margin-bottom', '80px');
-  //   $('.jp-controls').css('opacity', '0');
-  //   $('.jp-details').css('top', '10px');
-  // });
 </script>

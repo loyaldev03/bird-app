@@ -18,30 +18,33 @@ class TracksController < ApplicationController
   end
 
   def liked
-    @tracks = current_user.liked_by_type('Track').map do |_track|
+    @user = User.find params[:user_id]
+    @tracks = @user.liked_by_type('Track').map do |_track|
       track_presenter = TrackPresenter.new(_track, current_user)
     end
   end
 
   def play
-    if params[:playlist_id].present?
-      @source = 'playlist'
-      tracks = Playlist.find(params[:playlist_id].tracks)
-    elsif params[:track_id].present?
-      @source = 'track'
-      tracks = [Track.find(params[:track_id])]
-    elsif params[:user_id].present?
-      @source = 'user'
-      tracks = User.find(params[:user_id].tracks)
-    elsif params[:release_id].present?
-      @source = 'release'
-      tracks = Release.find(params[:release_id].tracks)
+    case params[:source_type]
+    when 'liked'
+      user = User.find(params[:source_id])
+      tracks = user.liked_by_type('Track')
+    else
+      tracks = params[:source_type]
+          .classify
+          .constantize
+          .find(params[:source_id])
+          .tracks
     end
 
-    @tracks = tracks.map do |_track|
+    tracks = tracks.order(track_number: :asc) if params[:source_type] == 'release'
+
+    tracks = tracks.map do |_track|
       track = TrackPresenter.new(_track, current_user)
       track_as_json(track)
     end
+
+    render json: { tracks: tracks }
   end
 
   def fill_track_title

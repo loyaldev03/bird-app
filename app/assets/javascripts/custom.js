@@ -127,7 +127,7 @@ $(document).on('turbolinks:load', function() {
 
   });
 
-  load_more_feed();
+  loadMoreFeed();
 
   $('.feed-block').on('click', '.like-comment', function(){
     var type = $(this).data('type');
@@ -183,13 +183,13 @@ $(document).on('turbolinks:load', function() {
     e.preventDefault();
   });
 
-  $('.music-block').on('click', '.playlist-add-track', function(e){
-    e.preventDefault();
-    playTrack($(this).data('trackId'));
-  });
+  // $('.music-block').on('click', '.playlist-add-track', function(e){
+  //   e.preventDefault();
+  //   playTrack($(this).data('trackId'));
+  // });
 });
 
-var load_more_feed = function(){
+var loadMoreFeed = function(){
   var win = $(window);
   var feedId = $('.feed-block').data('feedId');
   var feed, data_feed = $('.feed-block').data('feed');
@@ -243,7 +243,7 @@ var load_more_feed = function(){
           })
             .done( function() {
               if ($('#loading').length > 0) {
-                load_more_feed();
+                loadMoreFeed();
                 $('#loading').hide();
               }
             });

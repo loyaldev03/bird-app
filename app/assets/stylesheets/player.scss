@@ -148,7 +148,7 @@
   margin-right: -15px;
   position: relative;
 
-  &:after {
+  &.loading:after {
     content: 'Loading...';
     position: absolute;
     top: 50%;

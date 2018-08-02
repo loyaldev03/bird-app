@@ -1,6 +1,6 @@
 class PlaylistsController < ApplicationController
 
-  before_action :authenticate_user!, except: [:sync_playlist]
+  before_action :authenticate_user!, except: [:sync_playlist, :load]
   before_action :set_notifications, only: [:show]
 
   def show
@@ -53,7 +53,8 @@ class PlaylistsController < ApplicationController
 
     render json: { tracks: tracks,
                    current_track: current_track,
-                   playlist_name_form: playlist_name_form }
+                   playlist_name_form: playlist_name_form,
+                   playlist_id: playlist.id }
   end
 
   def copy
@@ -75,9 +76,14 @@ class PlaylistsController < ApplicationController
 
   def sync_playlist
     if current_user && current_user.current_playlist.present?
-      current_user.current_playlist.update_attributes(
-        tracks_ids: params[:tracks],
-        current_track: "#{params[:current_track_id]}:#{params[:time] || 0}")
+      playlist = current_user.current_playlist
+      playlist.tracks_ids = params[:tracks]
+
+      if params[:current_track_id].present?
+        current_track = "#{params[:current_track_id]}:#{params[:time] || 0}"
+      end
+      
+      playlist.save
     end
 
     render json: {}

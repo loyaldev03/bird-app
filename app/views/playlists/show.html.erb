@@ -24,7 +24,7 @@
           <li class="playlist-nav-subheader">Library&nbsp;</li>
           <li>Your Playlists</li>
           <li>
-            <%= link_to "Favorited Tracks", tracks_liked_path,
+            <%= link_to "Favorited Tracks", tracks_liked_path(user_id: current_user.id),
                 id: "favorited-tracks", remote: true %>
           </li>
           <!-- <li>Favorited Releases</li> -->

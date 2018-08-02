@@ -1,9 +1,12 @@
 <div class="playlist-header">
-  <% if @playlist.present? %>
-    <%= link_to tracks_play_path(playlist_id: @playlist.id), remote: true do %>
-      <%= image_tag 'icons/play-big.png' %>
-    <% end %>
-  <% end %>
+  <%= link_to "", "#",
+              data: { 
+                source_type: source_type, 
+                source_id: source_id,
+                virtual: true
+              }, 
+              class: "play-#{source_type}-#{source_id} playlist-play-playlist",
+              remote: true %>
 
   <%= render 'tracks/covers', object: tracks %>
 
@@ -31,11 +34,28 @@
     <% track = TrackPresenter.new(_track, current_user) %>
     <tr class='playlist-item'>
       <td>
-        <%= link_to "", tracks_play_path(track_id: track.id), 
-            class: "playlist-play-track-#{track.id}",
-            remote: true %>
-          <%#= image_tag 'icons/play-sm.png' %>
-        <%# end %>
+        <% if @playlist.present? %>
+          <%= link_to "", "#", 
+              class: "play-#{source_type}-#{source_id}-index-#{tracks.map(&:id).index(track.id)} playlist-play-track",
+              data: { 
+                source_type: source_type, 
+                source_id: source_id, 
+                track_index: tracks.map(&:id).index(track.id),
+                virtual: true
+              },
+              remote: true %>
+        <% else %>
+          <%= link_to "", "#", 
+              class: "play-#{source_type}-#{source_id}-track-#{track.id} playlist-play-track",
+              data: { 
+                source_type: source_type, 
+                source_id: source_id, 
+                track_index: tracks.map(&:id).index(track.id),
+                track_id: track.id,
+                virtual: true
+              },
+              remote: true %>
+        <% end %>
       </td>
       <td><%= track.title %></td>
       <td><%= track.artists %></td>

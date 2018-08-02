@@ -1,7 +1,7 @@
 var tracks = <%= raw @tracks.to_json %>;
 
 if (tracks.length > 0) {
-  addToPlaylist(tracks, true);
+  // addToPlaylist(tracks, true);
   // setPlaylist(tracks, true);
 
   $("[id^='play-release-']").show().next('.jp-controls').css({'display': 'none'});

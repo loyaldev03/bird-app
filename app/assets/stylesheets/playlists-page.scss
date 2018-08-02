@@ -170,7 +170,7 @@ li.playlist-nav-subheader {
   width: 160px;
 }
 
-[class^='playlist-play-track-'] {
+.playlist-play-track {
   width: 26px;
   height: 26px;
   background: asset-data-url("icons/play-sm.png");
@@ -179,5 +179,15 @@ li.playlist-nav-subheader {
 
   &.playing {
     background: asset-data-url("icons/pause-sm.png");
+  }
+}
+
+.playlist-play-playlist {
+  width: 130px;
+  height: 130px;
+  background: asset-data-url("icons/play-big.png");
+
+  &.playing {
+    background: asset-data-url("icons/pause-big.png");
   }
 }

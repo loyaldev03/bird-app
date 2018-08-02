@@ -44,5 +44,11 @@ $('#jp-release-playlist-btn').show();
 
 $(".jp-release-add").click(function(e){
    e.preventDefault();
-   playTrack($(this).data('trackId'));
+   setPlaylist(data.tracks, {
+     play: false, 
+     virtual: false, 
+     newPlaylist: false, 
+     sourceType: 'playlist', 
+     sourceId: playlistId
+   });
 });
