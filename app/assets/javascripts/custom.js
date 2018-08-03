@@ -182,11 +182,6 @@ $(document).on('turbolinks:load', function() {
   $('.btn-disabled').click(function(e){
     e.preventDefault();
   });
-
-  // $('.music-block').on('click', '.playlist-add-track', function(e){
-  //   e.preventDefault();
-  //   playTrack($(this).data('trackId'));
-  // });
 });
 
 var loadMoreFeed = function(){

@@ -248,7 +248,7 @@
     playNext();
   });
 
-  $("body").on('click', '.select-playlist', function(e){
+  $(document).on('click', '.select-playlist', function(e){
     e.preventDefault();
     var playlistId = $(this).data('playlistId');
     $('.select-playlist').parent('li').removeClass('active');
