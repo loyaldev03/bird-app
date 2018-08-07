@@ -47,7 +47,7 @@
 
       <% if release.class.to_s == "Release" %>
       
-        <%= link_to "LISTEN", get_release_tracks_path(release.id), 
+        <%= link_to "LISTEN", "#", 
             id: "play-release-#{release.id}",
             class: "btn c-btn-white c-btn-sm release-listen", remote: true %>
 
