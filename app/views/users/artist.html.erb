@@ -30,21 +30,22 @@
 
           <%= link_to "LISTEN", "#", 
               class: "play-release-#{release.id} btn c-btn-white c-btn-sm", 
-              data: { source_type: 'release', source_id: release.id, virtual: true },
+              data: { 
+                source_type: 'release', 
+                source_id: release.id, 
+                virtual: true 
+              },
               remote: true %>
 
           <div class="jp-controls" style="display: none;">
             <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
             <button class="jp-previous" role="button" tabindex="0"></button>
-            <button class="jp-play jp-play-release" data-release="<%= release.id %>" role="button" tabindex="1"></button>
 
-            <%= link_to "#{'%02i' % track.track_number} #{track.title}", "#", 
-                class: "play-release-#{@release.id}-track-#{track.id}",
+            <%= link_to "", "#", 
+                class: "play-release-#{release.id} jp-play",
                 data: { 
                   source_type: 'release', 
-                  source_id: @release.id, 
-                  track_index: @release.tracks.map(&:id).index(track.id),
-                  track_id: track.id,
+                  source_id: release.id, 
                   virtual: true
                 },
                 remote: true %>

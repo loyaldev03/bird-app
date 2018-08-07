@@ -431,7 +431,7 @@
   }
 
   function playerLoad(currentTime=0, virtual=false) {
-    trackLoading(true);
+    trackLoading(true, );
 
     if (playlist.length < 1) {
       trackLoading(false);
@@ -511,21 +511,26 @@
     $.get('/fill_track_title', {track_id: t.id});
   }
 
-  function trackLoading(state) {
-    var sourceType = $('.jp-audio .jp-play').data('sourceType');
-    var sourceId = $('.jp-audio .jp-play').data('sourceId');
+  function trackLoading(state, sourceType, sourceId) {
 
     if(state) {
       $('.track-load').show();
       $('.jp-audio .jp-play').hide();
       $('.jp-progress-container').addClass('loading');
       $(`.jp-playlist-item`).removeClass('loading');
+      console.log($(`.play-${sourceType}-${sourceId}`));
+      console.log(`.play-${sourceType}-${sourceId}`);
+      $(`.play-${sourceType}-${sourceId}`).addClass('loading');
       $(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`).addClass('loading');
+
+      if (playlist[currentTrackIndex]) {
+        $(`.play-${sourceType}-${sourceId}-track-${playlist[currentTrackIndex].id}`).addClass('loading');
+      }
     } else {
       $('.track-load').hide();
       $('.jp-audio .jp-play').show();
       $('.jp-progress-container').removeClass('loading');
-      $(`.jp-playlist-item`).removeClass('loading');
+      $(`[class^='play-']`).removeClass('loading');
     }
   }
 

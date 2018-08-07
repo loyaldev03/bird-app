@@ -15,13 +15,13 @@
     <%= render @tracks %>
   </div>
 
-  <div class="text-center">
+  <!-- <div class="text-center"> -->
     <%# if @limit <= @releases.count %>
       <%# _params = {page: params[:page] ? params[:page].to_i + 1 : 2} %>
       <%#= link_to "Show more", load_more_releases_path(_params), 
           remote: true, class: "btn c-btn-blue show-more" %>
     <%# end %>
-  </div>
+  <!-- </div> -->
 <% else %>
   No tracks for this artist
 <% end %>

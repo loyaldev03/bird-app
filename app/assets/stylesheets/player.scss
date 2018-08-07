@@ -68,6 +68,10 @@
   &:hover {
     background-image: asset-data-url("icons/media-play-hover.svg");
   }
+
+  &.loading {
+    background-image: asset-data-url("icons/loading.gif");
+  }
 }
 
 .jp-next {
@@ -172,11 +176,11 @@
   }
 }
 
-.jp-playing {
+.jp-play.playing {
   background-image: asset-data-url("icons/media-pause.svg");
 }
 
-.jp-playing:hover {
+.jp-play.playing:hover {
   background-image: asset-data-url("icons/media-pause-hover.svg");
 }
 
