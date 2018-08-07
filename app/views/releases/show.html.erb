@@ -56,10 +56,10 @@
         </div>
       <% end %>
 
-      <%= link_to get_release_tracks_path(@release.id), 
+      <%#= link_to get_release_tracks_path(@release.id), 
           class: "release-icon", remote: true do %>
-        <%= image_tag('icons/icon-play.svg', title: "Play release") %>
-      <% end %>
+        <%#= image_tag('icons/icon-play.svg', title: "Play release") %>
+      <%# end %>
     </div>
   </div>
 </div>
@@ -159,9 +159,7 @@
           <div class="c-flag c-flag-inner mb-2"><b>TRACKS</b> ON THIS RELEASE</div>
 
           <ol class="list-unstyled mt-1">
-            <% @release.tracks.each do |track| %>
-              <%= render track %>
-            <% end %>
+            <%= render @release.tracks %>
           </ol>
         </div>
       <% end %>

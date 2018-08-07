@@ -77,10 +77,26 @@ class PlaylistsController < ApplicationController
   def sync_playlist
     if current_user && current_user.current_playlist.present?
       playlist = current_user.current_playlist
-      playlist.tracks_ids = params[:tracks]
 
-      if params[:current_track_id].present?
-        current_track = "#{params[:current_track_id]}:#{params[:time] || 0}"
+      if params[:add_tracks_ids].present?
+        params[:add_tracks_ids].each do |id|
+          playlist.tracks_ids = playlist.tracks_ids
+                                        .split(',')
+                                        .push(id)
+                                        .join(',')
+        end
+      end
+
+      if params[:delete_by_indices].present?
+        params[:delete_by_indices].each do |i|
+          tracks_ids = playlist.tracks_ids.split(',')
+          tracks_ids.delete_at(i.to_i)
+          playlist.tracks_ids = tracks_ids.join(',')
+        end
+      end
+
+      if params[:current_track].present?
+        playlist.current_track = "#{params[:current_track]}:#{params[:time] || 0}"
       end
       
       playlist.save

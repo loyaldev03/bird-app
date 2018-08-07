@@ -99,9 +99,9 @@
   <% if release.class.to_s == "Release" %>
     <% if show_tracks && release.tracks.count > 1 %>
       <div class="row">
-        <% for track in release.tracks %>
+        <% release.tracks.each_with_index do |track, i| %>
           <div class="col-lg-6">
-            <%= render track %>
+            <%= render partial: track, locals: { track_counter: i } %>
           </div>
         <% end %>
       </div>

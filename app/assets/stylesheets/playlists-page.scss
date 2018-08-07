@@ -191,3 +191,9 @@ li.playlist-nav-subheader {
     background: asset-data-url("icons/pause-big.png");
   }
 }
+
+.jp-playlist-item.loading {
+  &:after {
+    content: asset-data-url("icons/loading_d1.gif");
+  }
+}
