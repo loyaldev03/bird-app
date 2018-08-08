@@ -512,7 +512,6 @@
   }
 
   function trackLoading(state, sourceType, sourceId) {
-
     if(state) {
       $('.track-load').show();
       $('.jp-audio .jp-play').hide();
@@ -618,10 +617,10 @@
           virtual: virtual
         });
 
-    $('.jp-audio .jp-play').removeClass('jp-playing');
+    $('.jp-audio .jp-play').removeClass('playing');
     $("[class^='play-']").removeClass('playing');
     if (cpAudio.isPlaying()) {
-      $('.jp-audio .jp-play').addClass('jp-playing');
+      $('.jp-audio .jp-play').addClass('playing');
       $(`.play-${sourceType}-${sourceId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing');
