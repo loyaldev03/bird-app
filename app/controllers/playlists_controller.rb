@@ -113,7 +113,7 @@ class PlaylistsController < ApplicationController
 
     def track_as_json track
       { id: track.id,
-        track_number: track.track_number,
+        track_number: '%02i' % track.track_number,
         title: track.title, 
         artists: track.artists,
         mp3: track.stream_uri,

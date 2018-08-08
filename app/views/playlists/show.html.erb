@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <%= image_tag 'player1.png' %>
+        <%#= image_tag 'player1.png' %>
       </div>
 
       <div class="playlist-nav-body">
@@ -20,12 +20,30 @@
           <!-- <li>All Releases</li> -->
           <!-- <li>Exclusive Only</li> -->
           <!-- <li class="playlist-nav-subheader">Playlists</li> -->
-          <!-- <li>Friends Playlists</li> -->
+          <li class="playlist-nav-subheader">Music&nbsp;</li>
+          <li>
+            <%= link_to "All", releases_path, id: "playlist-all-releases", remote: true %>
+          </li>
+          <li>
+            <%= link_to "Birdfeed Exclusive", releases_path(filters: { release_type: 1 }), 
+                id: "playlist-exclusive-releases", 
+                remote: true %>
+          </li>
+          <li>
+            <%= link_to "Dirtybird Select", releases_path(filters: { release_type: 2 }), 
+                id: "playlist-select-releases", 
+                remote: true %>
+          </li>
           <li class="playlist-nav-subheader">Library&nbsp;</li>
           <li>Your Playlists</li>
           <li>
+            <%= link_to "Favorited Releases", releases_path(filters: { liked: true }), 
+                id: "playlist-liked-releases", 
+                remote: true %>
+          </li>
+          <li>
             <%= link_to "Favorited Tracks", tracks_liked_path(user_id: current_user.id),
-                id: "favorited-tracks", remote: true %>
+                id: "playlist-favorited-tracks", remote: true %>
           </li>
           <!-- <li>Favorited Releases</li> -->
           <!-- <li>Recently Played</li> -->

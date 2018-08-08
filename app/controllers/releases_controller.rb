@@ -19,12 +19,12 @@ class ReleasesController < ApplicationController
   end
 
   def index
-    filters = params[:filters]
+    @filters = params[:filters]
     page = params[:page] || 1
 
     @releases = Release.published
 
-    @releases = set_filters filters
+    @releases = set_filters @filters
 
     @releases = releases_query( @releases, page, 16, true )
 
@@ -35,6 +35,8 @@ class ReleasesController < ApplicationController
     if filters.present?
       filters.each do |filter, value|
         case filter
+        when 'release_type' 
+          @releases = @releases.where("release_type = ?", value)
         when 'never_released' 
           @releases = @releases.where("release_date > ? OR release_date = NULL", Date.today)
         when 'three_months' 

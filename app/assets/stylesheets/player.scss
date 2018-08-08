@@ -125,19 +125,19 @@
 .jp-details {
   font-size: 10px;
   flex-grow: 1;
-  text-align: center;
-  position: relative;
-  top: 0px;
-  // top: 10px;
-  transition: top 0.3s;
-  padding: 12px 0;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .like-button > img {
+    vertical-align: middle;
+  }
 }
 
 .jp-title {
-  display: inline-block;
-  width: 300px;
 
   a:hover {
     color: #3ed4e0;

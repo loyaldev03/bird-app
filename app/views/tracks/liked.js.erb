@@ -4,4 +4,4 @@ $('.music-block').html(`
                locals: { tracks: @tracks, source_type: 'liked', source_id: @user.id }) %>`);
 $('.music-block').find('.star').each(ratyRate);
 $(".playlist-nav-body li").removeClass('active');
-$('#favorited-tracks').parent('li').addClass('active');
+$('#playlist-favorited-tracks').parent('li').addClass('active');
