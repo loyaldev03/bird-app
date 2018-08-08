@@ -24,7 +24,7 @@ class PlaylistsController < ApplicationController
       else # initial load
         playlist = Playlist.create(
           user: current_user, 
-          tracks: Track.last.id, 
+          tracks_ids: Track.last.id, 
           current_track: "0:0" )
         current_user.update_attributes(current_playlist_id: playlist.id)
       end
