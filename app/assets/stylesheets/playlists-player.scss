@@ -1,0 +1,43 @@
+.playlist-player {
+  background-color: #4a4a4a;
+  width: 100%;
+  height: 110px;
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: -24px;
+
+  .pp-previous {
+    background: asset-data-url("icons/media-backward-md.png");
+    width: 23px;
+    height: 18px;
+    cursor: pointer;
+
+    &:hover {
+      background: asset-data-url("icons/media-backward-md-hover.png");
+    }
+  }
+
+  .pp-next {
+    background: asset-data-url("icons/media-forward-md.png");
+    width: 23px;
+    height: 18px;
+    cursor: pointer;
+
+    &:hover {
+      background: asset-data-url("icons/media-forward-md-hover.png");
+    }
+  }
+
+  .pp-play {
+    background: asset-data-url("icons/play-md.png");
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    margin: 0 30px;
+
+    &.playing {
+      background: asset-data-url("icons/pause-md.png");
+    }
+  }
+}

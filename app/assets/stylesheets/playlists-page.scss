@@ -1,6 +1,8 @@
 .playlist-nav {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
   margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: -40px;
   background: asset-data-url("egg-bg.png");
   background-size: 140%;
   background-position-x: 85px;
@@ -207,6 +209,8 @@ li.playlist-nav-subheader {
 }
 
 .music-block {
+  padding-bottom: 110px;
+
   .item-with-tongue img {
     width: 195px;
     height: 205px;

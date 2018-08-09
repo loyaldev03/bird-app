@@ -119,7 +119,6 @@
   $('.jp-current-time').text(secondsToHms(0));
   $('.jp-duration').text(secondsToHms(0));
 
-  trackLoading(true);
   
   $.ajax( "/playlist_load" )
     .done(function(data) {
@@ -132,6 +131,8 @@
       } else {
         currentTrackIndex = 0; time = 0;
       }
+
+      trackLoading(true);
 
       $('.jp-playlist-name').html(data.playlist_name_form);
       setPlaylist(data.tracks, {
@@ -174,7 +175,7 @@
     });
 
     audio.on('ready', function(){
-      trackLoading(false);
+      // trackLoading(false);
     });
   }
 
@@ -339,14 +340,14 @@
     let active = $(item).find('.jp-playlist-current').length > 0;
     item.remove();
     $('.jp-playlist').trigger('change');
-    if (!$('.jp-audio .jp-play').data('virtual')) {
-      playlist.splice(index,1);
-    }
+    // if (!$('.jp-audio .jp-play').data('virtual')) {
+      // playlist.splice(index,1);
+    // }
 
     if (active) {
-      if (currentTrackIndex >= playlist.length) {
-        currentTrackIndex = playlist.length - 1;
-      }
+      // if (currentTrackIndex >= playlist.length) {
+      //   currentTrackIndex = playlist.length - 1;
+      // }
 
       playerLoad(0, false);
 
@@ -435,7 +436,11 @@
   }
 
   function playerLoad(currentTime=0, virtual=false) {
-    trackLoading(true, );
+    if (virtual) {
+      trackLoading(true);
+    } else {
+      trackLoading(true);
+    }
 
     if (playlist.length < 1) {
       trackLoading(false);
@@ -446,7 +451,7 @@
     changePlayerTitle(playlist[currentTrackIndex]);
 
     cpAudio.on('ready', function(){
-      trackLoading(false);
+      // trackLoading(false);
       
       cpAudio.skip(currentTime);
       $('.jp-current-time').text(secondsToHms(currentTime));
@@ -515,11 +520,17 @@
   }
 
   function trackLoading(state, sourceType, sourceId) {
+    console.log(state);
+    console.log(sourceType);
+    console.log(sourceId);
+    console.log(currentTrackIndex);
+    console.log($(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`));
+
     if(state) {
       $('.track-load').show();
       $('.jp-audio .jp-play').hide();
       $('.jp-progress-container').addClass('loading');
-      $(`.jp-playlist-item`).removeClass('loading');
+      // $(`.jp-playlist-item`).removeClass('loading');
       $(`.play-${sourceType}-${sourceId}`).addClass('loading');
       $(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`).addClass('loading');
 
