@@ -3,11 +3,11 @@ ActiveAdmin.register Release do
   filter :artist
 
   permit_params :title, :artist, :catalog, :text, :avatar, :facebook_img,
-    :published_at, :upc_code, :compilation, :release_type, :buy_uri, 
+    :published_at, :upc_code, :compilation, :release_type, :buy_uri,
     :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
-    :genre, :isrc_code, :uri, :sample_uri, :artist, :_destroy, :artist_as_string, 
-    user_ids: []]
+    :genre, :isrc_code, :uri_string, :sample_uri, :artist, :_destroy,
+    :artist_as_string, user_ids: []]
 
   config.sort_order = 'created_at_desc'
   jcropable
@@ -88,7 +88,8 @@ ActiveAdmin.register Release do
         t.input :title
         t.input :genre
         t.input :isrc_code
-        t.input :uri, as: :file, label: "Track file (WAV Format)"
+        t.input :uri_string, as: :hidden
+        t.input :file, as: :file, label: "Track file (WAV Format)", input_html: { class: 'direct-upload' }
         t.input :users, as: :select, label: "Artists",
         collection: User.with_role(:artist).map {|a| [a.name, a.id] }
         t.input :artist_as_string

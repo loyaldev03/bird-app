@@ -27,6 +27,9 @@ $skinHeaderBck: #1e2a33;
 @import "active_admin_flat_skin";
 @import "font-awesome";
 @import 'activeadmin/quill_editor_input';
+@import 'uppy.min';
+@import 's3_direct_upload';
+
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //

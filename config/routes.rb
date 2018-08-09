@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  
+  mount Shrine.presign_endpoint(:store) => "/presign"
+
   devise_for :users, path: 'usr', controllers: {
         registrations: 'users/registrations',
         omniauth_callbacks: 'users/omniauth_callbacks'
@@ -110,4 +111,6 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
+
+  mount Shrine.presign_endpoint(:store) => "/presign"
 end

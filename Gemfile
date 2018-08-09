@@ -53,10 +53,11 @@ gem 'transloadit'
 gem 'braintree'
 gem 'metainspector'
 gem "verbs"
+gem 'shrine', '~> 2.11'
+gem 'delayed_job_active_record', '~> 4.1.3'
 
 gem 'exception_notification'
 gem 'slack-notifier'
-
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
