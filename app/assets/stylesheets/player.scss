@@ -68,10 +68,6 @@
   &:hover {
     background-image: asset-data-url("icons/media-play-hover.svg");
   }
-
-  &.loading {
-    background-image: asset-data-url("icons/loading.gif");
-  }
 }
 
 .jp-next {
@@ -125,19 +121,19 @@
 .jp-details {
   font-size: 10px;
   flex-grow: 1;
-  text-align: left;
+  text-align: center;
+  position: relative;
+  top: 0px;
+  // top: 10px;
+  transition: top 0.3s;
+  padding: 12px 0;
   white-space: nowrap;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & > .like-button > img {
-    vertical-align: middle;
-  }
 }
 
 .jp-title {
+  display: inline-block;
+  width: 300px;
 
   a:hover {
     color: #3ed4e0;
@@ -176,11 +172,11 @@
   }
 }
 
-.jp-play.playing {
+.jp-playing {
   background-image: asset-data-url("icons/media-pause.svg");
 }
 
-.jp-play.playing:hover {
+.jp-playing:hover {
   background-image: asset-data-url("icons/media-pause-hover.svg");
 }
 

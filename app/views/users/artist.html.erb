@@ -28,28 +28,14 @@
 
           <p class="item-text"><%= strip_tags(release.text).truncate(220) %></p>
 
-          <%= link_to "LISTEN", "#", 
-              class: "play-release-#{release.id} btn c-btn-white c-btn-sm", 
-              data: { 
-                source_type: 'release', 
-                source_id: release.id, 
-                virtual: true 
-              },
-              remote: true %>
+          <%= link_to "LISTEN", get_release_tracks_path(release.id), 
+              id: "play-release-#{release.id}",
+              class: "btn c-btn-white c-btn-sm release-listen", remote: true %>
 
           <div class="jp-controls" style="display: none;">
             <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
             <button class="jp-previous" role="button" tabindex="0"></button>
-
-            <%= link_to "", "#", 
-                class: "play-release-#{release.id} jp-play",
-                data: { 
-                  source_type: 'release', 
-                  source_id: release.id, 
-                  virtual: true
-                },
-                remote: true %>
-
+            <button class="jp-play jp-play-release" data-release="<%= release.id %>" role="button" tabindex="1"></button>
             <button class="jp-next" role="button" tabindex="2"></button>
             <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
           </div>
@@ -179,8 +165,10 @@
           <% end %>
 
           <ol class="list-unstyled mt-1">
-            <% tracks = @user.tracks.order(created_at: :desc).limit(4) %>
-            <%= render tracks %>
+            <% @user.tracks.order(created_at: :desc).limit(4).each do |track| %>
+              <%= render track %>
+  
+            <% end %>
           </ol>
         </div>
       <% end %>

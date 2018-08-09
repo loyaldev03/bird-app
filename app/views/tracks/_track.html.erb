@@ -1,5 +1,7 @@
 <% if track.release.image_uri.present?
      image = track.release.image_uri
+   elsif track.release.avatar.present?
+     image = track.release.avatar.url
    else
      image = track.release.avatar.url
    end %>
@@ -29,18 +31,7 @@
   <div class="jp-controls">
     <div class="jp-current-time-track" role="timer" aria-label="time">0:00</div>
     <button class="jp-previous" role="button" tabindex="0"></button>
-
-    <%= link_to "", "#", 
-        class: "play-release-#{track.release.id}-track-#{track.id} jp-play",
-        data: { 
-          source_type: 'release', 
-          source_id: track.release.id, 
-          track_index: track_counter,
-          track_id: track.id,
-          virtual: true
-        },
-        remote: true %>
-
+    <button class="jp-play jp-play-track" data-track="<%= track.id %>" role="button" tabindex="1"></button>
     <button class="jp-next" role="button" tabindex="2"></button>
     <div class="jp-duration-track" role="timer" aria-label="duration"></div><%# TODO get from database %>
     <% unless current_user && current_user.has_role?(:artist) %>

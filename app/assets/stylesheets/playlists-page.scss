@@ -46,6 +46,7 @@
 
 li.playlist-nav-subheader {
   color: #ff7272;
+  font-weight: 900;
   letter-spacing: 0.47px;
   text-transform: uppercase;
   position: relative;
@@ -145,15 +146,6 @@ li.playlist-nav-subheader {
   cursor: pointer;
 }
 
-.playlist-add-source {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-}
-
 .playlist-download-track {
   background: none;
   border: none;
@@ -197,18 +189,5 @@ li.playlist-nav-subheader {
 
   &.playing {
     background: asset-data-url("icons/pause-big.png");
-  }
-}
-
-.jp-playlist-item.loading {
-  &:after {
-    content: asset-data-url("icons/loading_d1.gif");
-  }
-}
-
-.music-block {
-  .item-with-tongue img {
-    width: 195px;
-    height: 205px;
   }
 }

@@ -19,6 +19,8 @@ class Track < ApplicationRecord
     attribute :title, :genre, :isrc_code
   end
 
+  after_save { ProcessingTrackJob.perform_later(self) }
+
   def stream_uri(is_sample=true)
     return sample_uri if is_sample
 

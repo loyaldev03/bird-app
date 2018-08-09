@@ -58,7 +58,7 @@
     <%= render 'follows/follow_button', object: @user %>
   </div>
 
-  <% if current_user && current_user.id == @user.id %>
+  <% if current_user.id == @user.id %>
     <div class="user-nav">
       <% if current_page?(playlists_path) %>
         <% btn_style = ['c-btn-blue btn-disabled', 'c-btn-white'] %>

@@ -4,3 +4,7 @@
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
 //= require chartkick
+//= require fetch
+//= require polyfill.min
+//= require uppy.min
+//= require s3_direct_upload

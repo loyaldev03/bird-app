@@ -6,12 +6,12 @@
      image = release.avatar.url
    end %>
    
-<div class="item-with-tongue">
+<div class="col-xl-3 col-lg-4 col-md-6 mb-5 item-with-tongue">
   <div>
     <div class="item-body">
       <div class="item-panel">
         <h3><%= link_to release.title.upcase, release_path(release) %></h3>
-        <p><%= link_to strip_tags(release.text).gsub('&amp;','&').truncate(350), release_path(release) %></p>
+        <p><%= link_to strip_tags(release.text).truncate(350), release_path(release) %></p>
       </div>
       <div class="item-footer">
         <%= link_to release, class: "c-link" do %>
@@ -19,23 +19,13 @@
           <%= "Track".pluralize(release.tracks.count) %>
         <% end %>
         
-        <%= link_to "LISTEN", "#", 
-            class: "play-release-#{release.id} btn c-btn-white c-btn-sm", 
-            data: { source_type: 'release', source_id: release.id, virtual: true },
-            remote: true %>
+        <%= link_to "LISTEN", get_release_tracks_path(release.id), 
+            id: "play-release-#{release.id}",
+            class: "btn c-btn-white c-btn-sm", remote: true %>
 
         <div class="jp-controls release-jp-controls" style="display: none;">
           <button class="jp-previous" role="button" tabindex="0"></button>
-
-          <%= link_to "", "#", 
-              class: "play-release-#{release.id} jp-play",
-              data: { 
-                source_type: 'release', 
-                source_id: release.id, 
-                virtual: true
-              },
-              remote: true %>
-
+          <button class="jp-play jp-play-release" role="button" tabindex="1"></button>
           <button class="jp-next" role="button" tabindex="2"></button>
         </div>
 

@@ -171,7 +171,7 @@ class Release < ApplicationRecord
     end
 
     def change_published_date
-      if saved_change_to_published_at?
+      if published_at_changed?
         feed = StreamRails.feed_manager.get_feed( 'release_create', 1 )
         feed.remove_activity("Release:#{self.id}", foreign_id=true)
 
