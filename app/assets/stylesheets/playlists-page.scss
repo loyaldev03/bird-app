@@ -1,6 +1,8 @@
 .playlist-nav {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
   margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: -40px;
   background: asset-data-url("egg-bg.png");
   background-size: 140%;
   background-position-x: 85px;
@@ -46,7 +48,6 @@
 
 li.playlist-nav-subheader {
   color: #ff7272;
-  font-weight: 900;
   letter-spacing: 0.47px;
   text-transform: uppercase;
   position: relative;
@@ -146,6 +147,15 @@ li.playlist-nav-subheader {
   cursor: pointer;
 }
 
+.playlist-add-source {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+
 .playlist-download-track {
   background: none;
   border: none;
@@ -189,5 +199,20 @@ li.playlist-nav-subheader {
 
   &.playing {
     background: asset-data-url("icons/pause-big.png");
+  }
+}
+
+.jp-playlist-item.loading {
+  &:after {
+    content: asset-data-url("icons/loading_d1.gif");
+  }
+}
+
+.music-block {
+  padding-bottom: 110px;
+
+  .item-with-tongue img {
+    width: 195px;
+    height: 205px;
   }
 }

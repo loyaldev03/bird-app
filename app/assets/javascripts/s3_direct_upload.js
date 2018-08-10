@@ -11,6 +11,12 @@ function fileUpload(fileInput) {
     target: fileInput.parentNode,
     hideAfterFinish: false
   })
+  .use(Uppy.StatusBar, {
+    target: fileInput.parentNode,
+    hideUploadButton: false,
+    showProgressDetails: true,
+    hideAfterFinish: true
+  })
   .use(Uppy.AwsS3, {
     getUploadParameters: function (file) {
       return fetch('/presign?filename=' + file.name)
@@ -48,8 +54,14 @@ function fileUpload(fileInput) {
   return uppy
 }
 
-$(function() {
+$(document).ready(function(){
   document.querySelectorAll('.direct-upload').forEach(function (fileInput) {
-    fileUpload(fileInput)
+    fileUpload(fileInput);
   })
-})
+
+  $('.formtastic.release').on('has_many_add:after', function(e, fieldset){
+    var elements = document.querySelectorAll('.direct-upload');
+    var lastElement = elements[elements.length - 1];
+    fileUpload(lastElement);
+  });
+});

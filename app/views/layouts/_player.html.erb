@@ -32,19 +32,7 @@
         </div>
       </div>
 
-      <div class="jp-details">
-        <% if current_user && (current_user.cahced_active_subscription? || 
-              current_user.has_role?(:admin) ||
-              current_user.has_role?(:artist) ) %>
-
-          <button id="jp-release-playlist-btn" style="display: none;">
-            <%= image_tag 'icons/r-playlist.png' %>
-          </button>
-
-        <% end %>
-
-        <div class="jp-title" aria-label="title">&nbsp;</div>
-      </div>
+      <div class="jp-details"></div>
 
       <% if current_user && (current_user.cahced_active_subscription? || 
             current_user.has_role?(:admin) ||
@@ -106,7 +94,9 @@
 </div>
 
 <script type="text/javascript" data-turbolinks-eval="false">
-
+  //playlist can be virual (play and display on player title, 
+  //don't display on playlist menu, don't sync with the server, 
+  //just for observe listening the music)
   var playlist = [];
   var currentTrackIndex;
 
@@ -129,11 +119,11 @@
   $('.jp-current-time').text(secondsToHms(0));
   $('.jp-duration').text(secondsToHms(0));
 
-  trackLoading(true);
   
   $.ajax( "/playlist_load" )
     .done(function(data) {
       var time;
+      $('.jp-playlist').data('currentPlaylistId', data.playlist_id);
 
       if (data.current_track) {
         currentTrackIndex = data.current_track.index;
@@ -141,6 +131,8 @@
       } else {
         currentTrackIndex = 0; time = 0;
       }
+
+      trackLoading(true);
 
       $('.jp-playlist-name').html(data.playlist_name_form);
       setPlaylist(data.tracks, {
@@ -183,7 +175,7 @@
     });
 
     audio.on('ready', function(){
-      trackLoading(false);
+      // trackLoading(false);
     });
   }
 
@@ -195,8 +187,8 @@
     var currentTime = options.currentTime || 0;
     var virtual = options.virtual;
     var newPlaylist = options.newPlaylist;
-    var sourceType = options.sourceType || null;
-    var sourceId = options.sourceId || null;
+    var sourceType = options.sourceType || $('.jp-audio .jp-play').data('sourceType');
+    var sourceId = options.sourceId || $('.jp-audio .jp-play').data('sourceId');
 
     if (currentTrack !== undefined) {
       currentTrackIndex = currentTrack;
@@ -208,11 +200,18 @@
     } else if (newPlaylist) {
       playlist = tracks; //setting common playlist variable;
       addItemsToPlaylist({newPlaylist: true, sourceType: sourceType, sourceId: sourceId});
-      playerLoad(currentTime, virtual);
+      playerLoad(currentTime, virtual); 
     } else {
-      playlist.concat(tracks);
+      if ($('.jp-audio .jp-play').data('virtual')) {
+        playlist = tracks; //setting common playlist variable;
+      } else {
+        playlist = playlist.concat(tracks);
+      }
+
       addItemsToPlaylist({tracks: tracks, sourceType: sourceType, sourceId: sourceId});
-      syncPlaylist(playlist, null);
+
+      $.post('/sync_playlist', 
+        { add_tracks_ids: tracks.map(x => x['id']) });    
       return false;
     }
 
@@ -227,25 +226,12 @@
     updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
   }
 
-  function syncPlaylist(playlist, currentTrack, time=0){
-    var tracksIds = playlist.map(x => x['id']).join(',');
-
-    $.post('/sync_playlist', 
-      { tracks: tracksIds,
-        current_track_id: currentTrack,
-        time: time});
-  }
-
   $('.jp-audio .jp-play').click(function(){
     playButton(this);
   });
 
   $('.jp-audio .jp-previous').click(function(){
     playPrevious();
-  });
-
-  $('.jp-audio .jp-next').click(function(){
-    playNext();
   });
 
   $(document).on('click', '.select-playlist', function(e){
@@ -263,6 +249,7 @@
       })
       .done(function(data) {
         var time;
+        $('.jp-playlist').data('currentPlaylistId', playlistId);
 
         if (data.current_track) {
           currentTrackIndex = data.current_track.index;
@@ -285,6 +272,42 @@
     });
   });
 
+  $(document).on('click', '.playlist-add-track', function(e){
+    e.preventDefault();
+    var trackId = $(this).data('trackId');
+    $.ajax({ 
+        url: `/tracks/${trackId}`,
+        dataType: 'JSON'
+      })
+      .done(function(track) {
+        setPlaylist([track], {
+          virtual: false, 
+          newPlaylist: false,
+          sourceType: 'playlist',
+          sourceId: $('.jp-playlist').data('currentPlaylistId')
+        });
+      });
+  });
+
+  $(document).on('click', '.playlist-add-source', function(e){
+    e.preventDefault();
+    var sourceType = $(this).data('sourceType');
+    var sourceId = $(this).data('sourceId');
+    $.ajax({ 
+        url: `/tracks_play`,
+        dataType: 'JSON',
+        data: { source_type: sourceType, source_id: sourceId }
+      })
+      .done(function(data) {
+        setPlaylist(data.tracks, {
+          virtual: false, 
+          newPlaylist: false,
+          sourceType: 'playlist',
+          sourceId: $('.jp-playlist').data('currentPlaylistId')
+        });
+      });
+  });
+
   $('.jp-audio').on('change', '.jp-playlist', function(){
     if($(this).find('li').length < 2) {
       $('.jp-previous').addClass('jp-disabled');
@@ -295,15 +318,16 @@
     }
   });
 
-  $('.jp-playlist').on('click', '.jp-playlist-item', function(){
+  $('.jp-playlist').on('click', '.jp-playlist-item', function(e){
+    e.preventDefault();
     playButton(this);
   });
 
-  $('.jp-playlist').on('click', '.jp-playlist-item-remove', function(){
+  $('.jp-playlist').on('click', '.jp-playlist-item-remove', function(e){
+    e.preventDefault();
     let index = $(this).closest('ul').find('li').index($(this).closest('li'));
     removeFromPlaylist(index);
   });
-
 
   function newPlaylist() {
     currentTrackIndex = 0;
@@ -313,17 +337,28 @@
 
   function removeFromPlaylist(index) {
     let item = $('.jp-playlist li').get(index);
-    let active = $(item).find('.jp-playlist-current').length > 0
+    let active = $(item).find('.jp-playlist-current').length > 0;
     item.remove();
     $('.jp-playlist').trigger('change');
-    playlist.splice(index,1);
+    // if (!$('.jp-audio .jp-play').data('virtual')) {
+      // playlist.splice(index,1);
+    // }
+
     if (active) {
-      if(currentTrackIndex < 0) {currentTrackIndex = 0}
-      playNext(true);
-      currentTrackIndex--;
+      // if (currentTrackIndex >= playlist.length) {
+      //   currentTrackIndex = playlist.length - 1;
+      // }
+
+      playerLoad(0, false);
+
+      cpAudio.on('ready', function(){
+        cpAudio.play();
+        updatePlayerState('playlist', $('.jp-audio .jp-play').data('sourceId'), currentTrackIndex, false);
+      });
     }
 
-    syncPlaylist(playlist, currentTrackIndex);
+    $.post('/sync_playlist', 
+      { delete_by_indices: [index], current_track_index: currentTrackIndex });    
   }
 
   function playButton(button) {
@@ -335,11 +370,9 @@
 
     if ( (sameSource && btnData.trackIndex === undefined) ||
          (sameSource && btnData.trackIndex !== undefined && sameIndex) ) {
-      console.log('same source without track or same source with same track');
       cpAudio.isPlaying() ? cpAudio.pause() : cpAudio.play();
       updatePlayerState(topData.sourceType, topData.sourceId, topData.trackIndex, !!btnData.virtual);
     } else if (sameSource && btnData.trackIndex !== undefined && !sameIndex) {
-      console.log('same source with other track');
       currentTrackIndex = btnData.trackIndex;
       playerLoad(0, !!btnData.virtual);
 
@@ -348,7 +381,6 @@
         updatePlayerState(btnData.sourceType, btnData.sourceId, btnData.trackIndex, !!btnData.virtual);
       });
     } else {
-      console.log('other source');
       $.ajax({
           url: '/tracks_play',
           dataType: 'JSON',
@@ -368,8 +400,6 @@
     }
   }
 
-  // function playRelease(id) {}
-
   function playlistItem(track, sourceType, sourceId, index) {
     var _class, _data;
     if (index) {
@@ -382,8 +412,8 @@
 
     return `<li>
               <div>
-                <a href="javascript:;" class="jp-playlist-item-remove">-</a>
-                <a href="javascript:;" class="jp-playlist-item play-${sourceType}-${sourceId}-${_class}" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="0">${track.title} - ${track.artists}</a>
+                <a href="#" class="jp-playlist-item-remove">-</a>
+                <a href="#" class="jp-playlist-item play-${sourceType}-${sourceId}-${_class}" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="0">${track.title} - ${track.artists}</a>
               </div>
             </li>`
   }
@@ -406,7 +436,11 @@
   }
 
   function playerLoad(currentTime=0, virtual=false) {
-    trackLoading(true);
+    if (virtual) {
+      trackLoading(true);
+    } else {
+      trackLoading(true);
+    }
 
     if (playlist.length < 1) {
       trackLoading(false);
@@ -417,7 +451,7 @@
     changePlayerTitle(playlist[currentTrackIndex]);
 
     cpAudio.on('ready', function(){
-      trackLoading(false);
+      // trackLoading(false);
       
       cpAudio.skip(currentTime);
       $('.jp-current-time').text(secondsToHms(currentTime));
@@ -433,7 +467,8 @@
     });
 
     if (!virtual) {
-      syncPlaylist(playlist, currentTrackIndex);
+      $.post('/sync_playlist', 
+        { current_track: currentTrackIndex }); 
     }
   }
 
@@ -442,7 +477,7 @@
     var sourceId = $('.jp-audio .jp-play').data('sourceId');
     var virtual = $('.jp-audio .jp-play').data('virtual');
 
-    if (playlist[currentTrackIndex + 1] == undefined) {
+    if (playlist[currentTrackIndex + 1] === undefined) {
       return false;
     }
 
@@ -481,19 +516,32 @@
   }
 
   function changePlayerTitle(t) {
-    $('.jp-title').html('<a href="/releases/' + t.release_id + '">' + t.track_number + '. ' + t.title + ' - <b>' + t.artists + '</b></a>');
     $.get('/fill_track_title', {track_id: t.id});
   }
 
-  function trackLoading(state) {
+  function trackLoading(state, sourceType, sourceId) {
+    console.log(state);
+    console.log(sourceType);
+    console.log(sourceId);
+    console.log(currentTrackIndex);
+    console.log($(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`));
+
     if(state) {
       $('.track-load').show();
       $('.jp-audio .jp-play').hide();
       $('.jp-progress-container').addClass('loading');
+      // $(`.jp-playlist-item`).removeClass('loading');
+      $(`.play-${sourceType}-${sourceId}`).addClass('loading');
+      $(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`).addClass('loading');
+
+      if (playlist[currentTrackIndex]) {
+        $(`.play-${sourceType}-${sourceId}-track-${playlist[currentTrackIndex].id}`).addClass('loading');
+      }
     } else {
       $('.track-load').hide();
       $('.jp-audio .jp-play').show();
       $('.jp-progress-container').removeClass('loading');
+      $(`[class^='play-']`).removeClass('loading');
     }
   }
 
@@ -558,10 +606,12 @@
 
   //should be called after play action if play
   function updatePlayerState(
-              sourceType = $('.jp-audio .jp-play').data('sourceType'), 
-              sourceId = $('.jp-audio .jp-play').data('sourceId'), 
-              trackIndex,
-              virtual = $('.jp-audio .jp-play').data('virtual')) {
+    sourceType = $('.jp-audio .jp-play').data('sourceType'), 
+    sourceId = $('.jp-audio .jp-play').data('sourceId'), 
+    trackIndex,
+    virtual = $('.jp-audio .jp-play').data('virtual') 
+    ) {
+
     if (!sourceType) return false;
 
     var trackId;
@@ -581,17 +631,18 @@
           virtual: virtual
         });
 
-    $('.jp-audio .jp-play').removeClass('jp-playing');
+    $('.jp-audio .jp-play').removeClass('playing');
     $("[class^='play-']").removeClass('playing');
     if (cpAudio.isPlaying()) {
-      $('.jp-audio .jp-play').addClass('jp-playing');
+      $('.jp-audio .jp-play').addClass('playing');
       $(`.play-${sourceType}-${sourceId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing');
     }
 
+    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
+    
     if (!virtual) {
-      $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
       $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
     }
   }
@@ -602,8 +653,8 @@
           $(this).css('display','inline-block');
     });
   });
-
-  $('#jp-release-playlist-btn').click(function() {
+  
+  $(document).on('click', '#jp-release-playlist-btn', function(){
     $('.jp-release-playlist')
           .css({ 'left': $(this).offset().left - 35 })
           .slideToggle(300, function() {

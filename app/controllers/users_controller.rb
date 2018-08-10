@@ -317,17 +317,20 @@ class UsersController < ApplicationController
 
   def get_feed_from objects, verb, target
     results = objects.map do |object|
-      {
-        'actor' => @user,
-        'object' => object,
-        'target' => object.try(target.to_sym),
-        'verb' => object.class.to_s,
-        'foreign_id' => "#{object.class.to_s}:#{object.id}",
-        'time' => object.created_at
-      }
+      { "updated_at" => object.created_at, 
+        "activities" => [{
+          'actor' => @user,
+          'object' => object,
+          'target' => object.try(target.to_sym),
+          'verb' => object.class.to_s,
+          'foreign_id' => "#{object.class.to_s}:#{object.id}",
+          'time' => object.created_at
+        }],
+        "activity_count" => 1,
+        "verb" => verb }
     end
 
-    @activities = @enricher.enrich_activities(results)
+    @activities = @enricher.enrich_aggregated_activities(results)
   end
 
   def artists
