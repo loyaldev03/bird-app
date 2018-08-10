@@ -65,30 +65,26 @@
           <div class="pp-artist"></div>
           <!-- <div class="pp-volume"></div> -->
           <div class="pp-volume-block d-flex">
-            <%= image_tag 'icons/volume1.png', class: "float-left" %>
-
+            <%= image_tag 'icons/volume1.png', class: "float-left mr-2" %>
             <div class="pp-volume">
-              <!-- <button class="jp-mute" role="button" tabindex="4">mute</button> -->
               <div class="pp-volume-bar">
                 <div class="pp-volume-bar-value volume-bar-value"></div>
               </div>
-              <!-- <button class="jp-volume-max" role="button" tabindex="5">max</button> -->
             </div>
           </div>
         </div>
         <div class="col-md-8">
-          <div class="d-flex justify-content-center align-items-center mt-2">
+          <div class="d-flex justify-content-center align-items-center mt-2 mb-2">
             <div class="pp-previous"></div>
             <div class="pp-play"></div>
             <div class="pp-next"></div>
           </div>
-          <div class="d-flex justify-content-center align-items-end">
+          <div class="d-flex justify-content-center align-items-center" style="height: 24px;">
             <div class="pp-current-time"></div>
-            <!-- <div class="pp-playbar"></div> -->
-            <div class="jp-seek-bar" style="width: 150px">
-              <div class="jp-play-bar"></div>
+            <div class="pp-seek-bar">
+              <div class="pp-play-bar"></div>
             </div>
-            <div class="pp-duration"></div>
+            <div class="pp-time-left"></div>
           </div>
         </div> 
         <div class="col-md-2">
@@ -96,7 +92,7 @@
           <div class="pp-add"></div>
           <div class="pp-rate"></div>
           <div class="pp-download"></div>
-          share
+          <div class="pp-share"></div>
         </div>
       </div>
     </div>

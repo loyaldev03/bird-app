@@ -76,7 +76,7 @@
   }
 
   .pp-volume {
-    margin: 2px 0 0 15px;
+    margin-top: 2px;
   }
 
   .pp-volume-bar {
@@ -92,5 +92,26 @@
     background-color: #ff7272;
     height: 8px;
     border-radius: 5px; 
+  }
+
+  .pp-seek-bar {
+    width: 340px;
+    height: 8px;
+    border-radius: 5px;
+    background: white;  
+  }
+
+  .pp-play-bar {
+    width: 0%;
+    height: 8px;
+    border-radius: 5px;
+    background-color: #222;
+  }
+
+  .pp-current-time, .pp-time-left {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 20px;
   }
 }

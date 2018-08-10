@@ -31,7 +31,13 @@ $(document).on('turbolinks:load', () => {
   updatePlayerState();
 
   var draggedBars = [
-    ['.pp-volume-bar','.volume-bar-value','volume']
+    ['.pp-volume-bar','.volume-bar-value','volume'],
+    ['.pp-seek-bar','.pp-play-bar','progress']
   ]
   dragBars(draggedBars);
+
+  timerAndLoadingForAudio(cpAudio);
+
+  $('.pp-track').html($('.jp-details').data('trackTitle'));
+  $('.pp-artist').html($('.jp-details').data('trackArtist'));
 });

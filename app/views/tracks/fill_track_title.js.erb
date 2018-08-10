@@ -32,6 +32,8 @@ $('.jp-details').append(add_release);
 $('.jp-details').append(release_menu);
 $('.jp-details').append(release_img);
 $('.jp-details').append(jp_title);
+$('.jp-details').data('trackTitle', '<%= @track.title %>');
+$('.jp-details').data('trackArtist', '<%= @track.artist %>');
 
 $('.pp-track').html('<%= @track.title %>');
 $('.pp-artist').html('<%= @track.artist %>');
