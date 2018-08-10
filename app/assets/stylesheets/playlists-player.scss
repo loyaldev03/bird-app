@@ -6,6 +6,7 @@
   z-index: 2;
   left: 0;
   bottom: -24px;
+  padding: 15px 25px;
 
   .pp-previous {
     background: asset-data-url("icons/media-backward-md.png");
@@ -39,5 +40,57 @@
     &.playing {
       background: asset-data-url("icons/pause-md.png");
     }
+
+    &.loading {
+      background-image: asset-data-url("icons/loading.gif") !important;
+      background-size: 42px 42px;
+      display: inline-block;
+      content:"";
+    }
+  }
+
+  .pp-track {
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 0.72px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .pp-artist {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.72px;
+    white-space: nowrap;
+
+    &:before {
+      content: 'By ';
+    }
+  }
+
+  .pp-volume-block {
+    position: absolute;
+    bottom: 5px;
+    left: 25px;
+  }
+
+  .pp-volume {
+    margin: 2px 0 0 15px;
+  }
+
+  .pp-volume-bar {
+    background: white;  
+    width: 100px;
+    height: 8px;
+    overflow: hidden;
+    cursor: pointer; 
+    border-radius: 5px;
+  }
+
+  .pp-volume-bar-value {
+    background-color: #ff7272;
+    height: 8px;
+    border-radius: 5px; 
   }
 }

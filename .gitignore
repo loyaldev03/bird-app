@@ -26,4 +26,4 @@ config/application.yml
 public/uploads
 public/assets
 /dirtybird-media
-.dump.rdb
+dump.rdb

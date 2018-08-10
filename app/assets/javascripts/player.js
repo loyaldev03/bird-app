@@ -7,6 +7,14 @@ $(document).on('turbolinks:load', () => {
     playNext();
   });
 
+  $("body").on('click', '.pp-previous', function(){
+    playPrevious();
+  });
+
+  $("body").on('click', '.pp-next', function(){
+    playNext();
+  });
+
   $("body").on('click', "[class^='play-']", function(e){
     e.preventDefault();
     var sourceType = $(this).data('sourceType');
@@ -21,4 +29,9 @@ $(document).on('turbolinks:load', () => {
   });
 
   updatePlayerState();
+
+  var draggedBars = [
+    ['.pp-volume-bar','.volume-bar-value','volume']
+  ]
+  dragBars(draggedBars);
 });

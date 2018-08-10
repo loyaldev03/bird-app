@@ -12,7 +12,6 @@
         <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
         <button class="jp-previous" role="button" tabindex="0"></button>
         <button class="jp-play" role="button" tabindex="1"></button>
-        <%= image_tag 'icons/loading.gif', class: 'track-load' %>
         <button class="jp-next" role="button" tabindex="2"></button>
         <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
 
@@ -22,7 +21,7 @@
           <div class="jp-volume d-none">
             <!-- <button class="jp-mute" role="button" tabindex="4">mute</button> -->
             <div class="jp-volume-bar">
-              <div class="jp-volume-bar-value"></div>
+              <div class="jp-volume-bar-value volume-bar-value"></div>
             </div>
              <!-- <div class="jp-seek-bar" style="width: 150px">
               <div class="jp-play-bar"></div>
@@ -175,7 +174,7 @@
     });
 
     audio.on('ready', function(){
-      // trackLoading(false);
+      trackLoading(false);
     });
   }
 
@@ -230,8 +229,8 @@
     playButton(this);
   });
 
-  $('.jp-audio .jp-previous').click(function(){
-    playPrevious();
+  $(document).on('click', '.pp-play', function(e){
+    playButton($('.jp-audio .jp-play')[0]);
   });
 
   $(document).on('click', '.select-playlist', function(e){
@@ -451,7 +450,7 @@
     changePlayerTitle(playlist[currentTrackIndex]);
 
     cpAudio.on('ready', function(){
-      // trackLoading(false);
+      trackLoading(false);
       
       cpAudio.skip(currentTime);
       $('.jp-current-time').text(secondsToHms(currentTime));
@@ -520,17 +519,17 @@
   }
 
   function trackLoading(state, sourceType, sourceId) {
-    console.log(state);
-    console.log(sourceType);
-    console.log(sourceId);
-    console.log(currentTrackIndex);
-    console.log($(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`));
+    // console.log(state);
+    // console.log(sourceType);
+    // console.log(sourceId);
+    // console.log(currentTrackIndex);
+    // console.log($(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`));
 
     if(state) {
-      $('.track-load').show();
-      $('.jp-audio .jp-play').hide();
       $('.jp-progress-container').addClass('loading');
-      // $(`.jp-playlist-item`).removeClass('loading');
+      $('.jp-play').addClass('loading');
+      $('.pp-play').addClass('loading');
+      $(`.jp-playlist-item`).removeClass('loading');
       $(`.play-${sourceType}-${sourceId}`).addClass('loading');
       $(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`).addClass('loading');
 
@@ -538,62 +537,95 @@
         $(`.play-${sourceType}-${sourceId}-track-${playlist[currentTrackIndex].id}`).addClass('loading');
       }
     } else {
-      $('.track-load').hide();
-      $('.jp-audio .jp-play').show();
       $('.jp-progress-container').removeClass('loading');
+      $('.jp-play').removeClass('loading');
+      $('.pp-play').removeClass('loading');
       $(`[class^='play-']`).removeClass('loading');
     }
   }
 
   var draggedBars = [
-    ['.jp-volume-bar','.jp-volume-bar-value','volume']
+    ['.jp-volume-bar','.volume-bar-value','volume']
   ]
   dragBars(draggedBars);
 
   function dragBars(bars) {
-    var audio = cpAudio;
-    var drag = false;
-    var e = {}, eInner = {}, updateBar = {};
-    document.addEventListener('mouseup',function(ev){
-     drag = false;
-    });
-    bars.forEach(function(bar){
-      document.addEventListener('mousemove',function(ev){
-         if(drag){
-            updateBar[bar[2]](ev.clientX);
-         }
+    setTimeout(function(){
+      var drag = false;
+      var e = {}, eInner = {}, updateBar = {};
+      document.addEventListener('mouseup',function(ev){
+        drag = false;
       });
-      e[bar[2]] = document.querySelector(bar[0]);
-      eInner[bar[2]] = document.querySelector(bar[1]);
-      e[bar[2]].addEventListener('mousedown',function(ev){
-         drag = true;
-         updateBar[bar[2]](ev.clientX);
+      bars.forEach(function(bar){
+        e[bar[2]] = $(bar[0]);
+        eInner[bar[2]] = $(bar[1]);
+        e[bar[2]].each(function(){
+          var self = this;
+          self.addEventListener('mousemove',function(ev){
+            if(drag){
+              updateBar[bar[2]](ev.clientX, self);
+            }
+          });
+          self.addEventListener('mousedown',function(ev){
+            drag = true;
+            updateBar[bar[2]](ev.clientX, self);
+          });
+        });
+
+        updateBar[bar[2]] = function (x, self) {
+          function getOffset(elem) {
+            if (elem.getBoundingClientRect) {
+              return getOffsetRect(elem)
+            } else {
+              return getOffsetSum(elem)
+            }
+
+            function getOffsetSum(elem) {
+              var top=0, left=0
+              while(elem) {
+                top = top + parseFloat(elem.offsetTop)
+                left = left + parseFloat(elem.offsetLeft)
+                elem = elem.offsetParent       
+              }
+              return {top: Math.round(top), left: Math.round(left)}
+            }
+
+            function getOffsetRect(elem) {
+              var box = elem.getBoundingClientRect()
+              var body = document.body
+              var docElem = document.documentElement
+              var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop
+              var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft
+              var clientTop = docElem.clientTop || body.clientTop || 0
+              var clientLeft = docElem.clientLeft || body.clientLeft || 0
+              var top  = box.top +  scrollTop - clientTop
+              var left = box.left + scrollLeft - clientLeft
+              return { top: Math.round(top), left: Math.round(left) }
+            }
+          }
+
+          var position = x - getOffset(self).left;
+          var percentage = 100 * position / self.clientWidth;
+
+          if (percentage > 100) {
+              percentage = 100;
+          }
+          if (percentage < 0) {
+              percentage = 0;
+          }
+
+          eInner[bar[2]].each(function(){
+            this.style.width = percentage +'%';
+          });
+          if(bar[2] == 'volume') {
+            cpAudio.setVolume(percentage / 100);
+          } else if(bar[2] == 'progress') {
+            // audio.currentTime = Math.round(audio.duration * percentage / 100);
+          }
+        };
       });
-      updateBar[bar[2]] = function (x, vol) {
-         var volume = e[bar[2]];
-              var percentage;
-              if (vol) {
-                  percentage = vol * 100;
-              } else {
-                  var position = x - volume.offsetLeft;
-                  percentage = 100 * position / volume.clientWidth;
-              }
+    },500);
 
-              if (percentage > 100) {
-                  percentage = 100;
-              }
-              if (percentage < 0) {
-                  percentage = 0;
-              }
-
-              eInner[bar[2]].style.width = percentage +'%';
-              if(bar[2] == 'volume') {
-                audio.setVolume(percentage / 100);
-              } else if(bar[2] == 'progress') {
-                // audio.currentTime = Math.round(audio.duration * percentage / 100);
-              }
-      };
-    });
   }
 
   function secondsToHms(d) {
@@ -632,9 +664,11 @@
         });
 
     $('.jp-audio .jp-play').removeClass('playing');
+    $('.pp-play').removeClass('playing');
     $("[class^='play-']").removeClass('playing');
     if (cpAudio.isPlaying()) {
       $('.jp-audio .jp-play').addClass('playing');
+      $('.pp-play').addClass('playing');
       $(`.play-${sourceType}-${sourceId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing');

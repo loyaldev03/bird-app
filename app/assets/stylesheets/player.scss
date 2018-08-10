@@ -70,7 +70,7 @@
   }
 
   &.loading {
-    background-image: asset-data-url("icons/loading.gif");
+    background-image: asset-data-url("icons/loading.gif") !important;
   }
 }
 
@@ -110,7 +110,7 @@
 }
 
 .jp-volume-bar {
-  background: gray 0px -300px repeat-x;  
+  background: gray;  
   width: 100px;
   height: 10px;
   overflow: hidden;
@@ -118,7 +118,7 @@
 }
 
 .jp-volume-bar-value {
-  background: #e75e35 0px -320px repeat-x;
+  background: #e75e35;
   height: 10px; 
 }
 
@@ -182,13 +182,6 @@
 
 .jp-play.playing:hover {
   background-image: asset-data-url("icons/media-pause-hover.svg");
-}
-
-.track-load {
-  width: 10px;
-  height: 10px;
-  display: none;
-  margin: 0 5px;
 }
 
 .credits-menu {
