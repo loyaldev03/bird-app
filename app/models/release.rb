@@ -142,6 +142,18 @@ class Release < ApplicationRecord
     steps
   end
 
+  def artists
+    if artist_as_string && artist.present?
+      artist
+    elsif users.any?
+      users.map(&:name).join(' & ')
+    elsif artist.present?
+      artist
+    else
+      'Various Artists'
+    end
+  end
+
   private
 
     def add_to_general_feed
