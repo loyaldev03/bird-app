@@ -458,7 +458,9 @@
       
       cpAudio.skip(currentTime);
       $('.jp-current-time').text(secondsToHms(currentTime));
+      $('.pp-current-time').text(secondsToHms(currentTime));
       $('.jp-duration').text(secondsToHms(cpAudio.getDuration()));
+      $('.pp-time-left').text('-' + secondsToHms(cpAudio.getDuration()));
       $(`[data-track=${playlist[currentTrackIndex].id}]`)
           .siblings('.jp-duration-track')
           .text(secondsToHms(cpAudio.getDuration()));

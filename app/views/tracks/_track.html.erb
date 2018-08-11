@@ -51,28 +51,6 @@
     <%= track.average('main').try(:avg).try(:round,1) %>
   </div>
 
-  <% if track.user_allowed?(current_user) %>
-    <button class="icon-download" type="button" data-toggle="collapse" data-target="#download-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample">
-      <%= image_tag('icons/icon-download.svg') %>
-    </button>
-  <% end %>
-  <div id="download-<%= track.id %>" class="collapse collapse-formats">
-      <% track.download_uris.each do |format, uri| %>
-        <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
-      <% end %>
-  </div>
-
-
-
-  <button class="icon-share" type="button" data-toggle="collapse" data-target="#track<%= track.id %>-share" aria-expanded="false" aria-controls="collapseExample">
-    <%= image_tag('icons/icon-share.svg', title: "Share") %>
-  </button>
-
-  <div id="track<%= track.id %>-share" class="collapse share-panel" style="top: -11px;">
-    <h5 class="mx-3 my-2">Share</h5>
-    <div class="mx-3 mb-3" data-object-type="release" data-object-id="<%= track.release.id %>" data-object-subtype="track" data-object-subid="<%= track.id %>">
-      <%= social_share_button_tag(strip_tags(track.release.title).gsub("\'",''), desc: strip_tags(track.release.text).gsub("\'",''), image: image) %>
-    </div>
-  </div>
-
+  <%= render partial: 'tracks/download', locals: { track: track, icon: 'white' } %>
+  <%= render partial: 'tracks/share', locals: { track: track } %>
 </div>

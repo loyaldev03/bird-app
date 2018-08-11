@@ -77,16 +77,7 @@
         <%= track.average('main').try(:avg).try(:round,1) %>
       </td>
       <td style="position: relative;">
-        <% if track.user_allowed?(current_user) %>
-          <button class="playlist-download-track" type="button" data-toggle="collapse" data-target="#download-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample">
-            <%= image_tag('icons/icon-download.png') %>
-          </button>
-        <% end %>
-        <div id="download-<%= track.id %>" class="collapse collapse-formats">
-            <% track.download_uris.each do |format, uri| %>
-              <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
-            <% end %>
-        </div>
+        <%= render partial: 'tracks/download', locals: { track: track, icon: 'gray' } %>
       </td>
     </tr>
   <% end %>

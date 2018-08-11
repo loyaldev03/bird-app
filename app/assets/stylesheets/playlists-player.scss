@@ -114,4 +114,29 @@
     font-weight: 700;
     margin: 0 20px;
   }
+
+  .pp-like {
+    position: absolute;
+    display: inline-block;
+    bottom: 9px;
+    left: -23px;
+  }
+
+  .pp-add {
+    position: absolute;
+    bottom: 10px;
+    left: -13px;
+
+    button {
+      color: white;
+      font-weight: 700;
+      font-size: 21px;
+    }
+  }
+
+  .pp-rate {
+    position: absolute;
+    bottom: 16px;
+    left: 7px;
+  }
 }
