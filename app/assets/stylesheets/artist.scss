@@ -34,6 +34,7 @@
   height: 182px;
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.42);
 
   img {
     object-fit: cover;
@@ -85,18 +86,11 @@
 }
 
 .artist-name {
-  position: absolute;
-  z-index: 2;
-  top: 105px;
-  left: 20px;
   color: white;
+  margin-left: 15px;
 
   h1 {
-    font-size: 20px;
-    font-weight: normal;
-    letter-spacing: 2px;
-    margin-bottom: 0;
-    line-height: 12px;
+    font-weight: 900 !important;
   }
 
   span {
@@ -106,8 +100,10 @@
 }
 
 .artist-social {
-  float: right;
-  margin-right: 16px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .artist-bio {
@@ -116,6 +112,8 @@
   margin: 0 auto;
   font-size: 12px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 
   a {
     color: #222;

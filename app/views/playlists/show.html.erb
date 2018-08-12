@@ -1,19 +1,23 @@
-<%= render 'users/user_header_music' %>
+<% if @user.has_role? :artist %>
+  <%= render 'users/artist_header' %>
+<% else %>
+  <%= render 'users/user_header' %>
+<% end %>
 
-<div class="row">
+<div class="row mt-4">
   <div class="col-lg-3">
     <div class="playlist-nav">
-      <div class="playlist-nav-header">
-        <div class="user-nav">
-            <div class="c-btn-group">
-              <%= link_to "Feed", @user, class: "btn btn-wide c-btn-blue" %><!--
-           --><%= link_to "Music", playlist_path(@user), 
+      <!-- <div class="playlist-nav-header"> -->
+        <!-- <div class="user-nav"> -->
+            <!-- <div class="c-btn-group"> -->
+              <%#= link_to "Feed", @user, class: "btn btn-wide c-btn-blue" %><!--
+           --><%#= link_to "Music", playlist_path(@user), 
                   class: "btn btn-wide c-btn-black btn-disabled" %>
-            </div>
-        </div>
+            <!-- </div> -->
+        <!-- </div> -->
 
         <%#= image_tag 'player1.png' %>
-      </div>
+      <!-- </div> -->
 
       <div class="playlist-nav-body">
         <ul>
@@ -32,7 +36,11 @@
                 remote: true %>
           </li>
           <li class="playlist-nav-subheader">Library&nbsp;</li>
-          <li>Your Playlists</li>
+          <li class="active">
+            <%= link_to "User Playlists", playlist_path(@user.id), 
+                id: "playlist-user", 
+                remote: true %>
+          </li>
           <li>
             <%= link_to "Favorited Releases", releases_path(filters: { liked: true }), 
                 id: "playlist-liked-releases", 
@@ -56,7 +64,9 @@
   </div>
 
   <div class="col-lg-9">
-    <div class="music-block"></div>
+    <div class="music-block">
+      <%= render partial: 'playlists/list', locals: { playlists: @playlists } %>
+    </div>
     <div class="playlist-player">
       <div class="release-details-btn"></div>
       <div class="row h-100">
@@ -65,7 +75,7 @@
           <div class="pp-artist"></div>
           <!-- <div class="pp-volume"></div> -->
           <div class="pp-volume-block d-flex">
-            <%= image_tag 'icons/volume1.png', class: "float-left mr-2" %>
+            <%= image_tag 'icons/volume1.svg', class: "float-left mr-2" %>
             <div class="pp-volume">
               <div class="pp-volume-bar">
                 <div class="pp-volume-bar-value volume-bar-value"></div>

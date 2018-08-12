@@ -5,7 +5,7 @@ class PlaylistsController < ApplicationController
 
   def show
     @user = User.find params[:id]
-    @playlists = current_user.playlists
+    @playlists = @user.playlists
   end
 
   def get

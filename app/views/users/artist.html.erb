@@ -1,10 +1,18 @@
 <%= render 'users/artist_header' %>
 
+<div class="artist-bio truncated-description mb-4">
+  <% if @user.artist_info.present? && @user.artist_info.bio_short? %>
+    <article><%= @user.artist_info.bio_short %></article>
+    <a href="#" class="truncated-long">Read more</a>
+    <article><%= @user.artist_info.bio_long.html_safe %></article>
+    <a href="#" class="truncated-short"><br><br>Read less</a>
+  <% end %>
+</div>
+
+<!--
 <% if @releases.any? %>
   <div class="release-flag-block mt-4">
     <div class="c-flag">RELEASES FEED</div>
-    <%= link_to "TRACKS", artist_tracks_path(@user), class: "btn c-btn-blue btn-wide" %>
-    <%= link_to "RELEASES", artist_releases_path(@user), class: "btn c-btn-blue btn-wide" %>
   </div>
 
   <div class="h-carousel mb-4">
@@ -82,6 +90,7 @@
     <% end %>
   </div>
 <% end %>
+-->
 
 <div class="row mb-2">
   <!-- ARTIST FEED -->

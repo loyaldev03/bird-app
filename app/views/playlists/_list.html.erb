@@ -1,0 +1,20 @@
+<div class="row mt-4">
+  <% for playlist in playlists %>
+      <div class="col-lg-4 col-lmd-6 text-center mb-4">
+        <%= link_to playlist_get_path(playlist), remote: true do %>
+          <%= render 'tracks/covers', object: playlist.tracks %>
+        <% end %>
+        <%  %>
+        <div class="playlists-caption mt-3">
+          <h3>
+            <%= link_to playlist_get_path(playlist), remote: true do %>
+              <%= playlist.name %>
+            <% end %>
+          </h3>
+          <strong>Created by:</strong> <%= playlist.user.name %>
+          <br>
+          On: <%= playlist.updated_at.strftime('%D') %>
+        </div>
+      </div>
+  <% end %>
+</div>

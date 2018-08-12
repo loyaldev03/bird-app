@@ -1,0 +1,6 @@
+$('.music-block').html(`
+    <%= escape_javascript(
+        render partial: 'playlists/list', 
+               locals: { playlists: @playlists }) %>`);
+$(".playlist-nav-body li").removeClass('active');
+$('#playlist-user').parent('li').addClass('active');

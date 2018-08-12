@@ -1,7 +1,9 @@
 <% releases_ids = object.map(&:release_id).uniq %>
 
 <div class="playlist-covers">
-  <% if releases_ids.count == 1 %>
+  <% if releases_ids.count == 0 %>
+    <%= image_tag '/images/default_release.png', class: 'w-100' %>
+  <% elsif releases_ids.count == 1 %>
     <%= image_tag object.first.release.avatar.url, class: "w-100" %>
   <% elsif releases_ids.count == 2 %>
 

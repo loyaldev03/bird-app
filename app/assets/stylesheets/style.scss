@@ -148,6 +148,9 @@ strong {
 
 .c-btn-group {
   .btn {
+
+    border-radius: 0;
+    border-right: 1px solid gray;
     
     &:first-child {
       border-radius: 6px 0 0 6px;
@@ -155,8 +158,14 @@ strong {
 
     &:last-child {
       border-radius: 0 6px 6px 0;
+      border-right: none;
     }
   }
+}
+
+.link-black-text a {
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 .t-small {
