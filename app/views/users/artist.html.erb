@@ -18,12 +18,7 @@
   <div class="h-carousel mb-4">
     <% @releases.each do |release| %>
       <div class="item-wide">
-        <% if release.image_uri.present?
-             image = release.image_uri
-           else
-             image = release.avatar.url
-           end %>
-        <%= link_to image_tag(image), release, class: "item-avatar" %>
+        <%= link_to image_tag(release.avatar.url), release, class: "item-avatar" %>
 
         <div class="item-body">
           <%= link_to image_tag('icons/icon-expand.svg'), release, class: "item-expand" %>
@@ -74,17 +69,7 @@
             </div>
           <% end %>
 
-          <button class="icon-share" type="button" data-toggle="collapse" data-target="#release<%= release.id %>-share" aria-expanded="false" aria-controls="collapseExample">
-            <%= image_tag('icons/icon-share.svg', title: "Share") %>
-          </button>
-
-          <div id="release<%= release.id %>-share" class="collapse share-panel" style="bottom: 36px;">
-            <h5 class="mx-3 my-2">Share</h5>
-            <div class="mx-3 mb-3" data-object-type="release" data-object-id="<%= release.id %>">
-              <%= social_share_button_tag(strip_tags(release.title).gsub("\'",''), desc: strip_tags(release.text).gsub("\'",''), image: image) %>
-            </div>
-          </div>
-
+          <%= render partial: 'layouts/share', locals: { object: release, icon: 'white' } %>
         </div>
       </div>
     <% end %>
@@ -104,7 +89,7 @@
         </button>
       <% end %>
 
- <!--      <ul class="feed-tabs">
+ <!--      <ul class="feed-tabs"> //TODO add this
         <li class="nav-item">
           <%#= link_to "All", artist_path(@user, anchor: "user-feed"),
               class: "#{'active' if current_page?(artist_path(@user))}" %>
@@ -239,5 +224,3 @@
     </div>
   <% end %>
 <% end %>
-
-

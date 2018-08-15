@@ -1,13 +1,13 @@
-<div class="user-music-present artist-music-present">
+<div class="user-music-present">
   <% if current_user && current_user.id == @user.id %>
     <%= form_for(@user, remote: true,
-        html: { id: 'change-avatar', class: 'userpage-avatar mt-4', method: :put } ) do |f| %>
+        html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
       <%= image_tag @user.avatar.big_thumb %>
       <%= f.file_field :avatar, class: 'form-control-file' %>
       <%= f.hidden_field :avatar_cache %>
     <% end %>
   <% else %>
-    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar mt-4") %>
+    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") %>
   <% end %>
 
   <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
@@ -38,6 +38,24 @@
       DIRTYBIRD ARTIST<br>
       <span>Since <%= @user.created_at.strftime("%Y") %></span>
     </div>
+    
+    <% if @user.artist_info %>
+      <div class="artist-stat">
+        <% if @user.releases.count > 0 %>
+          <div>
+            Releases<br>
+            <span><%= @user.releases.count %></span>
+          </div>
+        <% end %>
+
+        <% if @user.artist_info.tracks_count.to_i > 0 %>
+          <div>
+            Tracks<br>
+            <span><%= @user.artist_info.tracks_count %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
 

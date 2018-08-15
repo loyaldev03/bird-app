@@ -9,48 +9,24 @@
 
     <% releases_ids[0..1].each do |release_id| %>
       <% release = Release.find(release_id) %>
-      <% if release.image_uri.present?
-           image = release.image_uri
-         else
-           image = release.avatar.url
-         end %>
-
-      <%= image_tag image, style: "width: 160px; height: 80px; object-fit: cover;" %>
+      <%= image_tag release.avatar.url, style: "width: 160px; height: 80px; object-fit: cover;" %>
     <% end %>
 
   <% elsif releases_ids.count == 3 %>
 
     <% release = Release.find(releases_ids[2]) %>
-    <% if release.image_uri.present?
-         image = release.image_uri
-       else
-         image = release.avatar.url
-       end %>
-
-    <%= image_tag image, style: "width: 160px; height: 80px; object-fit: cover;" %>
+    <%= image_tag release.avatar.url, style: "width: 160px; height: 80px; object-fit: cover;" %>
 
     <% releases_ids[0..1].each do |release_id| %>
       <% release = Release.find(release_id) %>
-      <% if release.image_uri.present?
-           image = release.image_uri
-         else
-           image = release.avatar.url
-         end %>
-
-      <%= image_tag image, style: "width: 80px; height: 80px; object-fit: cover; float: left;" %>
+      <%= image_tag release.avatar.url, style: "width: 80px; height: 80px; object-fit: cover; float: left;" %>
     <% end %>
 
   <% else %>
 
     <% releases_ids[0..3].each do |release_id| %>
       <% release = Release.find(release_id) %>
-      <% if release.image_uri.present?
-           image = release.image_uri
-         else
-           image = release.avatar.url
-         end %>
-
-      <%= image_tag image, style: "width: 80px; height: 80px; object-fit: cover; float: left;" %>
+      <%= image_tag release.avatar.url, style: "width: 80px; height: 80px; object-fit: cover; float: left;" %>
     <% end %>
 
   <% end %>

@@ -16,7 +16,6 @@ $(document).on('turbolinks:load', () => {
   });
 
   $("body").on('click', "[class^='play-']", function(e){
-    e.preventDefault();
     var sourceType = $(this).data('sourceType');
     var sourceId = $(this).data('sourceId');
     
@@ -26,6 +25,7 @@ $(document).on('turbolinks:load', () => {
     }
 
     playButton(this);
+    return false;
   });
 
   updatePlayerState();
@@ -38,6 +38,11 @@ $(document).on('turbolinks:load', () => {
 
   timerAndLoadingForAudio(cpAudio);
 
-  $('.pp-track').html($('.jp-details').data('trackTitle'));
-  $('.pp-artist').html($('.jp-details').data('trackArtist'));
+  if ($('.playlist-player').length > 0 && $('.jp-audio .jp-play').data('trackId') ) {
+    $.ajax({
+      url: '/fill_bottom_player',
+      dataType: 'script',
+      data: { track_id: $('.jp-audio .jp-play').data('trackId') }
+    });
+  }
 });

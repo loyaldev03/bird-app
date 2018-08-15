@@ -670,13 +670,16 @@
 
     $('.jp-audio .jp-play').removeClass('playing');
     $('.pp-play').removeClass('playing');
-    $("[class^='play-']").removeClass('playing');
+    $("[class^='play-']").removeClass('playing')
+          .parent('td').parent('tr').removeClass('playing');
     if (cpAudio.isPlaying()) {
       $('.jp-audio .jp-play').addClass('playing');
       $('.pp-play').addClass('playing');
       $(`.play-${sourceType}-${sourceId}`).addClass('playing');
-      $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing');
-      $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing');
+      $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing')
+          .parent('td').parent('tr').addClass('playing');
+      $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing')
+          .parent('td').parent('tr').addClass('playing');
     }
 
     $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');

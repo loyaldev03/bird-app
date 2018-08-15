@@ -6,6 +6,7 @@
                 virtual: true
               }, 
               class: "play-#{source_type}-#{source_id} playlist-play-playlist",
+              style: "width: 130px;",
               remote: true %>
 
   <%= render 'tracks/covers', object: tracks %>
@@ -16,7 +17,8 @@
     </div>
 
     <div class="playlist-owner">
-      <%= @playlist.user.name %>
+      <%= link_to image_tag(@playlist.user.avatar.thumb, class: "user-avatar"), @playlist.user %>
+      By <%= link_to @playlist.user.name, @playlist.user %>
     </div>
   <% end %>
 </div>
@@ -30,17 +32,17 @@
     <th>Rate</th>
     <th></th>
   </tr>
-  <% for _track in tracks %>
+  <% tracks.each_with_index do |_track, i| %>
     <% track = TrackPresenter.new(_track, current_user) %>
     <tr class='playlist-item'>
       <td style="white-space: nowrap;">
         <% if @playlist.present? %>
           <%= link_to "", "#", 
-              class: "play-#{source_type}-#{source_id}-index-#{tracks.map(&:id).index(track.id)} playlist-play-track",
+              class: "play-#{source_type}-#{source_id}-index-#{i} playlist-play-track",
               data: { 
                 source_type: source_type, 
                 source_id: source_id, 
-                track_index: tracks.map(&:id).index(track.id),
+                track_index: i,
                 virtual: true
               },
               remote: true %>
@@ -50,7 +52,7 @@
               data: { 
                 source_type: source_type, 
                 source_id: source_id, 
-                track_index: tracks.map(&:id).index(track.id),
+                track_index: i,
                 track_id: track.id,
                 virtual: true
               },
@@ -63,7 +65,7 @@
       <td><%= track.artists %></td>
       <td>
         <%= link_to track.release, class: "release-link" do %>
-        <%= track.release.title %>
+        <%= image_tag track.release.avatar.url %>
         <%= track.release.title %>
         <% end %>
       </td>
@@ -77,7 +79,7 @@
         <%= track.average('main').try(:avg).try(:round,1) %>
       </td>
       <td style="position: relative;">
-        <%= render partial: 'tracks/download', locals: { track: track, icon: 'gray' } %>
+        <%= render partial: 'tracks/download', locals: { track: track, icon: 'black' } %>
       </td>
     </tr>
   <% end %>

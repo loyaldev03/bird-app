@@ -1,11 +1,5 @@
-<% if track.release.image_uri.present?
-     image = track.release.image_uri
-   else
-     image = track.release.avatar.url
-   end %>
-
 <div class="track-item w-md-50">
-  <%= link_to image_tag(image), track.release, class: "item-avatar" %>
+  <%= link_to image_tag(track.release.avatar.url), track.release, class: "item-avatar" %>
   <h3>
     <%= track.track_number %>.
     <%= track.title.truncate(70).upcase %>
@@ -16,7 +10,6 @@
   <% if track.artist_as_string && track.artist.present? %>
     <%= track.artist %>
   <% elsif track.users.any? %>
-    <%# artists = track.users.map(&:name).join(' feat. ') %>
     <% track.users.each do |u| %>
       <%= link_to u.name, u %>
     <% end %>
@@ -52,5 +45,5 @@
   </div>
 
   <%= render partial: 'tracks/download', locals: { track: track, icon: 'white' } %>
-  <%= render partial: 'tracks/share', locals: { track: track } %>
+  <%= render partial: 'layouts/share', locals: { object: track, icon: 'white' } %>
 </div>

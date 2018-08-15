@@ -51,3 +51,14 @@
     <%= render 'follows/follow_button', object: @user %>
   </div>
 </div>
+
+<div class="user-controls mb-4">
+  <div class="c-btn-group d-inline-block mr-4" style="padding-left: 220px;">
+    <% artist = current_page?(user_path(@user)) || current_page?(admin_path(@user)) %>
+    <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
+    <%= link_to "Feed", @user, 
+        class: artist ? classes[1] : classes[0] %><!--
+   --><%= link_to "Music", playlist_path(@user), 
+        class: artist ? classes[0] : classes[1] %>
+  </div>
+</div>

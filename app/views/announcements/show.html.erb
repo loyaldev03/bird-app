@@ -1,12 +1,5 @@
 <div class="release-present">
-  <% if @announcement.avatar.present?
-       image = @announcement.avatar.url
-     elsif @announcement.image_uri.present?
-       image = @announcement.image_uri
-     else
-       image = @announcement.avatar.url
-     end %>
-  <%= image_tag(image, class: "release-avatar left-avatar") if image %>
+  <%= image_tag(@announcement.avatar.url, class: "release-avatar left-avatar") %>
   
   <div class="release-bgrd bg-green">
     <%#= image_tag 'dj.jpg' %>
@@ -22,16 +15,7 @@
         <%= render partial: 'likes/like_button', locals: { object: @announcement,  style: 'release' } %>
       </div>
 
-      <button class="release-icon" type="button" data-toggle="collapse" data-target="#release-share" aria-expanded="false" aria-controls="collapseExample">
-        <%= image_tag('icons/icon-share.svg', title: "Share") %>
-      </button>
-
-      <div id="release-share" class="collapse share-panel">
-        <h5 class="mx-3 my-2">Share</h5>
-        <div class="mx-3 mb-3" data-object-type="announcement" data-object-id="<%= @announcement.id %>">
-          <%= social_share_button_tag(strip_tags(@announcement.title).gsub("\'",''), desc: strip_tags(@announcement.text).gsub("\'",''), img: image) %>
-        </div>
-      </div>
+      <%= render partial: 'layouts/share', locals: { object: @announcement, icon: 'white' } %>
     </div>
   </div>
 </div>

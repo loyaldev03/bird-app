@@ -1,9 +1,3 @@
-<% if @release.image_uri.present?
-     image = @release.image_uri
-   else
-     image = @release.avatar.url
-   end %>
-
 var release_menu; 
 
 <% if current_user && (current_user.cahced_active_subscription? || 
@@ -22,12 +16,12 @@ var jp_title = `
       <%= "#{@track.title} - #{@track.artists}" %>
     <% end %>
   </div>`;
-var release_img = '<%= link_to image_tag(image, style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>&nbsp;';
+var release_img = '<%= link_to image_tag(@release.avatar.url, style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>&nbsp;';
 var add_release = '<button class="playlist-add-source" data-source-type="release" data-source-id="<%= @release.id %>">+</button>';
 var like = '<%= escape_javascript( render "likes/like_button", object: @track )%>';
 var rate = '<%= escape_javascript( rating_for( @track, "main", star: 4, cancel: true, disable_after_rate: false, star_path: "/images/rate/egg")) %>&nbsp;<%= @track.average("main").try(:avg).try(:round,1) %>';
 var download = "<%= escape_javascript( render partial: 'tracks/download', locals: { track: @track, icon: 'white' } )%>";
-var share = "<%= escape_javascript( render partial: 'tracks/share', locals: { track: @track } )%>";
+var share = "<%= escape_javascript( render partial: 'layouts/share', locals: { object: @track, icon: 'white' } )%>";
 
 $('.jp-details').html('');
 $('.jp-details').append(like);
@@ -35,11 +29,11 @@ $('.jp-details').append(add_release);
 $('.jp-details').append(release_menu);
 $('.jp-details').append(release_img);
 $('.jp-details').append(jp_title);
-$('.jp-details').data('trackTitle', '<%= @track.title %>');
-$('.jp-details').data('trackArtist', '<%= @track.artist %>');
+// $('.jp-details').data('trackTitle', '<%#= @track.title %>');
+// $('.jp-details').data('trackArtist', '<%#= @track.artists %>');
 
 $('.pp-track').html('<%= @track.title %>');
-$('.pp-artist').html('<%= @track.artist %>');
+$('.pp-artist').html('<%= @track.artists %>');
 $('.pp-like').html(like);
 $('.pp-add .playlist-add-track').data('trackId', '<%= @track.id %>');
 $('.pp-rate').html(rate);
@@ -56,7 +50,7 @@ $('.pp-share').html(share);
 var list = `
   <div class="clearfix">
     <%= link_to @release do %>
-      <%= image_tag image, class: "jp-release-image" %>
+      <%= image_tag @release.avatar.url, class: "jp-release-image" %>
       <h4><%= @release.title.upcase %></h4>
     <% end %>
     <p class="release-date">Release date: <%= @release.release_date.strftime('%Y-%m-%d')  %></p>

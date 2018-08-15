@@ -53,6 +53,11 @@ class TracksController < ApplicationController
     @release = ReleasePresenter.new(track.release, current_user)
   end
 
+  def fill_bottom_player
+    track = Track.find(params[:track_id])
+    @track = TrackPresenter.new(track, current_user)
+  end
+
   def download
     @track = Track.find(params[:id])
 

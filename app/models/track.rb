@@ -211,6 +211,10 @@ class Track < ApplicationRecord
     end
   end
 
+  def avatar
+    release.avatar
+  end
+
   private
 
     def step_name

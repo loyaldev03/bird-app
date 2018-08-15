@@ -8,23 +8,17 @@
   <% else bg_color = style %>
 <% end %>
 
-<% if release.image_uri.present?
-     image = release.image_uri
-   else
-     image = release.avatar.url
-   end %>
-
 <div class="feed-release p-2" style="background-color: <%= bg_color %>; color: <%= text_color %>">
 
   <div class="d-flex">
     <% if release.class.to_s == "Announcement" && release.url.present? %>
       <%= link_to release.url do %>
-        <%= image_tag(image, class: 'feed-new-avatar', 
+        <%= image_tag(release.avatar.url, class: 'feed-new-avatar', 
             style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
       <% end %>
     <% else %>
       <%= link_to release do %>
-        <%= image_tag(image, class: 'feed-new-avatar', 
+        <%= image_tag(release.avatar.url, class: 'feed-new-avatar', 
             style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
       <% end %>
     <% end %>
@@ -72,16 +66,7 @@
         </div>
       <% end %>
 
-      <button class="icon-share" type="button" data-toggle="collapse" data-target="#f-release<%= release.id %>-share" aria-expanded="false" aria-controls="collapseExample">
-        <%= image_tag('icons/icon-share.svg', title: "Share") %>
-      </button>
-
-      <div id="f-release<%= release.id %>-share" class="collapse share-panel" style="bottom: 36px;">
-        <h5 class="mx-3 my-2">Share</h5>
-        <div class="mx-3 mb-3" data-object-type="release" data-object-id="<%= release.id %>">
-          <%= social_share_button_tag(strip_tags(release.title).gsub("\'",''), desc: strip_tags(release.text).gsub("\'",''), image: image) %>
-        </div>
-      </div>
+      <%= render partial: 'layouts/share', locals: { object: release, icon: 'white' } %>
 
       <% if release.class.to_s == "Release" %>
         <div class="feed-new-artists">
