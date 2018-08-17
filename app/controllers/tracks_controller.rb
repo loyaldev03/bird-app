@@ -48,9 +48,11 @@ class TracksController < ApplicationController
   end
 
   def fill_track_title
-    track = Track.find(params[:track_id])
-    @track = TrackPresenter.new(track, current_user)
-    @release = ReleasePresenter.new(track.release, current_user)
+    if current_user
+      track = Track.find(params[:track_id])
+      @track = TrackPresenter.new(track, current_user)
+      @release = ReleasePresenter.new(track.release, current_user)
+    end
   end
 
   def download

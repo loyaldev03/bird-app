@@ -1,116 +1,118 @@
-<% if @release.image_uri.present?
-     image = @release.image_uri
-   else
-     image = @release.avatar.url
-   end %>
+<% if current_user %>
+  <% if @release.image_uri.present?
+       image = @release.image_uri
+     else
+       image = @release.avatar.url
+     end %>
 
-var release_menu; 
+  var release_menu; 
 
-<% if current_user && (current_user.cahced_active_subscription? || 
-      current_user.has_role?(:admin) ||
-      current_user.has_role?(:artist) ) %>
-  release_menu = `<button id="jp-release-playlist-btn" style="display: none;">
-                        <%= image_tag 'icons/icon-chevron.png' %>
-                      </button>`;
+  <% if current_user && (current_user.cahced_active_subscription? || 
+        current_user.has_role?(:admin) ||
+        current_user.has_role?(:artist) ) %>
+    release_menu = `<button id="jp-release-playlist-btn" style="display: none;">
+                          <%= image_tag 'icons/icon-chevron.png' %>
+                        </button>`;
 
+  <% end %>
+
+  var jp_title = `
+    <div class="jp-title" aria-label="title">
+      <%= link_to @release do %>
+        <%= '%02i' % @track.track_number %>
+        <%= "#{@track.title} - #{@track.artists}" %>
+      <% end %>
+    </div>`;
+  var release_img = '<%= link_to image_tag(image, style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>';
+  var add_release = '<button class="playlist-add-source" data-source-type="release" data-source-id="<%= @release.id %>">+</button>';
+  var like = '<%= escape_javascript( render "likes/like_button", object: @track )%>';
+  var user_rate_track = '<div class="rate-track-btn">Rate Track</div>';
+  var user_rate_mark = '<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />You rated it <%= get_user_rate_for_track @track %></div>'
+  var rate_track = user_rate_track;
+  <% if get_user_rate_for_track(@track) != 0 %>
+    rate_track = user_rate_mark;
+  <% end %>
+  var rate = '<div class="nav-rate-track-wrapper" data-track-id="<%=@track.id%>">'  + 
+    '<div class="nav-track-star">' + 
+      '<%= @track.average("main").try(:avg).try(:round,1) %><%= escape_javascript( rating_for( @track, "main", star: 4, cancel: true, disable_after_rate: false, star_path: "/images/rate/egg")) %>' + 
+    '</div>' +
+    '<div class="user-rate-wrapper"  data-track-id="<%=@track.id%>">' + rate_track + '</div>' +  
+  '</div>'; 
+  var rate_track_modal = '<%= escape_javascript( render "tracks/rate_track_modal", track: @track, release: @release, image: image, current_user: current_user)%>';
+  var download = "<%= escape_javascript( render partial: 'tracks/download', locals: { track: @track, icon: 'white' } )%>";
+  var share = "<%= escape_javascript( render partial: 'tracks/share', locals: { track: @track } )%>";
+
+  $('.jp-details').html('');
+  $('.jp-details').append(like);
+  $('.jp-details').append(add_release);
+  $('.jp-details').append(release_menu);
+  $('.jp-details').append(release_img);
+  $('.jp-details').append(jp_title);
+  $('.jp-details').data('trackTitle', '<%= @track.title %>');
+  $('.jp-details').data('trackArtist', '<%= @track.artist %>');
+
+  $('.pp-track').html('<%= @track.title %>');
+  $('.pp-artist').html('<%= @track.artist %>');
+  $('.pp-like').html(like);
+  $('.pp-add .playlist-add-track').data('trackId', '<%= @track.id %>');
+  $('.pp-rate').html(rate);
+  $('.pp-rate').children('.star').each(ratyRate);
+  $('.pp-download').html(download);
+  $('.pp-share').html(share);
+
+  <% unless current_user && current_user.has_role?(:artist) %>
+    $('.jp-title').after('&nbsp;' + rate + rate_track_modal);
+
+    $('.nav-track-star').children('.star').each(ratyRate);
+    $('.rate-track-modal .modal-body').children('.star').each(ratyRate);
+  <% end %>
+
+  $('.user-rate-wrapper').on('click', function(event) {
+    $('.rate-track-modal[data-track-id="'+ $(this).data('track-id') + '"]').modal('show');
+  })
+  $('.rating-submit').on('click', function(event){
+    $('.rate-track-modal').modal('hide');
+  })
+
+  var list = `
+    <div class="clearfix">
+      <%= link_to @release do %>
+        <%= image_tag image, class: "jp-release-image" %>
+        <h4><%= @release.title.upcase %></h4>
+      <% end %>
+      <p class="release-date">Release date: <%= @release.release_date.strftime('%Y-%m-%d')  %></p>
+    </div>
+
+    <hr class="mt-1 mb-2">
+
+    <ul>
+      <% for track in @release.tracks %>
+        <li style="position: relative;">
+          <button type="button" data-toggle="collapse" data-target="#jp-release-popover-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample" class="jp-release-btn">
+            <span>+</span>
+          </button>
+
+          <%= link_to "#{'%02i' % track.track_number} #{track.title}", "#", 
+              class: "play-release-#{@release.id}-track-#{track.id}",
+              data: { 
+                source_type: 'release', 
+                source_id: @release.id, 
+                track_index: @release.tracks.map(&:id).index(track.id),
+                track_id: track.id,
+                virtual: true
+              },
+              remote: true %>
+
+          <div id="jp-release-popover-<%= track.id %>" class="collapse release-popover-collapse">
+            <%= link_to "Add to Playlist", "#", class: "playlist-add-track", data: { track_id: track.id } %>
+            <br>
+            <%= link_to "Create Playlist", "#", class: "jp-release-new", data: { track_id: track.id } %>
+          </div>
+        </li>
+      <% end %>
+    </ul>`;
+
+  $('.jp-release-playlist').html(list);
+
+  $('#jp-release-playlist-btn').show();
 <% end %>
-
-var jp_title = `
-  <div class="jp-title" aria-label="title">
-    <%= link_to @release do %>
-      <%= '%02i' % @track.track_number %>
-      <%= "#{@track.title} - #{@track.artists}" %>
-    <% end %>
-  </div>`;
-var release_img = '<%= link_to image_tag(image, style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>';
-var add_release = '<button class="playlist-add-source" data-source-type="release" data-source-id="<%= @release.id %>">+</button>';
-var like = '<%= escape_javascript( render "likes/like_button", object: @track )%>';
-var user_rate_track = '<div class="rate-track-btn">Rate Track</div>';
-var user_rate_mark = '<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />You rated it <%= get_user_rate_for_track @track %></div>'
-var rate_track = user_rate_track;
-<% if get_user_rate_for_track(@track) != 0 %>
-  rate_track = user_rate_mark;
-<% end %>
-var rate = '<div class="nav-rate-track-wrapper" data-track-id="<%=@track.id%>">'  + 
-  '<div class="nav-track-star">' + 
-    '<%= @track.average("main").try(:avg).try(:round,1) %><%= escape_javascript( rating_for( @track, "main", star: 4, cancel: true, disable_after_rate: false, star_path: "/images/rate/egg")) %>' + 
-  '</div>' +
-  '<div class="user-rate-wrapper"  data-track-id="<%=@track.id%>">' + rate_track + '</div>' +  
-'</div>'; 
-var rate_track_modal = '<%= escape_javascript( render "tracks/rate_track_modal", track: @track, release: @release, image: image, current_user: current_user)%>';
-var download = "<%= escape_javascript( render partial: 'tracks/download', locals: { track: @track, icon: 'white' } )%>";
-var share = "<%= escape_javascript( render partial: 'tracks/share', locals: { track: @track } )%>";
-
-$('.jp-details').html('');
-$('.jp-details').append(like);
-$('.jp-details').append(add_release);
-$('.jp-details').append(release_menu);
-$('.jp-details').append(release_img);
-$('.jp-details').append(jp_title);
-$('.jp-details').data('trackTitle', '<%= @track.title %>');
-$('.jp-details').data('trackArtist', '<%= @track.artist %>');
-
-$('.pp-track').html('<%= @track.title %>');
-$('.pp-artist').html('<%= @track.artist %>');
-$('.pp-like').html(like);
-$('.pp-add .playlist-add-track').data('trackId', '<%= @track.id %>');
-$('.pp-rate').html(rate);
-$('.pp-rate').children('.star').each(ratyRate);
-$('.pp-download').html(download);
-$('.pp-share').html(share);
-
-<% unless current_user && current_user.has_role?(:artist) %>
-  $('.jp-title').after('&nbsp;' + rate + rate_track_modal);
-
-  $('.nav-track-star').children('.star').each(ratyRate);
-  $('.rate-track-modal .modal-body').children('.star').each(ratyRate);
-<% end %>
-
-$('.user-rate-wrapper').on('click', function(event) {
-  $('.rate-track-modal[data-track-id="'+ $(this).data('track-id') + '"]').modal('show');
-})
-$('.rating-submit').on('click', function(event){
-  $('.rate-track-modal').modal('hide');
-})
-
-var list = `
-  <div class="clearfix">
-    <%= link_to @release do %>
-      <%= image_tag image, class: "jp-release-image" %>
-      <h4><%= @release.title.upcase %></h4>
-    <% end %>
-    <p class="release-date">Release date: <%= @release.release_date.strftime('%Y-%m-%d')  %></p>
-  </div>
-
-  <hr class="mt-1 mb-2">
-
-  <ul>
-    <% for track in @release.tracks %>
-      <li style="position: relative;">
-        <button type="button" data-toggle="collapse" data-target="#jp-release-popover-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample" class="jp-release-btn">
-          <span>+</span>
-        </button>
-
-        <%= link_to "#{'%02i' % track.track_number} #{track.title}", "#", 
-            class: "play-release-#{@release.id}-track-#{track.id}",
-            data: { 
-              source_type: 'release', 
-              source_id: @release.id, 
-              track_index: @release.tracks.map(&:id).index(track.id),
-              track_id: track.id,
-              virtual: true
-            },
-            remote: true %>
-
-        <div id="jp-release-popover-<%= track.id %>" class="collapse release-popover-collapse">
-          <%= link_to "Add to Playlist", "#", class: "playlist-add-track", data: { track_id: track.id } %>
-          <br>
-          <%= link_to "Create Playlist", "#", class: "jp-release-new", data: { track_id: track.id } %>
-        </div>
-      </li>
-    <% end %>
-  </ul>`;
-
-$('.jp-release-playlist').html(list);
-
-$('#jp-release-playlist-btn').show();
