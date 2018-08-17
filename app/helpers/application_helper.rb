@@ -27,8 +27,12 @@ module ApplicationHelper
   end
 
   def get_user_rate_for_track track
-    @rating = Rate.where(rater_id: current_user.id, rateable_id: track.id, rateable_type: 'Track')
-    @rating.any? ? @rating.first.stars.try(:round,0) : 0.0
+    if current_user
+      @rating = Rate.where(rater_id: current_user.id, rateable_id: track.id, rateable_type: 'Track')
+      @rating.any? ? @rating.first.stars.try(:round,0) : 0.0
+    else
+      return 0.0
+    end
   end
 
   def correct_user_path user
