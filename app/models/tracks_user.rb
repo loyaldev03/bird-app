@@ -4,6 +4,8 @@ class TracksUser < ApplicationRecord
   belongs_to :user
   belongs_to :track
 
+  ratyrate_rateable "track_star"
+
   private
 
     def trigger_tracks_count

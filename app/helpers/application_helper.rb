@@ -26,6 +26,11 @@ module ApplicationHelper
     setting.val if setting.present?
   end
 
+  def get_user_rate_for_track track
+    @rating = Rate.where(rater_id: current_user.id, rateable_id: track.id, rateable_type: 'Track')
+    @rating.any? ? @rating.first.stars.try(:round,0) : 0.0
+  end
+
   def correct_user_path user
     if user.has_role?(:artist)
       return artist_path user

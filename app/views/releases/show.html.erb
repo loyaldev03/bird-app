@@ -17,14 +17,14 @@
         <%= render partial: 'likes/like_button', locals: { object: @release,  style: 'release' } %>
       </div>
 
-      <div class="release-rate">
+      <div class="release-rate" data-release-id="<%= @release.id %>">
         RATE
         <% unless (current_user && current_user.has_role?(:artist)) %>
-          <%= rating_for @release, 'main', star: 3, cancel: true, 
-                disable_after_rate: false, star_path: '/images/rate/yellow'
+          <%= @release.average('main').try(:avg).try(:round,1) %>
+          <%= rating_for @release, 'main', star: 4, cancel: true, 
+                disable_after_rate: false, star_path: '/images/rate/egg'
           %>
         <% end %>
-        <%= @release.average('main').try(:avg).try(:round,1) %>
       </div>
 
       <%= render partial: 'layouts/share', locals: { object: @release, icon: 'white' } %>
