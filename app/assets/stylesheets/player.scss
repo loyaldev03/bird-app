@@ -41,6 +41,23 @@
       }
     }
   }
+
+  .individual-track-star-wrapper {
+    .rate-track-btn {
+      font-size: 8px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+
+      &.user-rate-mark {
+        color: #ff7777;
+        img {
+          margin-right: 3px;
+        }
+      }    
+
+    }
+  }
 }
 
 .jp-current-time, .jp-duration, .jp-current-time-track, .jp-duration-track {
@@ -134,6 +151,29 @@
 
   & > .like-button > img {
     vertical-align: middle;
+  }
+
+  .nav-rate-track-wrapper {
+    padding-top: 10px;
+    .rate-track-btn {
+      font-size: 8px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;    
+    }
+    .user-rate-mark {
+      color: #ff7777;
+      font-size: 8px;
+      font-weight: bold;    
+      text-align:center;
+      img {
+        margin-right:2px;
+      }
+    }
+    .nav-track-star {
+      border-left: 1px solid #fff;
+      padding-left: 10px;
+    }
   }
 }
 
@@ -230,4 +270,5 @@
   color: black;
   font-weight: 700;
   margin-right: 10px;
+
 }

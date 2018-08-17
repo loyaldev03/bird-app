@@ -1,4 +1,4 @@
-class PlaylistsController < ApplicationController
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        class PlaylistsController < ApplicationController
 
   before_action :authenticate_user!, except: [:sync_playlist, :load]
   before_action :set_notifications, only: [:show]

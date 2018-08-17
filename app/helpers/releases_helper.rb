@@ -14,6 +14,8 @@ module ReleasesHelper
 
     @releases = releases.limit(@limit).offset(@offset)
   end
+
+  
 end
 
 
