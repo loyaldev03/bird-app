@@ -158,6 +158,12 @@ li.playlist-nav-subheader {
   }
 }
 
+.playlist-item {
+  .icon-download, .icon-share {
+    position: static;
+  }
+}
+
 .playlist-add-track {
   background: none;
   border: none;
@@ -199,6 +205,27 @@ li.playlist-nav-subheader {
   letter-spacing: 0.72px;
   flex-grow: 1;
   margin-left: 30px;
+  line-height: 30px;
+
+  .like-button {
+    line-height: 13px;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+
+    img {
+      width: 22px;
+    }
+  }
+
+  .playlist-add-source {
+    color: #4a4a4a;
+    font-size: 40px;
+    padding: 0;
+    vertical-align: top;
+    position: relative;
+    z-index: 2;
+  }
 }
 
 .playlist-covers {

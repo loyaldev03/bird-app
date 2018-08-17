@@ -11,8 +11,7 @@
 
   <div class="col-lg-9">
     <div class="music-block">
-      <%= render partial: 'playlists/page', 
-                 locals: { tracks: @playlist.tracks, source_type: 'playlist', source_id: @playlist.id } %>
+      <%= render partial: 'playlists/list', locals: { playlists: @playlists } %>
     </div>
 
     <%= render 'player/bottom_player' %>

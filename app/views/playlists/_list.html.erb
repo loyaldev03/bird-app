@@ -1,13 +1,13 @@
 <div class="row mt-4">
   <% for playlist in playlists %>
       <div class="col-lg-4 col-lmd-6 text-center mb-4">
-        <%= link_to playlist_get_path(playlist), remote: true do %>
+        <%= link_to playlist do %>
           <%= render 'tracks/covers', object: playlist.tracks %>
         <% end %>
         <%  %>
         <div class="playlists-caption mt-3">
           <h3>
-            <%= link_to playlist_get_path(playlist), remote: true do %>
+            <%= link_to playlist do %>
               <%= playlist.name %>
             <% end %>
           </h3>

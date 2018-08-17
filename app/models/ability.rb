@@ -53,7 +53,7 @@ class Ability
 
       can :manage, ArtistInfo, artist_id: user.id
       can :create, ArtistInfo
-      
+
       can :manage, Video, user_id: user.id
       can :create, Video
 
@@ -65,7 +65,7 @@ class Ability
       can :create, Post
 
       can :manage, User, id: user.id
-      can :read, User
+      can :read, User, id: user.id
 
       can :crud, Follow
       can :crud, Like

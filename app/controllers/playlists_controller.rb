@@ -1,15 +1,17 @@
 class PlaylistsController < ApplicationController
 
   before_action :authenticate_user!, except: [:sync_playlist, :load]
-  before_action :set_notifications, only: [:show]
+  before_action :set_notifications, only: [:index, :show]
 
-  def show
-    @user = User.find params[:id]
+  def index
+    @user = User.find params[:user_id]
     @playlists = @user.playlists
   end
 
-  def get
-    @playlist = Playlist.find params[:playlist_id]
+  def show
+    @playlist = Playlist.find params[:id]
+    @user = @playlist.user
+    @playlists = @user.playlists
   end
 
   def load
@@ -57,10 +59,6 @@ class PlaylistsController < ApplicationController
                    playlist_id: playlist.id }
   end
 
-  def copy
-    
-  end
-
   def new
     @playlist = current_user.playlists.create
     current_user.update_attributes(current_playlist_id: @playlist.id )
@@ -81,6 +79,7 @@ class PlaylistsController < ApplicationController
       if params[:add_tracks_ids].present?
         params[:add_tracks_ids].each do |id|
           playlist.tracks_ids = playlist.tracks_ids
+                                        .to_s
                                         .split(',')
                                         .push(id)
                                         .join(',')
@@ -89,7 +88,7 @@ class PlaylistsController < ApplicationController
 
       if params[:delete_by_indices].present?
         params[:delete_by_indices].each do |i|
-          tracks_ids = playlist.tracks_ids.split(',')
+          tracks_ids = playlist.tracks_ids.to_s.split(',')
           tracks_ids.delete_at(i.to_i)
           playlist.tracks_ids = tracks_ids.join(',')
         end

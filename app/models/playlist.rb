@@ -1,5 +1,7 @@
 class Playlist < ApplicationRecord
   belongs_to :user
+  has_many :likes, as: :likeable
+  has_many :comments, as: :commentable
 
   def tracks_count
     tracks_ids.to_s.split(',').count

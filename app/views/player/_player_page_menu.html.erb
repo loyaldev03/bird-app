@@ -1,0 +1,51 @@
+<div class="playlist-nav">
+  <div class="playlist-nav-body">
+    <ul>
+      <li class="playlist-nav-subheader">Music&nbsp;</li>
+      <li class="<%= 'active' if current_page?("/releases?player=true&user_id=#{@user.id}") %>">
+        <%= link_to "All", releases_path(player: true, user_id: @user.id), id: "playlist-all-releases" %>
+      </li>
+      <li class="<%= 'active' if current_page?("/releases?filters[release_type]=1&player=true&user_id=#{@user.id}") %>">
+        <%= link_to "Birdfeed Exclusive", 
+            releases_path(
+              filters: { release_type: 1 }, 
+              player: true,
+              user_id: @user.id), 
+            id: "playlist-exclusive-releases" %>
+      </li>
+      <li class="<%= 'active' if current_page?("/releases?filters[release_type]=2&player=true&user_id=#{@user.id}") %>">
+        <%= link_to "Dirtybird Select", 
+            releases_path(
+              filters: { release_type: 2 }, 
+              player: true,
+              user_id: @user.id), 
+            id: "playlist-select-releases" %>
+      </li>
+      <li class="playlist-nav-subheader">Library&nbsp;</li>
+      <li class="<%= 'active' if current_page?(playlists_path(user_id: @user.id)) %>">
+        <%= link_to "User Playlists", playlists_path(user_id: @user.id), 
+            id: "playlist-user" %>
+      </li>
+      <li class="<%= 'active' if current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") %>">
+        <%= link_to "Favorited Releases", 
+            releases_path(
+              filters: { liked: true }, 
+              player: true, 
+              user_id: @user.id), 
+            id: "playlist-liked-releases" %>
+      </li>
+      <li class="<%= 'active' if current_page?(player_liked_tracks_path(@user)) %>">
+        <%= link_to "Favorited Tracks", player_liked_tracks_path(@user),
+            id: "playlist-favorited-tracks" %>
+      </li>
+      <!-- <li>Recently Played</li> -->
+      <li class="playlist-nav-subheader">Playlists&nbsp;</li>
+      <% for playlist in @playlists %>
+        <li class="<%= 'active' if current_page?(playlist_path(playlist)) %>">
+          <%= link_to playlist.name, playlist,
+              id: "playlist-#{playlist.id}" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

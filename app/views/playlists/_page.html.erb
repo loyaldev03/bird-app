@@ -13,6 +13,9 @@
 
   <% if @playlist.present? %>
     <div class="playlist-title">
+      <button class="playlist-add-source" data-source-id="<%= @playlist.id %>" data-source-type='playlist'>+</button>
+      <%= render partial: 'likes/like_button', locals: { object: @playlist } %>
+      <br>
       <%= @playlist.name %>
     </div>
 
@@ -80,6 +83,7 @@
       </td>
       <td style="position: relative;">
         <%= render partial: 'tracks/download', locals: { track: track, icon: 'black' } %>
+        <%= render partial: 'layouts/share', locals: { object: track, icon: 'black' } %>
       </td>
     </tr>
   <% end %>

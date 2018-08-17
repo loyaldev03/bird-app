@@ -17,13 +17,6 @@ class TracksController < ApplicationController
     end
   end
 
-  def liked
-    @user = User.find params[:user_id]
-    @tracks = @user.liked_by_type('Track').map do |_track|
-      track_presenter = TrackPresenter.new(_track, current_user)
-    end
-  end
-
   def play
     case params[:source_type]
     when 'liked'

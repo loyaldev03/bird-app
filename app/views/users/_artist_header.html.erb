@@ -65,7 +65,7 @@
     <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
     <%= link_to "Feed", @user, 
         class: artist ? classes[1] : classes[0] %><!--
-   --><%= link_to "Music", playlist_path(@user), 
+   --><%= link_to "Music", playlists_path(user_id: @user), 
         class: artist ? classes[0] : classes[1] %>
   </div>
 
@@ -85,7 +85,7 @@
     <%= link_to "RELEASES", artist_releases_path(@user), class: "btn c-btn-white btn-wide" %><!--
     --><%= link_to "TRACKS", artist_tracks_path(@user), class: "btn c-btn-white btn-wide" %><!--
 
-    --><%= link_to "Playlists", playlist_path(@user.id), 
+    --><%= link_to "Playlists", playlists_path(user_id: @user), 
         class: "btn c-btn-white btn-wide",
         id: "playlist-user", 
         remote: true %>

@@ -29,6 +29,12 @@ class ReleasesController < ApplicationController
     @releases = releases_query( @releases, page, 16, true )
 
     @artists = User.with_role(:artist)
+
+    if params[:player]
+      @user = User.find params[:user_id]
+      @playlists = @user.playlists
+      render 'player/releases' and return
+    end
   end
 
   def set_filters filters

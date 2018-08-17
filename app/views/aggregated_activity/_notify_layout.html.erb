@@ -8,6 +8,8 @@
 
   <% if activity['activities'][0]['object'].class.to_s == "BadgeLevel" %>
     <% notify_link = activity['activities'][0]['object'].user %>
+  <% elsif activity['activities'][0]['object'].class.to_s == "Playlist" %>
+    <% notify_link = activity['activities'][0]['object'] %>
   <% else %>
     <% notify_link = activity['activities'][0]['object'] %>
   <% end %>

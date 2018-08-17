@@ -76,14 +76,14 @@ Rails.application.routes.draw do
   resources :tracks
   get 'tracks_play', to: 'tracks#play'
   get 'tracks_list', to: 'tracks#list'
-  get 'tracks_liked', to: 'tracks#liked'
   # get 'get_artist_tracks/:id', to: 'users#get_tracks', as: 'get_artist_tracks'
 
-  resources :playlists do
-    get 'get'
+  resources :player do
+    get 'liked_tracks'
   end
-  get 'playlist_load', to: "playlists#load"
 
+  resources :playlists
+  get 'playlist_load', to: "playlists#load"
   post "sync_playlist", to: "playlists#sync_playlist"
 
   namespace :callbacks do

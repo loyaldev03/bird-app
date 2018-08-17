@@ -58,7 +58,7 @@
     <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
     <%= link_to "Feed", @user, 
         class: artist ? classes[1] : classes[0] %><!--
-   --><%= link_to "Music", playlist_path(@user), 
+   --><%= link_to "Music", playlists_path(user_id: @user), 
         class: artist ? classes[0] : classes[1] %>
   </div>
 </div>
