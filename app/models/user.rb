@@ -137,6 +137,7 @@ class User < ApplicationRecord
     when "Announcement" then "music"
     when "Release"      then "music"
     when "Track"        then "music"
+    when "Playlist"     then "music"
     when "Download"     then "music"
     when "Topic"        then "forum"
     when "Post"         then "forum"

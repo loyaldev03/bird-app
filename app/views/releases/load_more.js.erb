@@ -1,8 +1,20 @@
-$(".releases-list")
-      .append("<%= escape_javascript(render @releases) %>");
+var releases = [];
+
+<% @releases.each do |release| %>
+  releases.push('<div class="col-xl-3 col-lg-4 col-md-6 mb-5"><%= escape_javascript(render release) %></div>');
+<% end %>
+
+$(".releases-list").append(releases);
+
+var params = $('.show-more').attr('href').match(/\?.+/);
+
+if (!params) {
+  params = 'releases?page=2';
+}
+
+window.history.replaceState("", "", "releases" + params);
 
 var href = $('.show-more').attr('href').replace(/page=(\d+)/, function(match, offset) {
-    window.history.replaceState("", "", "releases?page="+offset);
     return "page=" + (parseInt(offset)+1);
   });
 
