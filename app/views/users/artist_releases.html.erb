@@ -1,27 +1,38 @@
 <%= render 'users/artist_header' %>
 
-<% if @releases.any? %>
-  <div class="release-flag-block mt-4">
-    <div class="c-flag">ARTIST RELEASES</div>
-
-    <%= link_to "TRACKS", artist_tracks_path(@user), 
-        class: "btn c-btn-blue btn-wide" %>
-        
-    <%= link_to "RELEASES", artist_releases_path(@user), 
-        class: "btn c-btn-black btn-wide disabled" %>
+<div class="row mt-4">
+  <div class="col-lg-3">
+    <%= render 'player/player_page_menu' %>
   </div>
 
-  <div class="row mt-4 releases-list">
-    <%= render @releases %>
-  </div>
+  <div class="col-lg-9">
+    <div class="music-block">
+      <div class="row mt-3 releases-list">
+        <% for release in @releases %>
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-5">
+            <%= render(release) %>
+          </div>
+        <% end %>
+      </div>
 
-  <div class="text-center">
-    <% if @limit <= @releases.count %>
-      <% _params = {page: params[:page] ? params[:page].to_i + 1 : 2} %>
-      <%= link_to "Show more", load_more_releases_path(_params), 
-          remote: true, class: "btn c-btn-blue show-more" %>
-    <% end %>
+      <div class="text-center">
+        <% if @limit <= @releases.count %>
+          <% _params = { player: true, user_id: @user.id } %>
+
+          <% if params[:filters].present? %>
+            <%  _params.merge!({ filters: params[:filters].permit! }) %>
+          <% end %>
+
+          <%  _params.merge!({
+                page: (params[:page] ? params[:page].to_i + 1 : 2)
+              }) %>
+
+          <%= link_to "Show more", load_more_releases_path(_params), 
+              remote: true, class: "btn c-btn-blue show-more" %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= render 'player/bottom_player' %>
   </div>
-<% else %>
-  No releases for this artist
-<% end %>
+</div>

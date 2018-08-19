@@ -59,6 +59,7 @@ class User < ApplicationRecord
   has_many :tracks, through: :tracks_users
   has_many :playlists
   has_many :downloads
+  has_many :recently_items
 
   include AlgoliaSearch
 

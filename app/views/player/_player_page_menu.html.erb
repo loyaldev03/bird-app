@@ -38,6 +38,14 @@
         <%= link_to "Favorited Tracks", player_liked_tracks_path(@user),
             id: "playlist-favorited-tracks" %>
       </li>
+      <li class="<%= 'active' if current_page?(player_recently_tracks_path(@user)) %>">
+        <%= link_to "Recently Played", player_recently_tracks_path(@user),
+            id: "playlist-favorited-tracks" %>
+      </li>
+      <li class="<%= 'active' if current_page?(player_downloaded_tracks_path(@user)) %>">
+        <%= link_to "Downloads", player_downloaded_tracks_path(@user),
+            id: "playlist-favorited-tracks" %>
+      </li>
       <!-- <li>Recently Played</li> -->
       <li class="playlist-nav-subheader">Playlists&nbsp;</li>
       <% for playlist in @playlists %>

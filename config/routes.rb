@@ -71,15 +71,17 @@ Rails.application.routes.draw do
   get "fill_track_title", to: "tracks#fill_track_title"
   get "fill_bottom_player", to: "tracks#fill_bottom_player"
   get 'load_more_releases', to: 'releases#load_more'
-  get 'track_listened', to: 'tracks#track_listened'
 
   resources :tracks
+  get 'track_listened', to: 'tracks#track_listened'
   get 'tracks_play', to: 'tracks#play'
   get 'tracks_list', to: 'tracks#list'
-  # get 'get_artist_tracks/:id', to: 'users#get_tracks', as: 'get_artist_tracks'
+  get 'track_clicked', to: 'tracks#track_clicked'
 
   resources :player do
     get 'liked_tracks'
+    get 'recently_tracks'
+    get 'downloaded_tracks'
   end
 
   resources :playlists

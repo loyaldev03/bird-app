@@ -114,8 +114,14 @@ strong {
 .c-btn-white {
   @include btn(white,#3ed4e0,darken(white, 5));
 }
+.c-btn-white2 {
+  @include btn(white,#ff7272,darken(white, 5));
+}
 .c-btn-blue {
   @include btn(#3ed4e0,white,darken(#3ed4e0, 5));
+}
+.c-btn-red {
+  @include btn(#ff7272,white,darken(#ff7272, 5));
 }
 .c-btn-transparent {
   @include btn(transparent,#3ed4e0,rgba(255,255,255,0.3));

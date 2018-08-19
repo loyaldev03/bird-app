@@ -112,7 +112,8 @@ class UsersController < ApplicationController
 
   def artist_releases
     @user = User.find(params[:id])
-
+    @playlists = @user.playlists
+    
     authorize! :read, @user
 
     page = params[:page] || 1
@@ -121,6 +122,7 @@ class UsersController < ApplicationController
 
   def artist_tracks
     @user = User.find(params[:id])
+    @playlists = @user.playlists
 
     authorize! :read, @user
 

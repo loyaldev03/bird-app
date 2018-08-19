@@ -81,14 +81,17 @@
     </div>
   <% end %>
 
-  <div class="c-btn-group d-inline-block float-right link-black-text">
-    <%= link_to "RELEASES", artist_releases_path(@user), class: "btn c-btn-white btn-wide" %><!--
-    --><%= link_to "TRACKS", artist_tracks_path(@user), class: "btn c-btn-white btn-wide" %><!--
-
+  <div class="c-btn-group d-inline-block float-right">
+    <% artist_releases_class = current_page?(artist_releases_path(@user)) ? 'c-btn-red' : 'c-btn-white2' %>
+    <% artist_tracks_class = current_page?(artist_tracks_path(@user)) ? 'c-btn-red' : 'c-btn-white2' %>
+    <% artist_plylists_class = current_page?(playlists_path(user_id: @user)) ? 'c-btn-red' : 'c-btn-white2' %>
+    <%= link_to "RELEASES", artist_releases_path(@user), 
+        class: "btn btn-wide #{artist_releases_class}" %><!--
+    --><%= link_to "TRACKS", artist_tracks_path(@user), 
+        class: "btn btn-wide #{artist_tracks_class}" %><!--
     --><%= link_to "Playlists", playlists_path(user_id: @user), 
-        class: "btn c-btn-white btn-wide",
-        id: "playlist-user", 
-        remote: true %>
+        class: "btn btn-wide #{artist_plylists_class}",
+        id: "playlist-user" %>
   </div>
 </div>
 

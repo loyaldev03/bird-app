@@ -6,6 +6,7 @@ class Track < ApplicationRecord
   has_many :users, through: :tracks_users
   has_many :track_files
   has_many :downloads
+  has_many :recently_items
 
   mount_uploader :uri, TrackUploader
 

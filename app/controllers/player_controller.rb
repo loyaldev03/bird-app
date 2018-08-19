@@ -1,12 +1,29 @@
 class PlayerController < ApplicationController
-  before_action :set_notifications, only: [:liked_tracks]
+  before_action :set_vars
+  before_action :set_notifications, 
+      only: [:liked_tracks, :recently_tracks, :downloaded_tracks]
   
   def liked_tracks
-    @user = User.find params[:player_id]
     @tracks = @user.liked_by_type('Track').map do |_track|
-      track_presenter = TrackPresenter.new(_track, current_user)
+      TrackPresenter.new(_track, current_user)
     end
-    @playlists = @user.playlists
   end
+
+  def recently_tracks
+    @tracks = @user.recently_items.map do |item|
+      TrackPresenter.new(item.track, current_user)
+    end
+  end
+
+  def downloaded_tracks
+    @tracks = @user.downloads.map { |d| TrackPresenter.new(d.track, current_user) }
+  end
+
+  private
+
+    def set_vars
+      @user = User.find params[:player_id]
+      @playlists = @user.playlists
+    end
 
 end

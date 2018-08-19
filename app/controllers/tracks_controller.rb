@@ -22,6 +22,12 @@ class TracksController < ApplicationController
     when 'liked'
       user = User.find(params[:source_id])
       tracks = user.liked_by_type('Track')
+    when 'downloaded'
+      user = User.find(params[:source_id])
+      tracks = user.downloads.map { |d| d.track }
+    when 'recently'
+      user = User.find(params[:source_id])
+      tracks = user.recently_items.map { |d| d.track }
     else
       tracks = params[:source_type]
           .classify
@@ -49,6 +55,17 @@ class TracksController < ApplicationController
   def fill_bottom_player
     track = Track.find(params[:track_id])
     @track = TrackPresenter.new(track, current_user)
+  end
+
+  def track_clicked
+    if current_user
+      RecentlyItem.create(
+        user_id: current_user.id, 
+        track_id: params[:track_id]
+      )
+    end
+
+    render json: {}
   end
 
   def download

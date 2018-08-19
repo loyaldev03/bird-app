@@ -383,11 +383,20 @@
         cpAudio.play();
         updatePlayerState(btnData.sourceType, btnData.sourceId, btnData.trackIndex, !!btnData.virtual);
       });
+
+      $.ajax({
+          url: '/track_clicked',
+          dataType: 'script',
+          data: { track_id: playlist[btnData.trackIndex].id }
+        });
     } else {
       $.ajax({
           url: '/tracks_play',
           dataType: 'JSON',
-          data: { source_type: btnData.sourceType, source_id: btnData.sourceId }
+          data: { 
+            source_type: btnData.sourceType, 
+            source_id: btnData.sourceId
+          }
         })
         .done(function(data){
           setPlaylist(data.tracks, {
@@ -400,6 +409,12 @@
             sourceId: btnData.sourceId
           });
       });
+
+      $.ajax({
+          url: '/track_clicked',
+          dataType: 'JSON',
+          data: { track_id: playlist[btnData.trackIndex].id }
+        })
     }
   }
 

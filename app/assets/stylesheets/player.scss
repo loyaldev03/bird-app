@@ -152,28 +152,28 @@
   & > .like-button > img {
     vertical-align: middle;
   }
+}
 
-  .nav-rate-track-wrapper {
-    padding-top: 10px;
-    .rate-track-btn {
-      font-size: 8px;
-      font-weight: bold;
-      text-align: center;
-      cursor: pointer;    
+.nav-rate-track-wrapper {
+  padding-top: 10px;
+  .rate-track-btn {
+    font-size: 8px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;    
+  }
+  .user-rate-mark {
+    color: #ff7777;
+    font-size: 8px;
+    font-weight: bold;    
+    text-align:center;
+    img {
+      margin-right:2px;
     }
-    .user-rate-mark {
-      color: #ff7777;
-      font-size: 8px;
-      font-weight: bold;    
-      text-align:center;
-      img {
-        margin-right:2px;
-      }
-    }
-    .nav-track-star {
-      border-left: 1px solid #fff;
-      padding-left: 10px;
-    }
+  }
+  .nav-track-star {
+    border-left: 1px solid #fff;
+    padding-left: 10px;
   }
 }
 

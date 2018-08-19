@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180809002817) do
+ActiveRecord::Schema.define(version: 20180819082042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,6 +292,13 @@ ActiveRecord::Schema.define(version: 20180809002817) do
     t.datetime "updated_at", null: false
     t.index ["cacheable_id", "cacheable_type"], name: "index_rating_caches_on_cacheable_id_and_cacheable_type"
     t.index ["cacheable_type", "cacheable_id"], name: "index_rating_caches_on_cacheable_type_and_cacheable_id"
+  end
+
+  create_table "recently_items", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "track_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "release_files", force: :cascade do |t|

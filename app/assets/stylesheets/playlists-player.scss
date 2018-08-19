@@ -3,10 +3,11 @@
   width: 100%;
   height: 110px;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   left: 0;
   bottom: -24px;
   padding: 15px 25px;
+  color: white;
 
   .pp-previous {
     background: asset-data-url("icons/media-backward-md.png");
@@ -119,13 +120,13 @@
     position: absolute;
     display: inline-block;
     bottom: 9px;
-    left: -23px;
+    left: -30px;
   }
 
   .pp-add {
     position: absolute;
     bottom: 10px;
-    left: -13px;
+    left: -18px;
 
     button {
       color: white;
@@ -136,7 +137,12 @@
 
   .pp-rate {
     position: absolute;
-    bottom: 16px;
-    left: 7px;
+    bottom: 10px;
+    left: 4px;
+
+    .nav-track-star {
+      border: none;
+      padding: 0;
+    }
   }
 }
