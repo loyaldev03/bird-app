@@ -36,6 +36,10 @@ $(document).on('turbolinks:load', function() {
     }
   });
 
+  $('.modal-blured').on('hidden.bs.modal', function (e) {
+    $('.main-container').css({'filter': 'unset'});
+  });
+
   let avatar_form = document.querySelector('#change-avatar');
   $(avatar_form).find('#user_avatar').change(function(){
     avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));

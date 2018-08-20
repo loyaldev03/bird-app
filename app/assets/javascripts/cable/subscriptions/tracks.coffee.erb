@@ -12,9 +12,9 @@ jQuery(document).on 'turbolinks:load', ->
       release_id = data.release_id
       $('.nav-rate-track-wrapper[data-track-id="'+ track_id + '"] .nav-track-star').html(track_template)
       $('.nav-rate-track-wrapper[data-track-id="'+ track_id + '"] .nav-track-star').children('.star').each(ratyRate);
-      $('.nav-rate-track-wrapper[data-track-id="'+ track_id + '"] .user-rate-wrapper').html('<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />You rated it ' + user_track_rate + '</div>')
+      $('.nav-rate-track-wrapper[data-track-id="'+ track_id + '"] .user-rate-wrapper').html('<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />' + user_track_rate + '</div>')
       $('.individual-track-star-wrapper[data-track-id="'+ track_id + '"] .individual-track-star').html(track_template)
       $('.individual-track-star-wrapper[data-track-id="'+ track_id + '"] .individual-track-star').children('.star').each(ratyRate);
-      $('.individual-track-star-wrapper[data-track-id="'+ track_id + '"] .user-rate-wrapper').html('<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />Rated ' + user_track_rate + '</div>');
+      $('.individual-track-star-wrapper[data-track-id="'+ track_id + '"] .user-rate-wrapper').html('<div class="user-rate-mark rate-track-btn"><img src="/images/rate/check-circle.png" />' + user_track_rate + '</div>');
       $('.release-rate[data-release-id="'+ release_id + '"]').html(release_template)
       $('.release-rate[data-release-id="'+ release_id + '"]').children('.star').each(ratyRate);
