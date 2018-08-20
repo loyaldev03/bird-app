@@ -8,7 +8,6 @@ class RaterController < ApplicationController
       track = Track.find(obj.id)
       release = track.release
       rates = Rate.where(rater_id: current_user.id, rateable_id: release.id, rateable_type:'Release')
-
       if rates.any?
         rate = rates.first
       else
@@ -28,11 +27,14 @@ class RaterController < ApplicationController
           count += 1
         end
       end
-
       if count > 0
         stars /= count
       end
 
+      rates = Rate.where(rater_id: current_user.id, rateable_id: release.id, rateable_type:'Release')
+      if rates.any?
+        rate = rates.first
+      end
       rate.stars = stars
       rate.save
 
