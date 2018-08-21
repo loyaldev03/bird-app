@@ -2,12 +2,11 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
   margin-left: -15px;
   margin-right: -15px;
-  margin-bottom: -40px;
+  margin-bottom: -24px;
   padding-top: 1px;
   background: asset-data-url("egg-bg.png");
   background-size: 140%;
   background-position-x: 85px;
-  height: calc(100vh - 340px);
   overflow: scroll;
 }
 
@@ -302,10 +301,16 @@ li.playlist-nav-subheader {
   }
 }
 
+.music-wrapper {
+  margin-bottom: -24px;
+  display: flex;
+  flex-direction: column;
+}
+
 .music-block {
   padding-bottom: 110px;
-  height: calc(100vh - 360px);
   overflow: scroll;
+  flex-grow: 1;
 
   .item-with-tongue img {
     width: 195px;

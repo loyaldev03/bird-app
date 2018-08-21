@@ -292,9 +292,13 @@
 }
 
 .jp-player-btn {
-  margin: auto;
-  color: black;
-  font-weight: 700;
-  margin-right: 10px;
-
+  margin: 0 10px 0 -15px;
+  color: white;
+  background-color: #ff7979;
+  font-family: 'Phosphate-Inline';
+  font-size: 12px;
+  line-height: 41px;
+  padding: 0 22px;
+  height: 40px;
+  letter-spacing: 0.36px;
 }

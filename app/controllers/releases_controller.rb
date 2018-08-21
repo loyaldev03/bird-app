@@ -16,6 +16,12 @@ class ReleasesController < ApplicationController
     @enricher = StreamRails::Enrich.new
     @enricher.add_fields([:foreign_id])
     @activities = @enricher.enrich_activities(results)
+
+    if params[:player]
+      @user = User.find params[:user_id]
+      @playlists = @user.playlists
+      render 'player/release' and return
+    end
   end
 
   def index

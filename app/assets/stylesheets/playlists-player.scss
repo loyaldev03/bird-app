@@ -1,12 +1,12 @@
 .playlist-player {
   background-color: #4a4a4a;
-  width: 100%;
+  width: calc(100% + 30px);
   height: 110px;
-  position: absolute;
   z-index: 3;
   left: 0;
-  bottom: -24px;
+  bottom: 0;
   padding: 15px 25px;
+  margin-left: -15px;
   color: white;
 
   .pp-previous {

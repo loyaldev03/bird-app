@@ -186,6 +186,11 @@ $(document).on('turbolinks:load', function() {
   $('.btn-disabled').click(function(e){
     e.preventDefault();
   });
+
+  $('.users-block .more-users').click(function(){
+    $(this).find('span').toggle()
+    .closest('.release-users-block').toggleClass('c-collapsed');
+  });
 });
 
 var loadMoreFeed = function(){

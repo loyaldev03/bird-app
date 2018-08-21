@@ -1,36 +1,41 @@
-<div class="playlist-header">
-  <%= link_to "", "#",
-              data: { 
-                source_type: source_type, 
-                source_id: source_id,
-                virtual: true
-              }, 
-              class: "play-#{source_type}-#{source_id} playlist-play-playlist",
-              style: "width: 130px;",
-              remote: true %>
+<% unless source_type == 'release' %>
+  <div class="playlist-header">
+    <%= link_to "", "#",
+                data: { 
+                  source_type: source_type, 
+                  source_id: source_id,
+                  virtual: true
+                }, 
+                class: "play-#{source_type}-#{source_id} playlist-play-playlist",
+                style: "width: 130px;",
+                remote: true %>
 
-  <%= render 'tracks/covers', object: tracks %>
+    <%= render 'tracks/covers', object: tracks %>
 
-  <% if @playlist.present? %>
-    <div class="playlist-title">
-      <button class="playlist-add-source" data-source-id="<%= @playlist.id %>" data-source-type='playlist'>+</button>
-      <%= render partial: 'likes/like_button', locals: { object: @playlist } %>
-      <br>
-      <%= @playlist.name %>
-    </div>
+    <% if @playlist.present? %>
+      <div class="playlist-title">
+        <button class="playlist-add-source" data-source-id="<%= @playlist.id %>" data-source-type='playlist'>+</button>
+        <%= render partial: 'likes/like_button', locals: { object: @playlist } %>
+        <br>
+        <%= @playlist.name %>
+      </div>
 
-    <div class="playlist-owner">
-      <%= link_to image_tag(@playlist.user.avatar.thumb, class: "user-avatar"), @playlist.user %>
-      By <%= link_to @playlist.user.name, @playlist.user %>
-    </div>
-  <% end %>
-</div>
+      <div class="playlist-owner">
+        <%= link_to image_tag(@playlist.user.avatar.thumb, class: "user-avatar"), @playlist.user %>
+        By <%= link_to @playlist.user.name, @playlist.user %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <table class="playlist-items">
   <tr>
     <th></th>
     <th>Title</th>
     <th>Artist</th>
-    <th>Release</th>
+    <% unless source_type == 'release' %>
+      <th>Release</th>
+    <% end %>
     <th class="text-center"><%= image_tag 'icons/time.png' %></th>
     <th>Rate</th>
     <th></th>
@@ -74,12 +79,14 @@
       <% else %>
         <td><%= track.artists %></td>
       <% end %>
-      <td>
-        <%= link_to track.release, class: "release-link" do %>
-          <%= image_tag track.release.avatar.url %>
-          <%= track.release.title %>
-        <% end %>
-      </td>
+      <% unless source_type == 'release' %>
+        <td>
+          <%= link_to track.release, class: "release-link" do %>
+            <%= image_tag track.release.avatar.url %>
+            <%= track.release.title %>
+          <% end %>
+        </td>
+      <% end %>
       <td>Time</td>
       <td>
         <% unless current_user && current_user.has_role?(:artist) %>

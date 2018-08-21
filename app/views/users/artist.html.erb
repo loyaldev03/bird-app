@@ -165,7 +165,7 @@
       <!-- TRACKS -->
       <% if @user.tracks.any? %>
         <div class="c-panel bg-white">
-          <div class="c-flag c-flag-inner mb-2"><b>TRACKS</b> OF THIS ARTIST</div>
+          <div class="c-flag c-flag-inner mb-2">TRACKS OF THIS ARTIST</div>
 
           <%= link_to "get_artist_tracks_path(@user.id)", 
               style: "width: 40px; height: 40px;", remote: true do %>

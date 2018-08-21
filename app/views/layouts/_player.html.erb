@@ -2,8 +2,7 @@
   <div class="container">
     <div class="jp-interface">
       <% if current_user %>
-        <%= link_to playlists_path(user_id: current_user), class: "btn c-btn-white jp-player-btn" do %>
-          <%= image_tag 'icons/play.png' %>
+        <%= link_to playlists_path(user_id: current_user), class: "jp-player-btn" do %>
           PLAYER
         <% end %>
       <% end %>

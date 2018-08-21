@@ -37,7 +37,7 @@
   <div class="col-md-8">
 
     <div class="c-panel bg-white">
-      <div class="c-flag mb-4"><b>ANNOUNCEMENT</b> FEED</div>
+      <div class="c-flag mb-4">ANNOUNCEMENT FEED</div>
 
       <%# if current_user && @announcement.user_id == current_user.id %>
         <button class="btn c-btn-blue mt-1 btn-wide" type="button" data-toggle="modal" data-target="#addcommentModal">
@@ -64,7 +64,7 @@
     <div class="sticky-top">
       <!-- FOLLOWERS -->
       <div class="c-panel bg-white mb-4">
-        <div class="c-flag c-flag-inner mb-2"><b>FEED</b> FOLLOWERS</div>
+        <div class="c-flag c-flag-inner mb-2">FEED FOLLOWERS</div>
 
         <div>
           <% @announcement.followers.each do |user| %>

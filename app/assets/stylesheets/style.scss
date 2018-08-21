@@ -1,4 +1,16 @@
 @import url("https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700,900|Roboto+Mono:400,700");
+@font-face {
+  font-family: 'Phosphate-Inline';
+  src:font-url('Phosphate-Inline.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Phosphate-Solid';
+  src:font-url('Phosphate-Solid.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @mixin btn($b-color,$t-color,$a-color) {
   font-size: 10px;
@@ -260,17 +272,20 @@ strong {
 }
 
 .c-flag {
+  font-family: 'Phosphate-Inline';
   display: inline-block;
-  padding: 10px;
+  padding: 6px 10px;
   text-align: center;
-  background: asset-data-url("icons/c-flag.svg") no-repeat;
   min-width: 186px;
-  height: 50px;
+  height: 40px;
+  border-radius:  6px 0 0 0;
+  border: 2px solid #faae03;
+  background-color: #222;
   position: relative;
   top: -3px;
   left: -25px;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1.4px;
   z-index: 2;
 
@@ -281,11 +296,13 @@ strong {
   &:after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 10px;
-    width: 95%;
-    height: 41px;
-    background-color: #222;
+    bottom: -12px;
+    left: -2px;
+    width: 10px;
+    height: 10px;
+    border: 5px solid transparent; 
+    border-top: 5px solid #d2d2d2; 
+    border-right: 5px solid #d2d2d2;
     z-index: -1;
   }
 
@@ -294,6 +311,10 @@ strong {
     position: relative;
     z-index: 2;
     margin-left: 10px;
+  }
+
+  span.t-blue {
+    color: #3ed4e0;
   }
 }
 
