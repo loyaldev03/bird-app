@@ -1,17 +1,27 @@
 <footer>
   <div class="container">
     <%= image_tag 'icons/logo_bottom_.png', class: 'footer-logo' %>
+    <div class="d-flex footer-copyright justify-content-center" style="font-size: 14px;">
+      <%= link_to 'Music', releases_path %>
+      <span class="mx-4">|</span>
+      <%= link_to 'Community', chirp_index_path %>
+      <span class="mx-4">|</span>
+      <%= link_to 'Games', leaderboard_path %>
+    </div>
+
     <div class="row">
-      <div class="col-sm-4">
-        Copyrights &copy; 2018
+      <div class="col-sm-4 footer-copyright">
+        Copyright Dirtybird Records LLC  © 2018
       </div>
 
-      <div class="col-sm-4 d-sm-flex flex-sm-column text-sm-center">
-        <%= link_to "About us", about_path %>
-        <%= link_to "Terms & Conditions", "#" %>
+      <div class="col-sm-4 text-sm-center">
+        <%= link_to " Community Care Center", about_path %>
+        <span class="mx-2">|</span>
+        <%= link_to "Privacy Policies ", "#" %>
       </div>
 
       <div class="col-sm-4 text-sm-right">
+        <span class="orange-text mr-1">CONNECT</span>
         <%= link_to get_setting('facebook'), class: "mr-2" do %>
           <%= image_tag 'icons/fb.svg' %>
         <% end %>

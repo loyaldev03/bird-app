@@ -25,3 +25,32 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
+<div class="home-promo">
+  <div class="promo-blocks">
+    <%= link_to releases_path do %>
+      <div class="promo-block red-arrow">
+        <h3>listen</h3>
+        <div class="promo-subheader">ALL DIRTYBIRD SOUNDS IN ONE PLACE</div>
+      </div>
+    <% end %>
+
+    <%= link_to chirp_index_path do %>
+      <div class="promo-block yellow-arrow">
+        <h3>CONNECT</h3>
+        <div class="promo-subheader">WHERE Ya DIRTYBIRd FAM  IS AT</div>
+      </div>
+    <% end %>
+
+    <%= link_to leaderboard_path do %>
+      <div class="promo-block red-arrow">
+        <h3>PLAY</h3>
+        <div class="promo-subheader">FOR STATUS REWARDS AND BADGES</div>
+      </div>
+    <% end %>
+  </div>
+  <div class="promo-footer">
+    <%= link_to "Sign up", new_user_registration_path, class: "promo-link" %>
+    <%= link_to "Learn more", "", class: "promo-link" %>
+  </div>
+</div>

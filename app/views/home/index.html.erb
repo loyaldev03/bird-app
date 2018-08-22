@@ -10,9 +10,9 @@
 <div class="row mb-2">
   <!-- FANS LEADERBOARD -->
   <div class="col-md-8">
-    <div class="c-panel bg-white">
-      <div class="c-flag mb-4">FANS LEADERBOARD</div>
-      <%= link_to "SEE ALL", users_path, class: "btn c-btn-blue" %>
+    <div class="c-panel bg-br-blue">
+      <div class="c-flag mb-4">THE BIG 10</div>
+      <%= link_to "SEE ALL", users_path, class: "btn c-btn-black" %>
 
       <ol class="fans-block light-scroll mt-1">
         <% @leader_users.each do |u| %>
@@ -66,8 +66,8 @@
 
   <!-- ARTISTS -->
   <div class="col-md-4">
-    <div class="c-panel bg-c-dark">
-      <div class="c-flag c-flag-inner mb-4">DIRTYBIRD ARTISTS</div>
+    <div class="c-panel bg-c-dark" style="border: 4px solid #faae03;box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);">
+      <div class="c-flag c-flag-inner mb-4" style="left: -29px;">NEW DB ARTISTS</div>
       <%= link_to "SEE ALL", artists_path, class: "btn c-btn-blue" %>
 
       <ol class="users-block dark-scroll list-unstyled mt-1">

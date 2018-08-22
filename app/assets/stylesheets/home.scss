@@ -7,14 +7,17 @@
     counter-increment: step-counter;
     font-size: 12px;
     position: relative;
-    padding-left: 30px;
+    padding-left: 50px;
+
     &:before {
       position: absolute;
-      top: 30px;
-      left: 0;
-      content: counter(step-counter);
+      top: 3px;
+      left: -15px;
+      content: counter(step-counter, decimal-leading-zero);
       margin-right: 20px;
-      font-size: 24px;
+      font-size: 54px;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      font-family: 'Phosphate-Inline';
     }
   }
 
