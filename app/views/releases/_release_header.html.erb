@@ -78,14 +78,14 @@
 
     <div class="user-controls">
       <div class="c-btn-group d-inline-block mr-4">
-        <% release = !current_page?(release_path(@release)) %>
+        <% release = params[:player].blank? %>
         <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
         <%= link_to "Feed", @release, 
             class: release ? classes[1] : classes[0] %><!--
        --><%= link_to "Music", 
             release_path(
               id: @release.id, 
-              user_id: current_user.id,
+              user_id: current_user.try(:id),
               player: true), 
             class: release ? classes[0] : classes[1] %>
       </div>

@@ -18,8 +18,11 @@ class ReleasesController < ApplicationController
     @activities = @enricher.enrich_activities(results)
 
     if params[:player]
-      @user = User.find params[:user_id]
-      @playlists = @user.playlists
+      if params[:user_id]
+        @user = User.find params[:user_id] 
+        @playlists = @user.playlists
+      end
+      
       render 'player/release' and return
     end
   end
@@ -37,8 +40,11 @@ class ReleasesController < ApplicationController
     @artists = User.with_role(:artist)
 
     if params[:player]
-      @user = User.find params[:user_id]
-      @playlists = @user.playlists
+      if params[:user_id]
+        @user = User.find params[:user_id] 
+        @playlists = @user.playlists
+      end
+
       render 'player/releases' and return
     end
   end

@@ -8,9 +8,11 @@ class Playlist < ApplicationRecord
   end
 
   def tracks
-    tracks_ids.to_s.split(',').map do |track_id|
-      Track.find track_id
+    ids = tracks_ids.to_s.split(',').map do |track_id|
+      Track.find_by_id track_id
     end
+    
+    ids.compact
   end
 
   def name
