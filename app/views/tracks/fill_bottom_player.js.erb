@@ -1,5 +1,5 @@
 var like = '<%= escape_javascript( render "likes/like_button", object: @track )%>';
-var rate = '<%= escape_javascript( rating_for( @track, "main", star: 4, cancel: true, disable_after_rate: false, star_path: "/images/rate/egg")) %>&nbsp;<%= @track.average("main").try(:avg).try(:round,1) %>';
+var rate = '<%= escape_javascript( rating_for( @track, "main", star: 4, cancel: false, disable_after_rate: false, star_on: image_path("rate/egg/star-on.png"), star_half: image_path("rate/egg/star-on.png"), star_off: image_path("rate/egg/star-off.png"))) %>&nbsp;<%= @track.average("main").try(:avg).try(:round,1) %>';
 var download = "<%= escape_javascript( render partial: 'tracks/download', locals: { track: @track, icon: 'white' } )%>";
 var share = "<%= escape_javascript( render partial: 'layouts/share', locals: { object: @track, icon: 'white' } )%>";
 

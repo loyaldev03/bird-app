@@ -293,6 +293,11 @@ li.playlist-nav-subheader {
   &.playing {
     background: asset-data-url("icons/pause-big.png");
   }
+
+  &.loading {
+    cursor: default;
+    opacity: 0.5;
+  }
 }
 
 .jp-playlist-item.loading {

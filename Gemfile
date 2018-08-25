@@ -46,7 +46,7 @@ gem 'algoliasearch-rails'
 gem "avatarly"
 gem "font-awesome-rails"
 gem 'social-share-button'
-gem 'ratyrate'
+gem 'ratyrate', :github => 'wazery/ratyrate'
 gem 'rack-cors'
 gem 'bulk_insert'
 gem 'transloadit'

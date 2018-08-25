@@ -186,4 +186,11 @@
     text-transform: uppercase;
     text-align: center;
   }
+
+  .promo-logo {
+    position: absolute;
+    left: 50%;
+    top: -28px;
+    transform: translateX(-50%);
+  }
 }

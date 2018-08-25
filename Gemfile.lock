@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/wazery/ratyrate.git
+  revision: d61cfb73343e4b461f536e56c7b1bd1f7465d0a4
+  specs:
+    ratyrate (1.2.2.alpha)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -876,7 +882,6 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.3.2)
-    ratyrate (1.2.2.alpha)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -1014,7 +1019,7 @@ DEPENDENCIES
   rack-cors
   rack-timeout
   rails (~> 5.1.5)
-  ratyrate
+  ratyrate!
   redis (~> 4.0)
   rolify
   sass-rails (~> 5.0)

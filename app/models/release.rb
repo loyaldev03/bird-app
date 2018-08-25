@@ -142,11 +142,20 @@ class Release < ApplicationRecord
     steps
   end
 
-  def artists
+  def artists limit=nil
     if artist_as_string && artist.present?
       artist
     elsif users.any?
-      users.map(&:name).join(' & ')
+      artists = users.map(&:name)
+      artists_count = artists.count
+
+      if limit && artists_count > limit
+        artists = artists[0..limit-1]
+        artists = artists.join(' & ')
+        artists += "& #{artists_count-limit} #{'other'.pluralize(artists_count-limit)}"
+      else
+        artists = artists.join(' & ')
+      end
     elsif artist.present?
       artist
     else

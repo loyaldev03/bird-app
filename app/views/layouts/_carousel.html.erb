@@ -27,6 +27,7 @@
 </div>
 
 <div class="home-promo">
+  <%= image_tag 'logo3.png', class: 'promo-logo' %>
   <div class="promo-blocks">
     <%= link_to releases_path do %>
       <div class="promo-block red-arrow">
@@ -50,7 +51,7 @@
     <% end %>
   </div>
   <div class="promo-footer">
-    <%= link_to "Sign up", new_user_registration_path, class: "promo-link" %>
+    <%= link_to "Sign up", new_user_registration_path, class: "promo-link mr-3" %>
     <%= link_to "Learn more", "", class: "promo-link" %>
   </div>
 </div>

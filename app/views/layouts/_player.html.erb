@@ -130,7 +130,7 @@
         currentTrackIndex = 0; time = 0;
       }
 
-      trackLoading(true);
+      trackLoading(true, 'playlist', data.playlist_id);
 
       $('.jp-playlist-name').html(data.playlist_name_form);
       setPlaylist(data.tracks, {
@@ -197,11 +197,11 @@
 
     if (virtual) {
       playlist = tracks; //setting common playlist variable;
-      playerLoad(currentTime, virtual);
+      playerLoad(currentTime, virtual, sourceType, sourceId);
     } else if (newPlaylist) {
       playlist = tracks; //setting common playlist variable;
       addItemsToPlaylist({newPlaylist: true, sourceType: sourceType, sourceId: sourceId});
-      playerLoad(currentTime, virtual); 
+      playerLoad(currentTime, virtual, sourceType, sourceId); 
     } else {
       if ($('.jp-audio .jp-play').data('virtual')) {
         playlist = tracks; //setting common playlist variable;
@@ -351,7 +351,7 @@
       //   currentTrackIndex = playlist.length - 1;
       // }
 
-      playerLoad(0, false);
+      playerLoad(0, false, 'playlist', $('.jp-audio .jp-play').data('sourceId'));
 
       cpAudio.on('ready', function(){
         cpAudio.play();
@@ -376,7 +376,7 @@
       updatePlayerState(topData.sourceType, topData.sourceId, topData.trackIndex, !!btnData.virtual);
     } else if (sameSource && btnData.trackIndex !== undefined && !sameIndex) {
       currentTrackIndex = btnData.trackIndex;
-      playerLoad(0, !!btnData.virtual);
+      playerLoad(0, !!btnData.virtual, btnData.sourceType, btnData.sourceId);
 
       cpAudio.on('ready', function(){
         cpAudio.play();
@@ -407,19 +407,18 @@
             sourceType: btnData.sourceType, 
             sourceId: btnData.sourceId
           });
+          $.ajax({
+              url: '/track_clicked',
+              dataType: 'JSON',
+              data: { track_id: playlist[btnData.trackIndex || 0].id }
+            })
       });
-
-      $.ajax({
-          url: '/track_clicked',
-          dataType: 'JSON',
-          data: { track_id: playlist[btnData.trackIndex].id }
-        })
     }
   }
 
   function playlistItem(track, sourceType, sourceId, index) {
     var _class, _data;
-    if (index) {
+    if (index >= 0) {
       _class = `index-${index}`;
       _data = `data-track-index="${index}"`;
     } else {
@@ -452,12 +451,8 @@
     });
   }
 
-  function playerLoad(currentTime=0, virtual=false) {
-    if (virtual) {
-      trackLoading(true);
-    } else {
-      trackLoading(true);
-    }
+  function playerLoad(currentTime=0, virtual=false, sourceType, sourceId) {
+    trackLoading(true, sourceType, sourceId);
 
     if (playlist.length < 1) {
       trackLoading(false);
@@ -501,7 +496,7 @@
     }
 
     currentTrackIndex++;
-    playerLoad(0, virtual);
+    playerLoad(0, virtual, sourceType, sourceId);
 
 
     if (paused) {
@@ -526,7 +521,7 @@
     }  
 
     currentTrackIndex--;
-    playerLoad(0, virtual);
+    playerLoad(0, virtual, sourceType, sourceId);
 
     cpAudio.on('ready', function(){
       cpAudio.play();
@@ -539,17 +534,12 @@
   }
 
   function trackLoading(state, sourceType, sourceId) {
-    // console.log(state);
-    // console.log(sourceType);
-    // console.log(sourceId);
-    // console.log(currentTrackIndex);
-    // console.log($(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`));
-
     if(state) {
       $('.jp-progress-container').addClass('loading');
       $('.jp-play').addClass('loading');
       $('.pp-play').addClass('loading');
       $(`.jp-playlist-item`).removeClass('loading');
+      console.log(`.play-${sourceType}-${sourceId}`);
       $(`.play-${sourceType}-${sourceId}`).addClass('loading');
       $(`.play-${sourceType}-${sourceId}-index-${currentTrackIndex}`).addClass('loading');
 
@@ -557,10 +547,7 @@
         $(`.play-${sourceType}-${sourceId}-track-${playlist[currentTrackIndex].id}`).addClass('loading');
       }
     } else {
-      $('.jp-progress-container').removeClass('loading');
-      $('.jp-play').removeClass('loading');
-      $('.pp-play').removeClass('loading');
-      $(`[class^='play-']`).removeClass('loading');
+      $(`.loading`).removeClass('loading');
     }
   }
 

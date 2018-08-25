@@ -30,13 +30,7 @@ $(document).on('turbolinks:load', function() {
     $(this).siblings('.main-container').css({'filter': 'blur(15px)'});
   });
 
-  $('.modal-blured').on('hide.bs.modal', function (e) {
-    if ($('.modal-backdrop.show').length == 1) {
-      $(this).siblings('.main-container').css({'filter': 'unset'});
-    }
-  });
-
-  $('.modal-blured').on('hidden.bs.modal', function (e) {
+  $(document).on('hide.bs.modal', '.modal-blured', function (e) {
     $('.main-container').css({'filter': 'unset'});
   });
 
