@@ -70,6 +70,8 @@ class ReleasesController < ApplicationController
           releases_likes = "SELECT likeable_id FROM likes WHERE user_id = #{current_user.id} AND likeable_type = 'Release'"
 
           @releases = @releases.where("id IN (#{tracks_likes} UNION #{releases_likes})")
+        when 'type' 
+          @releases = @releases.where("release_type = ?", value)
         end
       end
     end

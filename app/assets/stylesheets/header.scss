@@ -102,8 +102,10 @@ header {
 
 .nav-menu .nav-item {
   text-transform: uppercase;
-  font-family: 'Phosphate-Inline';
+  font-family: 'Phosphate-Solid';
   font-size: 15px;
+  font-weight: lighter;
+  letter-spacing: .80px;
 }
 
 .nav-signup-btn {

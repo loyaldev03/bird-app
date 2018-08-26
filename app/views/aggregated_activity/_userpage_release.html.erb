@@ -9,9 +9,10 @@
 
       <div class="feed-top-pane">
         <% case release.release_type %>
-          <% when "usual" then color = "#3ed4e0"  %>
-          <% when "exclusive" then color = "#faae03"  %>
-          <% when "d_select" then color = "#bd2c2c"  %>
+        <% when "usual" then color = "#3ed4e0" %>
+        <% when "exclusive" then color = "#faae03" %>
+        <% when "d_select" then color = "#bd2c2c" %>
+        <% else color = "#3ed4e0" %>
         <% end %>
 
         <div class="feed-new-type">
