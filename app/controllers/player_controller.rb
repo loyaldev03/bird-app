@@ -7,16 +7,24 @@ class PlayerController < ApplicationController
     @tracks = @user.liked_by_type('Track').map do |_track|
       TrackPresenter.new(_track, current_user)
     end
+
+    @tracks.compact!
   end
 
   def recently_tracks
     @tracks = @user.recently_items.map do |item|
-      TrackPresenter.new(item.track, current_user)
+      TrackPresenter.new(item.track, current_user) if item.track
     end
+
+    @tracks.compact!
   end
 
   def downloaded_tracks
-    @tracks = @user.downloads.map { |d| TrackPresenter.new(d.track, current_user) }
+    @tracks = @user.downloads.map do |d| 
+      TrackPresenter.new(d.track, current_user) if d.track
+    end
+
+    @tracks.compact!
   end
 
   private
