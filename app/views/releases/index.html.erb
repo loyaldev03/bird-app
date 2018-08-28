@@ -22,8 +22,13 @@
   <% end %>
 
   <div class="c-flag"><%= title %></div>
+  
+  <div class="releases-search" style="display: inline-block; vertical-align: top;">
+    <%= image_tag 'icons/icon-search-blue.svg', class: "releases-search-btn toggle-switcher" %>
+    <input type="text" class="releases-search-input toggle-pair">
+  </div>
 
-  <div class="releases-tabs">
+  <div class="releases-tabs toggle-pair">
     <span class="mr-2">sort by:</span>
     <%= link_to "All", releases_path, class: "filter-btn #{active['all']}" %>
 

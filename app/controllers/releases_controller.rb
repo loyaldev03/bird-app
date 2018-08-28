@@ -47,6 +47,10 @@ class ReleasesController < ApplicationController
 
       render 'player/releases' and return
     end
+
+    if current_user && params[:player].blank?
+      redirect_to releases_path(player: true, user_id: current_user.id)
+    end
   end
 
   def set_filters filters
@@ -144,5 +148,9 @@ class ReleasesController < ApplicationController
     #     tracks: release_presenter.tracks.map{|t| t[:id]}.join(','),
     #     current_track: "0:0")
     # end
+  end
+
+  def search
+    @releases = params[:ids].map { |id| Release.find_by_id id }
   end
 end

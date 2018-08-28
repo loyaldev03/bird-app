@@ -317,9 +317,17 @@ li.playlist-nav-subheader {
   overflow: scroll;
   flex-grow: 1;
 
-  .item-with-tongue img {
-    width: 195px;
-    height: 205px;
+  .item-with-tongue {
+
+    .playlist-play-playlist {
+      background-size: 80%;
+      background-position-x: 50%;
+    }
+
+    .item-image {
+      width: 195px;
+      height: 205px;
+    }
   }
 }
 

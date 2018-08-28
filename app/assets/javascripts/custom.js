@@ -185,6 +185,14 @@ $(document).on('turbolinks:load', function() {
     $(this).find('span').toggle()
     .closest('.release-users-block').toggleClass('c-collapsed');
   });
+
+  $('.toggle-switcher').click(function(){
+    var visible = $('.toggle-pair:visible');
+    var hidden = $('.toggle-pair:hidden')
+    visible.hide(100, function(){
+     hidden.show(100);
+    });
+  });
 });
 
 var loadMoreFeed = function(){

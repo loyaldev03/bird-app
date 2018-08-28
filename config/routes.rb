@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   resources :releases, only: [:show, :index]
   get '/releases/:id/download', to: 'releases#download', as: :release_download
   get '/tracks/:id/download', to: 'tracks#download', as: :track_download
-  # get "get_release_tracks/:id", to: "releases#get_tracks", as: "get_release_tracks"
+  get "search_releases", to: "releases#search"
   get "fill_track_title", to: "tracks#fill_track_title"
   get "fill_bottom_player", to: "tracks#fill_bottom_player"
   get 'load_more_releases', to: 'releases#load_more'

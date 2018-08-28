@@ -1,6 +1,8 @@
 $(document).on('turbolinks:load', function() {
+  var app_id = "TOQ4XQOWDP";
+  var search_key = "90f548a9f6bb9108464d081db4c6a29a";
   $('#searchModal').on('shown.bs.modal', function () {
-    var client = algoliasearch("TOQ4XQOWDP", "90f548a9f6bb9108464d081db4c6a29a")
+    var client = algoliasearch(app_id, search_key);
     var tracks = client.initIndex('Track');
     var releases = client.initIndex('Release');//.setSettings({attributesToSnippet: ['text:3','title']});
     var users = client.initIndex('User');
@@ -70,6 +72,29 @@ $(document).on('turbolinks:load', function() {
     
     $('#aa-search-input').focus();
   });
+
+  var search_input = $('.releases-search-input');
+
+  if (search_input.length > 0) {
+    var client = algoliasearch(app_id, search_key);
+    var releases = client.initIndex('Release');
+
+    search_input.bind('input',function(){
+      if (this.value.length > 1) {
+        releases.search(this.value, function(err, content) {
+          var matched_ids = content.hits.map(a => a.objectID);
+          if (matched_ids.length > 0) {
+            $.ajax({
+              url: '/search_releases',
+              dataType: 'script',
+              data: { ids: matched_ids }
+              });
+          }
+        });
+      } else if (this.value.length == 0) {
+        Turbolinks.visit(location.toString());
+      }
+    });
+  }
+  
 });
-
-

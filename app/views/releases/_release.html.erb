@@ -43,7 +43,7 @@
         <%= link_to "Details", release, class: "c-link" %>
       </div>
     </div>
-    <%= image_tag release.avatar.url, class: "item-original-image" %>
+    <%= image_tag release.avatar.url, class: "item-original-image item-image" %>
 
     <% case release.release_type %>
     <% when "exclusive" %>
@@ -54,7 +54,7 @@
       <%= image_tag 'birdhouse.png', class: "item-release-type item-release-type-birdhouse item-original-image" %>
     <% end %>
 
-    <%= image_tag release.avatar.url, class: "item-darken-img"%>
+    <%= image_tag release.avatar.url, class: "item-darken-img item-image"%>
   </div>
   <mark class="t-small"><%= time_ago_in_words( release.release_date ).upcase %> AGO</mark>
 </div>

@@ -121,6 +121,7 @@
     margin-right: 0;
     width: 100px !important;
     height: 100px !important;
+    background-repeat: no-repeat;
     background: asset-data-url("icons/play-big2.svg");
 
     &.playing {
