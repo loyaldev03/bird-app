@@ -3,6 +3,8 @@ $(document).on('turbolinks:load', function() {
     trigger: 'focus'
   });
 
+  $('.select').select2();
+
   $('.start-subscription').click(function(e) {
     e.preventDefault();
     $('#payment-user-info').removeClass('d-none');

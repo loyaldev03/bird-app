@@ -1,0 +1,81 @@
+#payment-form {
+  width: 400px;
+}
+
+.big-blue-number {
+  color: #3ed4e0;
+  font-family: 'Phosphate-Solid';
+  font-size: 60px;
+  float: left;
+  line-height: 40px;
+  margin-right: 30px;
+}
+
+.signup-header {
+  height: 366px;
+  width: calc(100% + 30px);
+  margin: -24px -15px -125px;
+  z-index: 1;
+  overflow: hidden;
+
+  .signup-logo {
+    height: 200px;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: calc(50% - 125px);
+    transform: translate(-50%,-50%);
+  }
+}
+
+.signup-panel {
+  max-width: 95%;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+  padding: 40px;
+
+  h1 {
+    color: #393939;
+    font-family: 'Phosphate-Solid';
+    font-size: 31px;
+    line-height: 20px;
+    display: inline-block;
+    margin-bottom: 0;
+  }
+}
+
+.form-signin {
+  margin-top: 20px;
+
+  .required:after {
+    content: ' (*Required)';
+    color: #ff0000;
+  }
+
+  .form-control {
+    height: 40px;
+    border-radius: 3px;
+    background-color: #e2e2e2;
+    border: none;
+  }
+
+  .select2 {
+    display: block;
+
+    .select2-selection {
+      outline: none;
+      background-color: #e2e2e2;
+      border: none;
+      height: 40px;
+    }
+
+    .select2-selection__arrow {
+      height: 40px;
+    }
+
+    .select2-selection__rendered {
+      line-height: 40px;
+    }
+  }
+}

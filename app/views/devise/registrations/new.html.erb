@@ -1,16 +1,20 @@
-<h1 class="h3 mt-4 mb-4 text-center font-weight-bold ">WELCOME TO THE BIRDFEED</h1>
+<div class="signup-header">
+  <%= image_tag '/images/birdfeed-header.jpg', class: "h-100" %>
+  <%= image_tag 'signup-logo.png', class: "signup-logo" %>
+</div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
-    html: { class: 'form-signin' } ) do |f| %>
-  
-  <div class="text-center mb-5">
-    <h2>LET’S GET STARTED</h2>
-    <p>Enter main forms</p>
-  </div>
+<div class="signup-panel c-panel bg-white">
+  <div class="big-blue-number">1.</div>
+  <h1>LET’S GET STARTED.</h1>
+  <div>First, we’re going to need some info.</div>
 
-  <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
+      html: { class: 'form-signin' } ) do |f| %>
+    
+    <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
 
-  <%= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block mb-3" %>
-  
-  <%= render "devise/shared/links" %>
-<% end %>
+    <%#= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block mb-3" %>
+    
+    <%= render "devise/shared/links" %>
+  <% end %>
+</div>
