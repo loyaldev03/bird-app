@@ -194,7 +194,8 @@ class Track < ApplicationRecord
     return true if user.vip?
     return false unless release.published?
     return false unless user.subscription_started_at
-    return false if user.subscription_length == 'monthly_7'
+    return false if user.subscription_length == 'monthly_6_25'
+    return false if user.subscription_length == 'yearly_75'
     return true if release.available_to_all?
     return true if release.published_at >= user.subscription_started_at - 3.months
     false

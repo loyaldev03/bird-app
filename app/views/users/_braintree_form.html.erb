@@ -1,64 +1,94 @@
 <%= form_tag callbacks_braintree_nonce_path, id: "subscribe-form" do |f| %>
 
-  <div class="form-group text-muted">
-    <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
-      <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
-    </a>
-  </div>
+  <div id="step-2" class="signup-panel c-panel bg-white">
+    <div class="big-blue-number">2.</div>
+    <div class="d-flex justify-content-between">
+      <h1>MEMBERSHIP LEVEL</h1>
+      <div class="plan-period-switcher">
+        <span class="switcher-btn switcher-annualy">BILLED ANNUALY</span>
+        <span class="switcher <%= 'monthly' if current_user.subscription_length == 'monthly_6_25' || current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'monthly_old' %>"></span>
+        <span class="switcher-btn switcher-monthly">BILLED MONTHLY</span>
+      </div>
+      <%= link_to 'What’s the difference?', "#", class: "font-weight-bold" %>
+    </div>
+    <div>How do you roll?</div>
+    <div class="plan-blocks">
+      <div class="free-plan plan-block <%= 'active' unless current_user.braintree_subscription %>" data-type="free">
+        <div class="text-1">CHIRP</div>
+        <div class="text-2">$0<span>/free</span></div>
+      </div>
 
-  <div class="form-group" id="payment-form">
-  </div>
+      <div class="insider-plan plan-block <%= 'active' if current_user.subscription_length == 'monthly_6_25' || current_user.subscription_length == 'yearly_75' %>" data-type="insider">
+        <div class="text-1">INSIDER</div>
+        <div class="text-2">$6.25<span>/month</span></div>
+        <div class="text-3">($75 billed Annualy)</div>
+      </div>
 
-  <% if !current_user.braintree_subscription %>
-    <div class="form-group">
-      <%= radio_button_tag(:subscription, 'monthly_7', checked: true) %>
-      <%= label_tag(:subscription_monthly_7, 'Monthly - $6.99/month - listen tracks') %>
-      <br>
-      <%= radio_button_tag(:subscription, 'monthly_10') %>
-      <%= label_tag(:subscription_monthly_10, 'Monthly - $9.99/month - plus download 10 tracks per month') %>
-      <br>
-      <%= radio_button_tag(:subscription, 'yearly_100') %>
-      <%= label_tag(:subscription_yearly_100, 'Yearly - $99.00/year - unlimited access to the tracks') %>
-      <br>
+      <div class="vib-plan plan-block <%= 'active' if current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'yearly_99' || current_user.subscription_length == 'monthly_old' || current_user.subscription_length == 'yearly_old' %>" data-type="vib">
+        <div class="text-1">VIB</div>
+        <div class="text-2">$8.25<span>/month</span></div>
+        <div class="text-3">($99 billed Annualy))</div>
+      </div>
+    </div>
+
+    <div class="text-center mt-2">
       All plans include a 30 day trial. You will not be billed if you cancel before it ends.
     </div>
-  <% end %>
 
-  <div class="form-group">
-    <% if current_user.braintree_subscription %>
-      <%= submit_tag 'Update Payment Method', class: 'btn btn-default', 
-          data: { disable_with: false } %>
-    <% else %>
-      <%= submit_tag 'Start Subscription', class: 'btn btn-default', 
-          data: { disable_with: false } %>
-    <% end %>
+        <div class="d-none">
+          <%= label_tag(:subscription_free, 'Free', class: "sr-only") %>
+          <%= radio_button_tag(:subscription, 'free', false, 
+              data: { type: 'free' },
+              checked: !current_user.braintree_subscription) %>
+
+          <%= label_tag(:subscription_monthly_6_25, 'Monthly - $6.25/month - listen tracks', class: "sr-only") %>
+          <%= radio_button_tag(:subscription, 'monthly_6_25', false, 
+              data: { period: 'monthly', type: 'insider' },
+              checked: current_user.subscription_length == 'monthly_6_25') %>
+
+          <%= label_tag(:subscription_yearly_75, 'Yearly - $75/year - listen tracks', class: "sr-only") %>
+          <%= radio_button_tag(:subscription, 'yearly_75', false, 
+              data: { period: 'yearly', type: 'insider' },
+              checked: current_user.subscription_length == 'yearly_75') %>
+
+          <%= label_tag(:subscription_monthly_8_25, 'Monthly - $8.25/month - plus download 10 tracks per month', class: "sr-only") %>
+          <%= radio_button_tag(:subscription, 'monthly_8_25', false, 
+              data: { period: 'monthly', type: 'vib' },
+              checked: current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'monthly_old') %>
+
+          <%= label_tag(:subscription_yearly_99, 'Yearly - $99.00/year - plus download 10 tracks per month', class: "sr-only") %>
+          <%= radio_button_tag(:subscription, 'yearly_99', false, 
+              data: { period: 'yearly', type: 'vib' },
+              checked: current_user.subscription_length == 'yearly_99' || current_user.subscription_length == 'yearly_old' ) %>
+        </div>
   </div>
+
+  <div id="step-3" class="signup-panel c-panel bg-white">
+    <div class="big-blue-number">3.</div>
+    <h1>CHECKOUT</h1>
+    <div>You’re close, we can <br>hear the birds calling!</div>
+    <%= render 'devise/shared/billing_info' %>
+    <div id="payment-user-info" class="mt-2"></div>
+
+    <div class="form-group text-muted">
+      <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
+        <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
+      </a>
+    </div>
+    <div class="form-group" id="payment-form">
+    </div>
+
+    <div class="form-group">
+      <% if current_user.braintree_subscription %>
+        <%= submit_tag 'Update Payment Method', class: 'btn btn-default', 
+            data: { disable_with: false } %>
+      <% else %>
+        <%= submit_tag 'Start Subscription', class: 'btn btn-default', 
+            data: { disable_with: false } %>
+      <% end %>
+    </div>
+  </div>
+
+
+
 <% end %>
-
-<script>
-  // setTimeout(function(){
-    // Honeybadger.wrap(function(){
-      var clientToken = "<%= Braintree::ClientToken.generate %>";
-
-      braintree.setup(clientToken, "dropin", {
-        container: "payment-form",
-        paypal: {
-          button: {
-            type: "checkout"
-          }
-        },
-        onError: function(payload) {
-          // Honeybadger.setContext({
-          //   user_id: <%#= current_user ? current_user.id : 'none' %>,
-          //   payload: payload
-          // });
-
-          // Honeybadger.notify({
-          //   message: "Billing Form Incomplete",
-          //   name: "BillingValidation"
-          // });
-        }
-      });
-    // })();
-  // },500);
-</script>

@@ -1,4 +1,22 @@
-<div class="tariff text-center">
+<div class="signup-header">
+  <%= image_tag '/images/birdfeed-header.jpg', class: "h-100" %>
+  <%= image_tag 'signup-logo.png', class: "signup-logo" %>
+</div>
+
+<div class="signup-panel c-panel bg-white">
+  <div class="big-blue-number">1.</div>
+  <h1>LET’S GET STARTED.</h1>
+  <div>First, we’re going to need some info.</div>
+
+  <%= form_for(current_user, as: resource_name, url: registration_path(current_user), 
+        html: { class: 'form-signin' } ) do |f| %>
+    <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
+  <% end %>
+</div>
+
+<%= render partial:  'users/braintree_form', locals: { new_subscription: params[:new_subscription] || true } %>
+
+<!-- <div class="tariff text-center">
   <%= image_tag 'birdfeed-pay.png' %>
   
   <div class="row mx-lg-4 mt-2">
@@ -88,13 +106,4 @@
       You will keep the feeds you follow although you won’t be able to see them. 
     </p>
   </div>
-</div>
-
-<%= render 'devise/shared/billing_info' %>
-
-<div id="payment-user-info" class="d-none mt-2">
-
-  <%= render partial:  'users/braintree_form', locals: { new_subscription: params[:new_subscription] || true } %>
-
-</div>
-
+</div> -->

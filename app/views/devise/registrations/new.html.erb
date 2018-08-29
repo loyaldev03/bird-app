@@ -9,12 +9,8 @@
   <div>First, we’re going to need some info.</div>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
-      html: { class: 'form-signin' } ) do |f| %>
-    
+        html: { class: 'form-signin' } ) do |f| %>
     <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
-
-    <%#= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block mb-3" %>
-    
     <%= render "devise/shared/links" %>
   <% end %>
 </div>

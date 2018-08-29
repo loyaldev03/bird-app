@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def after_sign_up_path_for(resource)
-    choose_profile_path
+    choose_profile_path(anchor: 'step-2')
   end
 
   def update_resource(resource, params)

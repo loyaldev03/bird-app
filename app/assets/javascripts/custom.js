@@ -5,16 +5,86 @@ $(document).on('turbolinks:load', function() {
 
   $('.select').select2();
 
-  $('.start-subscription').click(function(e) {
-    e.preventDefault();
-    $('#payment-user-info').removeClass('d-none');
-    $("html, body").animate({ scrollTop: $("#billing-information").offset().top - 120 }, 500);
-    if ($(this).hasClass('pro')) {
-      $('#subscription_monthly_10').prop('checked', true);
-    } else {
-      $('#subscription_monthly_7').prop('checked', true);
+  // $('.start-subscription').click(function(e) {
+  //   e.preventDefault();
+  //   $('#payment-user-info').removeClass('d-none');
+  //   $("html, body").animate({ scrollTop: $("#billing-information").offset().top - 120 }, 500);
+  //   if ($(this).hasClass('pro')) {
+  //     $('#subscription_monthly_8_25').prop('checked', true);
+  //   } else {
+  //     $('#subscription_monthly_6_25').prop('checked', true);
+  //   }
+  // });
+
+  $("input:radio[name='subscription']").change(function(){
+    switch($(this).data('type')) {
+        case 'free':
+            $('.plan-block').removeClass('active');
+            $('.free-plan').addClass('active');
+            break;
+        case 'insider':
+            $('.plan-block').removeClass('active');
+            $('.insider-plan').addClass('active');
+            break;
+        case 'vib':
+            $('.plan-block').removeClass('active');
+            $('.vib-plan').addClass('active');
+            break;
     }
   });
+
+  $('.plan-block').click(function(){
+    $('.plan-block').removeClass('active');
+    $(this).addClass('active');
+    var type = $(this).data('type');
+    var period = $('.switcher').prop('classList').contains('monthly') ? "monthly" : "yearly";
+
+    $("input:radio[name='subscription']").prop('checked',false);
+
+    if (type == 'free') {
+      $("input[data-type='free']").prop('checked',true);
+    } else {
+      $("input[data-type='"+type+"'][data-period='"+period+"']").prop('checked',true);
+    }
+  });
+
+  $('.switcher').click(function(){
+    switchPlanPeriod(false, this);
+  });
+
+  $('.switcher-annualy').click(function(){
+    switchPlanPeriod('annualy',this);
+  });
+
+  $('.switcher-monthly').click(function(){
+    switchPlanPeriod('monthly',this);
+  });
+
+  function switchPlanPeriod(to=false, self) {
+    if (to && to == 'monthly') {
+      $(self).siblings('.switcher').addClass('monthly');
+      changePeriod('monthly');
+    } else if (to && to == 'annualy') {
+      $(self).siblings('.switcher').removeClass('monthly');
+      changePeriod('yearly');
+    } else {
+      $(self).toggleClass('monthly');
+      changePeriod();
+    }
+
+    function changePeriod(to=null) {
+      var current = $("input:radio[name='subscription']:checked");
+      if (current.data('type') == 'free') return;
+
+      if (to) {
+        current.prop('checked',false);
+        $("input[data-type='"+current.data('type')+"'][data-period='"+to+"']").prop('checked',true);
+      } else {
+        current.prop('checked',false);
+        $("input[data-type='"+current.data('type')+"']").not(current).prop('checked',true);
+      }
+    }
+  }
 
   const notify = (selector) => {
     let obj = $(selector);
@@ -165,19 +235,19 @@ $(document).on('turbolinks:load', function() {
     return false;
   });
 
-  $('.update-cc').click(function(){
-    $('#payment-user-info').removeClass('d-none');
-    braintree.setup(clientToken, "dropin", {
-      container: "payment-form",
-      paypal: {
-        button: {
-          type: "checkout"
-        }
-      },
-      onError: function(payload) {
-      }
-    });
-  });
+  // $('.update-cc').click(function(){
+  //   $('#payment-user-info').removeClass('d-none');
+  //   braintree.setup(clientToken, "dropin", {
+  //     container: "payment-form",
+  //     paypal: {
+  //       button: {
+  //         type: "checkout"
+  //       }
+  //     },
+  //     onError: function(payload) {
+  //     }
+  //   });
+  // });
 
   $('.btn-disabled').click(function(e){
     e.preventDefault();

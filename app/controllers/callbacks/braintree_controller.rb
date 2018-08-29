@@ -34,9 +34,9 @@ class Callbacks::BraintreeController < ApplicationController
         current_user.increment!(:download_credits, params[:credits_count].to_i)
 
         if payment_method.present?
-          flash[:notice] = "#{params[:credits_count]} redits was added"
+          flash[:notice] = "#{params[:credits_count]} credits was added"
         else
-          flash[:notice] = "Payment method updated and #{params[:credits_count]} credits added"
+          flash[:notice] = "Payment method was updated and #{params[:credits_count]} credits was added"
         end
       else
         flash[:error] = 'Error when adding credits. If unexpected, contact support.'
@@ -96,13 +96,16 @@ class Callbacks::BraintreeController < ApplicationController
         redirect_to choose_profile_path and return
       end
     else
-      if params[:subscription] == 'yearly_100'
-        plan_id = ENV['BRAINTREE_YEARLY_PLAN_100_ID']
-      elsif params[:subscription] == 'monthly_7'
-        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_7_ID']
-      elsif params[:subscription] == 'monthly_10'
+      if params[:subscription] == 'yearly_99'
+        plan_id = ENV['BRAINTREE_YEARLY_PLAN_99_ID']
         download_credits = 30
-        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_10_ID']  
+      elsif params[:subscription] == 'yearly_75'
+        plan_id = ENV['BRAINTREE_YEARLY_PLAN_75_ID']
+      elsif params[:subscription] == 'monthly_6_25'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_6_25_ID']
+      elsif params[:subscription] == 'monthly_8_25'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_8_25_ID']  
+        download_credits = 30
       else
         throw "Couldn't find plan for subscription #{params[:subscription]}"
       end

@@ -1,0 +1,17 @@
+$(document).on('turbolinks:load', function(){
+  if ($('#payment-form').length == 1 && $('#payment-form').children('iframe').length == 0) {
+    var clientToken = "<%= Braintree::ClientToken.generate %>";
+
+    braintree.setup(clientToken, "dropin", {
+      container: "payment-form",
+      paypal: {
+        button: {
+          type: "checkout"
+        }
+      },
+      onError: function(payload) {
+        console.log(payload);
+      }
+    });
+  }
+});

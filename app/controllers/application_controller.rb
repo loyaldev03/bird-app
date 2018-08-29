@@ -57,7 +57,8 @@ class ApplicationController < ActionController::Base
       end
 
       if current_user.braintree_subscription_expires_at && 
-          (current_user.subscription_length == 'monthly_10' ||
+          (current_user.subscription_length == 'monthly_8_25' ||
+           current_user.subscription_length == 'yearly_99' ||
            current_user.subscription_length == 'monthly_old')
         @credits = current_user.download_credits
       else

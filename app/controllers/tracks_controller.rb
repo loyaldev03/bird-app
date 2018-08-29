@@ -76,7 +76,8 @@ class TracksController < ApplicationController
     end
 
     #special conditions for users from previous version of site
-    if current_user.subscription_length == 'monthly_10' ||
+    if current_user.subscription_length == 'monthly_8_25' ||
+         current_user.subscription_length == 'yearly_99' ||
          current_user.subscription_length == 'monthly_old'
 
       if current_user.download_credits < 1
