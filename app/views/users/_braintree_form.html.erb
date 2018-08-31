@@ -13,7 +13,7 @@
     </div>
     <div>How do you roll?</div>
     <div class="plan-blocks">
-      <div class="free-plan plan-block <%= 'active' unless current_user.braintree_subscription %>" data-type="free">
+      <div class="free-plan plan-block <%= 'active' unless current_user.braintree_subscription %>" data-type="chirp">
         <div class="text-1">CHIRP</div>
         <div class="text-2">$0<span>/free</span></div>
       </div>
@@ -27,68 +27,125 @@
       <div class="vib-plan plan-block <%= 'active' if current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'yearly_99' || current_user.subscription_length == 'monthly_old' || current_user.subscription_length == 'yearly_old' %>" data-type="vib">
         <div class="text-1">VIB</div>
         <div class="text-2">$8.25<span>/month</span></div>
-        <div class="text-3">($99 billed Annualy))</div>
+        <div class="text-3">($99 billed Annualy)</div>
       </div>
     </div>
 
-    <div class="text-center mt-2">
+    <div class="text-center mt-2 mb-4">
       All plans include a 30 day trial. You will not be billed if you cancel before it ends.
     </div>
 
-        <div class="d-none">
-          <%= label_tag(:subscription_free, 'Free', class: "sr-only") %>
-          <%= radio_button_tag(:subscription, 'free', false, 
-              data: { type: 'free' },
-              checked: !current_user.braintree_subscription) %>
+    <a href="#step-1" class="btn c-btn-blue btn-wide">back</a>
+    <a href="#step-3" class="btn c-btn-red btn-wide">next:checkout</a>
 
-          <%= label_tag(:subscription_monthly_6_25, 'Monthly - $6.25/month - listen tracks', class: "sr-only") %>
-          <%= radio_button_tag(:subscription, 'monthly_6_25', false, 
-              data: { period: 'monthly', type: 'insider' },
-              checked: current_user.subscription_length == 'monthly_6_25') %>
+    <div class="d-none">
+      <%= label_tag(:subscription_free, 'Free', class: "sr-only") %>
+      <%= radio_button_tag(:subscription, 'free', false, 
+          data: { period: 'free', type: 'chirp', cost: 'free' },
+          checked: !current_user.braintree_subscription) %>
 
-          <%= label_tag(:subscription_yearly_75, 'Yearly - $75/year - listen tracks', class: "sr-only") %>
-          <%= radio_button_tag(:subscription, 'yearly_75', false, 
-              data: { period: 'yearly', type: 'insider' },
-              checked: current_user.subscription_length == 'yearly_75') %>
+      <%= label_tag(:subscription_monthly_6_25, 'Monthly - $6.25/month - listen tracks', class: "sr-only") %>
+      <%= radio_button_tag(:subscription, 'monthly_6_25', false, 
+          data: { period: 'monthly', type: 'insider', cost: '$6.25' },
+          checked: current_user.subscription_length == 'monthly_6_25') %>
 
-          <%= label_tag(:subscription_monthly_8_25, 'Monthly - $8.25/month - plus download 10 tracks per month', class: "sr-only") %>
-          <%= radio_button_tag(:subscription, 'monthly_8_25', false, 
-              data: { period: 'monthly', type: 'vib' },
-              checked: current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'monthly_old') %>
+      <%= label_tag(:subscription_yearly_75, 'Yearly - $75/year - listen tracks', class: "sr-only") %>
+      <%= radio_button_tag(:subscription, 'yearly_75', false, 
+          data: { period: 'yearly', type: 'insider', cost: '$75' },
+          checked: current_user.subscription_length == 'yearly_75') %>
 
-          <%= label_tag(:subscription_yearly_99, 'Yearly - $99.00/year - plus download 10 tracks per month', class: "sr-only") %>
-          <%= radio_button_tag(:subscription, 'yearly_99', false, 
-              data: { period: 'yearly', type: 'vib' },
-              checked: current_user.subscription_length == 'yearly_99' || current_user.subscription_length == 'yearly_old' ) %>
-        </div>
+      <%= label_tag(:subscription_monthly_8_25, 'Monthly - $8.25/month - plus download 10 tracks per month', class: "sr-only") %>
+      <%= radio_button_tag(:subscription, 'monthly_8_25', false, 
+          data: { period: 'monthly', type: 'vib', cost: '$8.25' },
+          checked: current_user.subscription_length == 'monthly_8_25' || current_user.subscription_length == 'monthly_old') %>
+
+      <%= label_tag(:subscription_yearly_99, 'Yearly - $99.00/year - plus download 10 tracks per month', class: "sr-only") %>
+      <%= radio_button_tag(:subscription, 'yearly_99', false, 
+          data: { period: 'yearly', type: 'vib', cost: '$99' },
+          checked: current_user.subscription_length == 'yearly_99' || current_user.subscription_length == 'yearly_old' ) %>
+    </div>
   </div>
 
   <div id="step-3" class="signup-panel c-panel bg-white">
     <div class="big-blue-number">3.</div>
     <h1>CHECKOUT</h1>
+    <span class="selected-plan">
+      You Are registering as
+      <span class="selected-type">Chirp</span> / 
+      <span class="selected-period">Free</span>
+    </span>
     <div>You’re close, we can <br>hear the birds calling!</div>
-    <%= render 'devise/shared/billing_info' %>
-    <div id="payment-user-info" class="mt-2"></div>
 
-    <div class="form-group text-muted">
-      <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
-        <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
-      </a>
-    </div>
-    <div class="form-group" id="payment-form">
-    </div>
+    <div class="row mt-3">
+      <div class="col-lg-8">
+        <div class="signup-payed" style="display: none;">
+          <div class="form-group" id="payment-form"></div>
 
-    <div class="form-group">
-      <% if current_user.braintree_subscription %>
-        <%= submit_tag 'Update Payment Method', class: 'btn btn-default', 
-            data: { disable_with: false } %>
-      <% else %>
-        <%= submit_tag 'Start Subscription', class: 'btn btn-default', 
-            data: { disable_with: false } %>
-      <% end %>
+          <div class="row">
+            <div class="col-lg-6">
+              <input type="checkbox" name="terms-and-conditions" id="terms-and-conditions" required="required">
+              <label for="terms-and-conditions" class="mb-4 ml-2">
+                I agree with the
+                <%= link_to "Terms and Conditions", "#", class: "font-weight-bold" %>
+              </label>
+              <br>
+              <input type="checkbox" name="code-of-conduct" id="code-of-conduct" required="required">
+              <label for="code-of-conduct" class="mb-4 ml-2">
+                I agree with the
+                <%= link_to "Code of Conduct", "#", class: "font-weight-bold" %>
+              </label>
+
+              <a href="#step-1" class="btn c-btn-blue btn-wide">back</a>
+              <% if current_user.braintree_subscription %>
+                <%= submit_tag 'Update Payment Method', class: 'btn btn-default', 
+                    data: { disable_with: false } %>
+              <% else %>
+                <%= submit_tag 'join now', class: 'btn c-btn-red btn-wide', 
+                    data: { disable_with: false } %>
+              <% end %>
+            </div>
+            
+            <div class="col-lg-6">
+              <label for="promo-code">BirdFeed Promo Code</label>
+              <input type="text" id="promo-code" class="form-control mb-3">
+
+              <div class="form-group text-muted" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);">
+                <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
+                  <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="signup-free">
+            <input type="checkbox" name="free-terms-and-conditions" id="free-terms-and-conditions">
+            <label for="free-terms-and-conditions" class="my-4 ml-2">
+              I agree with the
+              <%= link_to "Terms and Conditions", "#", class: "font-weight-bold" %>
+            </label>
+            <br>
+            <input type="checkbox" name="free-code-of-conduct" id="free-code-of-conduct">
+            <label for="free-code-of-conduct" class="mb-4 ml-2">
+              I agree with the
+              <%= link_to "Code of Conduct", "#", class: "font-weight-bold" %>
+            </label>
+            <br>
+            <a href="#step-2" class="btn c-btn-blue btn-wide mt-4">back</a>
+            <button class="btn c-btn-red btn-wide signup-free-btn mt-4">join now</button>
+        </div>
+      </div>
+
+      <div class="col-lg-1 text-center">
+        <div class="divider"></div>
+      </div>
+      
+      <div class="col-lg-3 signup-billing-block">
+        <div class="text-1">Todays payment:</div>
+        <span class="signup-billing-cost">FREE</span>
+        <div class="text-2">Your next payment will be on</div>
+        <span class="signup-billing-time">never</span>
+      </div>
     </div>
   </div>
-
-
-
 <% end %>

@@ -480,6 +480,7 @@ class User < ApplicationRecord
   def cancel_braintree_subscription
     Braintree::Subscription.cancel(braintree_subscription_id) if braintree_subscription
     update!(
+      subscription_length: 0,
       subscription_started_at: nil,
       braintree_customer_id: nil,
       braintree_subscription_id: nil,

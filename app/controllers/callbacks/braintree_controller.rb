@@ -63,6 +63,8 @@ class Callbacks::BraintreeController < ApplicationController
       redirect_to choose_profile_path and return
     end
 
+    current_user.update_attributes(terms_and_conditions: true, code_of_conduct: true)
+
     # Create or find customer
     unless current_user.braintree_customer
       # Create Customer and store their Payment Method
@@ -96,6 +98,7 @@ class Callbacks::BraintreeController < ApplicationController
         redirect_to choose_profile_path and return
       end
     else
+      download_credits = 0
       if params[:subscription] == 'yearly_99'
         plan_id = ENV['BRAINTREE_YEARLY_PLAN_99_ID']
         download_credits = 30
@@ -116,7 +119,7 @@ class Callbacks::BraintreeController < ApplicationController
       )
 
       if result.success?
-        current_user.update!(
+        current_user.update_attributes(
           braintree_subscription_id: result.subscription.id,
           subscription_started_at: Date.today,
           subscription_length: params[:subscription],
@@ -125,9 +128,9 @@ class Callbacks::BraintreeController < ApplicationController
           # subscribed: true,
 
         if result.subscription.trial_period
-          current_user.update!(braintree_subscription_expires_at: result.subscription.next_billing_date.to_date - 1)
+          current_user.update_attributes(braintree_subscription_expires_at: result.subscription.next_billing_date.to_date - 1)
         else
-          current_user.update!(braintree_subscription_expires_at: result.subscription.paid_through_date)
+          current_user.update_attributes(braintree_subscription_expires_at: result.subscription.paid_through_date)
         end
       else
         flash[:error] = 'Failed to create new Subscription record. If unexpected, contact support.'
@@ -148,7 +151,13 @@ class Callbacks::BraintreeController < ApplicationController
       # payment_method = 'undetermined'
     end
 
-    redirect_to root_path(event: 'new_subscription', payment: payment_method, type: params[:subscription]) and return
+    if params[:subscription] == 'yearly_99' || params[:subscription] == 'monthly_8_25'
+      member = 'vib member'
+    elsif params[:subscription] == 'yearly_75' || params[:subscription] == 'monthly_6_25'
+      member = 'insider'
+    end
+
+    redirect_to success_signup_path(member: member ) and return
   end
 
   def analytics_notify

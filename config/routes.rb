@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get "leaderboard", to: "users#leaderboard"
   get "choose_profile", to: "users#choose_profile"
   get "get_more_credits", to: "users#get_more_credits"
+  get "success_signup", to: "users#success_signup"
+  get "terms_and_conduct", to: "users#terms_and_conduct"
   delete "cancel_subscription", to: "users#cancel_subscription"
   get "home", to: "users#home"
 

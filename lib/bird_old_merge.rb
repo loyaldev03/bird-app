@@ -143,6 +143,8 @@ class BirdOldMerge
           address_line_1 as address_street,
           address_line_2 as address_quarter,
           last_name,
+          TRUE as terms_and_conditions,
+          TRUE as code_of_conduct,
 
 
           id as old_id

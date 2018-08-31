@@ -41,14 +41,16 @@
     <a href="#" class="change-credits credits-info ml-2">Change</a>
   </div>
 
+  <% braintree_subscription = current_user.braintree_subscription %>
+
   <p> Subscription Type:
     <% if current_user.subscription_type == 'member' %>
-      <% if current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
-            current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_7_ID'] ||
-            current_user.braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_10_ID'] %>
+      <% if braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
+            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_7_ID'] ||
+            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_10_ID'] %>
         Monthly
-      <% elsif current_user.braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
-               current_user.braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_100_ID'] %>
+      <% elsif braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
+               braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_100_ID'] %>
         Annual
       <% end %>
     <% end %>
@@ -56,13 +58,14 @@
   </p>
 
   <p> Next Bill Date:
-    <%= current_user.braintree_subscription.next_billing_date %>
-    for $<%= current_user.braintree_subscription.next_bill_amount %>
+    <%= braintree_subscription.next_billing_date %>
+    for $<%= braintree_subscription.next_bill_amount %>
   </p>
   <p> Card:
-    <img src="<%= current_user.braintree_customer.payment_methods.first.image_url %>" width=37 height=25>
-    <% if current_user.braintree_customer.payment_methods.first.respond_to?(:last_4) %>
-      ending in <%= current_user.braintree_customer.payment_methods.first.last_4 %> <br>
+    <% braintree_customer = current_user.braintree_customer %>
+    <img src="<%= braintree_customer.payment_methods.first.image_url %>" width=37 height=25>
+    <% if braintree_customer.payment_methods.first.respond_to?(:last_4) %>
+      ending in <%= braintree_customer.payment_methods.first.last_4 %> <br>
       <button class="btn btn-default update-cc mt-2">Update Credit Card</button>
     <% end %>
   </p>
@@ -73,16 +76,15 @@
   <%= form_tag callbacks_braintree_nonce_path, id: "subscribe-form" do |f| %>
     <%= hidden_field_tag :credits_count %>
 
-    <div id="payment-user-info" class="d-none">
-      <div class="form-group text-muted">
-        <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
-          <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
-        </a>
+    <%# unless current_user.braintree_subscription %>
+      <div id="payment-user-info" class="d-none">
+        <div class="form-group text-muted">
+          <a href="https://www.braintreegateway.com/merchants/<%= ENV['BRAINTREE_MERCHANT_ID'] %>/verified" target="_blank">
+            <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-light.png" width="280px" height ="44px" border="0"/>
+          </a>
+        </div>
       </div>
-
-      <div class="form-group" id="payment-form">
-      </div>
-    </div>
+    <%# end %>
 
     <%= submit_tag 'Purchase', class: 'btn c-btn-blue' %>
   <% end %>

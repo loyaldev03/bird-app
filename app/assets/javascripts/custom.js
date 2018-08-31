@@ -5,48 +5,51 @@ $(document).on('turbolinks:load', function() {
 
   $('.select').select2();
 
-  // $('.start-subscription').click(function(e) {
-  //   e.preventDefault();
-  //   $('#payment-user-info').removeClass('d-none');
-  //   $("html, body").animate({ scrollTop: $("#billing-information").offset().top - 120 }, 500);
-  //   if ($(this).hasClass('pro')) {
-  //     $('#subscription_monthly_8_25').prop('checked', true);
-  //   } else {
-  //     $('#subscription_monthly_6_25').prop('checked', true);
-  //   }
-  // });
-
-  $("input:radio[name='subscription']").change(function(){
-    switch($(this).data('type')) {
-        case 'free':
-            $('.plan-block').removeClass('active');
-            $('.free-plan').addClass('active');
-            break;
-        case 'insider':
-            $('.plan-block').removeClass('active');
-            $('.insider-plan').addClass('active');
-            break;
-        case 'vib':
-            $('.plan-block').removeClass('active');
-            $('.vib-plan').addClass('active');
-            break;
-    }
-  });
-
   $('.plan-block').click(function(){
     $('.plan-block').removeClass('active');
     $(this).addClass('active');
     var type = $(this).data('type');
     var period = $('.switcher').prop('classList').contains('monthly') ? "monthly" : "yearly";
+    $('.selected-type').text(type);
 
     $("input:radio[name='subscription']").prop('checked',false);
 
-    if (type == 'free') {
-      $("input[data-type='free']").prop('checked',true);
+    if (type == 'chirp') {
+      $("input[data-type='chirp']").prop('checked',true);
+      $('.selected-period').text('free');
+      $('.signup-billing-cost').text('free');
+      $('.signup-billing-time').text('never');
+      $('.signup-payed').hide();
+      $('.signup-free').show();
     } else {
-      $("input[data-type='"+type+"'][data-period='"+period+"']").prop('checked',true);
+      var radio_btn = $("input[data-type='"+type+"'][data-period='"+period+"']");
+      radio_btn.prop('checked',true);
+      $('.selected-period').text(period);
+      $('.signup-billing-cost').text(radio_btn.data('cost'));
+      $('.signup-billing-time').text(thirtyDaysFromNow());
+      $('.signup-payed').show();
+      $('.signup-free').hide();
     }
   });
+
+  $('.signup-free-btn').click(function(e){
+    e.preventDefault();
+    var terms = $('#free-terms-and-conditions');
+    var conduct = $('#free-code-of-conduct');
+
+    if (terms.prop("checked") && conduct.prop("checked")) {
+      $.ajax('/terms_and_conduct');
+      window.location.replace('/success_signup');
+    } else {
+      terms.siblings('label').find('a').css({'background-color':'pink'});
+      conduct.siblings('label').find('a').css({'background-color':'pink'});
+    }
+  });
+
+  function thirtyDaysFromNow() {
+    var now = Date.now();
+    return new Date(now + 30*24*60*60*1000).toLocaleDateString();
+  }
 
   $('.switcher').click(function(){
     switchPlanPeriod(false, this);
@@ -74,14 +77,21 @@ $(document).on('turbolinks:load', function() {
 
     function changePeriod(to=null) {
       var current = $("input:radio[name='subscription']:checked");
-      if (current.data('type') == 'free') return;
+      var type = current.data('type');
+      if (type == 'chirp') return;
 
       if (to) {
         current.prop('checked',false);
-        $("input[data-type='"+current.data('type')+"'][data-period='"+to+"']").prop('checked',true);
+        var other = $("input[data-type='"+  type +"'][data-period='"+to+"']");
+        other.prop('checked',true);
+        $('.selected-period').text(to);
+        $('.signup-billing-cost').text(other.data('cost'));
       } else {
         current.prop('checked',false);
-        $("input[data-type='"+current.data('type')+"']").not(current).prop('checked',true);
+        var other = $("input[data-type='"+ type +"']").not(current);
+        other.prop('checked',true);
+        $('.selected-period').text(other.data('period'));
+        $('.signup-billing-cost').text(other.data('cost'));
       }
     }
   }
@@ -235,19 +245,20 @@ $(document).on('turbolinks:load', function() {
     return false;
   });
 
-  // $('.update-cc').click(function(){
-  //   $('#payment-user-info').removeClass('d-none');
-  //   braintree.setup(clientToken, "dropin", {
-  //     container: "payment-form",
-  //     paypal: {
-  //       button: {
-  //         type: "checkout"
-  //       }
-  //     },
-  //     onError: function(payload) {
-  //     }
-  //   });
-  // });
+  $('.update-cc').click(function(){
+    $('#payment-user-info').removeClass('d-none')
+        .append('<div class="form-group" id="payment-form"></div>');
+    braintree.setup(clientToken, "dropin", {
+      container: "payment-form",
+      paypal: {
+        button: {
+          type: "checkout"
+        }
+      },
+      onError: function(payload) {
+      }
+    });
+  });
 
   $('.btn-disabled').click(function(e){
     e.preventDefault();

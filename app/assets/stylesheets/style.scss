@@ -13,7 +13,7 @@
 }
 
 @mixin btn($b-color,$t-color,$a-color) {
-  font-size: 10px;
+  font-size: 13px;
   color: $t-color;
   background-color: $b-color;
   border-radius: 6px;
@@ -21,7 +21,8 @@
   border: none;
   cursor: pointer;
   font-family: 'Phosphate-Solid';
-  letter-spacing: 0.45px;
+  letter-spacing: 0.58px;
+  line-height: 17px;
 
   &.btn-disabled:hover {
     color: $t-color;
@@ -138,10 +139,6 @@ strong {
 }
 .c-btn-red {
   @include btn(#ff7272,white,darken(#ff7272, 5));
-  font-family: 'Phosphate-Solid';
-  font-size: 13px;
-  letter-spacing: 0.58px;
-  padding-top: 4px;
 }
 .c-btn-transparent {
   @include btn(transparent,#3ed4e0,rgba(255,255,255,0.3));

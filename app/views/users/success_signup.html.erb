@@ -1,0 +1,40 @@
+<% member = params[:member] || 'chirp free member' %>
+<% member_long = case params[:member]
+   when 'insider' then "IN the INNER CIRCLE as AN INSIDER"
+   when 'vib member' then "IN the INNER CIRCLE as A Very IMportant Bird"
+   else 'chirp free member'
+   end %>
+<div class="success-signup">
+  <div class="success-banner">
+    <div class="success-logo">
+      <%= image_tag 'icons/flash.svg', class: "flash-lightning" %>
+      <%= image_tag 'birdfeed-logo-white.png', class: 'success-logo-img' %>
+    </div>
+
+    <div class="text-1">
+      <%= image_tag 'icons/red-bird.svg', class: "d-inline" %>
+      READY, SET, GO GET IT!
+    </div>
+
+    <div class="text-2">
+      You’re Now a <%= member %>
+    </div>
+
+    <div class="success-bottom">
+      It’s time letzzzgo!
+    </div>
+  </div>
+
+  <p class="text-center mb-4">
+    Now that you’re <%= member_long %>
+  </p>
+
+  <div class="text-center mb-4">
+    <%= link_to "Have marcus give me the run Down", playlists_path(user_id: current_user), 
+        class: "btn btn-wide c-btn-red" %>
+
+    <%= link_to "Skip It and Head home", playlists_path(user_id: current_user), 
+        class: "btn btn-wide c-btn-black" %>
+  </div>
+</div>
+
