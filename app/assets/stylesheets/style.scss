@@ -585,6 +585,7 @@ strong {
 
 .tip {
   position: relative;
+  z-index: 9;
 
   &:hover .message {
     display: block;
@@ -650,6 +651,24 @@ strong {
       &:after {
         right: 60px;
         bottom: -35px;
+      }
+    }
+
+    &.square {
+      width: 314px;
+      border-radius: 13px;
+
+      h3 {
+        color: #3ed4e0;
+        font-family: 'Phosphate-Solid';
+        font-size: 27px;
+      }
+
+      p {
+        color: #383838;
+        font-size: 12px;
+        font-weight: 400;
+        margin-bottom: 0;
       }
     }
   }

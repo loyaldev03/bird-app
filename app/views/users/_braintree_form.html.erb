@@ -14,17 +14,45 @@
     <div>How do you roll?</div>
     <div class="plan-blocks">
       <div class="free-plan plan-block <%= 'active' unless current_user.braintree_subscription %>" data-type="chirp">
+        <div class="tip float-right">
+          <span class="icon">?</span>
+          <div class="message square">
+            <h3>CHIRP</h3>
+            <p>
+              Chirp is a free membership allowing access to the chirp questions & discussions forum. 
+              This level of membership does not include participation in community functionality, music, games, achievements and points
+            </p>
+          </div>
+        </div>
         <div class="text-1">CHIRP</div>
         <div class="text-2"><span>$0</span>/free</div>
       </div>
 
       <div class="insider-plan plan-block <%= 'active' if current_user.subscription_length == 'monthly_insider' || current_user.subscription_length == 'yearly_insider' %>" data-type="insider">
+        <div class="tip float-right">
+          <span class="icon">?</span>
+          <div class="message square">
+            <h3>INSIDER</h3>
+            <p>
+              Birdfeed insiders have the ability to stream all music, create playlists and engage in the community on all levels of communication and play & mischeif
+            </p>
+          </div>
+        </div>
         <div class="text-1">INSIDER</div>
         <div class="text-2"><span>$6.25</span>/month</div>
         <div class="text-3">($75 billed Annualy)</div>
       </div>
 
       <div class="vib-plan plan-block <%= 'active' if current_user.subscription_length == 'monthly_vib' || current_user.subscription_length == 'yearly_vib' || current_user.subscription_length == 'monthly_old' || current_user.subscription_length == 'yearly_old' %>" data-type="vib">
+        <div class="tip float-right">
+          <span class="icon">?</span>
+          <div class="message square">
+            <h3>VIB</h3>
+            <p>
+              VIB aka “very important bird” is our top tier member and includes all perks of our Insider members + access to our egg credits system including 10 eggs per month allowing for the download of music as well as future usage opportunitie
+            </p>
+          </div>
+        </div>
         <div class="text-1">VIB</div>
         <div class="text-2"><span>$8.25</span>/month</div>
         <div class="text-3">($99 billed Annualy)</div>
