@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
   enum subscription_type: [:member, :vip, :admin]
   enum subscription_length: [:unknown, :monthly_old, :yearly_old, 
-      :monthly_6_25, :monthly_8_25, :yearly_75, :yearly_99]
+      :monthly_insider, :monthly_vib, :yearly_insider, :yearly_vib]
 
   has_many :badge_levels, inverse_of: :user
   has_many :badges, through: :badge_levels

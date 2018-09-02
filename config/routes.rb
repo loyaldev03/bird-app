@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   get 'birdfeed', to: 'home#birdfeed'
   post 'share', to: 'home#share'
   get 'badge-notify', to: 'home#badge_notify'
+  get 'pricing', to: 'home#pricing'
 
   resources :contacts, only: [:index, :create]
   resources :slider_images

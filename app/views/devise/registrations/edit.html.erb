@@ -14,17 +14,6 @@
     html: { class: 'form-signin', method: :put } ) do |f| %>
   
   <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
-  
-  <% if current_user.provider.blank? %>
-    <div class="form-label-group">
-      <%= f.password_field :current_password, autocomplete: "off", required: true, 
-          class: 'form-control', placeholder: "Current password" %>
-      <%= f.label :current_password %>
-      <div><i>(we need your current password to confirm your changes)</i></div>
-    </div>
-  <% end %>
-
-  <%= f.submit "Update", class: "btn btn-lg btn-primary btn-block mb-3" %>
 
   <div class="text-center mx-4">
     <%= link_to "Change subscription", choose_profile_path(anchor: 'billing-information') %>
@@ -34,8 +23,6 @@
 
  <!--  <p>Unhappy? <%#= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-sm" %></p> -->
   <%#= render 'devise/shared/billing_info' %>
-  
-    <%= link_to "Back", :back %>
   </div>
 <% end %>
 

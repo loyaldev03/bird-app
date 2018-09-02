@@ -46,11 +46,12 @@
   <p> Subscription Type:
     <% if current_user.subscription_type == 'member' %>
       <% if braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
-            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_7_ID'] ||
-            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_10_ID'] %>
+            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_INSIDER_ID'] ||
+            braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_VIB_ID'] %>
         Monthly
       <% elsif braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
-               braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_100_ID'] %>
+               braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_INSIDER_ID'] ||
+               braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_VIB_ID'] %>
         Annual
       <% end %>
     <% end %>

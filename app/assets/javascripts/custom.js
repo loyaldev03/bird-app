@@ -32,6 +32,10 @@ $(document).on('turbolinks:load', function() {
     }
   });
 
+  $("#new_user [required='required']").on('invalid', function(){
+    $(this).siblings('label').addClass('invalid');
+  });
+
   $('.signup-free-btn').click(function(e){
     e.preventDefault();
     var terms = $('#free-terms-and-conditions');
@@ -78,21 +82,61 @@ $(document).on('turbolinks:load', function() {
     function changePeriod(to=null) {
       var current = $("input:radio[name='subscription']:checked");
       var type = current.data('type');
-      if (type == 'chirp') return;
+      var other, period;
 
-      if (to) {
-        current.prop('checked',false);
-        var other = $("input[data-type='"+  type +"'][data-period='"+to+"']");
-        other.prop('checked',true);
-        $('.selected-period').text(to);
-        $('.signup-billing-cost').text(other.data('cost'));
-      } else {
-        current.prop('checked',false);
-        var other = $("input[data-type='"+ type +"']").not(current);
-        other.prop('checked',true);
-        $('.selected-period').text(other.data('period'));
-        $('.signup-billing-cost').text(other.data('cost'));
+      if (current.length == 0) {
+        period = $('.switcher').prop('classList').contains('monthly') ? 'monthly' : 'yearly';
+
+        $('.price-plan').each(function(){
+          var cost = $(this).data(period);
+          $(this).find('.text-2 span').text('$' + cost);
+        });
+
+        if (period == 'yearly') {
+          $('.price-plan .text-3').css('opacity',1);
+        } else {
+          $('.price-plan .text-3').css('opacity',0);
+        }
+        return false;
       }
+
+      if (type == 'chirp') {
+        $('.signup-billing-cost').text('free');
+        period = $('.switcher').prop('classList').contains('monthly') ? 'monthly' : 'yearly';
+      } else {
+        if (to) {
+          current.prop('checked',false);
+          other = $("input[data-type='"+  type +"'][data-period='"+to+"']");
+          other.prop('checked',true);
+          $('.selected-period').text(to);
+        } else {
+          current.prop('checked',false);
+          other = $("input[data-type='"+ type +"']").not(current);
+          other.prop('checked',true);
+          $('.selected-period').text(other.data('period'));
+        }
+
+        $('.signup-billing-cost').text("$" + other.data('cost'));
+        period = other.data('period');
+      }
+
+      $('.plan-block').each(function(){
+        var _type = $(this).data('type');
+        var cost = $("input[data-type='"+ _type +"'][data-period='"+ period +"']").data('cost');
+
+        if (!cost) {
+          cost = 0;
+        }
+
+        if (period == 'yearly') {
+          cost = cost / 12;
+          $('.plan-block .text-3').show();
+        } else {
+          $('.plan-block .text-3').hide();
+        }
+
+        $(this).find('.text-2 span').text('$' + cost);
+      });
     }
   }
 

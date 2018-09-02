@@ -42,8 +42,8 @@ class Release < ApplicationRecord
     return true if user.vip?
     return false unless published?
     return false unless user.subscription_started_at
-    return false if user.subscription_length == 'monthly_6_25'
-    return false if user.subscription_length == 'yearly_75'
+    return false if user.subscription_length == 'monthly_insider'
+    return false if user.subscription_length == 'yearly_insider'
     return true if available_to_all?
     return true if published_at >= user.subscription_started_at - 3.months
     false

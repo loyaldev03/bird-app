@@ -99,15 +99,15 @@ class Callbacks::BraintreeController < ApplicationController
       end
     else
       download_credits = 0
-      if params[:subscription] == 'yearly_99'
-        plan_id = ENV['BRAINTREE_YEARLY_PLAN_99_ID']
+      if params[:subscription] == 'yearly_vib'
+        plan_id = ENV['BRAINTREE_YEARLY_PLAN_VIB_ID']
         download_credits = 30
-      elsif params[:subscription] == 'yearly_75'
-        plan_id = ENV['BRAINTREE_YEARLY_PLAN_75_ID']
-      elsif params[:subscription] == 'monthly_6_25'
-        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_6_25_ID']
-      elsif params[:subscription] == 'monthly_8_25'
-        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_8_25_ID']  
+      elsif params[:subscription] == 'yearly_insider'
+        plan_id = ENV['BRAINTREE_YEARLY_PLAN_INSIDER_ID']
+      elsif params[:subscription] == 'monthly_insider'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_INSIDER_ID']
+      elsif params[:subscription] == 'monthly_vib'
+        plan_id = ENV['BRAINTREE_MONTHLY_PLAN_VIB_ID']  
         download_credits = 30
       else
         throw "Couldn't find plan for subscription #{params[:subscription]}"
@@ -151,9 +151,9 @@ class Callbacks::BraintreeController < ApplicationController
       # payment_method = 'undetermined'
     end
 
-    if params[:subscription] == 'yearly_99' || params[:subscription] == 'monthly_8_25'
+    if params[:subscription] == 'yearly_vib' || params[:subscription] == 'monthly_vib'
       member = 'vib member'
-    elsif params[:subscription] == 'yearly_75' || params[:subscription] == 'monthly_6_25'
+    elsif params[:subscription] == 'yearly_insider' || params[:subscription] == 'monthly_insider'
       member = 'insider'
     end
 

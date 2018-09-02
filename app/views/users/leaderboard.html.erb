@@ -33,9 +33,9 @@
               </div>
 
               <div class="leaderboard-points">
-                <% if user.monthly_old? || user.monthly_6_25? || user.yearly_75? %>
+                <% if user.monthly_old? || user.monthly_insider? || user.yearly_insider? %>
                   <%= image_tag 'icons/yellow-egg.svg' %>
-                <% elsif user.yearly_old? || user.monthly_8_25? || user.yearly_99? %>
+                <% elsif user.yearly_old? || user.monthly_vib? || user.yearly_vib? %>
                   <%= image_tag 'icons/red-egg.svg' %>
                 <% end %>
 

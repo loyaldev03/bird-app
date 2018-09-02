@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_notification
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_online
+  before_action :check_for_terms_and_conduct
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
@@ -11,6 +12,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotUnique, :with => :record_not_uniq  
 
   helper_method :resource_name, :resource, :devise_mapping, :resource_class
+
+  include ActionView::Helpers::UrlHelper
 
   def resource_name
     :user
@@ -57,8 +60,8 @@ class ApplicationController < ActionController::Base
       end
 
       if current_user.braintree_subscription_expires_at && 
-          (current_user.subscription_length == 'monthly_8_25' ||
-           current_user.subscription_length == 'yearly_99' ||
+          (current_user.subscription_length == 'monthly_vib' ||
+           current_user.subscription_length == 'yearly_vib' ||
            current_user.subscription_length == 'monthly_old')
         @credits = current_user.download_credits
       else
@@ -109,6 +112,18 @@ class ApplicationController < ActionController::Base
 
     def record_not_uniq
       redirect_back(fallback_location: root_path)
+    end
+
+    def check_for_terms_and_conduct
+      if current_user && 
+          !current_user.terms_and_conditions && 
+          !current_user.code_of_conduct &&
+          !current_page?(choose_profile_path) && 
+          !current_page?(pricing_path) &&
+          !current_page?(terms_and_conduct_path) &&
+          !devise_controller?
+        redirect_to choose_profile_path(anchor: "step-3")
+      end
     end
 
 end

@@ -582,3 +582,75 @@ strong {
   top: 50%;
   transform: translate(-50%,-50%);
 }
+
+.tip {
+  position: relative;
+
+  &:hover .message {
+    display: block;
+  }
+
+  .icon {
+    color: #3ed4e0;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .message {
+    width: 170px;
+    display: none;
+    position: absolute;
+    bottom: 45px;
+    right: -55px;
+    padding: 15px 20px;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    border-radius: 100px;
+    color: #646464 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 14px !important;
+    font-family: "Titillium Web" !important;
+
+    &:before {
+      filter: blur(4px);
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 20px solid transparent;
+      border-top: 20px solid #ccc;
+      bottom: -40px;
+      right: 40px;
+      z-index: -1;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 20px solid transparent;
+      border-top: 20px solid white;
+      bottom: -40px;
+      right: 40px;
+      z-index: 11;
+    }
+
+    &.big {
+      width: 240px;
+      right: -75px;
+      padding: 35px 20px;
+
+      &:before {
+        right: 60px;
+        bottom: -35px;
+      }
+
+      &:after {
+        right: 60px;
+        bottom: -35px;
+      }
+    }
+  }
+}

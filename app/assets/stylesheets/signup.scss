@@ -14,14 +14,14 @@
   margin: -24px -15px -125px;
   z-index: 1;
   overflow: hidden;
+  position: relative;
 
   .signup-logo {
-    height: 200px;
     position: absolute;
     z-index: 2;
     left: 50%;
-    top: calc(50% - 125px);
-    transform: translate(-50%,-50%);
+    top: 0px;
+    transform: translateX(-50%);
   }
 }
 
@@ -101,13 +101,13 @@
     .text-2 {
       text-align: center;
       color: #5f5f5f;
-      font-size: 70px;
       font-family: 'Phosphate-Solid';
       line-height: 30px;
-
-      span {
         font-size: 13px;
         letter-spacing: 0.58px;
+
+      span {
+      font-size: 70px;
       }
     }
 
@@ -159,7 +159,6 @@
       display: inline-block;
       width: 85px;
       height: 37px;
-      border: 1px solid #3ed4e0;
       background-color: #3ed4e0;
       position: relative;
       border-radius: 20px;
@@ -171,8 +170,8 @@
         content: '';
         position: absolute;
         z-index: 2;
-        top: -1px;
-        left: -1px;
+        top: 0px;
+        left: 0px;
         width: 37px;
         height: 37px;
         border: 1px solid #3ed4e0;
@@ -182,6 +181,14 @@
 
       &.monthly:after {
         left: 48px;
+      }
+
+      &.red {
+        background-color: #ff7979;
+
+        &:after {
+          border: 1px solid #ff7979;
+        }
       }
     }
   }
@@ -205,9 +212,16 @@
 .form-signin {
   margin-top: 20px;
 
-  .required:after {
-    content: ' (*Required)';
-    color: #ff0000;
+  .required {
+    &:after {
+      display: none;
+      content: ' (*Required)';
+      color: #ff0000;
+    }
+    
+    &.invalid:after {
+      display: inline;
+    }
   }
 
   .form-control {
@@ -254,7 +268,7 @@
 .success-banner {
   width: 100%;
   max-width: 900px;
-  margin: 70px auto 50px;
+  margin: 50px auto;
   border: 8px solid #ff5a5a;
   background-color: #070606;
   position: relative;
