@@ -7,7 +7,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"].select { |k, v| k == "email" }
-      redirect_to new_user_registration_url
+      redirect_to choose_profile_path
     end
   end
   
@@ -19,7 +19,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user
     else
       session["devise.google_data"] = request.env["omniauth.auth"].select { |k, v| k == "email" }
-      redirect_to new_user_registration_url
+      redirect_to choose_profile_path
     end
   end
 

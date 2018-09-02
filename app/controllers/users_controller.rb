@@ -287,8 +287,9 @@ class UsersController < ApplicationController
   end
 
   def home
+    #force user to fill needed fields
     unless current_user.additional_info_set? || current_user.has_role?(:admin)
-      redirect_to edit_user_registration_path and return
+      redirect_to choose_profile_path and return
     end
 
     redirect_to current_user
