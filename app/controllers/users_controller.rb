@@ -292,7 +292,7 @@ class UsersController < ApplicationController
       redirect_to choose_profile_path and return
     end
 
-    redirect_to current_user
+    redirect_to playlists_path(user_id: current_user.id)
   end
 
   def update
