@@ -18,7 +18,7 @@
           </div>
         <% end %>
 
-        <% badge_kind.badges.reject { |badge| user_badges.ids.include?(badge.id) }.each do |badge| %>
+        <% badge_kind.badges.reject { |badge| user_badges.map(&:id).include?(badge.id) }.each do |badge| %>
           <div class="fan-badge">
               <img src='/images/default_badge.png' >
               <p>&nbsp;</p>

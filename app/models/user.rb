@@ -71,7 +71,7 @@ class User < ApplicationRecord
 
   def badges_by_kind kind
     badge_kind = BadgeKind.find_by(ident: kind)
-    return unless badge_kind
+    return [] unless badge_kind
     self.badges.where(badge_kind_id: badge_kind.id)
   end
 
