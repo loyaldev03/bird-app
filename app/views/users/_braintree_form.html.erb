@@ -9,7 +9,7 @@
         <span class="switcher <%= 'monthly' if current_user.subscription_length == 'monthly_insider' || current_user.subscription_length == 'monthly_vib' || current_user.subscription_length == 'monthly_old' %>"></span>
         <span class="switcher-btn switcher-monthly">BILLED MONTHLY</span>
       </div>
-      <%= link_to 'What’s the difference?', pricing_path, class: "font-weight-bold" %>
+      <%= link_to 'What’s the difference?', pricing_path, class: "font-weight-bold", target: '_blank' %>
     </div>
     <div>How do you roll?</div>
     <div class="plan-blocks">

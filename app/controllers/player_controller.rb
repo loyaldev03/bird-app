@@ -1,7 +1,8 @@
 class PlayerController < ApplicationController
   before_action :set_vars
   before_action :set_notifications, 
-      only: [:liked_tracks, :recently_tracks, :downloaded_tracks]
+      only: [:liked_tracks, :recently_tracks, :downloaded_tracks, :favorites,
+        :liked_playlists]
   
   def liked_tracks
     @tracks = @user.liked_by_type('Track').map do |_track|
@@ -25,6 +26,25 @@ class PlayerController < ApplicationController
     end
 
     @tracks.compact!
+  end
+
+  def favorites
+    @playlists = @user.liked_by_type('Playlist').limit(3)
+
+    @tracks = @user.liked_by_type('Track').limit(7).map do |_track|
+      TrackPresenter.new(_track, current_user)
+    end
+
+    @releases = @user.liked_by_type('Release').limit(3).map do |_release|
+      ReleasePresenter.new(_release, current_user)
+    end
+
+    @tracks.compact!
+    @releases.compact!
+  end
+
+  def liked_playlists
+    @playlists = @user.liked_by_type('Playlist')
   end
 
   private

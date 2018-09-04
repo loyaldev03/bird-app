@@ -27,7 +27,10 @@
           <%= link_to "User Playlists", playlists_path(user_id: @user.id), 
               id: "playlist-user" %>
         </li>
-        <li class="<%= 'active' if current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") %>">
+        <li class="<%= 'active' if current_page?(player_favorites_path(@user)) %>">
+          <%= link_to 'favorites', player_favorites_path(@user) %>
+        </li>
+<!--         <li class="<%= 'active' if current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") %>">
           <%= link_to "Favorited Releases", 
               releases_path(
                 filters: { liked: true }, 
@@ -38,7 +41,7 @@
         <li class="<%= 'active' if current_page?(player_liked_tracks_path(@user)) %>">
           <%= link_to "Favorited Tracks", player_liked_tracks_path(@user),
               id: "playlist-favorited-tracks" %>
-        </li>
+        </li> -->
         <li class="<%= 'active' if current_page?(player_recently_tracks_path(@user)) %>">
           <%= link_to "Recently Played", player_recently_tracks_path(@user),
               id: "playlist-favorited-tracks" %>
@@ -47,7 +50,6 @@
           <%= link_to "Downloads", player_downloaded_tracks_path(@user),
               id: "playlist-favorited-tracks" %>
         </li>
-        <!-- <li>Recently Played</li> -->
         <li class="playlist-nav-subheader">Playlists&nbsp;</li>
         <% for playlist in @playlists %>
           <li class="<%= 'active' if current_page?(playlist_path(playlist)) %>">

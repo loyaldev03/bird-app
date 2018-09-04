@@ -82,9 +82,11 @@ Rails.application.routes.draw do
   get 'track_clicked', to: 'tracks#track_clicked'
 
   resources :player do
+    get 'liked_playlists'
     get 'liked_tracks'
     get 'recently_tracks'
     get 'downloaded_tracks'
+    get 'favorites'
   end
 
   resources :playlists
