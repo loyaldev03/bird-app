@@ -171,7 +171,6 @@ strong {
 
 .c-btn-group {
   .btn {
-
     border-radius: 0;
     border-right: 1px solid gray;
     
@@ -183,7 +182,15 @@ strong {
       border-radius: 0 6px 6px 0;
       border-right: none;
     }
+
+    &.btn-square {
+      border-radius: 0;
+    }
   }
+}
+
+.btn-square {
+  border-radius: 0;
 }
 
 .link-black-text a {

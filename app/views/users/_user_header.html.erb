@@ -19,7 +19,7 @@
       <h1><%= @user.name.upcase %></h1>
       <span>
         <%= "#{@user.address_city} / " %>
-        <b><%= "#{@user.followers.count} #{'Follower'.pluralize(@user.followers.count)}" %></b>
+        <b><%= "#{@user.followers.count} #{'Friend'.pluralize(@user.followers.count)}" %></b>
       </span>
     </div>
 
@@ -28,37 +28,40 @@
     <% else %>
       <div class="user-since">
         <%= image_tag 'icons/user-logo-icon.svg' %>
-        <%= link_to choose_profile_path(anchor: 'billing-information') do %>
-          <%= @user.subscriber_type %>
-        <% end %>
+        <h4>
+          <%= link_to choose_profile_path(anchor: 'billing-information') do %>
+            <%= @user.subscriber_type %>
+          <% end %>
+        </h4>  
         <br>
         <p>Member Since <%= @user.created_at.strftime("%Y") %></p>
       </div>
 
-      <div class="user-info-divider"></div>
+      <div class="fan-points">
+        <%= number_with_delimiter(user_position(@user), :delimiter => ',') %>
+        <h4>Fam Status</h4>
+      </div>
 
       <div class="fan-points">
-        <small>Fan Status</small>
-        <h4><%= @user.points %> POINTS&nbsp;&nbsp;/</h4>
+        <%= number_with_delimiter(@user.points, :delimiter => ',') %>
+        <h4>FAM POINTS</h4>
       </div>
 
-      <div class="fan-position">
-        <small>Leaderboard</small>
-        <h4><%= "##{user_position @user}" %></h4>
-      </div>
     <% end %>
 
     <%= render 'follows/follow_button', object: @user %>
   </div>
 </div>
 
-<div class="user-controls mb-4">
-  <div class="c-btn-group d-inline-block mr-4" style="padding-left: 220px;">
-    <% artist = current_page?(user_path(@user)) || current_page?(admin_path(@user)) %>
-    <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
-    <%= link_to "Feed", @user, 
-        class: artist ? classes[1] : classes[0] %><!--
-   --><%= link_to "Music", playlists_path(user_id: @user), 
-        class: artist ? classes[0] : classes[1] %>
+<div class="user-controls">
+  <div class="row h-100">
+    <div class="col-lg-3 px-0 c-btn-group">
+      <% artist = current_page?(user_path(@user)) || current_page?(admin_path(@user)) %>
+      <% classes = ["btn btn-wide c-btn-blue btn-square", "btn btn-wide c-btn-black btn-square btn-disabled"] %>
+      <%= link_to "Feed", @user, 
+          class: artist ? classes[1] : classes[0] %><!--
+     --><%= link_to "My Music", playlists_path(user_id: @user), 
+          class: artist ? classes[0] : classes[1] %>
+    </div>
   </div>
 </div>

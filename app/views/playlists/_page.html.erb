@@ -9,9 +9,8 @@
                 class: "play-#{source_type}-#{source_id} playlist-play-playlist",
                 style: "width: 130px;",
                 remote: true %>
-    <div style="width: 160px;">
-      <%= render 'tracks/covers', object: tracks %>
-    </div>
+    <%= render partial: 'tracks/covers', 
+        locals: { object: tracks, size: 160 } %>
 
     <% if @playlist.present? %>
       <div class="playlist-title">

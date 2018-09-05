@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   before_action :set_userpage_feed, only: [:admin, :artist]
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to choose_profile_path( message: "visit this page" ), :alert => "Subscribe to get access to this action"
+    redirect_to root_path, :alert => "Subscribe to get access to this action"
   end
 
   def set_enricher

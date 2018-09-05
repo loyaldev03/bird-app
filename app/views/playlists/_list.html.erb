@@ -2,7 +2,8 @@
   <% for playlist in playlists %>
       <div class="col-lg-4 col-lmd-6 text-center mb-4">
         <%= link_to playlist do %>
-          <%= render 'tracks/covers', object: playlist.tracks %>
+          <%= render partial: 'tracks/covers', 
+              locals: { object: playlist.tracks, size: 260 } %>
         <% end %>
         <%  %>
         <div class="playlists-caption mt-3">

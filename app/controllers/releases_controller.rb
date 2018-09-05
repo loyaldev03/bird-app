@@ -90,13 +90,7 @@ class ReleasesController < ApplicationController
   end
 
   def download
-    #TODO send to registration if no rights
-    # redirect_to choose_profile_path and return if current_user.subscription_type.blank?
-    # if current_user && current_user.admin?
-    #   @release = Release.with_deleted.find(params[:id])
-    # else
-      @release = Release.find(params[:id])
-    # end
+    @release = Release.find(params[:id])
 
     unless @release.user_allowed?(current_user)
       raise ActionController::RoutingError, 'Not Found'

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="jp-interface">
       <% if current_user %>
-        <%= link_to playlists_path(user_id: current_user), class: "jp-player-btn" do %>
+        <%= link_to player_main_area_path(current_user), class: "jp-player-btn" do %>
           PLAYER
         <% end %>
       <% end %>

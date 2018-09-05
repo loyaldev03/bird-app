@@ -1,6 +1,6 @@
 <% releases_ids = object.map(&:release_id).uniq %>
 
-<div class="playlist-covers">
+<div class="playlist-covers" style="width: <%= size %>px; height: <%= size %>px;">
   <% if releases_ids.count == 0 %>
     <%= image_tag '/images/default_release.png', class: 'w-100' %>
   <% elsif releases_ids.count == 1 %>
@@ -9,7 +9,7 @@
 
     <% releases_ids[0..1].each do |release_id| %>
       <% release = Release.find(release_id) %>
-      <%= image_tag release.avatar.url, style: "width: 100%; height: 50%; object-fit: cover;" %>
+      <%= image_tag release.avatar.url, style: "width: 100%; height: 50%; object-fit: cover;" %> 
     <% end %>
 
   <% elsif releases_ids.count == 3 %>

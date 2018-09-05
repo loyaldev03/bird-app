@@ -1,4 +1,8 @@
-<%= render 'releases/release_header' %>
+<% if @user.has_role? :artist %>
+  <%= render 'users/artist_header' %>
+<% else %>
+  <%= render 'users/user_header' %>
+<% end %>
 
 <div class="row">
   <div class="col-lg-3">
@@ -7,8 +11,7 @@
 
   <div class="col-lg-9 music-wrapper">
     <div class="music-block">
-      <%= render partial: 'playlists/page', 
-                 locals: { tracks: @release.tracks, source_type: 'release', source_id: @release.id } %>
+      main area
     </div>
 
   </div>
