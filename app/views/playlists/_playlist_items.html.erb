@@ -14,7 +14,7 @@
     <% track = TrackPresenter.new(_track, current_user) %>
     <tr class='playlist-item'>
       <td style="white-space: nowrap;">
-        <% if @playlist.present? %>
+        <% if @playlist.present? || @with_index %>
           <%= link_to "", "#", 
               class: "play-#{source_type}-#{source_id}-index-#{i} playlist-play-track",
               data: { 

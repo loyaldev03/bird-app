@@ -13,6 +13,7 @@ class PlayerController < ApplicationController
   end
 
   def recently_tracks
+    @with_index = true
     @tracks = @user.recently_items.map do |item|
       TrackPresenter.new(item.track, current_user) if item.track
     end

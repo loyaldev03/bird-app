@@ -27,7 +27,7 @@ class TracksController < ApplicationController
       tracks = user.downloads.map { |d| d.track }
     when 'recently'
       user = User.find(params[:source_id])
-      tracks = user.recently_items.map { |d| d.track }
+      tracks = user.recently_items.map { |d| d.track }.compact
     else
       tracks = params[:source_type]
           .classify
@@ -37,7 +37,6 @@ class TracksController < ApplicationController
     end
 
     tracks = tracks.order(track_number: :asc) if params[:source_type] == 'release'
-
     tracks = tracks.map do |_track|
       track = TrackPresenter.new(_track, current_user)
       track_as_json(track)
