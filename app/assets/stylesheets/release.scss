@@ -263,7 +263,6 @@
 .follow-button-black {
   @include btn(#323333,white,#434444);
   position: absolute;
-  z-index: 2;
   top: 19px;
   right: 230px;
 }
@@ -281,6 +280,8 @@
     }
 
     .unfollow-state {
+      font-size: 10px;
+      padding: 8px 0;
       opacity: 1;
       background-color: #ff7272;
     }

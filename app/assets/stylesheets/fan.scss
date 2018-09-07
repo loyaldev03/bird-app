@@ -36,6 +36,16 @@
     text-transform: uppercase;
     margin-bottom: 5px;
   }
+
+  .follow-form {
+    height: 100%;
+    flex-grow: 1;
+    text-align: right;
+  }
+
+  .follow-button {
+    border-radius: 0;
+  }
 }
 
 .user-controls {
@@ -47,8 +57,13 @@
   .c-btn-group {
     height: 100%;
 
-    .btn {
+    &.two-btns .btn {
       width: 50%;
+      height: 100%;
+      line-height: 25px;
+    }
+    &.three-btns .btn {
+      width: 33.3333333%;
       height: 100%;
       line-height: 25px;
     }
@@ -103,4 +118,16 @@
   position: relative;
   z-index: 2;
   margin-left: 230px;
+}
+
+.user-header-title {
+  color: #434343;
+  font-family: 'Phosphate-Solid';
+  font-size: 18px;
+  line-height: 36px;
+  padding: 0 15px;
+  letter-spacing: 0.81px;
+  height: 36px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  background-color: #efefef;
 }

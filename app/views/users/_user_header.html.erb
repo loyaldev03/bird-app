@@ -55,13 +55,16 @@
 
 <div class="user-controls">
   <div class="row h-100">
-    <div class="col-lg-3 px-0 c-btn-group">
+    <div class="col-lg-3 px-0 c-btn-group two-btns">
       <% artist = current_page?(user_path(@user)) || current_page?(admin_path(@user)) %>
       <% classes = ["btn btn-wide c-btn-blue btn-square", "btn btn-wide c-btn-black btn-square btn-disabled"] %>
       <%= link_to "Feed", @user, 
           class: artist ? classes[1] : classes[0] %><!--
      --><%= link_to "My Music", playlists_path(user_id: @user), 
           class: artist ? classes[0] : classes[1] %>
+    </div>
+    <div class="col-lg-9 px-0">
+      <div class="user-header-title"><%= content_for :user_header_title %></div>
     </div>
   </div>
 </div>

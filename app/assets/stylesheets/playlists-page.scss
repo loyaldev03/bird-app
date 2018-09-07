@@ -82,7 +82,7 @@ li.playlist-nav-subheader {
   margin-left: -15px;
   position: relative;
   height: 205px;
-  z-index: 2;
+  z-index: 3;
 
   .user-bgrd {
     position: absolute;
@@ -315,6 +315,7 @@ li.playlist-nav-subheader {
 }
 
 .music-block {
+  margin-top: 30px;
   padding-bottom: 20px;
   padding-left: 25px;
   overflow: scroll;
