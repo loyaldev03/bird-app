@@ -1,0 +1,33 @@
+<div class="text-center mb-4">
+  <h1 class="h3 mt-5 mb-3 font-weight-normal">Edit <%= resource_name.to_s.humanize %></h1>
+  <p>You can edit the following fields</p>
+</div>
+
+<%= form_for(resource, remote: true,
+    html: { id: 'change-avatar', class: 'form-signin change-avatar', method: :put } ) do |f| %>
+  <%= image_tag resource.avatar.big_thumb %>
+  <%= f.file_field :avatar, class: 'form-control-file' %>
+  <%= f.hidden_field :avatar_cache %>
+<% end %>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
+    html: { class: 'form-signin', method: :put } ) do |f| %>
+  
+  <%= render partial: 'devise/registrations/registration_form', locals: { f: f } %>
+
+  <div class="text-center mx-4">
+    <%= link_to "Change subscription", choose_profile_path(anchor: 'billing-information') %>
+    <br>
+  
+  <!-- <p>Cancel my account</p> -->
+
+ <!--  <p>Unhappy? <%#= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-sm" %></p> -->
+  <%#= render 'devise/shared/billing_info' %>
+  </div>
+<% end %>
+
+<% content_for :body_area do %>
+  <div class="modal modal-blured" id="cropModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+  </div>
+<% end %>

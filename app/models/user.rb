@@ -20,7 +20,7 @@ class User < ApplicationRecord
   after_update :crop_avatar
   
   attr_accessor :subscription
-  enum gender: [:female, :male]
+  enum gender: [:female, :male, :other]
 
   validates :first_name, presence: true
 

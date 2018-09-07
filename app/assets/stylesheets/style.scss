@@ -680,3 +680,49 @@ strong {
     }
   }
 }
+
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  background-color: #3ed4e0;
+  color: #fff;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-color: #fff transparent transparent transparent; 
+}
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #3ed4e0;
+  color: #fff;
+}
+.select2-results__option {
+  font-family: "Titillium Web"; 
+  font-size: 16px;
+  font-weight: 400;
+  color: #747474;
+}
+.w-60 {
+  width: 60%;
+}
+.lg-font {
+  font-size: 36px;
+}
+.md-font {
+  font-size: 20px;
+}
+.sm-font {
+  font-size: 16px;
+}
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+  .col {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;   
+  }
+}
