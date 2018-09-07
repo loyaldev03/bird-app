@@ -1,8 +1,11 @@
+<% content_for :user_header_title, 'Favorites' %>
+
 <% if @user.has_role? :artist %>
   <%= render 'users/artist_header' %>
 <% else %>
   <%= render 'users/user_header' %>
 <% end %>
+
 
 <div class="row">
   <div class="col-lg-3">

@@ -1,3 +1,5 @@
+<% content_for :user_header_title, 'Favorite playlists' %>
+
 <% if @user.has_role? :artist %>
   <%= render 'users/artist_header' %>
 <% else %>

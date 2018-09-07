@@ -131,8 +131,8 @@ strong {
 .c-btn-white {
   @include btn(white,#3ed4e0,darken(white, 5));
 }
-.c-btn-white2 {
-  @include btn(white,#ff7272,darken(white, 5));
+.c-btn-white-gray {
+  @include btn(white,#bbb,darken(white, 5));
 }
 .c-btn-blue {
   @include btn(#3ed4e0,white,darken(#3ed4e0, 5));
@@ -149,6 +149,9 @@ strong {
 }
 .c-btn-black {
   @include btn(#323333,white,#434444);
+}
+.c-btn-gray {
+  @include btn(#bbb,#434343,black);
 }
 
 .star {
