@@ -1,6 +1,6 @@
 <% content_for :user_header_title do %>
   <%= image_tag 'icons/bird-blue.svg' %>
-  Connect
+  Listen
 <% end %>
 
 <% if @user.has_role? :artist %>
@@ -15,8 +15,105 @@
   </div>
 
   <div class="col-lg-9 music-wrapper">
-    <div class="music-block">
-      main area
+    <div class="music-block player-main-area" style="padding-top: 280px;">
+      <% if @main_area %>
+      <a href="<%= @main_area[:link] %>" class="banner">
+        <%= image_tag @main_area[:img], class: "banner-img" %>
+      </a>
+      <% else %>
+        <% release = ReleasePresenter.new(Release.published.first, current_user) %>
+        <div class="banner">
+          <%= image_tag release.avatar.url, class: "banner-img" %>
+
+          <%= link_to '', "#",
+                      data: { 
+                        source_type: 'release', 
+                        source_id: release.id,
+                        virtual: true
+                      }, 
+                      class: "play-release-#{release.id} playlist-play-playlist",
+                      remote: true %>
+
+          <div class="banner-footer">
+            <div class="time"><%= time_ago_in_words( release.release_date ).upcase %> AGO</div>
+
+            <div class="left-side">
+              <div class="banner-title">
+                <%= release.title %>
+                <span class="tracks-count"><%= "#{release.tracks.count} #{'track'.pluralize(release.tracks.count)}" %></span>
+                <div class="release-artists">
+                  By <%= release.artists(2) %>
+                </div>
+              </div>
+              
+              <%#= release.average('main').try(:avg).try(:round,1) %>
+              <%= rating_for release, 'main', 
+                  star: 4, 
+                  cancel: false,
+                  readonly: true,
+                  star_on: image_path('rate/egg/star-on.svg'), 
+                  star_half: image_path('rate/egg/star-on.svg'), 
+                  star_off: image_path('rate/egg/star-off.svg')
+                %>
+            </div>
+
+            <%= link_to 'Details', release, class: 'details' %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="main-area-nav mb-3">
+        <div class="row h-100">
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to artists_path do %>
+              <%= image_tag 'dirtybird-bbq-stage.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Artists</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to leaderboard_path do %>
+              <%= image_tag 'dirtybird_bbq.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Community</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to friends_path(current_user) do %>
+              <%= image_tag 'JLB.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Friends</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <h2>Latest Artists</h2>
+      <%= link_to 'All Artists', artists_path, class: 'see-all' %>
+      <hr class="mt-1">
+
+      <div class="row">
+        <% User.with_role(:artist).order(created_at: :desc).limit(4).each do |user| %>
+          <div class="col-md-6 mb-3">
+            <%= render 'users/artist_gray', object: user %>
+          </div>
+        <% end %>
+      </div>
+
+      <h2 class="mt-4">Latest Birds</h2>
+      <%= link_to 'All Members', leaderboard_path, class: 'see-all' %>
+      <hr class="mt-1">
+
+      <div class="row mb-4">
+        <% User.where("users.id NOT IN (?)", 
+           User.with_role(:artist)
+               .pluck(:id))
+               .order(created_at: :desc)
+               .limit(4).each do |user| %>
+          <div class="col-md-6 mb-3">
+            <%= render 'users/user_gray', object: user %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
   </div>

@@ -27,6 +27,7 @@
                       current_page?(player_liked_tracks_path(@user)) ||
                       current_page?(player_recently_tracks_path(@user)) ||
                       current_page?(player_downloaded_tracks_path(@user)) ||
+                      current_page?(player_main_area_path(@user)) ||
                       current_page?(playlist_path(@user)) %>
           <li class="<%= 'active-blue' if listen %>">
             <%= link_to player_main_area_path(current_user) do %>
@@ -69,31 +70,19 @@
               id: "playlist-select-releases" %>
         </li>
         <li class="playlist-nav-subheader">Library&nbsp;</li>
-        <li class="<%= 'active' if current_page?(playlists_path(user_id: @user.id)) %>">
-          <%= link_to "User Playlists", playlists_path(user_id: @user.id), 
+        <li class="<%= 'active' if current_page?(playlists_path(user_id: current_user.id)) %>">
+          <%= link_to "Playlists", playlists_path(user_id: current_user.id), 
               id: "playlist-user" %>
         </li>
-        <li class="<%= 'active' if current_page?(player_favorites_path(@user)) %>">
-          <%= link_to 'favorites', player_favorites_path(@user) %>
+        <li class="<%= 'active' if current_page?(player_favorites_path(current_user)) %>">
+          <%= link_to 'favorites', player_favorites_path(current_user) %>
         </li>
-<!--         <li class="<%= 'active' if current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") %>">
-          <%= link_to "Favorited Releases", 
-              releases_path(
-                filters: { liked: true }, 
-                player: true, 
-                user_id: @user.id), 
-              id: "playlist-liked-releases" %>
-        </li>
-        <li class="<%= 'active' if current_page?(player_liked_tracks_path(@user)) %>">
-          <%= link_to "Favorited Tracks", player_liked_tracks_path(@user),
-              id: "playlist-favorited-tracks" %>
-        </li> -->
-        <li class="<%= 'active' if current_page?(player_recently_tracks_path(@user)) %>">
-          <%= link_to "Recently Played", player_recently_tracks_path(@user),
+        <li class="<%= 'active' if current_page?(player_recently_tracks_path(current_user)) %>">
+          <%= link_to "Recently Played", player_recently_tracks_path(current_user),
               id: "playlist-favorited-tracks" %>
         </li>
-        <li class="<%= 'active' if current_page?(player_downloaded_tracks_path(@user)) %>">
-          <%= link_to "Downloads", player_downloaded_tracks_path(@user),
+        <li class="<%= 'active' if current_page?(player_downloaded_tracks_path(current_user)) %>">
+          <%= link_to "Downloads", player_downloaded_tracks_path(current_user),
               id: "playlist-favorited-tracks" %>
         </li>
         <li class="playlist-nav-subheader">Playlists&nbsp;</li>

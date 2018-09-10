@@ -39,17 +39,15 @@
       <% end %>
 
       <div class="release-rate mr-3" data-release-id="<%= @release.id %>">
-        <% unless (current_user && current_user.has_role?(:artist)) %>
-          <%= @release.average('main').try(:avg).try(:round,1) %>
-          <%= rating_for @release, 'main', 
-              star: 4, 
-              readonly: true, 
-              cancel: false,
-              star_on: image_path('rate/egg-yellow/egg-on.png'), 
-              star_half: image_path('rate/egg-yellow/egg-on.png'), 
-              star_off: image_path('rate/egg-yellow/egg-off.png')
-            %>
-        <% end %>
+        <%= @release.average('main').try(:avg).try(:round,1) %>
+        <%= rating_for @release, 'main', 
+            star: 4, 
+            readonly: true, 
+            cancel: false,
+            star_on: image_path('rate/egg-yellow/egg-on.png'), 
+            star_half: image_path('rate/egg-yellow/egg-on.png'), 
+            star_off: image_path('rate/egg-yellow/egg-off.png')
+          %>
         <div class="release-nav-caption mt-2">release rating</div>
       </div>
 
@@ -64,14 +62,13 @@
           <span class="release-nav-caption mt-1">Download</span>
         </button>
 
-        <div class="collapse collapse-formats release-<%= @release.id %>-download" style="text-align: left;
-left: 50%">
+        <div class="collapse collapse-formats release-<%= @release.id %>-download" 
+              style="text-align: left; left: 50%">
           <% @release.download_uris.each do |format, uri| %>
             <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
           <% end %>
         </div>
       <% end %>
-
 
       <div class="release-stats">
         <div class="release-stat">
@@ -98,16 +95,7 @@ left: 50%">
         <div data-object-type="release" data-object-id="<%= @release.id %>">
           <%= social_share_button_tag(strip_tags(@release.title).gsub("\'",''), desc: strip_tags(@release.text).gsub("\'",''), image: @release.avatar.url) %>
         </div>
-
-<!--         <div class="release-social twitter">
-          <%= image_tag 'icons/social-twitter-w.svg' %>
-        </div>
-
-        <div class="release-social facebook">
-          <%= image_tag 'icons/social-fb-w.svg' %>
-        </div> -->
       </div>
-
     </div>
   </div>
 </div>

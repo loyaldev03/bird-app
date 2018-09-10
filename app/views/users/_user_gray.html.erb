@@ -1,0 +1,33 @@
+<div class="artist-gray">
+  <%= link_to object, class: 'mr-4' do %>
+    <%= image_tag object.avatar.big_thumb, class: "item-avatar" %>
+    <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if object.online? %>
+  <% end %>
+
+  <div class="item-body">
+
+    <h3><%= link_to object.name.upcase, object %></h3>
+
+    <div class="item-subtitle">
+      <strong>
+        <%= object.address_city %>
+        <br>
+        <%= object.followers.count %>
+        <%= "Friend".pluralize(object.followers.count) %>
+        <br>
+        Fam status
+        <%= "##{number_with_delimiter(user_position(object), :delimiter => ',')}" %>
+      </strong>
+    </div>
+
+    
+  </div>
+
+  <div class="item-controls">
+    <%= link_to 'profile', object, class: 'btn c-btn-black btn-square mb-1' %>
+    <%= render partial: 'follows/follow_button', 
+        locals: { object: object, 
+                  opt: { 
+                      text: ['add friend', 'unfollow'] } } %>
+  </div>
+</div>

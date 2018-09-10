@@ -49,7 +49,8 @@ class PlayerController < ApplicationController
   end
 
   def main_area
-    
+    @main_area = { link: nil, img: nil}
+    @main_area = nil
   end
 
   private
