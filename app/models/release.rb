@@ -152,8 +152,8 @@ class Release < ApplicationRecord
 
       if limit && artists_count > limit
         artists = artists[0..limit-1]
-        artists = artists.join(' & ')
-        artists += "& #{artists_count-limit} #{'other'.pluralize(artists_count-limit)}"
+        artists = artists.map(&:strip).join(', ')
+        artists += " & #{artists_count-limit} #{'other'.pluralize(artists_count-limit)}"
       else
         artists = artists.join(' & ')
       end

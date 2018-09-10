@@ -1,5 +1,5 @@
 <div class="release-present">
-  <%= image_tag(@release.avatar.url, class: "release-avatar left-avatar") %>
+  <%= image_tag(@release.avatar.url, class: "release-avatar") %>
   <%= link_to '', "#",
               data: { 
                 source_type: 'release', 
@@ -13,58 +13,115 @@
     <%#= image_tag 'dj.jpg' %>
 
     <div class="release-header">
-      <% if @release.exclusive? %>
-        <div class="release-exclusive">
-          <%= image_tag 'icons/user-logo-icon.svg' %>
-          <div>ONLY ON<br>
-          BIRDFEED</div>
-        </div>
-      <% end %> 
-
-      <div class="release-likes">
-        <%= render partial: 'likes/like_button', locals: { object: @release,  style: 'release' } %>
+      <div class="release-type">
+        <% if @release.exclusive? %>
+          <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
+          <span class="text-big ml-2">exclusive</span>
+        <% elsif @release.d_select? %> 
+          <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
+          <span class="text-big ml-2">select</span>
+        <% elsif @release.birdhouse? %> 
+          <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
+          <span class="text-big ml-2">birdhouse</span>
+        <% end %> 
       </div>
 
-      <div class="release-rate" data-release-id="<%= @release.id %>">
-        RATE
+      <%= link_to "#",
+                  data: { 
+                    source_type: 'release', 
+                    source_id: @release.id,
+                    virtual: true
+                  }, 
+                  class: "play-release-#{@release.id} release-play-nav mr-3",
+                  remote: true do %>
+        <%= image_tag 'icons/play-orange-sm.svg' %>
+        <div class="mt-1">play all</div>
+      <% end %>
+
+      <div class="release-rate mr-3" data-release-id="<%= @release.id %>">
         <% unless (current_user && current_user.has_role?(:artist)) %>
           <%= @release.average('main').try(:avg).try(:round,1) %>
           <%= rating_for @release, 'main', 
               star: 4, 
               readonly: true, 
               cancel: false,
-              star_on: image_path('rate/egg/star-on.png'), 
-              star_half: image_path('rate/egg/star-on.png'), 
-              star_off: image_path('rate/egg/star-off.png')
+              star_on: image_path('rate/egg-yellow/egg-on.png'), 
+              star_half: image_path('rate/egg-yellow/egg-on.png'), 
+              star_off: image_path('rate/egg-yellow/egg-off.png')
             %>
         <% end %>
+        <div class="release-nav-caption mt-2">release rating</div>
       </div>
 
-      <%= render partial: 'layouts/share', locals: { object: @release, icon: 'white' } %>
+      <div class="release-likes text-center mr-3">
+        <%= render partial: 'likes/like_button', locals: { object: @release,  style: 'release' } %>
+      </div>
 
       <% if @release.download_uris.any? %>
-        <button class="release-icon" type="button" data-toggle="collapse" data-target=".release-<%= @release.id %>-download" aria-expanded="false" aria-controls="collapseExample">
-          <%= image_tag('icons/icon-download.svg', title: "Download full release") %>
+        <button class="release-icon release-download mr-3" type="button" data-toggle="collapse" data-target=".release-<%= @release.id %>-download" aria-expanded="false" aria-controls="collapseExample">
+          <%= image_tag('icons/download-white.svg', title: "Download full release") %>
+          <br>
+          <span class="release-nav-caption mt-1">Download</span>
         </button>
 
-        <div class="collapse collapse-formats release-<%= @release.id %>-download">
+        <div class="collapse collapse-formats release-<%= @release.id %>-download" style="text-align: left;
+left: 50%">
           <% @release.download_uris.each do |format, uri| %>
             <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
           <% end %>
         </div>
       <% end %>
+
+
+      <div class="release-stats">
+        <div class="release-stat">
+          <span class="release-favs ml-1">
+            <%= @release.likes.count %>
+          </span>
+          <span class="release-nav-caption">Favs</span>
+        </div>
+
+        <div class="release-stat">
+          <span class="release-comments ml-1">
+            <%= @activities.count %>
+          </span>
+          <span class="release-nav-caption">comment</span>
+        </div>
+
+        <div class="release-stat">
+          <span class="release-shares ml-1">
+            <%= Share.where(shareable_type: 'Release', shareable_id: @release.id).count %>
+          </span>
+          <span class="release-nav-caption">Share</span>
+        </div>
+
+        <div data-object-type="release" data-object-id="<%= @release.id %>">
+          <%= social_share_button_tag(strip_tags(@release.title).gsub("\'",''), desc: strip_tags(@release.text).gsub("\'",''), image: @release.avatar.url) %>
+        </div>
+
+<!--         <div class="release-social twitter">
+          <%= image_tag 'icons/social-twitter-w.svg' %>
+        </div>
+
+        <div class="release-social facebook">
+          <%= image_tag 'icons/social-fb-w.svg' %>
+        </div> -->
+      </div>
+
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-8 pt-4">
     <div class="release-info">
       <h1><%= @release.title.upcase %></h1>
-      <div class="release-date">Catalog#: <%= @release.catalog %></div>
-      <p class="release-date">Release date: <%= time_ago_in_words( @release.release_date ) %> ago</p>
+      <div class="release-date"><strong>Catalog#:</strong> <%= @release.catalog %></div>
+      <div class="release-date"><strong>Release date:</strong> <%= time_ago_in_words( @release.release_date ) %> ago</div>
+      <div class="release-date"><strong>Producers:</strong> <%= @release.artists(2) %></div>
+      <p class="release-date"><strong>Tracks</strong> <%= @release.tracks.count %></p>
 
-      <div class="truncated-description">
+      <div class="truncated-description" style="height: 165px; overflow: auto;">
         <% if @release.text.present? %>
           <article><%= strip_tags(@release.text).gsub('&amp;','&').truncate(400) %></article>
 
@@ -77,72 +134,32 @@
         <% end %>
       </div>
 
-      
       <%#= link_to "Q&A", chirp_path, class: "btn c-btn-transparent btn-wide" %>
     </div>
-
-    <div class="user-controls">
-      <div class="c-btn-group d-inline-block mr-4">
-        <% release = params[:player].blank? %>
-        <% classes = ["btn btn-wide c-btn-blue", "btn btn-wide c-btn-black btn-disabled"] %>
-        <%= link_to "Feed", @release, 
-            class: release ? classes[1] : classes[0] %><!--
-       --><%= link_to "Music", 
-            release_path(
-              id: @release.id, 
-              user_id: current_user.try(:id),
-              player: true), 
-            class: release ? classes[0] : classes[1] %>
-      </div>
-    </div>
-
-    <%= render 'releases/release_feed' if defined?(release_feed) %>
   </div>
 
-  <div class="col-md-4">
-    <div class="sticky-top">
-
+  <div class="col-md-4 px-0">
       <!-- ARTISTS -->
-      <div class="c-panel bg-dark mb-4">
+      <div class="c-panel bg-white h-100">
         <div class="c-flag c-flag-inner mb-2"><span class="t-blue">ARTISTS</span></div>
 
-        <ol class="users-block list-unstyled mt-1 release-users-block">
+        <div>
           <% if @release.artist_as_string && @release.artist.present? %>
             <p><%= @release.artist %></p>
           <% elsif @release.users.any? %>
             <% @release.users.each do |artist| %>
-              <li>
-                <%= link_to artist_path(artist), class: "d-inline-block align-middle" do %>
-                  <%= image_tag artist.avatar.thumb, class: "user-avatar" %>
+                <%= link_to artist_path(artist), class: "d-inline-block" do %>
+                  <%= image_tag artist.avatar.thumb, class: "user-avatar ml-4", style: "width: 84px; height: 84px; border-radius: 42px;" %>
                 <% end %>
-
-                <div class="user-subtitle">
-                  <h5>
-                    <%= link_to artist.name, artist_path(artist) %>
-                    <%= image_tag 'icons/point-green.svg', class: "point-green" if artist.online? %>
-                  </h5>
-                  <div>
-                    <%= link_to "All tracks", artist %>
-                    /
-                    <b><%= link_to "Artist Q & A", chirp_index_path %></b>
-                  </div>
-                </div>
-
-                <%= render partial: 'follows/follow_button', 
-                    locals: { object: artist, 
-                              opt: { 
-                                  classes: "btn c-btn-blue",
-                                  text: ['follow', 'following'] } } %>
-              </li>
             <% end %>
 
-            <% if @release.users.count > 2 %>
+            <% if @release.users.count > 8 %>
               <div class="more-users">
                 <span style="display: none;">Hide</span>
                 <span>
-                  & <%= @release.users.count - 2 %>
+                  & <%= @release.users.count - 8 %>
                   other 
-                  <%= "artist".pluralize(@release.users.count - 2) %>
+                  <%= "artist".pluralize(@release.users.count - 8) %>
                 </span>
               </div>
             <% end %>
@@ -151,20 +168,39 @@
           <% elsif @release.tracks.any? %>
             <p><%= @release.tracks.pluck(:artist).try(:uniq).try(:join,', ') %></p>
           <% end %>
-        </ol>
-      </div>
-
-      <!-- TRACKS -->
-      <% if @release.tracks.any? %>
-        <div class="c-panel bg-white">
-          <div class="c-flag c-flag-inner mb-2">TRACKS ON THIS RELEASE</div>
-
-          <ol class="list-unstyled mt-1">
-            <%= render @release.tracks %>
-          </ol>
         </div>
-      <% end %>
-    </div>
+      </div>
   </div>
 </div>
 
+<div class="user-controls">
+  <div class="row h-100">
+    <div class="col-lg-3 px-0 c-btn-group two-btns">
+      <% release = params[:player].blank? %>
+      <% classes = ["btn c-btn-blue btn-square", "btn c-btn-black btn-square btn-disabled"] %>
+      <%= link_to "Release Feed", @release, 
+          class: release ? classes[1] : classes[0] %><!--
+     --><%= link_to "All Tracks", 
+          release_path(
+            id: @release.id, 
+            user_id: current_user.try(:id),
+            player: true), 
+          class: release ? classes[0] : classes[1] %>
+    </div>
+
+    <div class="col-lg-5 px-0">
+      <div class="user-header-title"><%= content_for :user_header_title %></div>
+    </div>
+
+    <div class="col-lg-4 px-0 c-btn-group two-btns d-flex">
+      <button class="btn c-btn-blue btn-square" type="button" data-toggle="modal" data-target="#addcommentModal">
+        POST A COMMENT
+      </button>
+      <%= render partial: 'follows/follow_button', 
+          locals: { object: @release, 
+                    opt: { 
+                        classes: "btn c-btn-red btn-square",
+                        text: ['follow release', 'unfollow'] } } %>
+    </div>
+  </div>
+</div>

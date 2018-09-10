@@ -1,15 +1,7 @@
 <div class="c-panel bg-white big-c-buttons">
   <div class="c-flag mb-4">RELEASE FEED</div>
   
-  <button class="btn c-btn-blue mt-1 btn-wide" type="button" data-toggle="modal" data-target="#addcommentModal">
-    POST A COMMENT
-  </button>
 
-  <%= render partial: 'follows/follow_button', 
-      locals: { object: @release, 
-                opt: { 
-                    classes: "btn btn-wide follow-button-black",
-                    text: ['follow this feed', 'unfollow this feed'] } } %>
 
   <div class="feed-block" data-feed-id="<%= @release.id %>" data-feed="release">
     <%= render 'feeds/commentable_feed' %>

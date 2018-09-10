@@ -54,7 +54,7 @@ class HomeController < ApplicationController
   end
 
   def share
-    if params[:subtype] && params[:subtype_id]
+    if params[:subtype].present? && params[:subtype_id].present?
       object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
       _object_id = params[:subtype_id]
       verb = params[:subtype].capitalize

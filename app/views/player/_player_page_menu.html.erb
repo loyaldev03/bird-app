@@ -2,11 +2,14 @@
   <div class="playlist-nav">
     <div class="playlist-nav-body">
       <ul>
-        <li class="<%= 'active' if current_page?(user_path(current_user)) || current_page?(artist_path(current_user)) %>">
-          <a href="/">
-            BirdCall
-          </a>
-        </li>
+        <% if current_user %>
+          <li class="<%= 'active' if current_page?(user_path(current_user)) || current_page?(artist_path(current_user)) %>">
+            <a href="/">
+              BirdCall
+            </a>
+          </li>
+        <% end %>
+
         <li class="<%= 'active' if current_page?(chirp_index_path) %>">
           <%= link_to chirp_index_path do %>
             Chirp
@@ -14,22 +17,25 @@
           <% end %>
         </li>
 
-        <% listen = current_page?("/releases?player=true&user_id=#{@user.id}") ||
-                    current_page?("/releases?filters[release_type]=2&player=true&user_id=#{@user.id}") ||
-                    current_page?("/releases?filters[release_type]=1&player=true&user_id=#{@user.id}") ||
-                    current_page?(playlists_path(user_id: @user.id)) ||
-                    current_page?(player_favorites_path(@user)) ||
-                    current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") ||
-                    current_page?(player_liked_tracks_path(@user)) ||
-                    current_page?(player_recently_tracks_path(@user)) ||
-                    current_page?(player_downloaded_tracks_path(@user)) ||
-                    current_page?(playlist_path(@user)) %>
-        <li class="<%= 'active-blue' if listen %>">
-          <%= link_to player_main_area_path(current_user) do %>
-            Listen
-            <%= '<span class="sr-only">(current)</span>'.html_safe if listen %>
-          <% end %>
-        </li>
+        <% if current_user %>
+          <% listen = current_page?("/releases?player=true&user_id=#{@user.id}") ||
+                      current_page?("/releases?filters[release_type]=2&player=true&user_id=#{@user.id}") ||
+                      current_page?("/releases?filters[release_type]=1&player=true&user_id=#{@user.id}") ||
+                      current_page?(playlists_path(user_id: @user.id)) ||
+                      current_page?(player_favorites_path(@user)) ||
+                      current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") ||
+                      current_page?(player_liked_tracks_path(@user)) ||
+                      current_page?(player_recently_tracks_path(@user)) ||
+                      current_page?(player_downloaded_tracks_path(@user)) ||
+                      current_page?(playlist_path(@user)) %>
+          <li class="<%= 'active-blue' if listen %>">
+            <%= link_to player_main_area_path(current_user) do %>
+              Listen
+              <%= '<span class="sr-only">(current)</span>'.html_safe if listen %>
+            <% end %>
+          </li>
+        <% end %>
+        
         <li class="<%= 'active' if current_page?(artists_path) %>">
           <%= link_to artists_path do %>
             Connect

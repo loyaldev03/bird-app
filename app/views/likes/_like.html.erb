@@ -1,5 +1,5 @@
 <% if style == 'release' %>
-  <% content = "LIKE #{image_tag 'icons/like-release.svg'}" %>
+  <% content = "#{image_tag 'icons/like-release.svg'} <div class='release-nav-caption mt-1'>FAVORITE</div>" %>
 <% elsif style == 'thumbup' || style == 'thumbup-reply' %>
   <% content = "Like" %>
 <% else %>

@@ -188,6 +188,7 @@ strong {
 
     &.btn-square {
       border-radius: 0;
+      border: none;
     }
   }
 }
@@ -509,6 +510,12 @@ strong {
 
   article:first-child {
     display: block;
+  }
+
+  .truncated-short, .truncated-long {
+    color: #222222;
+    font-size: 12px;
+    font-weight: 700;
   }
 }
 

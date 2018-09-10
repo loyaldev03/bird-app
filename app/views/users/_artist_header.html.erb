@@ -103,11 +103,13 @@
     </div> 
   </div>
 
-  <div class="row">
-    <div class="col-lg-9 offset-3 px-0">
-      <div class="user-header-title"><%= content_for :user_header_title %></div>
+  <% unless artist %>
+    <div class="row">
+      <div class="col-lg-9 offset-3 px-0">
+        <div class="user-header-title"><%= content_for :user_header_title %></div>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <% if current_user && current_user.id == @user.id %>
