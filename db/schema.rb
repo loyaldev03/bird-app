@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180912060730) do
+ActiveRecord::Schema.define(version: 20180912121740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -438,6 +438,7 @@ ActiveRecord::Schema.define(version: 20180912060730) do
     t.integer "category_id"
     t.integer "old_id"
     t.boolean "see_to_all"
+    t.boolean "noteworthy", default: false
   end
 
   create_table "track_files", force: :cascade do |t|

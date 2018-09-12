@@ -7,12 +7,24 @@ class TopicCategoriesController < ApplicationController
 
   def index
     @groups = TopicCategoryGroup.all
+    @noteworthy_topics = Topic.where({:noteworthy => true})
   end
 
   def show
     @category = TopicCategory.find(params[:id])
     @topic = Topic.new
-
+    @pinned_topics = []
+    @locked_topics = []
+    @general_topics = []
+    @category.topics.order(created_at: :desc).each do |topic|
+      if topic.pinned 
+        @pinned_topics.push(topic)
+      elsif topic.locked
+        @locked_topics.push(topic)        
+      else
+        @general_topics.push(topic)
+      end
+    end
     breadcrumb @category.title, chirp_path(@category), match: :exact
   end
 end
