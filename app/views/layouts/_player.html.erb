@@ -89,6 +89,51 @@
       <% end %>
     </div>
   </div>
+
+  <div class="playlist-player">
+    <div class="container">
+      <div class="release-details-btn"></div>
+      <div class="row h-100">
+        <div class="col-md-2 position-relative">
+          <div class="pp-track-img"></div>
+          <div class="pp-rate"></div>
+          <div class="pp-track"></div>
+          <div class="pp-artist"></div>
+        </div>
+        <div class="col-md-8">
+          <div class="pp-volume-block d-flex">
+            <%= image_tag 'icons/volume1.svg', class: "float-left mr-2" %>
+            <div class="pp-volume">
+              <div class="pp-volume-bar">
+                <div class="pp-volume-bar-value volume-bar-value"></div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="pp-previous"></div>
+            <div class="pp-play"></div>
+            <div class="pp-next"></div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center" style="height: 24px;">
+            <div class="pp-current-time"></div>
+            <div class="pp-seek-bar">
+              <div class="pp-play-bar"></div>
+            </div>
+            <div class="pp-time-left"></div>
+          </div>
+        </div> 
+        <div class="col-md-2">
+          <div class="pp-like"></div>
+          <div class="pp-add">
+            <button class="playlist-add-track">+</button>
+          </div>
+          <div class="pp-download"></div>
+          <div class="pp-share"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script type="text/javascript" data-turbolinks-eval="false">
