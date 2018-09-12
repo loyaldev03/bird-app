@@ -2,5 +2,5 @@
     params: { followable_id: object.id, followable_type: object.class.to_s,
       text: text.to_s, classes: classes }, 
     method: :post, class: "#{classes}", remote: true,
-    form_class: "follow-form follow-#{object.class.to_s}-#{object['id']}" 
+    form_class: "follow-form follow-#{object.class.to_s}-#{object['id']} #{object.locked ? 'follow-form-locked' : ''}", disabled: object.locked
 %>

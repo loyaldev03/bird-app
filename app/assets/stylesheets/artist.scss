@@ -43,9 +43,13 @@
 
 .follow-button {
   @include btn(#3ed4e0,white,darken(#3ed4e0, 5));
-  width: 127px;
+  width: 100%;
   height: 100%;
   z-index: 2;
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;  
+  margin-top:3px;
 }
 
 .unfollow-state {
