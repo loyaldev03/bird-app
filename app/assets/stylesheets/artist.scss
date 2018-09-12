@@ -128,31 +128,6 @@
   }
 }
 
-.artists-list-block {
-
-  .item-body {
-    vertical-align: middle;
-    height: auto;
-    padding-top: 0;
-  }
-
-  & > li {
-    margin-bottom: 24px;
-  }
-
-  h3 > a {
-    color: white;
-    font-size: 20px;
-    font-weight: 400;
-    letter-spacing: 2px;
-  }
-
-  .follow-button {
-    position: static;
-    margin-top: 10px;
-  }
-}
-
 .item-wide {
   height: 194px;
   overflow: hidden;

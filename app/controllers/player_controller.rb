@@ -1,4 +1,6 @@
 class PlayerController < ApplicationController
+  include ApplicationHelper
+  
   before_action :set_vars
   before_action :set_notifications, 
       only: [:liked_tracks, :recently_tracks, :downloaded_tracks, :favorites,
@@ -49,8 +51,8 @@ class PlayerController < ApplicationController
   end
 
   def main_area
-    @main_area = { link: nil, img: nil}
-    @main_area = nil
+    @main_area = { link: get_setting('main-area-promo'), 
+                    img: get_setting_res('main-area-promo')}
   end
 
   private

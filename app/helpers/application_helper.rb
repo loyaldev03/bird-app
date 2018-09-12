@@ -20,6 +20,12 @@ module ApplicationHelper
     setting.val if setting.present?
   end
 
+  def get_setting_res ident
+    setting = SiteSetting.where(ident: ident).first
+
+    setting.res if setting.present?
+  end
+
   def get_user_rate_for_track track
     if current_user
       @rating = Rate.where(rater_id: current_user.id, rateable_id: track.id, rateable_type: 'Track')

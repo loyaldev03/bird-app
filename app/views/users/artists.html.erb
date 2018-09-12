@@ -2,32 +2,10 @@
   <div class="c-flag">ARTISTS</div>
 </div>
 
-<div class="artists-list-block row">
+<div class="row">
   <% @artists.each do |artist| %>
-    <div class="col-lg-6 text-center mb-4">
-      <div class="item-wide">
-        <%= link_to artist_path(artist), class: "item-avatar"  do %>
-          <%= image_tag artist.avatar.big_thumb %>
-        <% end %>
-
-        <div class="item-body">
-
-          <h3><%= link_to artist.name.upcase, artist_path(artist) %></h3>
-
-          <div>
-            <b>
-              <%= artist.try(:artist_info).try(:tracks_count) || 0 %>
-              <%= "Track".pluralize(artist.try(:artist_info).try(:tracks_count)) %>
-              /
-              <%= artist.try(:artist_info).try(:followers_count) || 0 %>
-              <%= "Follower".pluralize(artist.try(:artist_info).try(:followers_count)) %>
-            </b>
-          </div>
-
-          <%= render 'follows/follow_button', object: artist %>
-          
-        </div>
-      </div>
+    <div class="col-lg-6 mb-3">
+      <%= render 'users/artist_gray', object: artist %>
     </div>
   <% end %>
 </div>
