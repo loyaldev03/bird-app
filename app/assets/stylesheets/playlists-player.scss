@@ -1,14 +1,13 @@
 .playlist-player {
   background-color: #4a4a4a;
-  width: calc(100% + 30px);
-  height: 110px;
+  height: 70px;
   z-index: 3;
   left: 0;
   bottom: 0;
-  padding: 15px 25px;
-  margin-left: -15px;
-  margin-bottom: -24px;
   color: white;
+  position: fixed;
+  width: 100%;
+  padding: 10px 0;
 
   .pp-previous {
     background: asset-data-url("icons/media-backward-md.png");
@@ -34,8 +33,10 @@
 
   .pp-play {
     background: asset-data-url("icons/play-md.png");
-    width: 42px;
-    height: 42px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     margin: 0 30px;
 
@@ -45,9 +46,18 @@
 
     &.loading {
       background-image: asset-data-url("icons/loading.gif") !important;
-      background-size: 42px 42px;
+      background-size: 30px 30px;
       display: inline-block;
       content:"";
+    }
+  }
+
+  .pp-track-img {
+    float: left;
+
+    img {
+      width: 52px !important;
+      height: 52px !important;
     }
   }
 
@@ -74,7 +84,7 @@
   .pp-volume-block {
     position: absolute;
     bottom: 5px;
-    left: 25px;
+    right: 25px;
   }
 
   .pp-volume {
@@ -121,13 +131,13 @@
     position: absolute;
     display: inline-block;
     bottom: 9px;
-    left: -30px;
+    right: 75px;
   }
 
   .pp-add {
     position: absolute;
     bottom: 10px;
-    left: -18px;
+    right: 50px;
 
     button {
       color: white;
@@ -137,13 +147,19 @@
   }
 
   .pp-rate {
-    position: absolute;
-    bottom: 10px;
-    left: 4px;
+    margin-top: -5px;
 
     .nav-track-star {
       border: none;
       padding: 0;
+      display: inline-block;
+      margin-right: 0;
+      float: none;
+    }
+
+    .user-rate-wrapper {
+      display: inline-block;
+      padding-top: 5px;
     }
   }
 }

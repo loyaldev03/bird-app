@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :set_notification
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_online
+  before_action :set_online, :detect_player_pages
   before_action :check_for_terms_and_conduct
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :resource_name, :resource, :devise_mapping, :resource_class
 
+  include ApplicationHelper
   include ActionView::Helpers::UrlHelper
 
   def resource_name
@@ -78,7 +79,19 @@ class ApplicationController < ActionController::Base
     renderer.new('warden' => proxy)
   end
 
+
   protected
+    def detect_player_pages
+      @player_pages =
+          current_page?(root_path) ||
+          (controller?('releases') && action?('index') && params[:player] == true ) ||
+          (controller?('player') && action?('favorites')) ||
+          (controller?('player') && action?('liked_tracks')) ||
+          (controller?('player') && action?('recently_tracks')) ||
+          (controller?('player') && action?('downloaded_tracks')) ||
+          (controller?('player') && action?('main_area')) ||
+          (controller?('playlists') && action?('index'))
+    end
 
     def set_notification
       request.env['exception_notifier.exception_data'] = {

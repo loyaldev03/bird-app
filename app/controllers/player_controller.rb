@@ -51,8 +51,12 @@ class PlayerController < ApplicationController
   end
 
   def main_area
-    @main_area = { link: get_setting('main-area-promo'), 
-                    img: get_setting_res('main-area-promo')}
+    if get_setting('main-area-promo')
+      @main_area = { link: get_setting('main-area-promo'), 
+                     img: get_setting_res('main-area-promo')}
+    else
+      @main_area = nil
+    end
   end
 
   private

@@ -1,5 +1,5 @@
 <div class="jp-audio" id="cPlayer" data-turbolinks-permanent>
-  <div class="container">
+  <div class="container player-top">
     <div class="jp-interface">
       <% if current_user %>
         <%= link_to player_main_area_path(current_user), class: "jp-player-btn" do %>
@@ -686,6 +686,30 @@
     
     if (!virtual) {
       $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
+    }
+  }
+
+  function switchPlayerView(type) {
+    if ($('.jp-player').data('type') == type) {
+      return false;
+    }
+
+    if(type == 'top') {
+      $('.jp-audio').data('type', 'top');
+      $('footer').hide();
+      $('.playlist-player').hide();
+      $('.jp-audio').slideDown();
+      $('.navbar').css('top', '40px');
+      $('main').css('padding-top', '100px');
+      $('footer').show();
+    } else if (type == 'bottom') {
+      $('.jp-audio').data('type', 'bottom');
+      $('footer').show();
+      $('.playlist-player').show();
+      $('.jp-audio').slideUp();
+      $('.navbar').css('top', '0');
+      $('main').css('padding-top', '60px');
+      $('footer').hide();
     }
   }
 

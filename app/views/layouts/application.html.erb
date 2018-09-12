@@ -30,7 +30,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="<%= 'player_page' if @player_pages %>">
     <div class="main-container">
 
       <div class="notice"><%= notice %></div>
@@ -46,6 +46,8 @@
           
           <%= yield %>
         </div>
+
+        <%= render 'player/bottom_player' %>
 
         <%= render "layouts/footer" %>
 
