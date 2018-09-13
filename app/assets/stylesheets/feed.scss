@@ -14,6 +14,10 @@
     letter-spacing: 0.72px;
     margin-bottom: 3px;
   }
+
+  .feed-name {
+    padding: 10px 0;
+  }
 }
 
 .feed-tabs {
@@ -64,8 +68,6 @@
 .feed-comment-replies {
   background: #f7f7f7;
   padding: 20px;
-  margin-top: 8px;
-  margin-left: 60px;
   text-align: center;
   border-radius: 0 0 10px 10px;
 
@@ -125,9 +127,31 @@
 .feed-item-body {
   background-color: #e2e2e2;
   border-radius: 15px 15px 0 0;
-  padding: 10px 15px;
-  margin-left: 60px;
   position: relative;
+  background-color: rgba(175, 175, 175, 0.16);
+  
+  .comment-footer {
+    background-color: #cce8eb;
+    font-family: Phosphate-solid;
+    font-size: 14px;    
+    margin:0;
+
+    .col-sm-6 {
+      text-align: center;
+    }
+
+    .likes-wrapper {
+      border-right: 1px solid #707070;
+    }
+
+    .likes-count, .comments-count {
+      color: #ff7979;
+    }
+  }
+}
+
+.feed-item-comment-body {
+  background-color: #f7f7f7;  
 }
 
 .release-feed-avatar {
@@ -154,7 +178,18 @@
 
 .feed-name > a {
   font-weight: bold;
-  color: #e75e35 !important;
+  color: #222222;
+  font-family: Phosphate-solid;
+  font-size: 15px;
+  letter-spacing: 0.68px;
+  line-height: 16px;  
+}
+
+.feed-description {
+  color: #393939;
+  font-family: "Titillium Web";
+  font-size: 22px;
+  font-weight: 400;
 }
 
 .feed-release {

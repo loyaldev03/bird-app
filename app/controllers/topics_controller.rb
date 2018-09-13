@@ -10,7 +10,12 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.find(params[:id])
-
+    @users = []
+    @topic.posts.each do |post|
+      if !@users.include? post.user
+        @users.push post.user
+      end
+    end
     if ( @topic.user && @topic.user.has_role?(:artist) ) || !@topic.see_to_all
       authorize! :read, @topic
     end

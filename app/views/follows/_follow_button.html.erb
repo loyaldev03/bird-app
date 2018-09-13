@@ -1,9 +1,9 @@
 <% opt = opt.present? ? opt : nil %>
-
+<% _btn_class = defined?(btn_class) ? btn_class : '' %>
 <% if opt && opt[:classes] %>
-  <% classes = opt[:classes] %>
+  <% classes = opt[:classes] + " " + _btn_class %>
 <% else %>
-  <% classes = 'follow-button' %>
+  <% classes = 'follow-button' + " " + _btn_class %>
 <% end %>
 
 <% if opt && opt[:text] %>
