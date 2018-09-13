@@ -48,7 +48,7 @@
       <div class="topic-section pinned-topics-section">
         <button class="topic-section-btn pinned-btn">
           Pinned
-          <img src="/assets/icons/office-push-pin.svg">
+          <%= image_tag "icons/office-push-pin.svg" %>
         </button>    
         <% @pinned_topics.each do |topic| %>
           <%= render 'topic_individual_line', { topic: topic, category: @category } %>
