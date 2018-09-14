@@ -2,48 +2,39 @@
   <div class="playlist-nav">
     <div class="playlist-nav-body">
       <ul>
-<!--         <% if current_user %>
-          <li class="<%= 'active' if current_page?(user_path(current_user)) || current_page?(artist_path(current_user)) %>">
-            <a href="/">
-              BirdCall
-            </a>
-          </li>
-        <% end %>
-
-        <li class="<%= 'active' if current_page?(chirp_index_path) %>">
-          <%= link_to chirp_index_path do %>
-            Chirp
-            <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(chirp_index_path) %>
-          <% end %>
-        </li> -->
-
+        <li class="mt-2 mb-4">
+          <%= image_tag 'icons/icon-chevron-black.svg', 
+              style: 'cursor: pointer; margin-right: 30px;', 
+              onclick: "window.history.back();" %>
+          <%= image_tag 'icons/icon-chevron-black.svg', 
+              style: 'cursor: pointer; transform: rotate(180deg);', 
+              onclick: "window.history.forward();" %>
+        </li>
         <% if current_user %>
-          <% listen = current_page?("/releases?player=true&user_id=#{@user.id}") ||
-                      current_page?("/releases?filters[release_type]=2&player=true&user_id=#{@user.id}") ||
-                      current_page?("/releases?filters[release_type]=1&player=true&user_id=#{@user.id}") ||
-                      current_page?(playlists_path(user_id: @user.id)) ||
-                      current_page?(player_favorites_path(@user)) ||
-                      current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") ||
-                      current_page?(player_liked_tracks_path(@user)) ||
-                      current_page?(player_recently_tracks_path(@user)) ||
-                      current_page?(player_downloaded_tracks_path(@user)) ||
-                      current_page?(player_main_area_path(@user)) ||
-                      current_page?(playlist_path(@user)) %>
-          <%# connect =  %>
-          <li class="<%= 'active-blue' if current_page?(releases_path(player: true)) %>">
-            <%= link_to releases_path(user_id: current_user, player: true) do %>
+          <% listen = 
+              (controller?('releases') && action?('index') && params[:player] == true ) ||
+              (controller?('player') && action?('favorites')) ||
+              (controller?('player') && action?('liked_tracks')) ||
+              (controller?('player') && action?('recently_tracks')) ||
+              (controller?('player') && action?('downloaded_tracks')) ||
+              (controller?('player') && action?('listen')) ||
+              (controller?('playlists') && action?('show')) %>
+
+          <li class="<%= 'active-blue' if listen %>">
+            <%= link_to player_listen_path(current_user) do %>
               Listen
-              <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(releases_path(player: true)) %>
+              <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_listen_path(current_user)) %>
             <% end %>
           </li>
         <% end %>
-        
-        <li class="<%= 'active-blue' if listen %>">
-          <%= link_to player_main_area_path(@user) do %>
+
+        <li class="<%= 'active-blue' if current_page?(player_connect_path(current_user)) %>">
+          <%= link_to player_connect_path(current_user) do %>
             Connect
-            <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_main_area_path(@user)) %>
+            <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_connect_path(current_user)) %>
           <% end %>
         </li>
+
         <li class="<%= 'active' if current_page?(leaderboard_path) %>">
           <%= link_to leaderboard_path do %>
             Play

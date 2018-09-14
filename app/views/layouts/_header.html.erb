@@ -39,27 +39,26 @@
               <% end %>
             </li>
             <% @user ||= current_user %>
-            <% listen = current_page?("/releases?player=true&user_id=#{@user.id}") ||
-                        current_page?("/releases?filters[release_type]=2&player=true&user_id=#{@user.id}") ||
-                        current_page?("/releases?filters[release_type]=1&player=true&user_id=#{@user.id}") ||
-                        current_page?(playlists_path(user_id: @user.id)) ||
-                        current_page?(player_favorites_path(@user)) ||
-                        current_page?("/releases?filters[liked]=true&player=true&user_id=#{@user.id}") ||
-                        current_page?(player_liked_tracks_path(@user)) ||
-                        current_page?(player_recently_tracks_path(@user)) ||
-                        current_page?(player_downloaded_tracks_path(@user)) ||
-                        current_page?(playlist_path(@user)) %>
+            <% listen = 
+                (controller?('releases') && action?('index') && params[:player] == true ) ||
+                (controller?('player') && action?('favorites')) ||
+                (controller?('player') && action?('liked_tracks')) ||
+                (controller?('player') && action?('recently_tracks')) ||
+                (controller?('player') && action?('downloaded_tracks')) ||
+                (controller?('player') && action?('listen')) ||
+                (controller?('playlists') && action?('show')) %>
+                
             <li class="nav-item <%= 'active' if listen %>">
-              <%= link_to player_main_area_path(current_user), class: "nav-link" do %>
+              <%= link_to player_listen_path(current_user), class: "nav-link" do %>
                 Listen
                 <%= '<span class="sr-only">(current)</span>'.html_safe if listen %>
               <% end %>
             </li>
-
-            <li class="nav-item <%= 'active' if current_page?(artists_path) %>">
-              <%= link_to artists_path, class: "nav-link" do %>
+            
+            <li class="nav-item <%= 'active' if current_page?(player_connect_path(current_user)) %>">
+              <%= link_to player_connect_path(current_user), class: "nav-link" do %>
                 Connect
-                <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(artists_path) %>
+                <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_connect_path(current_user)) %>
               <% end %>
             </li>
 

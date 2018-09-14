@@ -1,7 +1,7 @@
 .playlist-player {
   background-color: #4a4a4a;
   height: 70px;
-  z-index: 3;
+  z-index: 10;
   left: 0;
   bottom: 0;
   color: white;
@@ -43,7 +43,7 @@
     margin: 0 30px;
 
     &.playing {
-      background: asset-data-url("icons/pause-md.png");
+      background-image: asset-data-url("icons/pause-md.png");
     }
 
     &.loading {

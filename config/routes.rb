@@ -86,7 +86,8 @@ Rails.application.routes.draw do
     get 'recently_tracks'
     get 'downloaded_tracks'
     get 'favorites'
-    get 'main_area'
+    get 'connect'
+    get 'listen'
   end
 
   resources :playlists

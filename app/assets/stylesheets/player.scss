@@ -1,4 +1,4 @@
-.jp-audio {
+.player-top {
   position: fixed;
   top: 0px;
   height: 40px;
@@ -9,6 +9,7 @@
   font-family: "Roboto Mono";
   display: inline-block;
   text-align: center;
+  display: none;
 
   .jp-controls {
     padding: 12px 0;

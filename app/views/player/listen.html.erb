@@ -1,0 +1,73 @@
+<% content_for :user_header_title do %>
+  <%= image_tag 'icons/bird-blue.svg' %>
+  Listen
+<% end %>
+
+<% if @user.has_role? :artist %>
+  <%= render 'users/artist_header' %>
+<% else %>
+  <%= render 'users/user_header' %>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-3">
+    <%= render 'player/player_page_menu' %>
+  </div>
+
+  <div class="col-lg-9 music-wrapper">
+    <div class="music-block player-main-area" style="padding-top: 280px;">
+      <%= render 'last_release_banner' %>
+
+      <div class="main-area-nav mb-3">
+        <div class="row h-100">
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to artists_path do %>
+              <%= image_tag 'dirtybird-bbq-stage.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Artists</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to leaderboard_path do %>
+              <%= image_tag 'dirtybird_bbq.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Community</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to friends_path(current_user) do %>
+              <%= image_tag 'JLB.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Friends</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <h2>Latest Releases</h2>
+      <%= link_to 'see all', releases_path(user_id: current_user, player: true), class: 'see-all' %>
+      <hr class="mt-1">
+      <div class="row mb-3">
+        <% @top_releases.each do |release| %>
+          <div class="col-lg-4 col-md-6 mb-5">
+            <%= render(release) %>
+          </div>
+        <% end %>
+      </div>
+
+      <h2>Top 5 Tracks</h2>
+      <% #TODO change to top chart %>
+      <%= link_to 'see all', releases_path(user_id: current_user, player: true), class: 'see-all' %>
+      <hr class="mt-1">
+      <div class="mb-4">
+        <%= render partial: 'playlists/playlist_items', 
+            locals: { tracks: @top_tracks, source_type: 'top-tracks', source_id: 100 } %>
+      </div>
+
+      <h2>Noteworthy Playlists</h2>
+      <%= link_to 'see all', releases_path(user_id: current_user, player: true), class: 'see-all' %>
+      <hr class="mt-1">
+      <%= render partial: 'playlists/list', locals: { playlists: @top_playlists } %>
+    </div>
+  </div>
+</div>
+

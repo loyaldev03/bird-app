@@ -1,92 +1,94 @@
 <div class="jp-audio" id="cPlayer" data-turbolinks-permanent>
-  <div class="container player-top">
-    <div class="jp-interface">
-      <% if current_user %>
-        <%= link_to player_main_area_path(current_user), class: "jp-player-btn" do %>
-          PLAYER
+  <div class="player-top">
+    <div class="container">
+      <div class="jp-interface">
+        <% if current_user %>
+          <%= link_to player_connect_path(current_user), class: "jp-player-btn" do %>
+            PLAYER
+          <% end %>
         <% end %>
-      <% end %>
-      
-      <div class="jp-controls">
-        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-        <button class="jp-previous" role="button" tabindex="0"></button>
-        <button class="jp-play" role="button" tabindex="1"></button>
-        <button class="jp-next" role="button" tabindex="2"></button>
-        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+        
+        <div class="jp-controls">
+          <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+          <button class="jp-previous" role="button" tabindex="0"></button>
+          <button class="jp-play" role="button" tabindex="1"></button>
+          <button class="jp-next" role="button" tabindex="2"></button>
+          <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
 
-        <div class="jp-volume-controls">
-          <button class="jp-volume-btn" tabindex="3"><%= show_svg('icons/volume-high.svg') %></button>
+          <div class="jp-volume-controls">
+            <button class="jp-volume-btn" tabindex="3"><%= show_svg('icons/volume-high.svg') %></button>
 
-          <div class="jp-volume d-none">
-            <!-- <button class="jp-mute" role="button" tabindex="4">mute</button> -->
-            <div class="jp-volume-bar">
-              <div class="jp-volume-bar-value volume-bar-value"></div>
+            <div class="jp-volume d-none">
+              <!-- <button class="jp-mute" role="button" tabindex="4">mute</button> -->
+              <div class="jp-volume-bar">
+                <div class="jp-volume-bar-value volume-bar-value"></div>
+              </div>
+               <!-- <div class="jp-seek-bar" style="width: 150px">
+                <div class="jp-play-bar"></div>
+              </div> -->
+              <!-- <button class="jp-volume-max" role="button" tabindex="5">max</button> -->
             </div>
-             <!-- <div class="jp-seek-bar" style="width: 150px">
-              <div class="jp-play-bar"></div>
-            </div> -->
-            <!-- <button class="jp-volume-max" role="button" tabindex="5">max</button> -->
           </div>
         </div>
-      </div>
 
-      <div class="jp-details"></div>
+        <div class="jp-details"></div>
 
-      <% if current_user && (current_user.cahced_active_subscription? || 
-            current_user.has_role?(:admin) ||
-            current_user.has_role?(:artist) ) %>
+        <% if current_user && (current_user.cahced_active_subscription? || 
+              current_user.has_role?(:admin) ||
+              current_user.has_role?(:artist) ) %>
 
-        <% if @credits %>
-          <div class="credits-menu">
-            <button type="button" data-toggle="collapse" data-target="#credits-count" aria-expanded="false" aria-controls="collapseExample" class="credits-btn">
-              <%= pluralize(@credits, "Credit") %>
-            </button>
-
-            <div id="credits-count" class="collapse credits-dropdown">
-              <span class="text-nowrap mb-1 d-inline-block">
-                You have <%= @credits %> download credits
-              </span>
-              <%=link_to "Buy More", get_more_credits_path, class: "btn c-btn-blue c-btn-sm" %>
-            </div>
-          </div>
-        <% end %>
-
-        <button id="jp-playlist-btn" class="mr-4">
-          <%= image_tag 'icons/playlist.png' %>
-        </button>
-      <% end %>
-
-      <div class="jp-progress-container" style="width: 200px">
-        <div id="waveform"></div>
-      </div>
-    </div>
-
-    <div class="jp-release-playlist" style="display: none;">
-    </div>
-
-    <div class="jp-playlist" style="display: none;">
-      
-      <% if current_user %>
-        <div class="jp-playlist-name"></div>
-        <ul></ul>
-        <div class="jp-playlist-footer">
-          <%= link_to "Create playlist", new_playlist_path, remote: true %>
-          <a href="#" data-toggle="collapse" data-target="#jp-playlist-popover" aria-expanded="false" aria-controls="collapseExample" class="jp-playlist-open-btn">
-            Load playlist
-          </a>
-
-          <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
-            <% for playlist in current_user.playlists %>
-              <button class="select-playlist" data-playlist-id="<%= playlist.id %>">
-                <%= "#{playlist.name}: #{pluralize(playlist.tracks_count, "Track")}" %>
+          <% if @credits %>
+            <div class="credits-menu">
+              <button type="button" data-toggle="collapse" data-target="#credits-count" aria-expanded="false" aria-controls="collapseExample" class="credits-btn">
+                <%= pluralize(@credits, "Credit") %>
               </button>
-              <br>
-            <% end %>
-          </div>
-        </div>
-      <% else %>
 
-      <% end %>
+              <div id="credits-count" class="collapse credits-dropdown">
+                <span class="text-nowrap mb-1 d-inline-block">
+                  You have <%= @credits %> download credits
+                </span>
+                <%=link_to "Buy More", get_more_credits_path, class: "btn c-btn-blue c-btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+
+          <button id="jp-playlist-btn" class="mr-4">
+            <%= image_tag 'icons/playlist.png' %>
+          </button>
+        <% end %>
+
+        <div class="jp-progress-container" style="width: 200px">
+          <div id="waveform"></div>
+        </div>
+      </div>
+
+      <div class="jp-release-playlist" style="display: none;">
+      </div>
+
+      <div class="jp-playlist" style="display: none;">
+        
+        <% if current_user %>
+          <div class="jp-playlist-name"></div>
+          <ul></ul>
+          <div class="jp-playlist-footer">
+            <%= link_to "Create playlist", new_playlist_path, remote: true %>
+            <a href="#" data-toggle="collapse" data-target="#jp-playlist-popover" aria-expanded="false" aria-controls="collapseExample" class="jp-playlist-open-btn">
+              Load playlist
+            </a>
+
+            <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
+              <% for playlist in current_user.playlists %>
+                <button class="select-playlist" data-playlist-id="<%= playlist.id %>">
+                  <%= "#{playlist.name}: #{pluralize(playlist.tracks_count, "Track")}" %>
+                </button>
+                <br>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -268,7 +270,6 @@
         return false;
       });
     }
-
     updatePlayerState(sourceType, sourceId, currentTrackIndex, virtual);
   }
 
@@ -722,9 +723,9 @@
       $('.pp-play').addClass('playing');
       $(`.play-${sourceType}-${sourceId}`).addClass('playing');
       $(`.play-${sourceType}-${sourceId}-track-${trackId}`).addClass('playing')
-          .parent('td').parent('tr').addClass('playing');
+          .closest('.playlist-item').addClass('playing');
       $(`.play-${sourceType}-${sourceId}-index-${trackIndex}`).addClass('playing')
-          .parent('td').parent('tr').addClass('playing');
+          .closest('.playlist-item').addClass('playing');
     }
 
     $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
@@ -743,7 +744,7 @@
       $('.jp-audio').data('type', 'top');
       $('footer').hide();
       $('.playlist-player').hide();
-      $('.jp-audio').slideDown();
+      $('.player-top').slideDown();
       $('.navbar').css('top', '40px');
       $('main').css('padding-top', '100px');
       $('footer').show();
@@ -751,7 +752,7 @@
       $('.jp-audio').data('type', 'bottom');
       $('footer').show();
       $('.playlist-player').show();
-      $('.jp-audio').slideUp();
+      $('.player-top').slideUp();
       $('.navbar').css('top', '0');
       $('main').css('padding-top', '60px');
       $('footer').hide();

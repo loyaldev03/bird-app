@@ -96,7 +96,8 @@ class ApplicationController < ActionController::Base
           (controller?('player') && action?('liked_tracks')) ||
           (controller?('player') && action?('recently_tracks')) ||
           (controller?('player') && action?('downloaded_tracks')) ||
-          (controller?('player') && action?('main_area')) ||
+          (controller?('player') && action?('connect')) ||
+          (controller?('player') && action?('listen')) ||
           (controller?('playlists') && action?('show'))
     end
 

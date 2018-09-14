@@ -277,7 +277,7 @@ li.playlist-nav-subheader {
   visibility: hidden;
 
   &.playing {
-    background: asset-data-url("icons/playing.svg");
+    background-image: asset-data-url("icons/playing.svg");
     visibility: visible;
 
     &:hover {
@@ -294,7 +294,7 @@ li.playlist-nav-subheader {
   background: asset-data-url("icons/play-big.png");
 
   &.playing {
-    background: asset-data-url("icons/pause-big.png");
+    background-image: asset-data-url("icons/pause-big.png");
   }
 
   &.loading {
@@ -310,14 +310,13 @@ li.playlist-nav-subheader {
 }
 
 .music-wrapper {
-  margin-bottom: -24px;
   display: flex;
   flex-direction: column;
 }
 
 .music-block {
   margin-top: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 60px;
   padding-left: 25px;
   overflow: scroll;
   flex-grow: 1;

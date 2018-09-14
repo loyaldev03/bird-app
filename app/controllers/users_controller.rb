@@ -292,7 +292,7 @@ class UsersController < ApplicationController
       redirect_to choose_profile_path and return
     end
 
-    redirect_to player_main_area_path(current_user)
+    redirect_to player_connect_path(current_user)
   end
 
   def update

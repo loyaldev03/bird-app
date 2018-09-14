@@ -208,7 +208,7 @@
   }
 
   &.playing:after {
-    background: asset-data-url("icons/pause-big1.png");
+    background-image: asset-data-url("icons/pause-big1.png");
   }
 }
 
