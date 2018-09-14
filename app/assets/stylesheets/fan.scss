@@ -41,6 +41,10 @@
     height: 100%;
     flex-grow: 1;
     text-align: right;
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: auto;
   }
 
   .follow-button {
