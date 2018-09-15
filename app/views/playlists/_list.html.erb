@@ -12,7 +12,7 @@
               <%= playlist.name %>
             <% end %>
           </h3>
-          <strong>Created by:</strong> <%= playlist.user.name %>
+          <strong>Created by:</strong> <%= playlist.user.try(:name) %>
           <br>
           On: <%= playlist.updated_at.strftime('%D') %>
         </div>

@@ -4,7 +4,7 @@ class PlayerController < ApplicationController
   before_action :set_vars
   before_action :set_notifications, 
       only: [:liked_tracks, :recently_tracks, :downloaded_tracks, :favorites,
-        :liked_playlists, :connect, :listen]
+        :liked_playlists, :connect, :listen, :artists, :playlists]
   
   def liked_tracks
     @tracks = @user.liked_by_type('Track').map do |_track|
@@ -69,6 +69,14 @@ class PlayerController < ApplicationController
                   .map {|a| a[0]}
     @top_tracks = top_tracks_ids.map { |id| Track.find_by_id id }.compact
     @top_playlists = Playlist.all.order(created_at: :desc).limit(3)
+  end
+
+  def artists
+    @artists = User.with_role(:artist)
+  end
+
+  def playlists
+    @playlists = Playlist.order(created_at: :desc).limit(20)
   end
 
   private

@@ -13,10 +13,6 @@
         <% if current_user %>
           <% listen = 
               (controller?('releases') && action?('index') && params[:player] == true ) ||
-              (controller?('player') && action?('favorites')) ||
-              (controller?('player') && action?('liked_tracks')) ||
-              (controller?('player') && action?('recently_tracks')) ||
-              (controller?('player') && action?('downloaded_tracks')) ||
               (controller?('player') && action?('listen')) ||
               (controller?('playlists') && action?('show')) %>
 

@@ -82,22 +82,10 @@ class ApplicationController < ActionController::Base
 
   protected
     def detect_player_pages
-      # logger.warn "================================"
-      # logger.warn params[:controller]
-      # logger.warn params[:action]
-      # logger.warn params[:player]
-      # logger.warn controller? params[:controller]
-      # logger.warn action? params[:action]
-      # logger.warn params[:player] == 'true'
       @player_pages =
           current_page?(root_path) ||
           (controller?('releases') && action?('index') && params[:player] == true ) ||
-          (controller?('player') && action?('favorites')) ||
-          (controller?('player') && action?('liked_tracks')) ||
-          (controller?('player') && action?('recently_tracks')) ||
-          (controller?('player') && action?('downloaded_tracks')) ||
-          (controller?('player') && action?('connect')) ||
-          (controller?('player') && action?('listen')) ||
+          controller?('player') ||
           (controller?('playlists') && action?('show'))
     end
 

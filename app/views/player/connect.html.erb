@@ -15,16 +15,16 @@
   </div>
 
   <div class="col-lg-9 music-wrapper">
-    <div class="music-block player-main-area">
+    <div class="music-block player-main-area" style="padding-top: 280px;">
       <% if @main_area %>
-      <a href="<%= @main_area[:link] %>" class="banner">
+      <a href="<%= @main_area[:link] %>" class="listen-banner">
         <%= image_tag @main_area[:img], class: "banner-img" %>
       </a>
       <% else %>
         <%= render 'last_release_banner' %>
       <% end %>
 
-    <!--   <div class="main-area-nav mb-3">
+      <div class="main-area-nav mb-3">
         <div class="row h-100">
           <div class="col-md-4 d-flex align-items-center justify-content-center">
             <%= link_to artists_path do %>
@@ -47,7 +47,7 @@
             <% end %>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <h2>Latest Artists</h2>
       <%= link_to 'All Artists', artists_path, class: 'see-all' %>

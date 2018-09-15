@@ -1,5 +1,5 @@
 <% release = ReleasePresenter.new(Release.published.first, current_user) %>
-<div class="last-release-banner">
+<div class="listen-banner">
   <%= image_tag release.avatar.url, class: "banner-img" %>
 
   <%= link_to '', "#",

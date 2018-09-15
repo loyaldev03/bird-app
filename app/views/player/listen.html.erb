@@ -18,27 +18,31 @@
     <div class="music-block player-main-area" style="padding-top: 280px;">
       <%= render 'last_release_banner' %>
 
-      <div class="main-area-nav mb-3">
-        <div class="row h-100">
-          <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <%= link_to artists_path do %>
-              <%= image_tag 'dirtybird-bbq-stage.png', class: 'main-area-nav-bgrd' %>
-              <span class="main-area-nav-caption">Artists</span>
-            <% end %>
+      <div class="row connect-nav mb-4">
+        <div class="col-md-4">
+          <div class="d-flex flex-column h-100">
+            <%= link_to 'artists',
+                player_artists_path(current_user), 
+                class: 'connect-nav-item connect-nav-artists h-100 mb-4' %>
+            <%= link_to 'playlists',
+                player_playlists_path(current_user), 
+                class: 'connect-nav-item connect-nav-playlists h-100' %>
           </div>
+        </div>
 
-          <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <%= link_to leaderboard_path do %>
-              <%= image_tag 'dirtybird_bbq.png', class: 'main-area-nav-bgrd' %>
-              <span class="main-area-nav-caption">Community</span>
-            <% end %>
+        <div class="col-md-4">
+          <div class="connect-nav-item connect-nav-releases h-100 flex-column">
+            <%= image_tag 'icons/egg-white.svg', width: 62 %>
+            <span>dirtybird</span>
+            <span>releases</span>
           </div>
+        </div>
 
-          <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <%= link_to friends_path(current_user) do %>
-              <%= image_tag 'JLB.png', class: 'main-area-nav-bgrd' %>
-              <span class="main-area-nav-caption">Friends</span>
-            <% end %>
+        <div class="col-md-4">
+          <div class="connect-nav-item connect-nav-exclusives h-100 flex-column">
+            <%= image_tag 'icons/bird-blue.svg', width: 69 %>
+            <span>birdfeed</span>
+            <span>exclusives</span>
           </div>
         </div>
       </div>

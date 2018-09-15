@@ -1,4 +1,4 @@
-.last-release-banner {
+.listen-banner {
   position: absolute;
   left: 0;
   top: 0;
@@ -111,6 +111,54 @@
     a {
       color: #ffffff;
     }
+  }
+
+  .connect-nav {
+    height: 230px;
+  }
+
+  .connect-nav-item {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Phosphate-Solid';
+    font-size: 25px;
+    letter-spacing: 1.13px;
+    z-index: 1;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      filter: blur(5px) brightness(70%);
+      z-index: -1;
+    }
+
+    span {
+      line-height: 20px;
+    }
+  }
+
+  .connect-nav-artists:before {
+    background: asset-data-url('dirtybird-bbq-stage.png');
+  }
+
+  .connect-nav-playlists:before {
+    background: asset-data-url('dirtybird_bbq.png');
+  }
+
+  .connect-nav-releases:before {
+    background: asset-data-url('JLB.png');
+  }
+
+  .connect-nav-exclusives:before {
+    background: asset-data-url('dirtybird_bbq.png');
   }
 
   .main-area-nav-bgrd {

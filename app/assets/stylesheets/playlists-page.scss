@@ -8,6 +8,8 @@
   background-size: 140%;
   background-position-x: 85px;
   overflow: scroll;
+  position: relative;
+  z-index: 5;
 }
 
 .playlist-nav-header {

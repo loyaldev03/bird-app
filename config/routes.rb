@@ -88,6 +88,8 @@ Rails.application.routes.draw do
     get 'favorites'
     get 'connect'
     get 'listen'
+    get 'artists'
+    get 'playlists'
   end
 
   resources :playlists
