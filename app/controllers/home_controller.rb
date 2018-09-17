@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   def index
     @slider = SliderImage.all.ordered
 
-    @leader_users = leaderboard_query(1, 10, true)
+    @leader_users = leaderboard_query('leaders', 1, 10, true)
 
     @artists = User.with_role(:artist)
                    .order('created_at ASC')

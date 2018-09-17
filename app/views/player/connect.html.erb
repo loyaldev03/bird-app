@@ -27,14 +27,14 @@
       <div class="main-area-nav mb-3">
         <div class="row h-100">
           <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <%= link_to artists_path do %>
+            <%= link_to player_artists_path(current_user) do %>
               <%= image_tag 'dirtybird-bbq-stage.png', class: 'main-area-nav-bgrd' %>
               <span class="main-area-nav-caption">Artists</span>
             <% end %>
           </div>
 
           <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <%= link_to leaderboard_path do %>
+            <%= link_to player_fans_path(current_user) do %>
               <%= image_tag 'dirtybird_bbq.png', class: 'main-area-nav-bgrd' %>
               <span class="main-area-nav-caption">Community</span>
             <% end %>
@@ -67,10 +67,9 @@
 
       <div class="row mb-4">
         <% User.where("users.id NOT IN (?)", 
-           User.with_role(:artist)
-               .pluck(:id))
-               .order(created_at: :desc)
-               .limit(4).each do |user| %>
+              User.with_role(:artist).pluck(:id) + User.with_role(:admin).pluck(:id))
+                .order(created_at: :desc)
+                .limit(4).each do |user| %>
           <div class="col-md-6 mb-3">
             <%= render 'users/user_gray', object: user %>
           </div>

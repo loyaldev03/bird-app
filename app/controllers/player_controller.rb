@@ -1,10 +1,11 @@
 class PlayerController < ApplicationController
   include ApplicationHelper
+  include UsersHelper
   
   before_action :set_vars
   before_action :set_notifications, 
       only: [:liked_tracks, :recently_tracks, :downloaded_tracks, :favorites,
-        :liked_playlists, :connect, :listen, :artists, :playlists]
+        :liked_playlists, :connect, :listen, :artists, :playlists, :fans]
   
   def liked_tracks
     @tracks = @user.liked_by_type('Track').map do |_track|
@@ -72,7 +73,19 @@ class PlayerController < ApplicationController
   end
 
   def artists
-    @artists = User.with_role(:artist)
+    @artists = leaderboard_query(User.with_role(:artist), params[:page] || 1, 30, true)
+  end
+
+  def load_more_artists
+    @artists = leaderboard_query(User.with_role(:artist), params[:page], 30, false)
+  end
+
+  def fans
+    @users = leaderboard_query('leaders', params[:page] || 1, 30, true)
+  end
+
+  def load_more_fans
+    @users = leaderboard_query('leaders', params[:page], 30, false)
   end
 
   def playlists

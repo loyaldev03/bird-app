@@ -39,17 +39,17 @@ class UsersController < ApplicationController
   end
 
   def leaderboard
-    @leader_users = leaderboard_query(1, 5, true)
+    @leader_users = leaderboard_query('leaders', 1, 5, true)
     @badge_kinds = BadgeKind.visible
   end
 
   def index
-    @leader_users = leaderboard_query(params[:page] || 1, 9, true)
+    @leader_users = leaderboard_query('leaders', params[:page] || 1, 9, true)
     @badge_kinds = BadgeKind.visible
   end
 
   def load_more
-    @leader_users = leaderboard_query(params[:page], 9, false)
+    @leader_users = leaderboard_query('leaders', params[:page], 9, false)
     @badge_kinds = BadgeKind.visible
   end
 
@@ -345,7 +345,12 @@ class UsersController < ApplicationController
   end
 
   def artists
-    @artists = User.with_role :artist
+    @artists = leaderboard_query(User.with_role(:artist), params[:page] || 1, 30, true)
+  end
+
+  def load_more_artists
+    logger.warn User.with_role(:artist)
+    @artists = leaderboard_query(User.with_role(:artist), params[:page], 30, false)
   end
 
   def friends

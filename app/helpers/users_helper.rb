@@ -1,6 +1,6 @@
 module UsersHelper
   
-  def leaderboard_query page = 1, per_page = 9, all = true
+  def leaderboard_query query, page = 1, per_page = 9, all = true
     page = page.to_i
     per_page = per_page.to_i
 
@@ -12,7 +12,11 @@ module UsersHelper
       @offset = (page - 1) * per_page
     end
 
-    users_by_points @limit, @offset
+    if query == 'leaders'
+      users_by_points @limit, @offset
+    else
+      query.limit(@limit).offset(@offset)
+    end
   end
 
   def user_position user

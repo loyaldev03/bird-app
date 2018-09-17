@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     end
   end
   get 'load_more_leaders', to: 'users#load_more'
+  get 'load_more_artists', to: 'users#load_more_artists'
 
   post '/rate' => 'rater#create', :as => 'rate'
   get "leaderboard", to: "users#leaderboard"
@@ -89,8 +90,11 @@ Rails.application.routes.draw do
     get 'connect'
     get 'listen'
     get 'artists'
+    get 'fans'
     get 'playlists'
   end
+  get 'player_load_more_leaders', to: 'player#load_more_fans'
+  get 'player_load_more_artists', to: 'player#load_more_artists'
 
   resources :playlists
   get 'playlist_load', to: "playlists#load"
