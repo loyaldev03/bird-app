@@ -1,5 +1,5 @@
 class TopicCategoriesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show, :index]
   before_action :set_notifications, only: [:show, :index]
 
   breadcrumb 'Categories', :chirp_index_path, match: :exact
