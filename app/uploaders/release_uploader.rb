@@ -27,19 +27,12 @@ class ReleaseUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  process :crop
-  process resize_to_fill: [276, 276]
+  version :thumb do
+    process :resize_to_fit => [50, 50]
+  end
 
-  def crop
-    if model.crop_x.present?
-      manipulate! do |img|
-        x = model.crop_x.to_i
-        y = model.crop_y.to_i
-        w = model.crop_w.to_i
-        h = model.crop_h.to_i
-        img.crop("#{w}x#{h}+#{x}+#{y}")
-      end
-    end
+  version :large do
+    process :resize_to_fit => [276, 276]
   end
   #
   # def scale(width, height)

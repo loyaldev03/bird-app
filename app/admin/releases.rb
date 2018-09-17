@@ -20,7 +20,7 @@ ActiveAdmin.register Release do
       images = ""
 
       release.users.each do |user|
-        images << "<a href='/artists/#{user.id}' title='#{user.name}' target='_blank'><img src='#{user.avatar.thumb.url}' class='small-avatar'></a>"  
+        images << "<a href='/artists/#{user.id}' title='#{user.name}' target='_blank'><img src='#{user.avatar.thumb.url}' class='small-avatar'></a>"
       end
 
       images.html_safe
@@ -61,10 +61,10 @@ ActiveAdmin.register Release do
   form do |f|
     f.semantic_errors *f.object.errors.keys
     f.actions
-    
+
     f.inputs do
-      image = f.object.avatar.present? ? image_tag(f.object.avatar.url) : '' 
-      f.input :avatar, hint: image, as: :jcropable
+      image = f.object.avatar.present? ? image_tag(f.object.avatar.url) : ''
+      f.input :avatar, hint: image_tag(f.object.avatar.url(:large))
       f.input :avatar_cache, as: :hidden
       f.input :facebook_img
       f.input :title
