@@ -82,10 +82,11 @@ class ApplicationController < ActionController::Base
 
   protected
     def detect_player_pages
-      @player_pages =
-          (controller?('releases') && action?('index') && params[:player] == true ) ||
-          controller?('player') ||
-          (controller?('playlists') && action?('show'))
+      @player_pages = false
+      # @player_pages =
+      #     (controller?('releases') && action?('index') && params[:player] == true ) ||
+      #     controller?('player') ||
+      #     (controller?('playlists') && action?('show'))
     end
 
     def set_notification

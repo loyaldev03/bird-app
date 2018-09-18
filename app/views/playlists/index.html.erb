@@ -1,3 +1,5 @@
+<% content_for :user_header_title, 'Playlists' %>
+
 <% if @user.has_role? :artist %>
   <%= render 'users/artist_header' %>
 <% else %>
@@ -11,7 +13,17 @@
 
   <div class="col-lg-9 music-wrapper">
     <div class="music-block">
-      <%= render partial: 'playlists/list', locals: { playlists: @playlists } %>
+      <% if @playlists.present? %>
+        <%= render partial: 'playlists/list', locals: { playlists: @playlists } %>
+      <% else %>
+        <div class="mt-4 text-center">
+          <%= image_tag 'icons/red-bird.svg', style: 'width: 100px;' %>
+          <br>
+          <h2>
+            this artist has no playlists yet
+          </h2>
+        </div>
+      <% end %>
     </div>
 
   </div>

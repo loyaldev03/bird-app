@@ -39,7 +39,11 @@
         
         <button class="playlist-add-track" data-track-id="<%= track.id %>">+</button>
       </td>
-      <td><%= track.title %></td>
+      <td>
+        <%= link_to track.release, class: "release-link" do %>
+          <%= image_tag track.release.avatar.url %>
+        <% end %>
+        <%= track.title %></td>
       <% if track.users.any? %>
         <td class="playlist-track-artists">
           <% track.users.each do |user| %>
@@ -52,7 +56,6 @@
       <% unless source_type == 'release' %>
         <td>
           <%= link_to track.release, class: "release-link" do %>
-            <%= image_tag track.release.avatar.url %>
             <%= track.release.title %>
           <% end %>
         </td>
