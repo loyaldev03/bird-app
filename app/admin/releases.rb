@@ -7,7 +7,22 @@ ActiveAdmin.register Release do
     :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
     :genre, :isrc_code, :uri_string, :sample_uri, :artist, :_destroy,
-    :artist_as_string, user_ids: []]
+    :artist_as_string, user_ids: [],
+    track_info_attributes: [:id, :label_name,  :catalog,
+                            :release_artist, :track_title,
+                            :track_artist, :release_name,
+                            :release_date, :mix_name,
+                            :remixer, :track_time,
+                            :barcode, :isrc,
+                            :genre, :release_written_by,
+                            :release_producer, :track_publisher,
+                            :track_written_by, :track_produced_by,
+                            :vocals_m, :vocals_f,
+                            :upbeat_drivind_energetic, :sad_moody_dark,
+                            :fun_playfull_quirky, :sentimental_love,
+                            :big_buildups_sweeps, :celebratory_party_vibe,
+                            :inspiring_uplifting, :chill_mellow,
+                            :lyrics]]
 
   config.sort_order = 'created_at_desc'
   jcropable
@@ -94,6 +109,38 @@ ActiveAdmin.register Release do
         collection: User.with_role(:artist).map {|a| [a.name, a.id] }
         t.input :artist_as_string
         t.input :artist
+
+        t.has_many :track_info, allow_destroy: true, new_record: false, class: "directUpload" do |x|
+          x.input :label_name
+          x.input :catalog
+          x.input :release_artist
+          x.input :track_title
+          x.input :track_artist
+          x.input :release_name
+          x.input :release_date, as: :date_time_picker
+          x.input :mix_name
+          x.input :remixer
+          x.input :track_time
+          x.input :barcode
+          x.input :isrc
+          x.input :genre
+          x.input :release_written_by
+          x.input :release_producer
+          x.input :track_publisher
+          x.input :track_written_by
+          x.input :track_produced_by
+          x.input :vocals_m
+          x.input :vocals_f
+          x.input :upbeat_drivind_energetic
+          x.input :sad_moody_dark
+          x.input :fun_playfull_quirky
+          x.input :sentimental_love
+          x.input :big_buildups_sweeps
+          x.input :celebratory_party_vibe
+          x.input :inspiring_uplifting
+          x.input :chill_mellow
+          x.input :lyrics
+        end
       end
     end
     f.actions

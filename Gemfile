@@ -18,6 +18,9 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
 
+gem 'rmagick'
+
+gem 'creek'
 gem 'pg'
 gem 'stream_rails'
 gem 'devise'
