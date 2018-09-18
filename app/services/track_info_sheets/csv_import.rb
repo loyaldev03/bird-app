@@ -37,7 +37,7 @@ module TrackInfoSheets
       release = Release.includes(:tracks).find_by(catalog: row['B'])
       if release.nil?
         release = Release.new(catalog: row['B'],
-                              title: 'asd',
+                              title: row['F'],
                               release_date: row['G'].to_datetime,
                               published_at: DateTime.now,
                               upc_code: '',
@@ -46,7 +46,7 @@ module TrackInfoSheets
         release.remote_avatar_url = format_dropbox_url(row['AE'])
         release.save!
       end
-      save_track(release, row)
+      save_track(release, row) if row['AD']!=''
     end
 
     def save_track(release, row)
