@@ -86,6 +86,16 @@ li.playlist-nav-subheader {
   height: 205px;
   z-index: 3;
 
+  .chirp-corner {
+    width: 113px;
+    position: absolute;
+    height: 108px;
+    z-index: 3;
+    border: none;
+    top: 84px;
+    left: 30px;
+  }
+
   .user-bgrd {
     position: absolute;
     top: 0;

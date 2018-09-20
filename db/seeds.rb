@@ -42,7 +42,7 @@ end
     compilation: false,
     release_date: Time.zone.today
   )
-  new_release.remote_avatar_url = primary_avatar(new_release.title)
+  new_release.avatar = primary_avatar(new_release.title)
   new_release.save
 
   new_release_track_1 = Track.create!(
@@ -119,7 +119,7 @@ categories.each do |category|
   3.times do |i|
     category.topics.create!(
       title: "Topic #{i}",
-      text: "Some text",
+      body: "Some text",
       user_id: User.all.sample.id,
       created_at: DateTime.current - 10.hours + i.hours,
       updated_at: DateTime.current - 10.hours + i.hours,
@@ -129,4 +129,4 @@ categories.each do |category|
   end
 end
 
-require "#{Rails.root}/db/badge_system/db.rb"
+require "#{Rails.root}/db/badge_system/create_action_types.rb"

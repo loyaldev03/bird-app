@@ -1,14 +1,16 @@
 <div class="user-music-present">
-  <% if current_user && current_user.id == @user.id %>
-    <%= form_for(@user, remote: true,
-        html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
-      <%= image_tag @user.avatar.big_thumb %>
-      <%= f.file_field :avatar, class: 'form-control-file' %>
-      <%= f.hidden_field :avatar_cache %>
+  <div class="<%= avatar_style(@user) %> d-block">
+    <% if current_user && current_user.id == @user.id %>
+      <%= form_for(@user, remote: true,
+          html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
+        <%= image_tag @user.avatar.big_thumb %>
+        <%= f.file_field :avatar, class: 'form-control-file' %>
+        <%= f.hidden_field :avatar_cache %>
+      <% end %>
+    <% else %>
+      <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") %>
     <% end %>
-  <% else %>
-    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") %>
-  <% end %>
+  </div>
 
   <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
 

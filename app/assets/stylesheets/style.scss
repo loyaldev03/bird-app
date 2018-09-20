@@ -341,7 +341,7 @@ strong {
 }
 
 .c-flag-inner {
-  left: -25px;
+  left: -27px;
 }
 
 .release-flag-block {
@@ -416,6 +416,125 @@ strong {
   height: 72px;
   border-radius: 37px;
 }
+
+.admin-style {
+  display: inline-block;
+  position: relative;
+
+  img {
+    border: 3px solid #faae03;
+  }
+
+  &:after {
+    content: 'admin';
+    position: absolute;
+    padding: 3px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    background-color: #3ed4e0;
+    color: white;
+    font-size: 9px;
+    line-height: 9px;
+    text-transform: uppercase;
+  }
+
+  &.sm-style:after {
+    left: 15px;
+    bottom: -8px;
+  }
+}
+
+.intern-style {
+  display: inline-block;
+  position: relative;
+
+  img {
+    border: 3px solid #faae03;
+  }
+
+  &:after {
+    content: 'intern';
+    position: absolute;
+    padding: 3px 5px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    background-color: #434343;
+    color: white;
+    font-size: 9px;
+    line-height: 9px;
+    text-transform: uppercase;
+  }
+
+  &.sm-style:after {
+    left: 15px;
+    bottom: -8px;
+  }
+}
+
+.boss-style {
+  display: inline-block;
+  position: relative;
+
+  img {
+    border: 3px solid #faae03;
+  }
+
+  &:after {
+    content: 'boss';
+    position: absolute;
+    padding: 3px 6px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    background-color: #ff7979;
+    color: white;
+    font-size: 9px;
+    line-height: 9px;
+    text-transform: uppercase;
+  }
+
+  &.sm-style:after {
+    left: 15px;
+    bottom: -8px;
+  }
+}
+
+.artist-style img {
+  border: 3px solid #3eaee0;
+}
+
+.insider-style img {
+  border: 3px solid #3ed4e0;
+}
+
+.vib-style img {
+  border: 3px solid #ff7979;
+}
+
+.chirp-style {
+  display: inline-block;
+  position: relative;
+
+  img {
+    border: 3px solid #e3e3e3;
+  }
+
+  &:after {
+    content: '';
+    background: asset-data-url('icons/chirp-half.svg');
+    background-size: cover;
+    position: absolute;
+    height: 51%;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+  }
+} 
 
 .post-user-avatar {
   width: 44px;
