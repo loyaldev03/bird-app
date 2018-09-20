@@ -517,7 +517,6 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.bigint "track_id"
     t.index ["track_id", "user_id"], name: "index_tracks_users_on_track_id_and_user_id", unique: true
     t.index ["track_id"], name: "index_tracks_users_on_track_id"
-    t.index ["user_id", "track_id"], name: "index_tracks_users_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_tracks_users_on_user_id"
   end
 
