@@ -865,7 +865,6 @@ GEM
     rack-cors (1.0.2)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
-    rack-timeout (0.5.1)
     rails (5.1.6)
       actioncable (= 5.1.6)
       actionmailer (= 5.1.6)
@@ -1034,7 +1033,6 @@ DEPENDENCIES
   pg
   puma (~> 3.7)
   rack-cors
-  rack-timeout
   rails (~> 5.1.5)
   ratyrate!
   redis (~> 4.0)
