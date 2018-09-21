@@ -71,6 +71,7 @@ ActiveAdmin.register Release do
         column (:downloads) { |obj| obj.downloads.count }
       end
     end
+    render 'admin/dashboard/download_links', release: release
   end
 
   form do |f|
@@ -152,7 +153,7 @@ ActiveAdmin.register Release do
       success_action_status: '201',
       acl: 'public-read'
     )
-    resource.encode
+    TransloaditApi::EncodeRelease.new(resource).call
     redirect_to resource_path, notice: "Encoding Release! This may take up to 10 minutes."
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180917183219) do
+ActiveRecord::Schema.define(version: 20180920161857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.integer "admin_id"
     t.integer "release_type", default: 0
     t.string "buy_uri"
+    t.string "assembly_id"
+    t.boolean "assembly_complete"
   end
 
   create_table "releases_users", id: false, force: :cascade do |t|
@@ -452,6 +454,7 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url_string"
     t.index ["datetime"], name: "index_track_files_on_datetime"
     t.index ["deleted_at"], name: "index_track_files_on_deleted_at"
     t.index ["track_id"], name: "index_track_files_on_track_id"

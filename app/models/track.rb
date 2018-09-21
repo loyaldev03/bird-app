@@ -12,7 +12,7 @@ class Track < ApplicationRecord
 
   mount_uploader :uri, TrackUploader
 
-  validates :track_number, :title, presence: true
+  validates :track_number, :isrc_code, :title, presence: true
 
   ratyrate_rateable "main"
 
