@@ -18,16 +18,17 @@
           <span>If you have any questions about your privacy please review the <b>gdpr protecting our peeps area.</b></span>
         </div>
       </div>
-      <!-- 
-        User Profile Edit Form 
-       -->
       <%= form_for(resource, remote: true,
-          html: { id: 'change-avatar', class: 'form-signin change-avatar', method: :put } ) do |f| %>
+          html: { id: 'content-change-avatar', class: 'form-signin change-avatar', method: :put } ) do |f| %>
         <%= image_tag resource.avatar.big_thumb %>
         <%= f.file_field :avatar, class: 'form-control-file' %>
         <%= f.hidden_field :avatar_cache %>
+        <%= f.submit 'Upload', class: 'btn c-btn-red btn-wide d-block profile-btn upload-profile-avatar' %>
       <% end %>
 
+      <!-- 
+        User Profile Edit Form 
+       -->
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
           html: { class: 'form-signin', method: :put } ) do |f| %>
         
@@ -95,8 +96,8 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="form-group">
-                      <%= f.label :shipping_address, 'ADDRESS #2', class: 'required' %>
-                      <%= f.text_field :shipping_address, 
+                      <%= f.label :address_quarter, 'ADDRESS #2', class: 'required' %>
+                      <%= f.text_field :address_quarter, 
                           class: 'form-control autocomplete', 
                           required: true %>
                     </div>
@@ -151,9 +152,3 @@
     </div>
   </div>
 </div>
-
-<% content_for :body_area do %>
-  <div class="modal modal-blured" id="cropModal" tabindex="-1" role="dialog" aria-hidden="true">
-
-  </div>
-<% end %>        

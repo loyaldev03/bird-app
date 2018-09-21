@@ -3,13 +3,13 @@
   margin-right: -15px;
   margin-left: -15px;
   position: relative;
-  padding-top: 80px;
+  padding-top: 60px;
 
   .release-bgrd {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #3eaee0;
+    background-color: #151515;
     height: 60px;
     width: 100%;
 
@@ -25,23 +25,13 @@
   }
 }
 
-.release-exclusive {
-  font-size: 12px;
-  line-height: 14px;
-  margin: 10px 10px 0 0;
+.release-type {
+  width: 180px;
 
-  font-weight: bold;
-  color: white;
-  display: inline-block;
-
-  img {
-    margin-right: 7px;
-    float: left;
-  }
-
-  & > div {
-    display: inline-block;
-    text-align: left;
+  .text-big {
+    color: #ffffff;
+    font-family: 'Phosphate-Inline';
+    font-size: 22px;
   }
 }
 
@@ -50,23 +40,67 @@
 }
 
 .release-icon {
-  float: right;
-  display: inline-block;
-  margin-top: 5px;
-  margin-left: 8px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
 
+  .release-nav-caption {
+    vertical-align: top;
+  }
+  
   img {
     width: 20px;
-    height: 20px;
+    vertical-align: top;
+  }
+}
+
+.release-stats {
+  display: flex;
+  margin-top: -10px;
+  height: calc(100% + 20px);
+
+  .social-share-button {
+    height: 100%;
+    display: flex;
+
+    .ssb-icon {
+      padding: 0 35px;
+      height: 100%;
+
+      &.ssb-twitter {
+        background-image: asset-data-url("icons/social-twitter-w.svg");
+        background-color: #55acee;
+      }
+
+      &.ssb-facebook {
+        background-image: asset-data-url("icons/social-fb-w.svg");
+        background-color: #3b5998;
+      }
+    }
+  }
+}
+
+.release-stat {
+  width: 80px;
+  height: 100%;
+  background-image: linear-gradient(to bottom right, #333, #ddd);
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Phosphate-Solid';
+
+  .release-favs, .release-comments, .release-shares {
+    font-size: 27px;
+    letter-spacing: 2.7px;
+    display: block;
   }
 }
 
 .release-header {
-  padding: 10px 15px 10px 310px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: bottom;
+  height: 100%;
 
   .icon-share {
     position: static;
@@ -77,27 +111,6 @@
     img {
       width: 20px;
       height: 20px;
-    }
-  }
-
-  .release-likes {
-    display: inline-block;
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 700;
-    margin-left: 10px;
-    margin-top: 20px;
-    line-height: 18px;
-
-    a {
-      img {
-        margin-bottom: 8px;
-        margin-left: 3px;
-      }
-    }
-
-    .likes-count {
-      font-size: 18px;
     }
   }
 
@@ -144,10 +157,32 @@
   width: 276px;
   height: 276px;
   position: absolute;
-  top: 20px;
+  top: 80px;
   left: 20px;
   z-index: 2;
   border-radius: 10px;
+}
+
+.release-play-nav {
+  color: #ffffff;
+  font-family: 'Phosphate-Solid';
+  font-size: 11px;
+  line-height: 11px;
+  letter-spacing: 0.49px;
+  text-align: center;
+
+  &:hover {
+    color: #999;
+  }
+}
+
+.release-nav-caption {
+  color: #ffffff;
+  font-family: 'Phosphate-Solid';
+  font-size: 11px;
+  line-height: 11px;
+  letter-spacing: 0.49px;
+  display: block;
 }
 
 .release-play {
@@ -173,13 +208,13 @@
   }
 
   &.playing:after {
-    background: asset-data-url("icons/pause-big1.png");
+    background-image: asset-data-url("icons/pause-big1.png");
   }
 }
 
 .release-info {
   margin-left: 310px;
-  min-height: 217px;
+  height: 300px;
   
   h1 {
     font-size: 20px;
@@ -269,6 +304,7 @@
 
 .follow-form {
   display: inline-block;
+  width: 100%;
 }
 
 .users-block {

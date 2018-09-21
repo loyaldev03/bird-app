@@ -1,0 +1,81 @@
+<% content_for :user_header_title do %>
+  <%= image_tag 'icons/bird-blue.svg' %>
+  Connect
+<% end %>
+
+<% if @user.has_role? :artist %>
+  <%= render 'users/artist_header' %>
+<% else %>
+  <%= render 'users/user_header' %>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-3">
+    <%= render 'player/player_page_menu' %>
+  </div>
+
+  <div class="col-lg-9 music-wrapper">
+    <div class="music-block player-main-area" style="padding-top: 280px;">
+      <% if @main_area %>
+      <a href="<%= @main_area[:link] %>" class="listen-banner">
+        <%= image_tag @main_area[:img], class: "banner-img" %>
+      </a>
+      <% else %>
+        <%= render 'last_release_banner' %>
+      <% end %>
+
+      <div class="main-area-nav mb-3">
+        <div class="row h-100">
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to player_artists_path(current_user) do %>
+              <%= image_tag 'dirtybird-bbq-stage.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Artists</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to player_fans_path(current_user) do %>
+              <%= image_tag 'dirtybird_bbq.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Community</span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <%= link_to friends_path(current_user) do %>
+              <%= image_tag 'JLB.png', class: 'main-area-nav-bgrd' %>
+              <span class="main-area-nav-caption">Friends</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <h2>Latest Artists</h2>
+      <%= link_to 'All Artists', artists_path, class: 'see-all' %>
+      <hr class="mt-1">
+
+      <div class="row">
+        <% User.with_role(:artist).order(created_at: :desc).limit(4).each do |user| %>
+          <div class="col-md-6 mb-3">
+            <%= render 'users/artist_gray', object: user %>
+          </div>
+        <% end %>
+      </div>
+
+      <h2 class="mt-4">Latest Birds</h2>
+      <%= link_to 'All Members', leaderboard_path, class: 'see-all' %>
+      <hr class="mt-1">
+
+      <div class="row mb-4">
+        <% User.where("users.id NOT IN (?)", 
+              User.with_role(:artist).pluck(:id) + User.with_role(:admin).pluck(:id))
+                .order(created_at: :desc)
+                .limit(4).each do |user| %>
+          <div class="col-md-6 mb-3">
+            <%= render 'users/user_gray', object: user %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

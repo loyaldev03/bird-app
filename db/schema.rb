@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20180921132450) do
     t.integer "admin_id"
     t.integer "release_type", default: 0
     t.string "buy_uri"
+    t.string "assembly_id"
+    t.boolean "assembly_complete"
   end
 
   create_table "releases_users", id: false, force: :cascade do |t|
@@ -452,6 +454,7 @@ ActiveRecord::Schema.define(version: 20180921132450) do
     t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url_string"
     t.index ["datetime"], name: "index_track_files_on_datetime"
     t.index ["deleted_at"], name: "index_track_files_on_deleted_at"
     t.index ["track_id"], name: "index_track_files_on_track_id"

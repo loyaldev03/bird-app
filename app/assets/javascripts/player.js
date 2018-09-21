@@ -1,4 +1,12 @@
 $(document).on('turbolinks:load', () => {
+  var player_page = $('body').hasClass('player_page');
+
+  if (player_page) {
+    switchPlayerView('bottom');
+  } else {
+    switchPlayerView('top');
+  }
+
   $("body").on('click', '.jp-previous', function(){
     playPrevious();
   });
@@ -37,12 +45,4 @@ $(document).on('turbolinks:load', () => {
   dragBars(draggedBars);
 
   timerAndLoadingForAudio(cpAudio);
-
-  if ($('.playlist-player').length > 0 && $('.jp-audio .jp-play').data('trackId') ) {
-    $.ajax({
-      url: '/fill_bottom_player',
-      dataType: 'script',
-      data: { track_id: $('.jp-audio .jp-play').data('trackId') }
-    });
-  }
 });

@@ -1,14 +1,16 @@
 <div class="user-music-present">
-  <% if current_user && current_user.id == @user.id %>
-    <%= form_for(@user, remote: true,
-        html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
-      <%= image_tag @user.avatar.big_thumb %>
-      <%= f.file_field :avatar, class: 'form-control-file' %>
-      <%= f.hidden_field :avatar_cache %>
+  <div class="<%= avatar_style(@user) %> d-block">
+    <% if current_user && current_user.id == @user.id %>
+      <%= form_for(@user, remote: true,
+          html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>
+        <%= image_tag @user.avatar.big_thumb %>
+        <%= f.file_field :avatar, class: 'form-control-file' %>
+        <%= f.hidden_field :avatar_cache %>
+      <% end %>
+    <% else %>
+      <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") %>
     <% end %>
-  <% else %>
-    <%= image_tag(@user.avatar.big_thumb.url, class: "userpage-avatar") %>
-  <% end %>
+  </div>
 
   <%= image_tag 'icons/point-green-big.svg', class: "artist-online" if @user.online? %>
 
@@ -69,7 +71,7 @@
       <% classes = ["btn c-btn-blue btn-square", "btn c-btn-black btn-square btn-disabled"] %>
       <%= link_to "Artist Feed", @user, 
           class: artist ? classes[1] : classes[0] %><!--
-     --><%= link_to "Artist Music", playlists_path(user_id: @user), 
+     --><%= link_to "Artist Music", artist_tracks_path(@user), 
           class: artist ? classes[0] : classes[1] %>
     </div>
 
@@ -103,11 +105,13 @@
     </div> 
   </div>
 
-  <div class="row">
-    <div class="col-lg-9 offset-3 px-0">
-      <div class="user-header-title"><%= content_for :user_header_title %></div>
+  <% unless artist %>
+    <div class="row">
+      <div class="col-lg-9 offset-3 px-0">
+        <div class="user-header-title"><%= content_for :user_header_title %></div>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <% if current_user && current_user.id == @user.id %>

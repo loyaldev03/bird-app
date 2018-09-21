@@ -1,5 +1,5 @@
 <div class="topic-category-header">
-  <img src="/assets/topic-category-bg.png" width="100%"/>
+  <%= image_tag "topic-category-bg.png", width: '100%' %>
 </div>
 <div class="topic-category-content">
   <div class="row">
@@ -19,7 +19,7 @@
             </div>
             <% if current_user %>
               <div class="col-sm-4 offset-sm-6 p-r-0 text-right">
-                <button class="btn btn-category-header btn-categories" type="button" data-toggle="modal" data-target="#addTopicModal">
+                <button class="btn btn-category-header btn-categories" id="topic-category-ctg-btn" type="button" data-toggle="modal" data-target="#addTopicModal">
                   CATEGORIES
                 </button>
               </div>
@@ -38,10 +38,10 @@
             </div>
           <% end %>
           <div class="topic-section">
-            <button class="topic-section-btn chirp-category-btn">
+            <button class="topic-section-btn chirp-category-btn" id="chirp-category-btn">
               CHIRP CATEGORIES
             </button>    
-            <div class="row">
+            <div class="row topic-category-section">
                 
               <% @groups.each do |group| %>
 
@@ -71,3 +71,5 @@
     </div>
   </div>
 </div>
+
+

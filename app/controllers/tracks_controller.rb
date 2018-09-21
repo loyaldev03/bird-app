@@ -28,6 +28,9 @@ class TracksController < ApplicationController
     when 'recently'
       user = User.find(params[:source_id])
       tracks = user.recently_items.map { |d| d.track }.compact
+    when 'top-tracks'
+      top_tracks_ids =  RecentlyItem.group(:track_id).count.sort_by {|k,v| v}.reverse.map {|a| a[0]}
+      tracks = top_tracks_ids.map { |id| Track.find_by_id id }.compact
     else
       tracks = params[:source_type]
           .classify
@@ -49,11 +52,6 @@ class TracksController < ApplicationController
     track = Track.find(params[:track_id])
     @track = TrackPresenter.new(track, current_user)
     @release = ReleasePresenter.new(track.release, current_user)
-  end
-
-  def fill_bottom_player
-    track = Track.find(params[:track_id])
-    @track = TrackPresenter.new(track, current_user)
   end
 
   def track_clicked

@@ -9,18 +9,160 @@
 <%#= render 'topics/breadcrumbs' %>
 
 <div class="topics-panel c-panel bg-white">
-  <%= link_to chirp_path(@topic.category), class: 'topics-back' do %>
-   <%= image_tag('icons/icon-chevron-left.svg') %>
-  <% end %>
+  <div class="topics-panel-header">
+    <div class="row">
+      <div class="col-sm-2">
+        <%= link_to chirp_path(@topic.category), class: 'track-back row' do %>
+          <div class="col-sm-2">
+            <%= image_tag "icons/icon-chevron-left.svg" %>
+          </div>
+          <div class="col-sm-10">
+            TRACKS
+          </div>
+        <% end %>
+      </div>
+      <div class="col-sm-6 text-right">
+        <div class="row">
+          <div class="topic-status-bar tsbw-2">
+          </div>
+          <div class="topic-status-bar tsbw-1">
+            <div class="number">
+              1
+            </div>
+            <div class="title">
+              COMMENT
+            </div>
+          </div>
+          <div class="topic-status-bar tsbw-1">
+            <div class="number">
+              1
+            </div>
+            <div class="title">
+              FOLLOWERS
+            </div>
+          </div>
+          <div class="topic-status-bar tsbw-1">
+            <div class="number">
+              1
+            </div>
+            <div class="title">
+              SHARE
+            </div>
+          </div>
+          <div class="topic-status-bar tsbw-1 twitter-bg">
+            <%= image_tag "icons/twitter.png" %>
+          </div>
+          <div class="topic-status-bar tsbw-1 fb-bg">
+            <%= image_tag "icons/facebook.png" %>
+          </div>
+        </div>
+      </div>
+      <% if current_user %>
+        <div class="col-sm-2 text-right">
+          <% if @topic.locked %>
+            <button class="btn btn-topic-header btn-comment">
+              <%= image_tag 'icons/icon-lock-white.svg' %>
+              LOCKED
+            </button>          
+          <% else %>
+            <button class="btn btn-topic-header btn-comment">
+              COMMENT
+            </button>
+          <% end %>
+        </div>
+        <div class="col-sm-2">
+          <div class="text-right mr-4"><%= render 'follows/follow_button', {object: @topic, btn_class: 'topic-detail'} %></div>
 
-  <h1><%= @topic.title %></h1>
-  <p class="topic-text"><%= @topic.body.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %></p>
-  
-  <div class="text-right mr-4"><%= render 'follows/follow_button', object: @topic %></div>
+          <!-- <button class="btn btn-topic-header btn-unfollow" type="button" data-toggle="modal" data-target="#addTopicModal">
+            UNFOLLOW
+          </button> -->
+        </div>
+      <% end %>
+    </div>
+  </div>  
+  <div class="topics-panel-content">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="row topic-post-user">
+          <div class="col-sm-1">
+            <%= image_tag @topic.user.avatar.thumb.url, class: "post-user-avatar" %>
+          </div>
+          <div class="col-sm-6 topic-post-user-detail user-name">
+            <% last_name = @topic.user.last_name ? @topic.user.last_name : '' %>
+            <%= @topic.user.first_name + " " +  last_name %>
+          </div>
+          <div class="col-sm-5 text-right topic-post-user-detail time-ago">
+              Posted <b><%= "#{time_ago_in_words(@topic.created_at)}" %> ago </b>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="col-sm-12 topic-post-title p-3">
+            <%= @topic.title %>
+          </div>
+          <div class="col-sm-12 topic-post-body pb-3">
+            <%= @topic.body.gsub(URI.regexp, '<a href="\0">\0</a>').html_safe %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="track-back row">
+              <div class="block-start-title chirps-feed-block-title row">
+                <div class="col-sm-12">
+                  CHIRPS FEED
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>        
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="feed-block" data-feed="topic" data-feed-id="<%= @topic.id %>">
+              <%= render @topic.posts.order(created_at: :desc) %>
+            </div>
+          </div>
+        </div>
 
-  <div class="feed-block" data-feed="topic" data-feed-id="<%= @topic.id %>">
-    <%= render @topic.posts.order(created_at: :desc) %>
-  </div>
-
-  <%= render 'posts/form' %>
+        <%= render 'posts/form' %>        
+      </div>
+      <div class="col-sm-4">
+        <div class="topic-section commentators-section">
+          <div class="row">
+            <div class="col-sm-2">
+              <div class="block-start-title commentators-block-title row">
+                <div class="col-sm-12">
+                  COMMENTATORS
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <% @users.each do |user| %>
+              <div class="col-sm-3">
+                <%= image_tag user.avatar.thumb.url, class: "commentator-avatar" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <%= image_tag 'topic-right-birdhouse.png', width: '100%' %>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <% if @topic.locked %>
+              <button class="btn btn-topic-header btn-comment">
+                <%= image_tag 'icons/icon-lock-white.svg' %>
+                LOCKED
+              </button>             
+            <% else %>
+              <button class="btn btn-topic-header btn-comment">
+                POST A COMMENT
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
 </div>

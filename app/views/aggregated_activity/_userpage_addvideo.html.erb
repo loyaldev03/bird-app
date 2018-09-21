@@ -4,7 +4,8 @@
   </p>
 
   <div class="t-wide">
-    <%= link_to activity['activities'][0]['actor'] do %>
+    <%= link_to activity['activities'][0]['actor'], 
+        class: "#{avatar_style(activity['activities'][0]['actor'])} sm-style" do %>
       <%= image_tag activity['activities'][0]['actor'].avatar.thumb.url, class: "feed-avatar" %>
       <strong><%= activity['activities'][0]['actor'].name %>:</strong>
     <% end %>

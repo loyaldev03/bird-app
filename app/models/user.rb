@@ -500,7 +500,7 @@ class User < ApplicationRecord
 
   def subscriber_type
     if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
-      return "#{braintree_subscription.trial_period ? 'Trial ' : ''}Birdfeed #{subscription_length.split('_')[0].titleize}"
+      return "Birdfeed #{subscription_length.split('_')[0].titleize}"
     end
     'CHIRP FREE'
   end

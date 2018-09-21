@@ -537,9 +537,11 @@ strong {
 }
 
 .change-avatar {
+  position: absolute;
+  width: 30%;
+  left: 0px;
   padding-bottom: 0;
   text-align: center;
-  position: relative;
 }
 
 .form-control-file {

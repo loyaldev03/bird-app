@@ -1,0 +1,16 @@
+%h2
+  Download Links
+- if release.assembly_complete?
+  - release.tracks.each do |t|
+    %h2
+      Track:
+      = t.title
+    - t.track_files.each do |file|
+      %a{download: "", href: "#{file.url_string}", style: "text-decoration: none"}
+        &nbsp;
+        = file.format
+
+- else
+  %p.text-danger
+    The encoding for this release is pending or resulted in an error!
+    Please Hit the encode button again

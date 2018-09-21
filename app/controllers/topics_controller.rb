@@ -1,5 +1,5 @@
 class TopicsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :set_notifications, only: [:show]
 
   breadcrumb 'Categories', :chirp_index_path, match: :exact
@@ -10,7 +10,12 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.find(params[:id])
-
+    @users = []
+    @topic.posts.each do |post|
+      if !@users.include? post.user
+        @users.push post.user
+      end
+    end
     if ( @topic.user && @topic.user.has_role?(:artist) ) || !@topic.see_to_all
       authorize! :read, @topic
     end

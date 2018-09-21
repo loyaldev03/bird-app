@@ -18,8 +18,7 @@
       <!-- 
         User Profile Edit Form 
        -->
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
-          html: { class: 'form-signin', method: :put } ) do |f| %>
+      <%= form_for(resource, as: resource_name, url: usr_update_account_path, html: { class: 'form-signin', method: :put } ) do |f| %>
         
         <div class="row">
           <%= devise_error_messages! %>

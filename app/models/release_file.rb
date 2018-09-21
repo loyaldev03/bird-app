@@ -2,7 +2,7 @@ class ReleaseFile < ActiveRecord::Base
   belongs_to :release
   # validates :release, presence: true
 
-  enum format: [:wav, :aiff, :flac, :mp3_160, :mp3_320]
+  enum format: [:wav, :aiff, :flac, :mp3, :ogg]
   enum encode_status: [:pending, :complete, :failed]
 
   def uri

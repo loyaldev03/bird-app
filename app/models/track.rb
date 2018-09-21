@@ -7,10 +7,12 @@ class Track < ApplicationRecord
   has_many :track_files
   has_many :downloads
   has_many :recently_items
+  belongs_to :track_info, optional: true
+  accepts_nested_attributes_for :track_info, allow_destroy: true
 
   mount_uploader :uri, TrackUploader
 
-  validates :track_number, :title, presence: true
+  validates :track_number, :isrc_code, :title, presence: true
 
   ratyrate_rateable "main"
 
@@ -21,6 +23,11 @@ class Track < ApplicationRecord
   end
 
   after_save { ProcessingTrackJob.perform_later(self) }
+  after_create :create_info
+
+  def create_info
+    TrackInfo.create(track: self) if track_info.nil?
+  end
 
   def stream_uri(is_sample=true)
     return sample_uri if is_sample
@@ -170,7 +177,6 @@ class Track < ApplicationRecord
       bucket: ENV['S3_BUCKET_NAME'],
       path: "tracks/${unique_prefix}/#{file_name}.${file.ext}"
     )
-    
 
     audio_export_step.use(track_export_steps)
     steps.push(audio_export_step)

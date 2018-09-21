@@ -7,14 +7,14 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 include HomeHelper
 
-admin = User.create(email: 'admin@example.com', password: 'password', 
+admin = User.create(email: 'admin@example.com', password: 'password',
     password_confirmation: 'password', first_name: "Admin")
 admin.avatar = primary_avatar(admin.name)
 admin.save
 admin.add_role :admin
 
 5.times do |i|
-  user = User.create(email: "user#{i+10}@example.com", password: 'password', 
+  user = User.create(email: "user#{i+10}@example.com", password: 'password',
       password_confirmation: 'password', first_name: "User#{i+10}")
   user.avatar = primary_avatar(user.name)
   user.save
@@ -22,7 +22,7 @@ end
 
 
 5.times do |i|
-  artist = User.create(email: "artist#{i}@example.com", password: 'password', 
+  artist = User.create(email: "artist#{i}@example.com", password: 'password',
       password_confirmation: 'password', first_name: "Artist #{i}")
   artist.avatar = primary_avatar(artist.name)
   artist.save
@@ -42,7 +42,7 @@ end
     compilation: false,
     release_date: Time.zone.today
   )
-  new_release.remote_avatar_url = primary_avatar(new_release.title)
+  new_release.avatar = primary_avatar(new_release.title)
   new_release.save
 
   new_release_track_1 = Track.create!(
@@ -119,7 +119,7 @@ categories.each do |category|
   3.times do |i|
     category.topics.create!(
       title: "Topic #{i}",
-      text: "Some text",
+      body: "Some text",
       user_id: User.all.sample.id,
       created_at: DateTime.current - 10.hours + i.hours,
       updated_at: DateTime.current - 10.hours + i.hours,
@@ -129,4 +129,4 @@ categories.each do |category|
   end
 end
 
-require "#{Rails.root}/db/badge_system/db.rb"
+require "#{Rails.root}/db/badge_system/create_action_types.rb"

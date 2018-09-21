@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   def index
     @slider = SliderImage.all.ordered
 
-    @leader_users = leaderboard_query(1, 10, true)
+    @leader_users = leaderboard_query('leaders', 1, 10, true)
 
     @artists = User.with_role(:artist)
                    .order('created_at ASC')
@@ -54,7 +54,7 @@ class HomeController < ApplicationController
   end
 
   def share
-    if params[:subtype] && params[:subtype_id]
+    if params[:subtype].present? && params[:subtype_id].present?
       object = "#{params[:subtype].capitalize}:#{params[:subtype_id]}"
       _object_id = params[:subtype_id]
       verb = params[:subtype].capitalize

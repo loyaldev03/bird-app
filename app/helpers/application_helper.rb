@@ -14,10 +14,28 @@ module ApplicationHelper
     end
   end
 
+  def avatar_style user
+    return 'admin-style' if user.has_role?(:admin)
+    return 'intern-style' if user.has_role?(:intern)
+    return 'boss-style' if user.has_role?(:boss)
+    return 'artist-style' if user.has_role?(:artist)
+    return 'insider-style' if %w(monthly_insider yearly_insider).include? user.subscription_length
+    if %w(monthly_vib yearly_vib monthly_old yearly_old).include? user.subscription_length
+      return 'vib-style'
+    end
+    'chirp-style'
+  end
+
   def get_setting ident
     setting = SiteSetting.where(ident: ident).first
 
     setting.val if setting.present?
+  end
+
+  def get_setting_res ident
+    setting = SiteSetting.where(ident: ident).first
+
+    setting.res if setting.present?
   end
 
   def get_user_rate_for_track track

@@ -1,7 +1,4 @@
-<% content_for :user_header_title do %>
-  <%= image_tag 'icons/bird-blue.svg' %>
-  Connect
-<% end %>
+<% content_for :user_header_title, 'Playlists' %>
 
 <% if @user.has_role? :artist %>
   <%= render 'users/artist_header' %>
@@ -16,10 +13,8 @@
 
   <div class="col-lg-9 music-wrapper">
     <div class="music-block">
-      main area
+      <%= render partial: 'playlists/list', locals: { playlists: @playlists } %>
     </div>
 
   </div>
 </div>
-
-<%= render 'player/bottom_player' %>

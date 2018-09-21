@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+var ready = function() {
   $('[data-toggle="popover"]').popover({
     trigger: 'focus'
   });
@@ -160,10 +160,16 @@ $(document).on('turbolinks:load', function() {
     $('.main-container').css({'filter': 'unset'});
   });
 
-  let avatar_form = document.querySelector('#change-avatar');
-  $(avatar_form).find('#user_avatar').change(function(){
-    avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
+  let header_avatar_form = document.querySelector('#header-change-avatar');
+  $(header_avatar_form).find('#user_avatar').change(function(){
+    header_avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
   });
+
+  let content_avatar_form = document.querySelector('#content-change-avatar');
+  $(content_avatar_form).find('#user_avatar').change(function(){
+    content_avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
+  });
+
 
   $('.truncated-description').on('click', '.truncated-long', function(){
     $(this).hide();
@@ -320,7 +326,7 @@ $(document).on('turbolinks:load', function() {
      hidden.show(100);
     });
   });
-});
+};
 
 var loadMoreFeed = function(){
   var win = $(window);
@@ -411,6 +417,28 @@ function dragDropAttach() {
       };
     }
   },200);
+
+
+  /*
+  * Javascript For Chirp Page
+  */
+    $('.row.topic-category-section').masonry({
+      itemSelector : '.col-lg-6'
+    });    
+
+    if ($('#topic-category-ctg-btn').length == 1) {
+      $('html, body').animate({
+        scrollTop: $('#chirp-category-btn').offset().top - 120
+      }, 600, function(){});      
+    }
+    $('#topic-category-ctg-btn').on('click', function() {
+      $('html, body').animate({
+        scrollTop: $('#chirp-category-btn').offset().top - 120
+      }, 600, function(){});
+    })
+  /*
+  * Javascript For Chirp Page
+  */  
 }
 
 function countChar(editor, id) {
@@ -424,3 +452,7 @@ function countChar(editor, id) {
   }
 
 }
+
+$(document).on('turbolinks:load', ready);
+// $(document).ready(ready)
+// $(document).on('page:load', ready);

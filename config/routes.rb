@@ -4,7 +4,14 @@ Rails.application.routes.draw do
   devise_for :users, path: 'usr', controllers: {
         registrations: 'users/registrations',
         omniauth_callbacks: 'users/omniauth_callbacks'
-      }
+      }   
+
+  devise_scope :user do
+    get 'usr/edit_profile', :to => 'users/registrations#edit_profile'
+    put 'usr/update_profile', :to => 'users/registrations#update_profile'
+    get 'usr/edit_account', :to => 'users/registrations#edit_account'
+    put 'usr/update_account', :to => 'users/registrations#update_account'
+  end
 
   resources :users, only: [:show, :index, :update] do
     collection do
@@ -12,6 +19,7 @@ Rails.application.routes.draw do
     end
   end
   get 'load_more_leaders', to: 'users#load_more'
+  get 'load_more_artists', to: 'users#load_more_artists'
 
   post '/rate' => 'rater#create', :as => 'rate'
   get "leaderboard", to: "users#leaderboard"
@@ -72,7 +80,6 @@ Rails.application.routes.draw do
   get '/tracks/:id/download', to: 'tracks#download', as: :track_download
   get "search_releases", to: "releases#search"
   get "fill_track_title", to: "tracks#fill_track_title"
-  get "fill_bottom_player", to: "tracks#fill_bottom_player"
   get 'load_more_releases', to: 'releases#load_more'
 
   resources :tracks
@@ -87,8 +94,14 @@ Rails.application.routes.draw do
     get 'recently_tracks'
     get 'downloaded_tracks'
     get 'favorites'
-    get 'main_area'
+    get 'connect'
+    get 'listen'
+    get 'artists'
+    get 'fans'
+    get 'playlists'
   end
+  get 'player_load_more_leaders', to: 'player#load_more_fans'
+  get 'player_load_more_artists', to: 'player#load_more_artists'
 
   resources :playlists
   get 'playlist_load', to: "playlists#load"
