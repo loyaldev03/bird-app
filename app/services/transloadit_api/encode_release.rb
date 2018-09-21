@@ -117,14 +117,16 @@ module TransloaditApi
 
     def process_response(response)
       if !response.error? && response.completed?
+        ['aiff', 'flac', 'mp3', 'wav'].each do |target|
+          ReleaseFile.create(release: release,
+                             format: "#{target}",
+                             encode_status: :complete,
+                             url_string: response['results']["zip_collection_#{target}"][0]['ssl_url'])
+        end
         release.tracks.each do |t|
           ['aiff', 'flac', 'mp3', 'wav'].each do |target|
             TrackFile.create(track: t,
                              format: "zip_#{target}",
-                             encode_status: :complete,
-                             url_string: response['results']["zip_collection_#{target}"][0]['ssl_url'])
-            TrackFile.create(track: t,
-                             format: target,
                              encode_status: :complete,
                              url_string: response['results']["zip_#{target}_#{t.id}"][0]['ssl_url'])
           end

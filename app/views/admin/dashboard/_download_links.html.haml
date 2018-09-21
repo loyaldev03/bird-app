@@ -1,6 +1,13 @@
 %h2
   Download Links
 - if release.assembly_complete?
+  %h2
+    Release Files
+  - release.release_files.each do |file|
+    %a{download: "", href: "#{file.url_string}", style: "text-decoration: none"}
+      &nbsp;
+      = file.format
+
   - release.tracks.each do |t|
     %h2
       Track:
@@ -9,7 +16,6 @@
       %a{download: "", href: "#{file.url_string}", style: "text-decoration: none"}
         &nbsp;
         = file.format
-
 - else
   %p.text-danger
     The encoding for this release is pending or resulted in an error!
