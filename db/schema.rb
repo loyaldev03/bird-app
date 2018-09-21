@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180912121740) do
+ActiveRecord::Schema.define(version: 20180921132450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,6 +385,7 @@ ActiveRecord::Schema.define(version: 20180912121740) do
     t.string "val"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "res"
   end
 
   create_table "slider_images", force: :cascade do |t|
@@ -456,6 +457,40 @@ ActiveRecord::Schema.define(version: 20180912121740) do
     t.index ["track_id"], name: "index_track_files_on_track_id"
   end
 
+  create_table "track_infos", force: :cascade do |t|
+    t.string "label_name"
+    t.string "catalog"
+    t.string "release_artist"
+    t.string "track_title"
+    t.string "track_artist"
+    t.string "release_name"
+    t.datetime "release_date"
+    t.string "mix_name"
+    t.string "remixer"
+    t.string "track_time"
+    t.string "barcode"
+    t.string "isrc"
+    t.string "genre"
+    t.string "release_written_by"
+    t.string "release_producer"
+    t.string "track_publisher"
+    t.string "track_written_by"
+    t.string "track_produced_by"
+    t.boolean "vocals_m"
+    t.boolean "vocals_f"
+    t.boolean "upbeat_drivind_energetic"
+    t.boolean "sad_moody_dark"
+    t.boolean "fun_playfull_quirky"
+    t.boolean "sentimental_love"
+    t.boolean "big_buildups_sweeps"
+    t.boolean "celebratory_party_vibe"
+    t.boolean "inspiring_uplifting"
+    t.boolean "chill_mellow"
+    t.string "lyrics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tracks", force: :cascade do |t|
     t.string "title"
     t.string "uri"
@@ -474,6 +509,7 @@ ActiveRecord::Schema.define(version: 20180912121740) do
     t.boolean "artist_as_string"
     t.integer "listened_count", default: 0
     t.string "uri_string"
+    t.integer "track_info_id"
   end
 
   create_table "tracks_users", force: :cascade do |t|
@@ -526,6 +562,7 @@ ActiveRecord::Schema.define(version: 20180912121740) do
     t.string "address_country"
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
+    t.string "profile_url"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
