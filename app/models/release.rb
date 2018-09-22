@@ -19,7 +19,7 @@ class Release < ApplicationRecord
 
   accepts_nested_attributes_for :tracks, :allow_destroy => true
 
-  validates :title, :release_date, :published_at, presence: true
+  validates :title, :release_date, :published_at, :catalog, presence: true
 
   mount_uploader :avatar, ReleaseUploader
 
