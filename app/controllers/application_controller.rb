@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :resource_name, :resource, :devise_mapping, :resource_class
 
+  respond_to :html, :json
+  
   include ApplicationHelper
   include ActionView::Helpers::UrlHelper
 

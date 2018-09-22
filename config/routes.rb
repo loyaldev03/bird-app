@@ -4,7 +4,14 @@ Rails.application.routes.draw do
   devise_for :users, path: 'usr', controllers: {
         registrations: 'users/registrations',
         omniauth_callbacks: 'users/omniauth_callbacks'
-      }
+      }   
+
+  devise_scope :user do
+    get 'usr/edit_profile', :to => 'users/registrations#edit_profile'
+    put 'usr/update_profile', :to => 'users/registrations#update_profile'
+    get 'usr/edit_account', :to => 'users/registrations#edit_account'
+    put 'usr/update_account', :to => 'users/registrations#update_account'
+  end
 
   resources :users, only: [:show, :index, :update] do
     collection do

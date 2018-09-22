@@ -127,7 +127,7 @@
                 <% if current_user.has_role?(:admin) || current_user.has_role?(:artist) %>
                   <%= link_to "Admin Dashboard", admin_root_path, class: "modal-button btn-bg-gray" %>
                 <% end %>
-                <%= link_to "Edit Profile", edit_user_registration_path, class: "modal-button btn-bg-gray" %>
+                <%= link_to "Edit Profile", usr_edit_profile_path, class: "modal-button btn-bg-gray" %>
                 <%= link_to "Sign Out", destroy_user_session_path, 
                     class: "modal-button btn-bg-red", method: :delete %>
               </div>

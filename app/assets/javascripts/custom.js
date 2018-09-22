@@ -160,10 +160,16 @@ var ready = function() {
     $('.main-container').css({'filter': 'unset'});
   });
 
-  let avatar_form = document.querySelector('#change-avatar');
-  $(avatar_form).find('#user_avatar').change(function(){
-    avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
+  let header_avatar_form = document.querySelector('#header-change-avatar');
+  $(header_avatar_form).find('#user_avatar').change(function(){
+    header_avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
   });
+
+  let content_avatar_form = document.querySelector('#content-change-avatar');
+  $(content_avatar_form).find('#user_avatar').change(function(){
+    content_avatar_form.dispatchEvent(new Event('submit', {bubbles: true}));
+  });
+
 
   $('.truncated-description').on('click', '.truncated-long', function(){
     $(this).hide();

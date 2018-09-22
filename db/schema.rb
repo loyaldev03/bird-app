@@ -521,7 +521,6 @@ ActiveRecord::Schema.define(version: 20180921194331) do
     t.bigint "track_id"
     t.index ["track_id", "user_id"], name: "index_tracks_users_on_track_id_and_user_id", unique: true
     t.index ["track_id"], name: "index_tracks_users_on_track_id"
-    t.index ["user_id", "track_id"], name: "index_tracks_users_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_tracks_users_on_user_id"
   end
 
@@ -567,6 +566,7 @@ ActiveRecord::Schema.define(version: 20180921194331) do
     t.string "address_country"
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
+    t.string "profile_url"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
