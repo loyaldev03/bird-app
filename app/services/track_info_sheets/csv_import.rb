@@ -7,7 +7,8 @@ module TrackInfoSheets
 
     def initialize(bulk_track_info_sheet)
       sheet = bulk_track_info_sheet
-      @file = sheet.open
+      @errors = []
+      @file = File.open(File.join(Rails.root, '/bulk_import_files/000-Music Supervisor Reference (1).xlsx'))
     end
 
     def call
@@ -22,7 +23,7 @@ module TrackInfoSheets
             extract_value row
           rescue
             puts '------ERROR--------'
-            puts row
+            @errors << row
           end
           # puts row['A'].inspect
           # puts row['G'].to_s.inspect
@@ -36,6 +37,7 @@ module TrackInfoSheets
       # end
       puts '--'*200
       puts 'Import End'
+      puts @errors
     end
 
     def extract_value(row)
@@ -119,9 +121,7 @@ module TrackInfoSheets
     end
 
     def boolean_value(value)
-      puts '---'*100
-      puts value.inspect
-      if value == '0' || value == '' || value == nil
+     if value == '0' || value == '' || value == nil
         false
       else
         true
