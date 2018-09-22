@@ -5,7 +5,7 @@ ActiveAdmin.register_page "Dashboard" do
     # set a breakpoint here to check if you receive the file inside params properly
     # CsvWorker.perform_async(params[:file].path)
     # do anything else you need and redirect as the last step
-    TrackInfoSheets::CsvImport.new(params[:file]).call
+    # TrackInfoSheets::CsvImport.new(params[:file]).call
     redirect_to admin_dashboard_path
   end
 
