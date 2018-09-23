@@ -13,9 +13,10 @@
       Track:
       = t.title
     - t.track_files.each do |file|
-      %a{download: "", href: "#{file.url_string}", style: "text-decoration: none"}
-        &nbsp;
-        = file.format
+      - if ['zip_aiff', 'zip_wav', 'zip_flac', 'zip_mp3'].include?(file.format)
+        %a{download: "", href: "#{file.url_string}", style: "text-decoration: none"}
+          &nbsp;
+          = file.format
 - else
   %p.text-danger
     The encoding for this release is pending or resulted in an error!
