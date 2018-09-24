@@ -1,0 +1,245 @@
+<%= render 'user_profile_settings/header' %>
+
+<div class="user-profile-settings">
+  <div class="row">
+    <div class="side-bar col-lg-3">
+      <%= render partial: 'users/user_profile_nav', locals: {current_index: 'NOTIFICATIONS'}  %>
+    </div>
+    <div class="main-content col-lg-9">
+      <div class="row page-header">
+        <div class="col-sm-6">
+          <label class="title">
+            NOTIFICATIONS
+          </label>
+        </div>
+        <div class="col-sm-6 text-right">
+        </div>
+      </div>
+      <div class="row page-content notifications-content">
+        <div class="col-sm-12">
+          <%= form_tag "/search", method: "get", class: 'notifications-form' do %>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="single-option">
+                  <div class="option-header">
+                      SOUND
+                  </div>
+                  <div class="option-content">
+                    <%= check_box_tag :sounds_option, 1, true, class: 'styled-checkbox' %>
+                    <%= label_tag(:sounds_option, "Play browser sound when each new notification is received") %>
+                  </div>                  
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="single-option">
+                  <div class="option-header">
+                      DESKTOP
+                  </div>
+                  <div class="option-content">
+                    <%= check_box_tag :desktop_option, 1, true, class: 'styled-checkbox' %>
+                    <%= label_tag(:desktop_option, "See your notifications in the corner of your computer screen, even when Birdfeed is closed.") %>
+                  </div>                  
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="single-option">
+                  <div class="option-header">
+                      EMAIL
+                  </div>
+                  <div class="option-content styled-toggle">
+                    <%= label_tag :global_email_notification, 'Turn global email notifications on or off', class: 'description' %>
+                    <b>OFF</b>
+                    <label class="switch">
+                      <%= check_box_tag :global_email_notification, 1, true, class: '' %>
+                      <span class="slider round"></span>
+                    </label>
+                    <b>ON</b>
+                  </div>
+                  <div class="option-content">
+                    <%= check_box_tag :important_notification, 1, true, class: 'styled-checkbox' %>
+                    <%= label_tag :important_notification, "Important notifications about you or activity that you’ve missed" %>
+                  </div>                  
+                  <div class="option-content">
+                    <%= check_box_tag :newsletter, 1, true, class: 'styled-checkbox' %>
+                    <%= label_tag :newsletter, "Newsletter" %>
+                  </div>                  
+                  <div class="option-content">
+                    <%= check_box_tag :gaming_activities, 1, true, class: 'styled-checkbox' %>
+                    <%= label_tag :gaming_activities, "Gaming activities, competitions, badges & community achievements" %>
+                  </div>                  
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="single-option">
+                  <div class="option-header">
+                    SOCIAL NOTIFICATIONS CONTROLS
+                  </div>
+                  <div class="option-content">
+                    <table>
+                      <tr>
+                        <th>
+                          Alert
+                        </th>
+                        <th>
+                          Email
+                        </th>
+                        <th>
+                          Your Profile
+                        </th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%= check_box_tag :new_friend_request_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_friend_request_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :new_friend_request_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_friend_request_email, "" %>
+                        </td>
+                        <td class="profile-description">
+                          New Friend Request
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%= check_box_tag :new_favorite_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_favorite_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :new_favorite_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_favorite_email, "" %>
+                        </td>
+                        <td class="profile-description">
+                          New Favorite
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td class="feed-title">
+                          <b> Feeds: </b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%= check_box_tag :someone_comments_feed_you_follow_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :someone_comments_feed_you_follow_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :someone_comments_feed_you_follow_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :someone_comments_feed_you_follow_email, "" %>
+                        </td>
+                        <td class="profile-description">
+                          When someone comments on a feed you follow 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%= check_box_tag :user_replies_to_your_comment_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :user_replies_to_your_comment_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :user_replies_to_your_comment_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :user_replies_to_your_comment_email, "" %>
+                        </td>
+                        <td class="profile-description">
+                          When a user or artist replies to your comment 
+                        </td>
+                      </tr>                                                                        
+                      <tr>
+                        <td>
+                          <%= check_box_tag :user_follows_topic_you_created_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :user_follows_topic_you_created_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :user_follows_topic_you_created_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :user_follows_topic_you_created_email, "" %>
+                        </td>
+                        <td class="profile-description">
+                          When a user or artist follows a topic you’ve created  
+                        </td>
+                      </tr>    
+                      <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td class="feed-title">
+                          <b> Feeds: </b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%= check_box_tag :new_friend_request_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_friend_request_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :new_friend_request_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_friend_request_email, "" %>
+                        </td>
+                        <td>
+                          New Friend Request
+                        </td>
+                      </tr>     
+                      <tr>
+                        <td>
+                          <%= check_box_tag :friend_comment_on_feed_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :friend_comment_on_feed_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :friend_comment_on_feed_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :friend_comment_on_feed_email, "" %>
+                        </td>
+                        <td>
+                          When a friend comments on a feed
+                        </td>
+                      </tr>     
+                      <tr>
+                        <td>
+                          <%= check_box_tag :friend_follows_feed_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :friend_follows_feed_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :friend_follows_feed_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :friend_follows_feed_email, "" %>
+                        </td>
+                        <td>
+                          When a friend follows a feed
+                        </td>
+                      </tr>   
+                      <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td class="feed-title">
+                          <b> Playlists </b>
+                        </td>
+                      </tr>            
+                      <tr>
+                        <td>
+                          <%= check_box_tag :new_playlist_follower_alert, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_playlist_follower_alert, "" %>
+                        </td>
+                        <td>
+                          <%= check_box_tag :new_playlist_follower_email, 1, true, class: 'styled-checkbox' %>
+                          <%= label_tag :new_playlist_follower_email, "" %>
+                        </td>
+                        <td>
+                          New Playlist Follower
+                        </td>
+                      </tr>                                   
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%= submit_tag "SAVE SETTINGS", class: 'submit-btn' %>
+          <% end %>
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,4 @@
 .account-settings {
-	background-color: #ffffff;
-	margin:0 15px;
-	padding: 0 70px 70px 0;
-
 	label {
 		letter-spacing: 0.72px;
 		color: #434343;
@@ -16,22 +12,6 @@
 
 		&.upload-profile-avatar {
 			margin: 30px 0;
-		}
-	}
-
-	.user-profile-edit-header {
-		margin-top: 40px;
-		.profile-label {
-			padding: 0;
-			font-size: 36px;			
-			letter-spacing: 1.62px;			
-		}
-		.profile-question {
-			font-size: 15px;
-			font-weight: 400;
-			letter-spacing: 0.68px;
-			line-height: 18px;
-			font-family: "Titillium Web";
 		}
 	}
 

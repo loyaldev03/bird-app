@@ -32,6 +32,20 @@ Rails.application.routes.draw do
 
   post "report", to: "home#report"
 
+  # user profile settings urls
+  get "usr/rewards", to: 'user_profile_settings#rewards'
+  get "usr/egg_credits", to: 'user_profile_settings#egg_credits'
+  get "usr/headers", to: 'user_profile_settings#headers'
+  get "usr/skins", to: 'user_profile_settings#skins'
+  get "usr/downloads", to: 'user_profile_settings#downloads'
+  get "usr/billing_order_history", to: 'user_profile_settings#billing_order_history'
+  get "usr/friends", to: 'user_profile_settings#friends'
+  get "usr/artists", to: 'user_profile_settings#artists'
+  get "usr/releases", to: 'user_profile_settings#releases'
+  get "usr/chirp_feeds", to: 'user_profile_settings#chirp_feeds'
+  get "usr/notifications", to: 'user_profile_settings#notifications'
+  
+  
   get "get_feed_token", to: "feeds#get_feed_token"
   get "add_feed_item", to: "feeds#add_feed_item"
   get "add_notify_item", to: "feeds#add_notify_item"
@@ -132,6 +146,8 @@ Rails.application.routes.draw do
     # get 'unlock'
   end
 
+  resources :notifications
+  
   root "home#index"
 
   mount Shrine.presign_endpoint(:store) => "/presign"

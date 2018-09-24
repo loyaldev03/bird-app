@@ -1,19 +1,17 @@
-<% if @user.has_role? :artist %>
-  <%= render 'users/artist_header' %>
-<% else %>
-  <%= render 'users/user_header' %>
-<% end %>
+<%= render 'user_profile_settings/header' %>
 
-<div class="account-settings">
+<div class="user-profile-settings">
   <div class="row">
     <div class="side-bar col-lg-3">
-      <%= render 'users/user_profile_nav' %>
+      <%= render partial: 'users/user_profile_nav', locals: {current_index: 'ACCOUNT'}  %>
     </div>
-    <div class="main-content col-lg-9">
-      <div class="row user-profile-edit-header">
-        <label class="col-lg-6 profile-label">
-          ACCOUNT SETTINGS
-        </label>
+    <div class="main-content account-settings col-lg-9">
+      <div class="row page-header">
+        <div class="col-sm-12">
+          <label class="title">
+            ACCOUNT SETTINGS
+          </label>
+        </div>
       </div>
       <!-- 
         User Profile Edit Form 

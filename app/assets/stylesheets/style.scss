@@ -538,8 +538,8 @@ strong {
 
 .change-avatar {
   position: absolute;
-  width: 30%;
-  left: 0px;
+  width: 20%;
+  left: 15px;
   padding-bottom: 0;
   text-align: center;
 }
@@ -730,4 +730,9 @@ strong {
     justify-content: center;
     flex-direction: column;   
   }
+}
+
+.custom-vertical-align {
+  display: flex;
+  align-items: center;  
 }
