@@ -5,7 +5,7 @@ class TrackFile < ActiveRecord::Base
   has_one :release, through: :track
 
   enum format: [:wav, :aiff, :flac, :mp3,
-                :ogg, :zip, :zip_aiff, :zip_wav, :zip_flac, :zip_mp3]
+                :ogg, :zip_aiff, :zip_wav, :zip_flac, :zip_mp3]
   enum encode_status: [:pending, :complete, :failed]
 
   def uri

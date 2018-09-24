@@ -7,7 +7,8 @@ module TrackInfoSheets
 
     def initialize(bulk_track_info_sheet)
       sheet = bulk_track_info_sheet
-      @file = sheet.open
+      @errors = []
+      @file = File.open(File.join(Rails.root, '/bulk_import_files/000-Music Supervisor Reference (1).xlsx'))
     end
 
     def call
@@ -18,7 +19,12 @@ module TrackInfoSheets
       puts sheet.simple_rows.count
       sheet.simple_rows.drop(1).each do |row|
         if row != {}
-          extract_value row
+          begin
+            extract_value row
+          rescue
+            puts '------ERROR--------'
+            @errors << row
+          end
           # puts row['A'].inspect
           # puts row['G'].to_s.inspect
         end
@@ -31,6 +37,7 @@ module TrackInfoSheets
       # end
       puts '--'*200
       puts 'Import End'
+      puts @errors
     end
 
     def extract_value(row)
@@ -43,14 +50,29 @@ module TrackInfoSheets
                               upc_code: '',
                               text: '',
                               artist: row['C'])
+
         release.remote_avatar_url = format_dropbox_url(row['AE'])
-        release.save!
+        if  !release.save
+          release = Release.new(catalog: row['B'],
+                              title: row['F'],
+                              release_date: row['G'].to_datetime,
+                              published_at: DateTime.now,
+                              upc_code: '',
+                              text: '',
+                              artist: row['C'])
+          release.avatar = File.open(File.join(Rails.root, '/app/assets/images/default_release_avatar.png'))
+          release.save!
+        end
       end
       save_track(release, row) if row['AD']!=''
     end
 
     def save_track(release, row)
-      track_url = format_dropbox_url(row['AD'])
+      begin
+        track_url = format_dropbox_url(row['AD'])
+      rescue
+        track_url = ''
+      end
       if Track.find_by(uri_string: track_url).nil?
         track = Track.new
         track.title = row['D']
@@ -99,7 +121,7 @@ module TrackInfoSheets
     end
 
     def boolean_value(value)
-      if value == '0' || value == ''
+     if value == '0' || value == '' || value == nil
         false
       else
         true

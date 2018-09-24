@@ -11,7 +11,7 @@ module TransloaditApi
     end
 
     def call
-      return if release.assembly_complete? || !release.tracks.exists?
+      return if release.assembly_complete? || !release.tracks.exists? || release.catalog.blank?
       tracks.each do |t|
         steps << transloadit_client.step("import_track_#{t.id}", '/http/import', {
           url: t.uri.url
@@ -64,23 +64,23 @@ module TransloaditApi
             use: "#{format}_#{t.id}"
           })
           steps << transloadit_client.step("store_zip_#{format}_#{t.id}", '/s3/store', {
-            key: ENV.fetch('S3_KEY'),
-            secret: ENV.fetch('S3_SECRET'),
-            bucket: ENV.fetch('S3_BUCKET_NAME'),
-            bucket_region: ENV.fetch('S3_REGION'),
+            key: ENV.fetch('S3_ENCODING_KEY'),
+            secret: ENV.fetch('S3_ENCODING_SECRET'),
+            bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
+            bucket_region: ENV.fetch('S3_ENCODING_REGION'),
             use: "zip_#{format}_#{t.id}",
-            path: "/#{t.isrc_code}/#{t.title.parameterize.underscore}.zip"
+            path: "/#{release.catalog}/#{t.isrc_code}/#{t.title.parameterize.underscore}.zip"
           })
         end
 
         ['aiff', 'flac', 'mp3', 'wav', 'ogg'].each do |format|
           steps << transloadit_client.step("store_#{t.id}_#{format}", '/s3/store', {
-            key: ENV.fetch('S3_KEY'),
-            secret: ENV.fetch('S3_SECRET'),
-            bucket: ENV.fetch('S3_BUCKET_NAME'),
-            bucket_region: ENV.fetch('S3_REGION'),
+            key: ENV.fetch('S3_ENCODING_KEY'),
+            secret: ENV.fetch('S3_ENCODING_SECRET'),
+            bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
+            bucket_region: ENV.fetch('S3_ENCODING_REGION'),
             use: "#{format}_#{t.id}",
-            path: "/#{t.isrc_code}/#{t.title.parameterize.underscore}.#{format}"
+            path: "/#{release.catalog}/#{t.isrc_code}/#{t.title.parameterize.underscore}.#{format}"
           })
         end
       end
@@ -97,12 +97,12 @@ module TransloaditApi
                   bundle_steps: true }
           })
         steps << transloadit_client.step("store_zip_collection_#{format}", '/s3/store', {
-          key: ENV.fetch('S3_KEY'),
-          secret: ENV.fetch('S3_SECRET'),
-          bucket: ENV.fetch('S3_BUCKET_NAME'),
-          bucket_region: ENV.fetch('S3_REGION'),
+          key: ENV.fetch('S3_ENCODING_KEY'),
+          secret: ENV.fetch('S3_ENCODING_SECRET'),
+          bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
+          bucket_region: ENV.fetch('S3_ENCODING_REGION'),
           use: "zip_collection_#{format}",
-          path: "/#{release.id}/#{release.title.parameterize.underscore}.zip"
+          path: "/#{release.catalog}/#{release.id}/#{release.title.parameterize.underscore}.zip"
         })
       end
 
@@ -117,14 +117,16 @@ module TransloaditApi
 
     def process_response(response)
       if !response.error? && response.completed?
+        ['aiff', 'flac', 'mp3', 'wav'].each do |target|
+          ReleaseFile.create(release: release,
+                             format: "#{target}",
+                             encode_status: :complete,
+                             url_string: response['results']["zip_collection_#{target}"][0]['ssl_url'])
+        end
         release.tracks.each do |t|
           ['aiff', 'flac', 'mp3', 'wav'].each do |target|
             TrackFile.create(track: t,
                              format: "zip_#{target}",
-                             encode_status: :complete,
-                             url_string: response['results']["zip_collection_#{target}"][0]['ssl_url'])
-            TrackFile.create(track: t,
-                             format: target,
                              encode_status: :complete,
                              url_string: response['results']["zip_#{target}_#{t.id}"][0]['ssl_url'])
           end
