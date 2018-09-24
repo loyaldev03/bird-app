@@ -60,7 +60,8 @@ class User < ApplicationRecord
   has_many :playlists
   has_many :downloads
   has_many :recently_items
-
+  has_many :billing_order_histories
+  
   include AlgoliaSearch
 
   algoliasearch do

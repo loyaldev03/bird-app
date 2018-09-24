@@ -1,20 +1,18 @@
-<% if @user.has_role? :artist %>
-  <%= render 'users/artist_header' %>
-<% else %>
-  <%= render 'users/user_header' %>
-<% end %>
+<%= render 'user_profile_settings/header' %>
 
-<div class="user-edit-profile">
+<div class="user-profile-settings">
   <div class="row">
     <div class="side-bar col-lg-3">
       <%= render 'users/user_profile_nav' %>
     </div>
-    <div class="main-content col-lg-9">
-      <div class="row user-profile-edit-header">
-        <label class="col-lg-6 profile-label">
-          PROFILE
-        </label>
-        <div class="col-lg-6 profile-question">
+    <div class="main-content user-edit-profile col-lg-9">
+      <div class="row page-header">
+        <div class="col-sm-6">
+          <label class="title">
+            PROFILE
+          </label>
+        </div>
+        <div class="col-sm-6 profile-question">
           <span>If you have any questions about your privacy please review the <b>gdpr protecting our peeps area.</b></span>
         </div>
       </div>
@@ -33,15 +31,12 @@
         
         <div class="row">
           <div class="col-lg-4 profile-avatar-area">
-            <div class="row t-shirt-size-group">
-              <div class="form-group">
-                <%= f.label :t_shirt_size, 'T SHIRT SIZE', class: 'required' %>
-                <%= f.select :t_shirt_size, options_for_select(['S - Mens', 'M - Mens', 'L - Mens', 'XL - Mens', '2X - Mens', '3X - Mens', 'XS - Womens', 'S - Womens', 'M - Womens', 'L - Womens', 'XL - Womens'], (current_user.t_shirt_size if current_user)),{ include_blank: 'Shirt Size' }, 
-                    required: true,
-                    class: "select", 'data-minimum-results-for-search' => -1, "data-width" => "100%" %>
-              </div>
+            <div class="form-group t-shirt-size-group">
+              <%= f.label :t_shirt_size, 'T SHIRT SIZE', class: 'required' %>
+              <%= f.select :t_shirt_size, options_for_select(['S - Mens', 'M - Mens', 'L - Mens', 'XL - Mens', '2X - Mens', '3X - Mens', 'XS - Womens', 'S - Womens', 'M - Womens', 'L - Womens', 'XL - Womens'], (current_user.t_shirt_size if current_user)),{ include_blank: 'Shirt Size' }, 
+                  required: true,
+                  class: "select", 'data-minimum-results-for-search' => -1, "data-width" => "100%" %>
             </div>
-
           </div>
           <div class="col-lg-8">
             <%= devise_error_messages! %>
