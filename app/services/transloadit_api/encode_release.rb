@@ -11,7 +11,8 @@ module TransloaditApi
     end
 
     def call
-      return if release.assembly_complete? || !release.tracks.exists? || release.catalog.blank?
+      return if release.assembly_complete? || !release.tracks.exists? || release.catalog.blank? || release.encode_status == 'pending'
+      release.pending!
       tracks.each do |t|
         steps << transloadit_client.step("import_track_#{t.id}", '/http/import', {
           url: t.uri.url
@@ -109,8 +110,6 @@ module TransloaditApi
       assembly = transloadit_client.assembly(steps: steps)
       response = assembly.create!
       response.reload_until_finished!
-
-      response.reload_until_finished!
       process_response response
 
     end
@@ -137,9 +136,9 @@ module TransloaditApi
                              url_string: response['results']["#{k}_#{t.id}"][0]['ssl_url'])
           end
         end
-        release.update(assembly_id: response[:assembly_id], assembly_complete: true)
+        release.update(assembly_id: response[:assembly_id], assembly_complete: true, encode_status: 'complete')
       else
-        release.update(assembly_id: response[:assembly_id], assembly_complete: false)
+        release.update(assembly_id: response[:assembly_id], assembly_complete: false, encode_status: 'failed')
       end
     end
   end
