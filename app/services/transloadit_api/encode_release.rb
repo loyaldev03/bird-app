@@ -69,7 +69,7 @@ module TransloaditApi
             bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
             bucket_region: ENV.fetch('S3_ENCODING_REGION'),
             use: "zip_#{format}_#{t.id}",
-            path: "/#{release.catalog}/#{t.isrc_code}/#{t.title.parameterize.underscore}.zip"
+            path: "/#{release.catalog}/#{t.isrc_code}/zip/#{format}/#{t.title.parameterize.underscore}"
           })
         end
 
@@ -80,7 +80,7 @@ module TransloaditApi
             bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
             bucket_region: ENV.fetch('S3_ENCODING_REGION'),
             use: "#{format}_#{t.id}",
-            path: "/#{release.catalog}/#{t.isrc_code}/#{t.title.parameterize.underscore}.#{format}"
+            path: "/#{release.catalog}/#{t.isrc_code}/un_zipped/#{format}/#{t.title.parameterize.underscore}"
           })
         end
       end
@@ -102,7 +102,7 @@ module TransloaditApi
           bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
           bucket_region: ENV.fetch('S3_ENCODING_REGION'),
           use: "zip_collection_#{format}",
-          path: "/#{release.catalog}/#{release.id}/#{release.title.parameterize.underscore}.zip"
+          path: "/#{release.catalog}/#{release.id}/zip_collection/#{release.title.parameterize.underscore}_#{format}"
         })
       end
 
