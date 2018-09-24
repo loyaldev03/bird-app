@@ -146,6 +146,8 @@ Rails.application.routes.draw do
     # get 'unlock'
   end
 
+  resources :notifications
+  
   root "home#index"
 
   mount Shrine.presign_endpoint(:store) => "/presign"
