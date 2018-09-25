@@ -89,13 +89,64 @@
         </ul>
 
         <% if current_user %>
-          <ul class="navbar-nav">
+          <ul class="navbar-nav align-items-center">
             <div class="header-user">
               <%= link_to image_tag(current_user.avatar.thumb, class: "user-avatar"), root_path %>
               <span><%= link_to current_user.name, root_path %></span>
             </div>
-            
-            <li class="nav-item dropdown dropdown-notify-menu" data-current-user="<%= current_user.id %>">
+
+            <% if current_user.has_role?(:artist) %>
+              <li id="request-friend-menu" 
+                  class="nav-item dropdown dropdown-notify-menu pr-2 mr-3">
+                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <div class="nav-icon">
+                    <%= show_svg "icons/red-bird.svg" %>
+                  </div>
+                  <% if @friend_requests && @friend_requests.count > 0 %>
+                    <span class="nav-request-count" style="right: -8px">
+                      <%= @friend_requests.count < 10 ? @friend_requests.count : "9+" %>
+                    </span>
+                  <% end %>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right pb-4">
+                  <div class="notify-menu-header">
+                    <h5>New Followers</h5>
+                  </div>
+
+                  <div class="notify-list">
+                    <%= render 'users/friend_requests' %>
+                  </div>
+                </div>
+              </li>
+            <% else %>
+              <li class="nav-item dropdown dropdown-requests-menu pr-2 mr-3">
+                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <div class="nav-icon">
+                    <%= show_svg "icons/red-bird.svg" %>
+                  </div>
+                  <% if @friend_requests && @friend_requests.count > 0 %>
+                    <span class="nav-request-count" style="right: -8px">
+                      <%= @friend_requests.count < 10 ? @friend_requests.count : "9+" %>
+                    </span>
+                  <% end %>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right pb-4">
+                  <div class="notify-menu-header">
+                    <h5>Friend Requests</h5>
+                  </div>
+
+                  <div class="notify-list">
+                    <%= render 'users/friend_requests' %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+
+            <li id="notify-menu"
+                class="nav-item dropdown dropdown-notify-menu pr-2 mr-2" 
+                data-current-user="<%= current_user.id %>">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= image_tag "icons/icon-notifications.svg" %>
                 <% if @unseen_count && @unseen_count > 0 %>
@@ -105,10 +156,10 @@
                 <% end %>
               </a>
 
-              <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-menu dropdown-menu-right pb-4">
                 <div class="notify-menu-header">
                   <h5>NOTIFICATIONS</h5>
-                  <%= link_to "Mark as read", is_read_path, 
+                  <%= link_to "clear", is_read_path, 
                       class: "is-read-btn", remote: true %>
                 </div>
 

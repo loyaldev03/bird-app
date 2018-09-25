@@ -54,7 +54,6 @@ header {
 }
 
 .dropdown-usermenu {
-  padding-top: 5px;
   margin-right: 0 !important;
 
   .dropdown-menu {
@@ -169,5 +168,35 @@ header {
   transition: background-color 0.2s;
   &:hover, &:focus, &:active {
     color: white;
+  }
+}
+
+.dropdown-requests-menu {
+  color: #585858;
+
+  .dropdown-menu {
+    width: 320px;
+  }
+
+  .user-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .user-name {
+    font-family: 'Phosphate-Solid';
+    font-size: 13px;
+    letter-spacing: 0.58px;
+  }
+
+  .user-caption {
+    font-size: 11px;
+    letter-spacing: 0.49px;
+  }
+
+  .btn {
+    width: 74px;
+    height: 28px;
+    font-size: 8px;
   }
 }

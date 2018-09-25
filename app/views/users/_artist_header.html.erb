@@ -1,5 +1,5 @@
 <div class="user-music-present">
-  <div class="<%= avatar_style(@user) %> d-block">
+  <div class="d-block">
     <% if current_user && current_user.id == @user.id %>
       <%= form_for(@user, remote: true,
           html: { id: 'change-avatar', class: 'userpage-avatar', method: :put } ) do |f| %>

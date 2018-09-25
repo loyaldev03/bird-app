@@ -39,7 +39,8 @@ class ApplicationController < ActionController::Base
       begin
         feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
         results = feed.get(limit: 20)['results']
-      rescue Faraday::Error::ConnectionFailed
+      rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
+        SLACK_GENERAL.ping "Stream::StreamApiResponseException"
         results = []
       end
 
@@ -69,6 +70,12 @@ class ApplicationController < ActionController::Base
         @credits = current_user.download_credits
       else
         @credits = nil
+      end
+
+      if current_user.has_role?(:artist)
+        @friend_requests = current_user.followers.where("follows.show_notify = true")
+      else
+        @friend_requests = current_user.friend_requests
       end
     end
   end

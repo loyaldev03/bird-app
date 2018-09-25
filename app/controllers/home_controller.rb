@@ -44,7 +44,7 @@ class HomeController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed('masterfeed', 1)
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
     
