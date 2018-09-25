@@ -17,7 +17,7 @@
   z-index: 2;
   position: relative;
   padding: 30px 15px;
-  
+
   .follow-button {
     position: static;
   }
@@ -334,7 +334,9 @@
   position: relative;
 
   .topic-comments {
-    border-right: 1px solid #aaa;  
+    &.b-r {
+      border-right: 1px solid #aaa;  
+    }
 
     .number-of-comments {
       font-family: Phosphate-solid;

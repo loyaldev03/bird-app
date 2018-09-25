@@ -21,8 +21,8 @@ class Post < ApplicationRecord
     attribute :body
   end
 
-  include StreamRails::Activity
-  as_activity
+  # include StreamRails::Activity
+  # as_activity
 
   def activity_notify
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 ),
@@ -63,16 +63,16 @@ class Post < ApplicationRecord
     end
 
     def autofollow_topic
-      if user.followed( topic ).blank?
-        news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(user_id)[:aggregated]
+      # if user.followed( topic ).blank?
+      #   news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(user_id)[:aggregated]
 
-        user.follows.create(followable_id: topic_id, followable_type: "Topic")
-        news_aggregated_feed.follow('topic', topic_id)
+      #   user.follows.create(followable_id: topic_id, followable_type: "Topic")
+      #   news_aggregated_feed.follow('topic', topic_id)
 
-        feed_for_tab = StreamRails.feed_manager
-            .get_feed("topic_user_feed", user_id)
-        feed_for_tab.follow( 'topic', topic_id )
-      end
+      #   feed_for_tab = StreamRails.feed_manager
+      #       .get_feed("topic_user_feed", user_id)
+      #   feed_for_tab.follow( 'topic', topic_id )
+      # end
     end
 
 end
