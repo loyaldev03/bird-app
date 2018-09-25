@@ -4,11 +4,11 @@
 <% end %>
 
 <% if track.user_allowed?(current_user) %>
-  <button class="icon-download" type="button" data-toggle="collapse" data-target="#download-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample">
+  <button class="icon-download" type="button" data-toggle="collapse" data-target=".download-<%= track.id %>" aria-expanded="false" aria-controls="collapseExample">
     <%= image_tag image %>
   </button>
 <% end %>
-<div id="download-<%= track.id %>" class="collapse collapse-formats">
+<div class="collapse collapse-formats download-<%= track.id %>">
     <% track.download_uris.each do |format, uri| %>
       <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
     <% end %>

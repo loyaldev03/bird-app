@@ -52,7 +52,7 @@ class Track < ApplicationRecord
     uris = track_files.empty? ? { 'WAV' => uri.url } : {}
     %w[mp3 aiff flac wav].each do |format|
       tf = track_files.find_by(format: TrackFile.formats[format])
-      uris[format.split('_').first.upcase,] = tf.download_uri if tf
+      uris[format.upcase] = tf.download_uri if tf
     end
 
     uris
