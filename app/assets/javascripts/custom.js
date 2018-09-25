@@ -331,6 +331,10 @@ var ready = function() {
      hidden.show(100);
     });
   });
+
+  $('form.new-content-form').on('submit', function() {
+    $('#addcommentModal').modal('hide');
+  });    
 };
 
 var loadMoreFeed = function(){
