@@ -58,7 +58,9 @@ gem 'braintree'
 gem 'metainspector'
 gem "verbs"
 gem 'shrine', '~> 2.11'
-gem 'delayed_job_active_record', '~> 4.1.3'
+# gem 'delayed_job_active_record', '~> 4.1.3' #TODO remove it
+gem "useragent"
+
 
 gem 'exception_notification'
 gem 'slack-notifier'

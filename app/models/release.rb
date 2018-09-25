@@ -82,67 +82,6 @@ class Release < ApplicationRecord
     uris
   end
 
-  def encode
-    pending!
-    steps = []
-    formats = [:wav, :aiff, :flac, :mp3_160, :mp3_320]
-
-    # Remove any existing TrackFiles and ReleaseFiles
-    track_files.each(&:destroy)
-    release_files.each(&:destroy)
-
-    # Set up Track Encoding
-    tracks.each do |track|
-      steps.concat track.encode_steps(formats, nil)
-    end
-
-    # Set up ZIP File Creation
-    zip_steps = encode_zip_steps(steps)
-    steps.concat zip_steps
-
-    # Submit Job to Transloadit
-    TRANSLOADIT.assembly(
-      steps: steps,
-      notify_url: "#{ENV['BASE_URL']}/callbacks/transloadit"
-    ).create!
-  end
-
-  def encode_zip_steps(all_steps)
-    raise 'You must pass in all_steps so we can find common tracks to zip' unless all_steps
-
-    steps = []
-
-    # Generate Steps from TrackFile encode jobs
-    all_steps.select { |step|
-      step.name.match(/^TrackFile_\d+$/) # Only steps that look like TrackFiles
-    }.group_by { |step| # Group By Format
-      TrackFile.find(step.name.split(/_/)[1]).format # Group By TrackFile format
-    }.each do |group_format, track_steps|
-      # create ReleaseFile
-      release_file = ReleaseFile.create(
-        release: self,
-        format: group_format,
-        encode_status: :pending
-      )
-      steps.concat release_file.encode_steps(track_steps)
-    end
-
-    zip_export_step = TRANSLOADIT.step(
-      "#{step_name}_export",
-      '/s3/store',
-      key: ENV['S3_KEY'],
-      secret: ENV['S3_SECRET'],
-      bucket_region: ENV['S3_REGION'],
-      bucket: ENV['S3_BUCKET_NAME'],
-      path: "releases/${unique_prefix}/#{file_name}.${file.ext}"
-    )
-
-    zip_export_step.use(steps)
-    steps.push(zip_export_step)
-
-    steps
-  end
-
   def artists limit=nil
     if artist_as_string && artist.present?
       artist

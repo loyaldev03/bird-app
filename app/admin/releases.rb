@@ -6,8 +6,8 @@ ActiveAdmin.register Release do
     :published_at, :upc_code, :compilation, :release_type, :buy_uri,
     :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
-    :genre, :isrc_code, :uri_string, :sample_uri, :artist, :_destroy,
-    :artist_as_string, user_ids: [],
+    :genre, :isrc_code, :uri_string, :sample_ogg_uri, :sample_mp3_uri, 
+    :artist, :_destroy, :artist_as_string, user_ids: [],
     track_info_attributes: [:id, :label_name,  :catalog,
                             :release_artist, :track_title,
                             :track_artist, :release_name,
@@ -67,7 +67,8 @@ ActiveAdmin.register Release do
         column :title
         column :artist
         column :uri
-        column :sample_uri
+        column :sample_mp3_uri
+        column :sample_ogg_uri
         column (:downloads) { |obj| obj.downloads.count }
       end
     end
