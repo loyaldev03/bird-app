@@ -12,7 +12,7 @@ class Track < ApplicationRecord
 
   mount_uploader :uri, TrackUploader
 
-  validates :track_number, :title, presence: true
+  validates :track_number, :isrc_code, :title, presence: true
 
   ratyrate_rateable "main"
 
@@ -33,13 +33,15 @@ class Track < ApplicationRecord
     return sample_uri if is_sample
 
     # Get most recent successfully encoded 160k mp3, or 320k mp3, or base uri
-    if (track_file = track_files.where(format: TrackFile.formats[:mp3_160], encode_status: TrackFile.encode_statuses[:complete]).order(:created_at).last)
-      return track_file.uri
-    elsif (track_file = track_files.where(format: TrackFile.formats[:mp3_320], encode_status: TrackFile.encode_statuses[:complete]).order(:created_at).last)
-      return track_file.uri
-    else
-      return uri.url
-    end
+    # if (track_file = track_files.where(format: TrackFile.formats[:mp3], encode_status: TrackFile.encode_statuses[:complete]).order(:created_at).last)
+    #   return track_file.uri
+    # else
+      return  track_files.where(
+                format: TrackFile.formats[:mp3], 
+                encode_status: TrackFile.encode_statuses[:complete])
+              .last
+              .url_string
+    # end
   end
 
   def download_uris

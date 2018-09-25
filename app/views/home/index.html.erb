@@ -11,14 +11,14 @@
   <!-- FANS LEADERBOARD -->
   <div class="col-md-8">
     <div class="c-panel bg-br-blue">
-      <div class="c-flag mb-4">THE BIG 10</div>
+      <div class="c-flag mb-4" style="left: -31px;">THE BIG 10</div>
       <%= link_to "SEE ALL", users_path, class: "btn c-btn-black" %>
 
       <ol class="fans-block light-scroll mt-1">
         <% @leader_users.each do |u| %>
           <% user = User.find u['id'] %>
           <li style="margin-bottom: 20px;">
-            <%= link_to user, class: "d-inline-block align-middle" do %>
+            <%= link_to user, class: "d-inline-block align-middle #{avatar_style(user)}" do %>
               <%= image_tag user.avatar.thumb, class: "user-avatar" %>
             <% end %>
 
@@ -67,14 +67,15 @@
   <!-- ARTISTS -->
   <div class="col-md-4">
     <div class="c-panel bg-c-dark" style="border: 4px solid #faae03;box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);">
-      <div class="c-flag c-flag-inner mb-4" style="left: -29px;">NEW DB ARTISTS</div>
+      <div class="c-flag c-flag-inner mb-4" style="left: -31px;">NEW DB ARTISTS</div>
       <%= link_to "SEE ALL", artists_path, class: "btn c-btn-blue" %>
 
       <ol class="users-block dark-scroll list-unstyled mt-1">
         <% @artists.each do |artist| %>
           <li>
-            <%= link_to artist_path(artist), class: "d-inline-block align-middle" do %>
-              <%= image_tag artist.avatar.thumb, class: "user-avatar" %>
+            <%= link_to artist_path(artist), 
+                class: "d-inline-block align-middle #{avatar_style(artist)}" do %>
+              <%= image_tag artist.avatar.thumb, class: "user-avatar artist-style" %>
             <% end %>
             <div>
               <h5>

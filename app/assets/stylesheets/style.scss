@@ -188,7 +188,6 @@ strong {
 
     &.btn-square {
       border-radius: 0;
-      border: none;
     }
   }
 }
@@ -319,7 +318,7 @@ strong {
     content: '';
     position: absolute;
     bottom: -12px;
-    left: 0px;
+    left: -2px;
     width: 10px;
     height: 10px;
     border: 5px solid transparent; 
@@ -511,12 +510,6 @@ strong {
   article:first-child {
     display: block;
   }
-
-  .truncated-short, .truncated-long {
-    color: #222222;
-    font-size: 12px;
-    font-weight: 700;
-  }
 }
 
 #change-avatar {
@@ -544,9 +537,11 @@ strong {
 }
 
 .change-avatar {
+  position: absolute;
+  width: 20%;
+  left: 15px;
   padding-bottom: 0;
   text-align: center;
-  position: relative;
 }
 
 .form-control-file {
@@ -735,4 +730,9 @@ strong {
     justify-content: center;
     flex-direction: column;   
   }
+}
+
+.custom-vertical-align {
+  display: flex;
+  align-items: center;  
 }

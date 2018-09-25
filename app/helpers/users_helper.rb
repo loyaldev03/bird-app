@@ -21,7 +21,9 @@ module UsersHelper
 
   def user_position user
     unless user.has_role?(:admin)
-      users_by_points.map{ |u| u['id'] }.index(user.id) + 1
+      i = users_by_points.map{ |u| u['id'] }.index(user.id)
+      return "-" if i.blank?
+      i + 1
     end
   end
 
@@ -32,7 +34,7 @@ module UsersHelper
 
       fans = "LEFT OUTER JOIN users_roles ON (users_roles.user_id = users.id) LEFT OUTER JOIN roles ON (roles.id = users_roles.role_id)"
 
-      sql = "SELECT users.id, users.created_at, #{points} as total FROM users #{fans} WHERE roles.name != 'admin' AND roles.name != 'artist' OR roles.id IS NULL ORDER BY total DESC NULLS LAST, users.created_at ASC, users.id ASC"
+      sql = "SELECT users.id, users.created_at, #{points} as total FROM users #{fans} WHERE (roles.name != 'admin' AND roles.name != 'artist' AND roles.name != 'intern'  AND roles.name != 'boss') OR roles.id IS NULL ORDER BY total DESC NULLS LAST, users.created_at ASC, users.id ASC"
 
       sql = sql + " LIMIT #{limit}" if limit
       sql = sql + " OFFSET #{offset}" if offset

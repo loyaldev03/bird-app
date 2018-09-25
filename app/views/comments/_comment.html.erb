@@ -20,7 +20,9 @@
 
 <div id="comment-<%= comment.id %>-outer" class="comment-outer">
   <div id="comment-<%= comment.id %>-inner" class="comment-inner text-left" style='<%= "#{to_right} #{unsolved}" %>'>
-    <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), comment.user %>
+    <%= link_to image_tag(comment.user.avatar.thumb, class: "post-user-avatar"), 
+        comment.user,
+        class: " #{avatar_style(comment.user)}"   %>
 
     <div class="comment-body">
       <div class="feed-reply <%= bg_color %>">

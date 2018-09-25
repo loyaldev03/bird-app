@@ -9,7 +9,7 @@ end
 
 gem 'rails', '~> 5.1.5'
 gem 'puma', '~> 3.7'
-gem 'rack-timeout'
+# gem 'rack-timeout'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
@@ -18,6 +18,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
 
+gem 'haml'
 gem 'rmagick'
 
 gem 'creek'

@@ -4,7 +4,8 @@ class TrackFile < ActiveRecord::Base
 
   has_one :release, through: :track
 
-  enum format: [:wav, :aiff, :flac, :mp3_160, :mp3_320]
+  enum format: [:wav, :aiff, :flac, :mp3,
+                :ogg, :zip_aiff, :zip_wav, :zip_flac, :zip_mp3]
   enum encode_status: [:pending, :complete, :failed]
 
   def uri
@@ -105,6 +106,11 @@ class TrackFile < ActiveRecord::Base
         bitrate: 320_000,
         ffmpeg: ffmpeg_options,
         artwork: true
+      },
+      ogg: {
+        preset: 'ogg',
+        artwork: true,
+        ffmpeg: ffmpeg_options
       }
     }
   end

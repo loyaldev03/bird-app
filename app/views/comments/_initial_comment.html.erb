@@ -4,7 +4,7 @@
     <div class="row p-3">
       <div class="col-sm-1">
         <%= link_to image_tag(user.avatar.thumb.url, class: "post-user-avatar"), 
-            user, class: "" %>
+            user, class: "#{avatar_style(user)} sm-style" %>
         <div id="message-<%= comment.id %>"></div>        
       </div>
       <div class="col-sm-11">

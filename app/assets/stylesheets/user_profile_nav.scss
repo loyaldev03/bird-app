@@ -9,12 +9,22 @@
 	    font-family: 'Phosphate-Solid';
 	    
 	    li {
-			padding: 5px 5px;
+			padding: 10px 20px;
 		    border-top: 1px solid rgba(112, 112, 112, 0.43);	    
-		    padding-left: 0;
 
 		    a {
-		    	margin-left: 30px;
+				color: #7b7b7b;
+				font-family: Phosphate-solid;
+				font-size: 15px;
+				letter-spacing: 0.68px;
+		    }
+
+		    &.active {
+		    	background-color: #3ed4e0;
+
+		    	a {
+					color: #ffffff;
+		    	}
 		    }
 	    }
 	}

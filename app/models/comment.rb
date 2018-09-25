@@ -6,7 +6,7 @@ class Comment < ApplicationRecord
   has_many :comments, as: :commentable
   belongs_to :parent,  class_name: "Comment", optional: true
   has_many   :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
-  
+
   has_many :feed_images, as: :feedable, dependent: :destroy
   accepts_nested_attributes_for :feed_images
 
@@ -42,7 +42,7 @@ class Comment < ApplicationRecord
     end
 
     if parent_id.present?
-      
+
       unless user_id == parent.user_id
         notify << StreamRails.feed_manager.get_notification_feed(parent.user_id)
       end
@@ -53,8 +53,8 @@ class Comment < ApplicationRecord
   end
 
   def parents_comments
-    Comment.where(parent_id: nil, 
-                  commentable_type: "Comment", 
+    Comment.where(parent_id: nil,
+                  commentable_type: "Comment",
                   commentable_id: id)
            .order(created_at: :asc)
   end

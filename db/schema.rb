@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180917183219) do
+ActiveRecord::Schema.define(version: 20180924183121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,17 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.string "message"
   end
 
+  create_table "billing_order_histories", force: :cascade do |t|
+    t.string "order_id"
+    t.date "transaction_date"
+    t.string "product"
+    t.float "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_billing_order_histories_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer "commentable_id"
     t.string "commentable_type"
@@ -237,6 +248,35 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.index ["resource_type", "resource_id"], name: "index_meta_tags_on_resource_type_and_resource_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.boolean "sounds_option", default: true
+    t.boolean "desktop_option", default: true
+    t.boolean "global_email_notification", default: true
+    t.boolean "important_notification", default: true
+    t.boolean "newsletter", default: true
+    t.boolean "gaming_activities", default: true
+    t.boolean "new_friend_request_alert", default: true
+    t.boolean "new_friend_request_email", default: true
+    t.boolean "new_favorite_alert", default: true
+    t.boolean "new_favorite_email", default: true
+    t.boolean "someone_comments_feed_you_follow_alert", default: true
+    t.boolean "someone_comments_feed_you_follow_email", default: true
+    t.boolean "user_replies_to_your_comment_alert", default: true
+    t.boolean "user_replies_to_your_comment_email", default: true
+    t.boolean "user_follows_topic_you_created_alert", default: true
+    t.boolean "user_follows_topic_you_created_email", default: true
+    t.boolean "friend_comment_on_feed_alert", default: true
+    t.boolean "friend_comment_on_feed_email", default: true
+    t.boolean "friend_follows_feed_alert", default: true
+    t.boolean "friend_follows_feed_email", default: true
+    t.boolean "new_playlist_follower_alert", default: true
+    t.boolean "new_playlist_follower_email", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "overall_averages", force: :cascade do |t|
     t.string "rateable_type"
     t.bigint "rateable_id"
@@ -312,6 +352,7 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url_string"
     t.index ["datetime"], name: "index_release_files_on_datetime"
     t.index ["deleted_at"], name: "index_release_files_on_deleted_at"
     t.index ["release_id"], name: "index_release_files_on_release_id"
@@ -339,6 +380,8 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.integer "admin_id"
     t.integer "release_type", default: 0
     t.string "buy_uri"
+    t.string "assembly_id"
+    t.boolean "assembly_complete"
   end
 
   create_table "releases_users", id: false, force: :cascade do |t|
@@ -452,6 +495,7 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url_string"
     t.index ["datetime"], name: "index_track_files_on_datetime"
     t.index ["deleted_at"], name: "index_track_files_on_deleted_at"
     t.index ["track_id"], name: "index_track_files_on_track_id"
@@ -562,6 +606,8 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.string "address_country"
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
+    t.string "profile_url"
+    t.integer "notification_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -584,4 +630,6 @@ ActiveRecord::Schema.define(version: 20180917183219) do
     t.integer "shares_count", default: 0
   end
 
+  add_foreign_key "billing_order_histories", "users"
+  add_foreign_key "notifications", "users"
 end

@@ -20,6 +20,19 @@
     height: 60px;
     margin-left: -10px;
 
+    span.track-back-arrow-helper {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;      
+    }
+    img.track-back-arrow-icon {
+      vertical-align: middle;      
+      width: 10px;
+    }
+    .track-back-arrow-title {
+      line-height: 40px;
+    }
+
     img {
       width: 10px;
     }
