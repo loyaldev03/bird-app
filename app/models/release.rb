@@ -13,7 +13,7 @@ class Release < ApplicationRecord
   has_and_belongs_to_many :users
   belongs_to :admin, optional: true, foreign_key: "admin_id", class_name: "User"
 
-  after_create :add_to_general_feed
+  # after_create :add_to_general_feed
   after_update :change_published_date
   after_destroy :remove_from_general_feed
 

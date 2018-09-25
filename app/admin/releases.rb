@@ -148,11 +148,6 @@ ActiveAdmin.register Release do
   end
 
   member_action :encode, method: :get do
-    @s3_direct_post = S3_BUCKET.presigned_post(
-      key: "uploads/tracks/#{SecureRandom.uuid}/${filename}",
-      success_action_status: '201',
-      acl: 'public-read'
-    )
     TransloaditApi::EncodeRelease.new(resource).call
     redirect_to resource_path, notice: "Encoding Release! This may take up to 10 minutes."
   end
