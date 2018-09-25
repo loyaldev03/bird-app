@@ -39,7 +39,8 @@ class ApplicationController < ActionController::Base
       begin
         feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
         results = feed.get(limit: 20)['results']
-      rescue Faraday::Error::ConnectionFailed
+      rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
+        SLACK_GENERAL.ping "Stream::StreamApiResponseException"
         results = []
       end
 

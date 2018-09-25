@@ -9,7 +9,7 @@ class ReleasesController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed('release', @release.id)
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
