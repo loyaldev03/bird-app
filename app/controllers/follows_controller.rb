@@ -51,6 +51,33 @@ class FollowsController < ApplicationController
               classes: params[:classes] } 
   end
 
+  def reject_request
+    @user_id = params[:user_id]
+
+    follow = Follow.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+      current_user.id, @user_id).last
+
+    follow.update_attributes(show_notify: false)
+  end
+
+  def accept_request
+    @user_id = params[:user_id]
+    follow = Follow.create(user_id: current_user.id, 
+                        followable_id: @user_id,
+                        followable_type: 'User')
+    
+    follow.update_attributes(show_notify: false)
+  end
+
+  def is_seen_requests
+    Follow.where( show_notify: true, 
+                  followable_type: 'User', 
+                  followable_id: current_user.id)
+      .update_all(show_notify: false)
+
+    render json: {}, status: :ok
+  end
+
   private
     def follow_params
       params.permit(:followable_id, :followable_type)

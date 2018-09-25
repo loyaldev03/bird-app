@@ -225,6 +225,7 @@ ActiveRecord::Schema.define(version: 20180925162943) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "followable_type"
+    t.boolean "show_notify", default: true
     t.index ["followable_id"], name: "index_follows_on_followable_id"
     t.index ["user_id", "followable_id", "followable_type"], name: "index_follows_on_user_id_and_followable_id_and_followable_type", unique: true
     t.index ["user_id"], name: "index_follows_on_user_id"

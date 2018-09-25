@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed('user_aggregated', @user.id)
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
@@ -87,7 +87,7 @@ class UsersController < ApplicationController
         # feed = StreamRails.feed_manager.get_user_feed(@user.id)
       end
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
@@ -194,7 +194,7 @@ class UsersController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed('announcement_user_feed', current_user.id)
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
@@ -211,7 +211,7 @@ class UsersController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed('release_user_feed', current_user.id)
       results = feed.get()['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 

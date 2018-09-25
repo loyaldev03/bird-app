@@ -65,9 +65,9 @@ class Ability
       can :create, Post
 
       can :manage, User, id: user.id
-      can :read, User, id: user.id
+      can :read, User
 
-      can :crud, Follow
+      can :manage, Follow, id: user.id
       can :crud, Like
       can [:crud, :show, :edit, :reply_form], Comment
 
@@ -93,7 +93,7 @@ class Ability
         can :manage, User, id: user.id
         can :read, User
 
-        can :crud, Follow
+        can :manage, Follow, id: user.id
         can :crud, Like
         can [:crud, :show, :edit, :reply_form], Comment
 

@@ -6,7 +6,7 @@ class FeedsController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
       results = feed.get(mark_seen: true)
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
@@ -18,7 +18,7 @@ class FeedsController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
       results = feed.get(mark_read: mark)
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 
@@ -95,7 +95,7 @@ class FeedsController < ApplicationController
     begin
       feed = StreamRails.feed_manager.get_feed(params['feed'], params['feed_id'])
       results = feed.get(limit: 10, id_lt: params['last_item_id'])['results']
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::Error::ConnectionFailed, Stream::StreamApiResponseException
       results = []
     end
 

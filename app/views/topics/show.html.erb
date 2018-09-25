@@ -84,13 +84,15 @@
     <div class="row">
       <div class="col-sm-8">
         <div class="row topic-post-user">
-          <div class="col-sm-1">
-            <%= image_tag @topic.user.avatar.thumb.url, class: "post-user-avatar" %>
-          </div>
-          <div class="col-sm-6 topic-post-user-detail user-name">
-            <% last_name = @topic.user.last_name ? @topic.user.last_name : '' %>
-            <%= @topic.user.first_name + " " +  last_name %>
-          </div>
+          <% if @topic.user %>
+            <div class="col-sm-1">
+                <%= image_tag @topic.user.avatar.thumb.url, class: "post-user-avatar" %>
+            </div>
+            <div class="col-sm-6 topic-post-user-detail user-name">
+              <% last_name = @topic.user.last_name ? @topic.user.last_name : '' %>
+              <%= @topic.user.first_name + " " +  last_name %>
+            </div>
+          <% end %>
           <div class="col-sm-5 text-right topic-post-user-detail time-ago">
               Posted <b><%= "#{time_ago_in_words(@topic.created_at)}" %> ago </b>
           </div>          
@@ -136,7 +138,7 @@
             </div>
           </div>
           <div class="row">
-            <% @users.each do |user| %>
+            <% @users.compact.each do |user| %>
               <div class="col-sm-3">
                 <%= image_tag user.avatar.thumb.url, class: "commentator-avatar" %>
               </div>

@@ -3,7 +3,7 @@ var current_feed, current_notify;
 $(document).on('turbolinks:load', function() {
   var feedId = $('.feed-block').data('feedId');
   var feed = $('.feed-block').data('feed');
-  var userId = $('.dropdown-notify-menu').data('currentUser');
+  var userId = $('#notify-menu').data('currentUser');
 
   $.ajax({
     url: '/get_feed_token',
