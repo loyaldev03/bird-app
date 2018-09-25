@@ -74,7 +74,7 @@ class Release < ApplicationRecord
 
     uris = {}
 
-    %w[mp3_320 aiff flac wav].each do |format|
+    %w[mp3 aiff flac wav].each do |format|
       rf = release_files.find_by(format: ReleaseFile.formats[format])
       uris[format.split('_').first.upcase,] = rf.download_uri if rf
     end
