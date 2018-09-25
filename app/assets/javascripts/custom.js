@@ -187,13 +187,18 @@ var ready = function() {
     return false;
   });
 
-  $('.dropdown-notify-menu').on("show.bs.dropdown", function(event){
+  $('#notify-menu').on("show.bs.dropdown", function(event){
     $.get( "/is_seen", function() {});
     $('.nav-notify-count').remove();
   });
 
-  $('.dropdown-notify-menu').on("hide.bs.dropdown", function(event){
-    $('.dropdown-notify-menu .notify-seen').removeClass('notify-seen');
+  $('#request-friend-menu').on("show.bs.dropdown", function(event){
+    $.get( "/is_seen_requests", function() {});
+    $('.nav-request-count').remove();
+  });
+
+  $('#notify-menu').on("hide.bs.dropdown", function(event){
+    $('#notify-menu .notify-seen').removeClass('notify-seen');
   });
 
   $('.notice').click(function(){$(this).hide()});

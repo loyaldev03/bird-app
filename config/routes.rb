@@ -132,6 +132,11 @@ Rails.application.routes.draw do
   resources :posts
 
   resources :follows
+  get '/accept_request/:user_id/', to: 'follows#accept_request', as: :accept_request
+  get '/reject_request/:user_id/', to: 'follows#reject_request', as: :reject_request
+  get 'is_seen_requests', to: 'follows#is_seen_requests'
+
+
   resources :comments
   get 'comment_reply_form', to: 'comments#reply_form'
 

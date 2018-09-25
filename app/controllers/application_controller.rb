@@ -70,6 +70,12 @@ class ApplicationController < ActionController::Base
       else
         @credits = nil
       end
+
+      if current_user.has_role?(:artist)
+        @friend_requests = current_user.followers.where("follows.show_notify = true")
+      else
+        @friend_requests = current_user.friend_requests
+      end
     end
   end
 

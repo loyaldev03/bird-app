@@ -111,6 +111,10 @@ class User < ApplicationRecord
     User.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User'", self.id)
   end
 
+  def friend_requests
+    followers.where("follows.show_notify = true") - followed_users
+  end
+
   def followed object
     self.follows.where(followable_id: object.id, followable_type: object.class.to_s).first
   end
