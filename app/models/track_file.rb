@@ -16,49 +16,6 @@ class TrackFile < ActiveRecord::Base
     Rails.application.routes.url_helpers.track_download_path(track, format: format)
   end
 
-  # encode_steps(audio source step, artwork step)
-  def encode_steps(audio_source, artwork = false)
-    throw 'audio_source required' unless audio_source
-
-    steps = []
-    options = encode_audio_options[format.to_sym]
-
-    # Encode Audio
-    audio_encode_step = TRANSLOADIT.step(
-      step_name(artwork && options[:artwork]),
-      '/audio/encode',
-      { ffmpeg_stack: 'v2.2.3' }.merge(options)
-    )
-    audio_encode_step.use(audio_source)
-    steps.push(audio_encode_step)
-
-    if artwork && options[:artwork]
-      # Add artwork to audio
-      add_artwork_step = TRANSLOADIT.step(
-        step_name,
-        '/audio/artwork',
-        method: 'insert',
-        force_accept: true,
-        use: {
-          steps: [
-            {
-              'name' => step_name(true),
-              'as' => 'audio'
-            },
-            {
-              'name' => artwork.name,
-              'as' => 'image'
-            }
-          ],
-          'bundle_steps' => true
-        }
-      )
-      steps.push(add_artwork_step)
-    end
-
-    steps
-  end
-
   private
 
   def ffmpeg_metadata

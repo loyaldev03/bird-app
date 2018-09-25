@@ -11,7 +11,7 @@
     <th></th>
   </tr>
   <% tracks.each_with_index do |_track, i| %>
-    <% track = TrackPresenter.new(_track, current_user) %>
+    <% track = TrackPresenter.new(_track, current_user, @browser) %>
     <tr class='playlist-item'>
       <td style="white-space: nowrap;">
         <% if @playlist.present? || @with_index %>

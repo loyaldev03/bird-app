@@ -29,11 +29,11 @@ class Track < ApplicationRecord
     TrackInfo.create(track: self) if track_info.nil?
   end
 
-  def stream_uri(is_sample=true)
-    return sample_mp3_uri if is_sample && @browser == 'Safari'
-    return sample_ogg_uri if is_sample && @browser != 'Safari'
+  def stream_uri(is_sample=true, browser)
+    return sample_mp3_uri if is_sample && browser == 'Safari'
+    return sample_ogg_uri if is_sample && browser != 'Safari'
 
-    if @browser == 'Safari'
+    if browser == 'Safari'
       return  track_files.where(
                 format: TrackFile.formats[:mp3], 
                 encode_status: TrackFile.encode_statuses[:complete])

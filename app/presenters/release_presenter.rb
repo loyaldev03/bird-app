@@ -42,7 +42,7 @@ class ReleasePresenter < SimpleDelegator
 
   def tracks
     release.tracks.order(track_number: :asc).map do |track|
-      TrackPresenter.new(track, current_user)
+      TrackPresenter.new(track, current_user, @browser)
     end
   end
 

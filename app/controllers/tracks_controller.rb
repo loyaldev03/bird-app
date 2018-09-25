@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
   def show
     track = Track.find(params[:id])
-    track_presenter = TrackPresenter.new(track, current_user)
+    track_presenter = TrackPresenter.new(track, current_user, @browser)
 
     if track_presenter.users.any?
       artists = track_presenter.users.map(&:name).join(' feat. ')
@@ -41,7 +41,7 @@ class TracksController < ApplicationController
 
     tracks = tracks.order(track_number: :asc) if params[:source_type] == 'release'
     tracks = tracks.map do |_track|
-      track = TrackPresenter.new(_track, current_user)
+      track = TrackPresenter.new(_track, current_user, @browser)
       track_as_json(track)
     end
 
@@ -50,7 +50,7 @@ class TracksController < ApplicationController
 
   def fill_track_title
     track = Track.find(params[:track_id])
-    @track = TrackPresenter.new(track, current_user)
+    @track = TrackPresenter.new(track, current_user, @browser)
     @release = ReleasePresenter.new(track.release, current_user)
   end
 
@@ -84,11 +84,12 @@ class TracksController < ApplicationController
       current_user.decrement!(:download_credits)
     end
 
-    @format = params[:format] || :mp3_320
+    @format = params[:format] || :mp3
     tf = TrackFile.find_by(track: @track, format: TrackFile.formats[@format])
     Download.create(user: current_user, track: @track, format: Download.formats[@format])
 
-    redirect_to S3_BUCKET.object(tf.s3_key).presigned_url(:get, response_content_disposition: 'attachment')
+    redirect_to tf.url_string
+    # redirect_to S3_BUCKET.object(tf.s3_key).presigned_url(:get, response_content_disposition: 'attachment')
   end
 
   def track_listened
