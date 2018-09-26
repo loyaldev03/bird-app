@@ -70,7 +70,8 @@
 
     <% end %>
 
-    <%= render 'follows/follow_button', object: @user %>
+    <%= render partial: 'follows/follow_button', 
+                locals: { object: @user, opt: { text: ['add friend','friends'] } } %>
   </div>
 </div>
 

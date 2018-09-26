@@ -4,15 +4,16 @@ class TrackPresenter < SimpleDelegator
     __getobj__.class
   end
   
-  def initialize(track, current_user = nil)
+  def initialize(track, current_user = nil, browser)
     @track = track
     @current_user = current_user
+    @browser = browser
     __setobj__(track)
     @is_sample = !(current_user && current_user.active_subscription?)
   end
 
   def stream_uri
-    __getobj__.stream_uri(is_sample)
+    __getobj__.stream_uri(is_sample, browser)
   end
 
   def download_uris
@@ -22,5 +23,5 @@ class TrackPresenter < SimpleDelegator
 
   private
 
-  attr_accessor :current_user, :track, :is_sample
+  attr_accessor :current_user, :track, :is_sample, :browser
 end

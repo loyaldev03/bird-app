@@ -6,8 +6,8 @@ ActiveAdmin.register Release do
     :published_at, :upc_code, :compilation, :release_type, :buy_uri,
     :release_date, :artist_as_string,
     user_ids: [], tracks_attributes: [:id, :title, :release, :track_number,
-    :genre, :isrc_code, :uri_string, :sample_uri, :artist, :_destroy,
-    :artist_as_string, user_ids: [],
+    :genre, :isrc_code, :uri_string, :sample_ogg_uri, :sample_mp3_uri, 
+    :artist, :_destroy, :artist_as_string, user_ids: [],
     track_info_attributes: [:id, :label_name,  :catalog,
                             :release_artist, :track_title,
                             :track_artist, :release_name,
@@ -67,7 +67,8 @@ ActiveAdmin.register Release do
         column :title
         column :artist
         column :uri
-        column :sample_uri
+        column :sample_mp3_uri
+        column :sample_ogg_uri
         column (:downloads) { |obj| obj.downloads.count }
       end
     end
@@ -148,11 +149,6 @@ ActiveAdmin.register Release do
   end
 
   member_action :encode, method: :get do
-    @s3_direct_post = S3_BUCKET.presigned_post(
-      key: "uploads/tracks/#{SecureRandom.uuid}/${filename}",
-      success_action_status: '201',
-      acl: 'public-read'
-    )
     TransloaditApi::EncodeRelease.new(resource).call
     redirect_to resource_path, notice: "Encoding Release! This may take up to 10 minutes."
   end

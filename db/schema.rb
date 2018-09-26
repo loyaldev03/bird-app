@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180924183121) do
+ActiveRecord::Schema.define(version: 20180926091028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 20180924183121) do
     t.datetime "updated_at", null: false
     t.string "followable_type"
     t.boolean "show_notify", default: true
+    t.boolean "active", default: false
     t.index ["followable_id"], name: "index_follows_on_followable_id"
     t.index ["user_id", "followable_id", "followable_type"], name: "index_follows_on_user_id_and_followable_id_and_followable_type", unique: true
     t.index ["user_id"], name: "index_follows_on_user_id"
@@ -543,7 +544,7 @@ ActiveRecord::Schema.define(version: 20180924183121) do
     t.integer "track_number"
     t.string "genre"
     t.string "isrc_code"
-    t.string "sample_uri"
+    t.string "sample_mp3_uri"
     t.string "waveform_image_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -555,6 +556,7 @@ ActiveRecord::Schema.define(version: 20180924183121) do
     t.integer "listened_count", default: 0
     t.string "uri_string"
     t.integer "track_info_id"
+    t.string "sample_ogg_uri"
   end
 
   create_table "tracks_users", force: :cascade do |t|
@@ -608,7 +610,7 @@ ActiveRecord::Schema.define(version: 20180924183121) do
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
     t.string "profile_url"
-    t.integer "notification_id"
+    t.boolean "open_for_follow", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -12,6 +12,8 @@ class Follow < ApplicationRecord
   include StreamRails::Activity
   as_activity
 
+  default_scope { where(active: true) }
+
   def activity_notify
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
     

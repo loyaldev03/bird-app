@@ -17,6 +17,48 @@ module TransloaditApi
         steps << transloadit_client.step("import_track_#{t.id}", '/http/import', {
           url: t.uri.url
         })
+
+        steps << transloadit_client.step("waveform_#{t.id}", '/audio/waveform', {
+          use: "import_track_#{t.id}",
+          format: 'json',
+          ffmpeg_stack: 'v3.3.3',
+          result: true
+        })
+
+        steps << transloadit_client.step("sample_ogg_#{t.id}", '/audio/loop', {
+          use: "import_track_#{t.id}",
+          preset: 'ogg',
+          duration: 30.0,
+          ffmpeg_stack: 'v3.3.3',
+          result: true
+        })
+
+        steps << transloadit_client.step("sample_mp3_#{t.id}", '/audio/loop', {
+          use: "import_track_#{t.id}",
+          preset: 'mp3',
+          duration: 30.0,
+          ffmpeg_stack: 'v3.3.3',
+          result: true
+        })
+
+        steps << transloadit_client.step("store_#{t.id}_waveform", '/s3/store', {
+          key: ENV.fetch('S3_ENCODING_KEY'),
+          secret: ENV.fetch('S3_ENCODING_SECRET'),
+          bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
+          bucket_region: ENV.fetch('S3_ENCODING_REGION'),
+          use: "waveform_#{t.id}",
+          path: "/#{release.catalog}/#{t.isrc_code}/sample/${unique_prefix}/#{t.title.parameterize.underscore}"
+        })
+
+        steps << transloadit_client.step("store_#{t.id}_samples", '/s3/store', {
+          key: ENV.fetch('S3_ENCODING_KEY'),
+          secret: ENV.fetch('S3_ENCODING_SECRET'),
+          bucket: ENV.fetch('S3_ENCODING_BUCKET_NAME'),
+          bucket_region: ENV.fetch('S3_ENCODING_REGION'),
+          use: ["sample_ogg_#{t.id}", "sample_mp3_#{t.id}"],
+          path: "/#{release.catalog}/#{t.isrc_code}/sample/${unique_prefix}/#{t.title.parameterize.underscore}"
+        })
+
         steps << transloadit_client.step("ogg_#{t.id}", '/audio/encode', {
           use: "import_track_#{t.id}",
           preset: 'ogg',
@@ -123,6 +165,9 @@ module TransloaditApi
                              url_string: response['results']["zip_collection_#{target}"][0]['ssl_url'])
         end
         release.tracks.each do |t|
+          t.update(waveform_image_uri: response['results']["waveform_#{t.id}"][0]['ssl_url'],
+                   sample_mp3_uri: response['results']["sample_mp3_#{t.id}"][0]['ssl_url'],
+                   sample_ogg_uri: response['results']["sample_ogg_#{t.id}"][0]['ssl_url'])
           ['aiff', 'flac', 'mp3', 'wav'].each do |target|
             TrackFile.create(track: t,
                              format: "zip_#{target}",

@@ -22,7 +22,7 @@
           </span>
           <br>
           <span class="notify-time" style="left: 64px;">
-            <%= time_ago_in_words(user.followed(current_user).created_at) %> ago
+            <%= time_ago_in_words(user.followed(current_user, true).created_at) %> ago
           </span>  
         </div>
       <% end %>
@@ -39,7 +39,7 @@
         <div class="user-name"><%= user.name %></div>
         <div class="user-caption"><%= user.address_city %></div>
         <div class="user-caption">
-          <%= time_ago_in_words(user.followed(current_user).created_at) %> ago
+          <%= time_ago_in_words(user.followed(current_user, true).created_at) %> ago
         </div>
       </div>
 

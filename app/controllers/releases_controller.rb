@@ -108,14 +108,15 @@ class ReleasesController < ApplicationController
       current_user.decrement!(:download_credits, @release.tracks.size)
     end
 
-    @format = params[:format] || :mp3_320
+    @format = params[:format] || :mp3
     rf = ReleaseFile.find_by(release: @release, format: ReleaseFile.formats[@format])
 
     @release.tracks.each do |track|
       Download.create(user: current_user, track: track, format: Download.formats[@format], release: true)
     end
 
-    redirect_to S3_BUCKET.object(rf.s3_key).presigned_url(:get, response_content_disposition: 'attachment')
+    redirect_to rf.url_string
+    # redirect_to S3_BUCKET.object(rf.url_string).presigned_url(:get, response_content_disposition: 'attachment')
   end
 
   def get_tracks

@@ -32,13 +32,13 @@ class PlaylistsController < ApplicationController
       end
     else
       render json: { 
-          tracks: [ track_as_json( TrackPresenter.new( Track.last, nil ) ) ] 
+          tracks: [ track_as_json( TrackPresenter.new( Track.last, nil, @browser ) ) ] 
         }
       return
     end
 
     tracks = playlist.tracks.map do |_track|
-      track = TrackPresenter.new(_track, current_user)
+      track = TrackPresenter.new(_track, current_user, @browser)
       track_as_json( track )
     end
 

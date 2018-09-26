@@ -91,6 +91,8 @@ class ApplicationController < ActionController::Base
 
   protected
     def detect_player_pages
+      @browser = UserAgent.parse(request.env["HTTP_USER_AGENT"]).browser
+      
       @player_pages = false
       # @player_pages =
       #     (controller?('releases') && action?('index') && params[:player] == true ) ||

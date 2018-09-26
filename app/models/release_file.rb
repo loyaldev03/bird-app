@@ -13,24 +13,6 @@ class ReleaseFile < ActiveRecord::Base
     Rails.application.routes.url_helpers.release_download_path(release, format: format)
   end
 
-  def encode_steps(file_steps)
-    throw 'file_steps required' unless file_steps
-
-    # Encode ZIP
-    [
-      TRANSLOADIT.step(
-        step_name,
-        '/file/compress',
-        format: 'zip',
-        file_layout: 'simple',
-        use: {
-          steps: file_steps.map(&:name),
-          bundle_steps: true
-        }
-      )
-    ]
-  end
-
   private
 
   def step_name
