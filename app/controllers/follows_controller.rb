@@ -11,7 +11,7 @@ class FollowsController < ApplicationController
     follow.user_id = current_user.id
     follow.active = true
 
-    if follow.followable_type = 'User'
+    if follow.followable_type == 'User'
       follow.active = false
 
       if follow.followable.has_role?(:artist) || follow.followable.try(:open_for_follow?)
