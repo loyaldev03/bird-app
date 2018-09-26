@@ -9,6 +9,15 @@ class FollowsController < ApplicationController
   def create
     follow = Follow.new(follow_params)
     follow.user_id = current_user.id
+    follow.active = true
+
+    if follow.followable_type = 'User'
+      follow.active = false
+
+      if follow.followable.has_role?(:artist) || follow.followable.try(:open_for_follow?)
+        follow.active = true
+      end
+    end
 
     if follow.save
       news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
@@ -54,7 +63,7 @@ class FollowsController < ApplicationController
   def reject_request
     @user_id = params[:user_id]
 
-    follow = Follow.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+    follow = Follow.unscoped.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
       current_user.id, @user_id).last
 
     follow.update_attributes(show_notify: false)
@@ -62,15 +71,18 @@ class FollowsController < ApplicationController
 
   def accept_request
     @user_id = params[:user_id]
-    follow = Follow.create(user_id: current_user.id, 
-                        followable_id: @user_id,
-                        followable_type: 'User')
-    
-    follow.update_attributes(show_notify: false)
+    follow = Follow.unscoped.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+      current_user.id, @user_id).last
+    follow.update_attributes(active: true, show_notify: false)
+
+    Follow.create(user_id: current_user.id, 
+                  followable_id: @user_id,
+                  followable_type: 'User',
+                  show_notify: false)
   end
 
   def is_seen_requests
-    Follow.where( show_notify: true, 
+    Follow.unscoped.where( show_notify: true, 
                   followable_type: 'User', 
                   followable_id: current_user.id)
       .update_all(show_notify: false)

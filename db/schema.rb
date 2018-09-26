@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20180925162943) do
+ActiveRecord::Schema.define(version: 20180926091028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -227,6 +226,7 @@ ActiveRecord::Schema.define(version: 20180925162943) do
     t.datetime "updated_at", null: false
     t.string "followable_type"
     t.boolean "show_notify", default: true
+    t.boolean "active", default: false
     t.index ["followable_id"], name: "index_follows_on_followable_id"
     t.index ["user_id", "followable_id", "followable_type"], name: "index_follows_on_user_id_and_followable_id_and_followable_type", unique: true
     t.index ["user_id"], name: "index_follows_on_user_id"
@@ -564,7 +564,6 @@ ActiveRecord::Schema.define(version: 20180925162943) do
     t.bigint "track_id"
     t.index ["track_id", "user_id"], name: "index_tracks_users_on_track_id_and_user_id", unique: true
     t.index ["track_id"], name: "index_tracks_users_on_track_id"
-    t.index ["user_id", "track_id"], name: "index_tracks_users_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_tracks_users_on_user_id"
   end
 
@@ -611,7 +610,7 @@ ActiveRecord::Schema.define(version: 20180925162943) do
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
     t.string "profile_url"
-    t.integer "notification_id"
+    t.boolean "open_for_follow", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
