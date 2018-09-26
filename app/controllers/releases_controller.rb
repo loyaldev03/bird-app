@@ -5,7 +5,7 @@ class ReleasesController < ApplicationController
   def show
     release = Release.find(params[:id])
     @release = ReleasePresenter.new(release, current_user)
-
+    @shares = Share.where(shareable_type: 'Release', shareable_id: @release.id)
     begin
       feed = StreamRails.feed_manager.get_feed('release', @release.id)
       results = feed.get()['results']
