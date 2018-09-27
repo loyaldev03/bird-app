@@ -191,4 +191,13 @@
                         text: ['follow release', 'unfollow'] } } %>
     </div>
   </div>
+
+  <div style="margin-top: 13px;">
+    <%= image_tag 'icons/icon-chevron-black.svg', 
+        style: 'cursor: pointer; margin-right: 30px;', 
+        onclick: "window.history.back();" %>
+    <%= image_tag 'icons/icon-chevron-black.svg', 
+        style: 'cursor: pointer; transform: rotate(180deg);', 
+        onclick: "window.history.forward();" %>
+  </div>
 </div>
