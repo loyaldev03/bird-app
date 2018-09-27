@@ -610,6 +610,7 @@ ActiveRecord::Schema.define(version: 20180926091028) do
     t.boolean "terms_and_conditions", default: false
     t.boolean "code_of_conduct", default: false
     t.string "profile_url"
+    t.integer "notification_id"
     t.boolean "open_for_follow", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

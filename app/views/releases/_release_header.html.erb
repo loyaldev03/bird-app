@@ -75,21 +75,21 @@
           <span class="release-favs ml-1">
             <%= @release.likes.count %>
           </span>
-          <span class="release-nav-caption">Favs</span>
+          <span class="release-nav-caption"><%= @release.likes.count > 1 ? 'Favs' : 'Fav' %></span>
         </div>
 
         <div class="release-stat">
           <span class="release-comments ml-1">
             <%= @activities.count %>
           </span>
-          <span class="release-nav-caption">comment</span>
+          <span class="release-nav-caption"><%= @activities.count > 1 ? 'COMMENTS' : 'COMMENT' %></span>
         </div>
 
         <div class="release-stat">
           <span class="release-shares ml-1">
-            <%= Share.where(shareable_type: 'Release', shareable_id: @release.id).count %>
+            <%= @shares.count %>
           </span>
-          <span class="release-nav-caption">Share</span>
+          <span class="release-nav-caption"><%= @shares.count > 1 ? 'Shares' : 'Share' %></span>
         </div>
 
         <div data-object-type="release" data-object-id="<%= @release.id %>">
