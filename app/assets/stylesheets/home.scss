@@ -278,3 +278,30 @@
     }
   }
 }
+
+.info-anchors {
+  list-style-type: none;
+  padding-left: 0;
+  border-top: 1px solid rgba(112, 112, 112, 0.43);
+
+  li {
+    color: #7b7b7b;
+    font-size: 15px;
+    letter-spacing: 0.68px;
+    height: 40px;
+    border-bottom: 1px solid rgba(112, 112, 112, 0.43);
+  }
+
+  a {
+    display: block;
+    padding: 10px 30px;
+    height: 100%;
+    color: #7b7b7b !important;
+    font-weight: 600;
+
+    &:hover {
+      background-color: #3ed4e0;
+      color: white !important;
+    }
+  }
+}

@@ -104,6 +104,23 @@ button, input[type=submit], a {
   }
 }
 
+.h2-phosphate {
+  color: #3ed4e0;
+  font-family: 'Phosphate-Inline';
+  font-size: 39px;
+}
+
+ul.dashed {
+  list-style-type: none;
+}
+ul.dashed > li {
+  text-indent: -5px;
+}
+ul.dashed > li:before {
+  content: "-";
+  text-indent: -5px;
+}
+
 strong {
   font-weight: 700;
 }

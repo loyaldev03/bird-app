@@ -84,6 +84,7 @@ Rails.application.routes.draw do
   post 'share', to: 'home#share'
   get 'badge-notify', to: 'home#badge_notify'
   get 'pricing', to: 'home#pricing'
+  get 'information', to: 'home#information'
 
   resources :contacts, only: [:index, :create]
   resources :slider_images
