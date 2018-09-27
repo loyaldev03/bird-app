@@ -190,13 +190,14 @@
               </a>
               <div class="dropdown-menu dropdown-menu-right m-2">
                 <h5 >Help pages</h5>
-
-                <%= button_tag data: { toggle: 'modal', target: "#headerReportModal#{@ninja.id}" }, 
-                    class: "btn c-btn-red btn-square mb-2" do %>
-                  <%= image_tag @ninja.avatar.thumb.url, class: 'user-avatar' %>
-                  ask Marcus
-                  <% if @ninja.online? %>
-                    <span class="ninja-online">online</span>
+                <% if @ninja %>
+                  <%= button_tag data: { toggle: 'modal', target: "#headerReportModal#{@ninja.id}" }, 
+                      class: "btn c-btn-red btn-square mb-2" do %>
+                    <%= image_tag @ninja.avatar.thumb.url, class: 'user-avatar' %>
+                    ask Marcus
+                    <% if @ninja.online? %>
+                      <span class="ninja-online">online</span>
+                    <% end %>
                   <% end %>
                 <% end %>
 
