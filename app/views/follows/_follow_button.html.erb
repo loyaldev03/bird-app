@@ -26,7 +26,7 @@
 
 <% elsif current_user.followed(object, true) %>
 
-  <%= button_tag "pending", class: "#{classes} follow-form", disabled: true %>
+  <%= button_tag "request sent", class: "#{classes} follow-form", disabled: true %>
   
 <% else %>
 

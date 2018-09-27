@@ -92,6 +92,7 @@ class ApplicationController < ActionController::Base
   protected
     def detect_player_pages
       @browser = UserAgent.parse(request.env["HTTP_USER_AGENT"]).browser
+      @ninja = User.find_by_id get_setting('ninja-id') 
       
       @player_pages = false
       # @player_pages =

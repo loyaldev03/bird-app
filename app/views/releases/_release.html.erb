@@ -56,5 +56,9 @@
 
     <%= image_tag release.avatar.url, class: "item-darken-img item-image"%>
   </div>
-  <mark class="t-small"><%= time_ago_in_words( release.release_date ).upcase %> AGO</mark>
+  
+  <% time_slug = release.release_date > Time.now ? 'LATER' : 'AGO' %>
+  <mark class="t-small">
+    <%= "#{time_ago_in_words( release.release_date ).upcase} #{time_slug}" %>
+  </mark>
 </div>

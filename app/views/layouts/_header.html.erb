@@ -145,7 +145,7 @@
             <% end %>
 
             <li id="notify-menu"
-                class="nav-item dropdown dropdown-notify-menu pr-2 mr-2" 
+                class="nav-item dropdown dropdown-notify-menu pr-2 mr-1" 
                 data-current-user="<%= current_user.id %>">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= image_tag "icons/icon-notifications.svg" %>
@@ -169,7 +169,7 @@
               </div>
             </li>
 
-            <li class="nav-item dropdown dropdown-usermenu">
+            <li class="nav-item dropdown dropdown-usermenu mr-2">
               <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= image_tag "icons/icon-chevron.svg" %>
               </a>
@@ -181,6 +181,29 @@
                 <%= link_to "Edit Profile", usr_edit_profile_path, class: "modal-button btn-bg-gray" %>
                 <%= link_to "Sign Out", destroy_user_session_path, 
                     class: "modal-button btn-bg-red", method: :delete %>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown dropdown-help-menu">
+              <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= image_tag "icons/help.svg" %>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right m-2">
+                <h5 >Help pages</h5>
+
+                <%= button_tag data: { toggle: 'modal', target: "#headerReportModal#{@ninja.id}" }, 
+                    class: "btn c-btn-red btn-square mb-2" do %>
+                  <%= image_tag @ninja.avatar.thumb.url, class: 'user-avatar' %>
+                  ask Marcus
+                  <% if @ninja.online? %>
+                    <span class="ninja-online">online</span>
+                  <% end %>
+                <% end %>
+
+                <%= button_tag data: { toggle: 'modal', target: "#headerReportModal#{current_user.id}" }, 
+                    class: "btn c-btn-blue btn-square" do %>
+                  repot a problem or abuse
+                <% end %>
               </div>
             </li>
           </ul>
@@ -266,9 +289,7 @@
       </div>
     </div>
   </div>
-<% end %>
 
-<% content_for :body_area do %>
   <div class="modal modal-blured" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-wide" role="document">
       <div class="modal-content">
@@ -284,4 +305,24 @@
       </div>
     </div>
   </div>
+
+  <% [@ninja, current_user].compact.each do |report_for| %>
+    <div class="modal modal-blured" id="headerReportModal<%= report_for.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-wide" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body w-100">
+            <h5 class="modal-title">Describe the problem</h5>
+
+            <%= render 'home/report_form', object: report_for  %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>

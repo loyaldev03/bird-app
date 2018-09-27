@@ -15,7 +15,7 @@ var button = $('<%= ".follow-#{object['followable_type']}-#{object['followable_i
   },3000);
     
 <% elsif action_name == 'create' && object['active'] == false %>
-  button.replaceWith(`<%= button_tag "pending", class: "#{classes} follow-form", disabled: true %>`);
+  button.replaceWith(`<%= button_tag "request sent", class: "#{classes} follow-form", disabled: true %>`);
 <% else %>
   button.replaceWith(`
       <%= escape_javascript(

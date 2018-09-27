@@ -114,6 +114,10 @@ class HomeController < ApplicationController
           text: params[:text]
       )
 
+    report_data = report.slice(:id,:user_id,:reportable_type,:reportable_id,:text)
+    report_data[:text] = report_data[:text][0..30]
+    SLACK_REPORTS.ping report_data.to_s
+
     admins = User.with_role(:admin)
 
     admins.each do |user|
