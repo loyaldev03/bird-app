@@ -30,12 +30,13 @@ class ReleasesController < ApplicationController
   def index
     @filters = params[:filters]
     page = params[:page] || 1
+    per_page = params[:player] == 'true' ? 15 : 16
 
     @releases = Release.published
 
     @releases = set_filters @filters
 
-    @releases = releases_query( @releases, page, 16, true )
+    @releases = releases_query( @releases, page, per_page, true )
 
     @artists = User.with_role(:artist)
 
@@ -86,7 +87,10 @@ class ReleasesController < ApplicationController
   def load_more
     @releases = Release.published
     @releases = set_filters params[:filters]
-    @releases = releases_query( @releases, params[:page], 16, false )
+    @player_view = params[:player] == 'true'
+    per_page = @player_view ? 15 : 16
+
+    @releases = releases_query( @releases, params[:page], per_page, false )
   end
 
   def download

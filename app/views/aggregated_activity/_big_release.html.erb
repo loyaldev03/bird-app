@@ -34,7 +34,11 @@
       </h3>
 
       <% if release.class.to_s == "Release" %>
-        <p>Release date: <%= time_ago_in_words( release.release_date ) %> ago</p>
+        <% time_slug = release.release_date > Time.now ? 'later' : 'ago' %>
+        <p>
+          Release date: 
+          <%= "#{time_ago_in_words( release.release_date )} #{time_slug}" %>
+        </p>
       <% end %>
 
       <p class="item-text"><%= strip_tags(release.text).truncate(220) %></p>
