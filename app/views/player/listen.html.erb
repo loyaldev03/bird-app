@@ -31,19 +31,24 @@
         </div>
 
         <div class="col-md-4">
-          <div class="connect-nav-item connect-nav-releases h-100 flex-column">
+          <%= link_to releases_path(player: true, user_id: current_user.id), 
+              class: "connect-nav-item connect-nav-releases h-100 flex-column" do %>
             <%= image_tag 'icons/egg-white.svg', width: 62 %>
-            <span>dirtybird</span>
+            <span class="my-2">dirtybird</span>
             <span>releases</span>
-          </div>
+          <% end %>
         </div>
 
         <div class="col-md-4">
-          <div class="connect-nav-item connect-nav-exclusives h-100 flex-column">
+          <%= link_to releases_path(
+                filters: { release_type: 1 }, 
+                player: true,
+                user_id: current_user.id), 
+              class: "connect-nav-item connect-nav-exclusives h-100 flex-column" do %>
             <%= image_tag 'icons/bird-blue.svg', width: 69 %>
-            <span>birdfeed</span>
+            <span class="my-2">birdfeed</span>
             <span>exclusives</span>
-          </div>
+          <% end %>
         </div>
       </div>
 

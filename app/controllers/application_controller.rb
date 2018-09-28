@@ -139,6 +139,7 @@ class ApplicationController < ActionController::Base
       if current_user && 
           !current_user.terms_and_conditions && 
           !current_user.code_of_conduct &&
+          !controller?('callbacks/braintree') &&
           !current_page?(choose_profile_path) && 
           !current_page?(pricing_path) &&
           !current_page?(terms_and_conduct_path) &&

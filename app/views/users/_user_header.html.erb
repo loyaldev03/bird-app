@@ -18,6 +18,8 @@
   
   <div class="user-bgrd">
     <% case avatar_style(@user) %>
+    <% when 'ninja-style' %>
+      <%= image_tag 'headers/ninja-bacon.jpg' %>
     <% when 'admin-style' %>
       <%= image_tag 'headers/admin-admin.jpg' %>
     <% when 'boss-style' %>

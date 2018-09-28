@@ -15,6 +15,7 @@ module ApplicationHelper
   end
 
   def avatar_style user
+    return 'ninja-style' if user == @ninja
     return 'admin-style' if user.has_role?(:admin)
     return 'intern-style' if user.has_role?(:intern)
     return 'boss-style' if user.has_role?(:boss)
