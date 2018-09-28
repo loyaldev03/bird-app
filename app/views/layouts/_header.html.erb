@@ -16,19 +16,19 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
         <ul class="navbar-nav nav-menu">
-          <% if current_user && current_user.has_role?(:admin) %>
+<!--           <% if current_user && current_user.has_role?(:admin) %>
             <li class="nav-item <%= 'active' if current_page?(birdfeed_path) %>">
               <%= link_to birdfeed_path, class: "nav-link" do %>
                 Birdfeed
                 <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(birdfeed_path) %>
               <% end %>
             </li>
-          <% end %>
+          <% end %> -->
 
           <% if current_user %>
             <li class="nav-item <%= 'active' if current_page?(user_path(current_user)) || current_page?(artist_path(current_user)) %>">
               <a class="nav-link" href="/">
-                BirdCall
+                Home
               </a>
             </li>
 
