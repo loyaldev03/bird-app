@@ -25,7 +25,7 @@ var ready = function() {
       var radio_btn = $("input[data-type='"+type+"'][data-period='"+period+"']");
       radio_btn.prop('checked',true);
       $('.selected-period').text(period);
-      $('.signup-billing-cost').text(radio_btn.data('cost'));
+      $('.signup-billing-cost').text('$' + radio_btn.data('cost'));
       $('.signup-billing-time').text(thirtyDaysFromNow());
       $('.signup-payed').show();
       $('.signup-free').hide();
@@ -331,6 +331,10 @@ var ready = function() {
      hidden.show(100);
     });
   });
+
+  $('form.new-content-form').on('submit', function() {
+    $('#addcommentModal').modal('hide');
+  });    
 };
 
 var loadMoreFeed = function(){

@@ -10,6 +10,8 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.find(params[:id])
+    @followers = Follow.where(followable_id: Topic.last)
+    @shares = Share.where(shareable_type: 'Topic', shareable_id: @topic.id)
     @users = []
     @topic.posts.each do |post|
       if !@users.include? post.user

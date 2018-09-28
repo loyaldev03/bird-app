@@ -24,6 +24,10 @@
   <%= render partial: 'follows/unfollow', 
       locals: { object: object, text: text, classes: classes } %>
 
+<% elsif current_user.followed(object, true) %>
+
+  <%= button_tag "request sent", class: "#{classes} follow-form", disabled: true %>
+  
 <% else %>
 
   <%= render partial: 'follows/follow', 

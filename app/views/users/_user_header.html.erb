@@ -18,6 +18,8 @@
   
   <div class="user-bgrd">
     <% case avatar_style(@user) %>
+    <% when 'ninja-style' %>
+      <%= image_tag 'headers/ninja-bacon.jpg' %>
     <% when 'admin-style' %>
       <%= image_tag 'headers/admin-admin.jpg' %>
     <% when 'boss-style' %>
@@ -70,7 +72,8 @@
 
     <% end %>
 
-    <%= render 'follows/follow_button', object: @user %>
+    <%= render partial: 'follows/follow_button', 
+                locals: { object: @user, opt: { text: ['add friend','friends'] } } %>
   </div>
 </div>
 
@@ -87,6 +90,15 @@
     <div class="col-lg-9 px-0">
       <div class="user-header-title"><%= content_for :user_header_title %></div>
     </div>
+  </div>
+  
+  <div style="margin-top: 13px;">
+    <%= image_tag 'icons/icon-chevron-black.svg', 
+        style: 'cursor: pointer; margin-right: 30px;', 
+        onclick: "window.history.back();" %>
+    <%= image_tag 'icons/icon-chevron-black.svg', 
+        style: 'cursor: pointer; transform: rotate(180deg);', 
+        onclick: "window.history.forward();" %>
   </div>
 </div>
 

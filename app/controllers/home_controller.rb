@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   include StreamRails::Activity
 
   before_action :authenticate_user!, 
-      except: [:index, :about, :birdfeed, :share, :report, :pricing]
-  before_action :set_notifications, only: [:about, :birdfeed, :pricing]
+      except: [:index, :about, :birdfeed, :share, :report, :pricing, :information]
+  before_action :set_notifications, only: [:about, :birdfeed, :pricing, :information]
 
   def index
     @slider = SliderImage.all.ordered
@@ -38,6 +38,9 @@ class HomeController < ApplicationController
   end
 
   def about
+  end
+
+  def information
   end
 
   def birdfeed
@@ -113,6 +116,10 @@ class HomeController < ApplicationController
           ip_address: request.remote_ip,
           text: params[:text]
       )
+
+    report_data = report.slice(:id,:user_id,:reportable_type,:reportable_id,:text)
+    report_data[:text] = report_data[:text][0..30]
+    SLACK_REPORTS.ping report_data.to_s
 
     admins = User.with_role(:admin)
 

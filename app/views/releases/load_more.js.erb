@@ -1,7 +1,11 @@
 var releases = [];
 
 <% @releases.each do |release| %>
-  releases.push('<div class="col-xl-3 col-lg-4 col-md-6 mb-5"><%= escape_javascript(render release) %></div>');
+  <% if @player_view %>
+    releases.push('<div class="col-lg-4 col-md-6 mb-5"><%= escape_javascript(render release) %></div>');
+  <% else %>
+    releases.push('<div class="col-xl-3 col-lg-4 col-md-6 mb-5 text-center"><%= escape_javascript(render release) %></div>');
+  <% end %>
 <% end %>
 
 $(".releases-list").append(releases);

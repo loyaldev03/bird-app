@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-10 topics-link">
       <%= link_to chirp_topic_path( topic.category, topic ), class: 'row row-eq-height' do %>
-        <div class="col-sm-2 topic-comments">
+        <div class="col-sm-2 topic-comments <%= topic.locked ? '' : 'b-r'%>">
           <div class="row">
             <% if topic.locked %>
               <%= image_tag "icons/icon-lock.png", class: 'icon-locked' %>

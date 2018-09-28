@@ -20,6 +20,19 @@
     height: 60px;
     margin-left: -10px;
 
+    span.track-back-arrow-helper {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;      
+    }
+    img.track-back-arrow-icon {
+      vertical-align: middle;      
+      width: 10px;
+    }
+    .track-back-arrow-title {
+      line-height: 40px;
+    }
+
     img {
       width: 10px;
     }
@@ -81,7 +94,7 @@
           left: -30px;
           border: 2px solid #3ed4e0;
           font-family: Phosphate-Solid;
-          font-size: 26px;
+          font-size: 21px;
           height: 50px;
         }
       }
@@ -92,6 +105,7 @@
 
     .chirp-category-btn {
       width: 300px;
+      text-align: left;
     }
   }
 }

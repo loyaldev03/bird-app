@@ -5,7 +5,7 @@ class ReleasesController < ApplicationController
   def show
     release = Release.find(params[:id])
     @release = ReleasePresenter.new(release, current_user)
-
+    @shares = Share.where(shareable_type: 'Release', shareable_id: @release.id)
     begin
       feed = StreamRails.feed_manager.get_feed('release', @release.id)
       results = feed.get()['results']
@@ -30,12 +30,13 @@ class ReleasesController < ApplicationController
   def index
     @filters = params[:filters]
     page = params[:page] || 1
+    per_page = params[:player] == 'true' ? 15 : 16
 
     @releases = Release.published
 
     @releases = set_filters @filters
 
-    @releases = releases_query( @releases, page, 16, true )
+    @releases = releases_query( @releases, page, per_page, true )
 
     @artists = User.with_role(:artist)
 
@@ -86,7 +87,10 @@ class ReleasesController < ApplicationController
   def load_more
     @releases = Release.published
     @releases = set_filters params[:filters]
-    @releases = releases_query( @releases, params[:page], 16, false )
+    @player_view = params[:player] == 'true'
+    per_page = @player_view ? 15 : 16
+
+    @releases = releases_query( @releases, params[:page], per_page, false )
   end
 
   def download
@@ -108,14 +112,15 @@ class ReleasesController < ApplicationController
       current_user.decrement!(:download_credits, @release.tracks.size)
     end
 
-    @format = params[:format] || :mp3_320
+    @format = params[:format] || :mp3
     rf = ReleaseFile.find_by(release: @release, format: ReleaseFile.formats[@format])
 
     @release.tracks.each do |track|
       Download.create(user: current_user, track: track, format: Download.formats[@format], release: true)
     end
 
-    redirect_to S3_BUCKET.object(rf.s3_key).presigned_url(:get, response_content_disposition: 'attachment')
+    redirect_to rf.url_string
+    # redirect_to S3_BUCKET.object(rf.url_string).presigned_url(:get, response_content_disposition: 'attachment')
   end
 
   def get_tracks

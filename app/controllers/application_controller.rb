@@ -92,6 +92,7 @@ class ApplicationController < ActionController::Base
   protected
     def detect_player_pages
       @browser = UserAgent.parse(request.env["HTTP_USER_AGENT"]).browser
+      @ninja = User.find_by_id get_setting('ninja-id') 
       
       @player_pages = false
       # @player_pages =
@@ -138,6 +139,7 @@ class ApplicationController < ActionController::Base
       if current_user && 
           !current_user.terms_and_conditions && 
           !current_user.code_of_conduct &&
+          !controller?('callbacks/braintree') &&
           !current_page?(choose_profile_path) && 
           !current_page?(pricing_path) &&
           !current_page?(terms_and_conduct_path) &&

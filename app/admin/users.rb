@@ -3,7 +3,7 @@ ActiveAdmin.register User do
       :avatar_cache, :shipping_address, :birthdate, :gender, :t_shirt_size, 
       :subscription_type, :first_name, :last_name, #:subscription,
       :address_zip, :address_country, :address_state, :address_city,
-      :address_street, :address_street_number, :address_quarter,
+      :address_street, :address_street_number, :address_quarter, :open_for_follow,
       track_ids: [], role_ids: [], release_ids: [],
       artist_info_attributes: [:id, :image, :bio_short, :bio_long, :facebook, :twitter, 
       :instagram, :video, :genre, :user, :_destroy],
@@ -66,7 +66,7 @@ ActiveAdmin.register User do
         f.input :subscription_type
         f.input :braintree_subscription_expires_at, as: :date_time_picker
       end
-      
+      f.input :open_for_follow
       f.input :address_zip
       f.input :address_country, as: :string
       f.input :address_state

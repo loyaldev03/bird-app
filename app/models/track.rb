@@ -29,24 +29,30 @@ class Track < ApplicationRecord
     TrackInfo.create(track: self) if track_info.nil?
   end
 
-  def stream_uri(is_sample=true)
-    return sample_mp3_uri if is_sample && @browser == 'Safari'
-    return sample_ogg_uri if is_sample && @browser != 'Safari'
+  def stream_uri(is_sample=true, browser)
+    return sample_mp3_uri if is_sample && browser == 'Safari'
+    return sample_ogg_uri if is_sample && browser != 'Safari'
 
-
-    return  track_files.where(
-              format: TrackFile.formats[:mp3], 
-              encode_status: TrackFile.encode_statuses[:complete])
-            .last
-            .url_string
-
+    if browser == 'Safari'
+      return  track_files.where(
+                format: TrackFile.formats[:mp3], 
+                encode_status: TrackFile.encode_statuses[:complete])
+              .last
+              .url_string
+    else
+      return  track_files.where(
+                format: TrackFile.formats[:ogg], 
+                encode_status: TrackFile.encode_statuses[:complete])
+              .last
+              .url_string
+    end
   end
 
   def download_uris
     uris = track_files.empty? ? { 'WAV' => uri.url } : {}
     %w[mp3 aiff flac wav].each do |format|
       tf = track_files.find_by(format: TrackFile.formats[format])
-      uris[format.split('_').first.upcase,] = tf.download_uri if tf
+      uris[format.upcase] = tf.download_uri if tf
     end
 
     uris

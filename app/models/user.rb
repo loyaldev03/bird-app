@@ -112,11 +112,21 @@ class User < ApplicationRecord
   end
 
   def friend_requests
-    followers.where("follows.show_notify = true") - followed_users
+    Follow.unscoped do
+      followers.where("follows.show_notify = true") - followed_users
+    end
   end
 
-  def followed object
-    self.follows.where(followable_id: object.id, followable_type: object.class.to_s).first
+  def followed object, unscoped=false
+    if unscoped
+      Follow.unscoped do
+        self.follows.where( followable_id: object.id, 
+                                followable_type: object.class.to_s).first
+      end
+    else
+      self.follows.where( followable_id: object.id, 
+                                followable_type: object.class.to_s).first
+    end
   end
 
   def posts_from_followed_topics
