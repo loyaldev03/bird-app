@@ -15,33 +15,33 @@
     <tr class='playlist-item'>
       <td style="white-space: nowrap;">
         <% if @playlist.present? || @with_index %>
-          <%= link_to "", "#", 
+          <%= link_to "", "#",
               class: "play-#{source_type}-#{source_id}-index-#{i} playlist-play-track",
-              data: { 
-                source_type: source_type, 
-                source_id: source_id, 
+              data: {
+                source_type: source_type,
+                source_id: source_id,
                 track_index: i,
                 virtual: true
               },
               remote: true %>
         <% else %>
-          <%= link_to "", "#", 
+          <%= link_to "", "#",
               class: "play-#{source_type}-#{source_id}-track-#{track.id} playlist-play-track",
-              data: { 
-                source_type: source_type, 
-                source_id: source_id, 
+              data: {
+                source_type: source_type,
+                source_id: source_id,
                 track_index: i,
                 track_id: track.id,
                 virtual: true
               },
               remote: true %>
         <% end %>
-        
+
         <button class="playlist-add-track" data-track-id="<%= track.id %>">+</button>
       </td>
       <td>
         <%= link_to track.release, class: "release-link" do %>
-          <%= image_tag track.release.avatar.url %>
+          <%= image_tag track.release.avatar.url(:large) %>
         <% end %>
         <%= track.title %></td>
       <% if track.users.any? %>
@@ -64,12 +64,12 @@
       <td>
         <%= track.average("main").try(:avg).try(:round,1) %>
         <% unless current_user && current_user.has_role?(:artist) %>
-          <%= rating_for track, "main", 
-              star: 4, 
-              cancel: false, 
-              disable_after_rate: false, 
-              star_on: image_path('rate/egg/star-on.png'), 
-              star_half: image_path('rate/egg/star-on.png'), 
+          <%= rating_for track, "main",
+              star: 4,
+              cancel: false,
+              disable_after_rate: false,
+              star_on: image_path('rate/egg/star-on.png'),
+              star_half: image_path('rate/egg/star-on.png'),
               star_off: image_path('rate/egg/star-off.png') %>
           &nbsp;
         <% end %>

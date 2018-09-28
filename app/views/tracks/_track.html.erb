@@ -1,5 +1,5 @@
 <div class="track-item w-md-50">
-  <%= link_to image_tag(track.release.avatar.url), track.release, class: "item-avatar" %>
+  <%= link_to image_tag(track.release.avatar.url(:large)), track.release, class: "item-avatar" %>
   <h3>
     <%= track.track_number %>.
     <%= track.title.truncate(70).upcase %>
@@ -23,11 +23,11 @@
     <div class="jp-current-time-track" role="timer" aria-label="time">0:00</div>
     <button class="jp-previous" role="button" tabindex="0"></button>
 
-    <%= link_to "", "#", 
+    <%= link_to "", "#",
         class: "play-release-#{track.release.id}-track-#{track.id} jp-play",
-        data: { 
-          source_type: 'release', 
-          source_id: track.release.id, 
+        data: {
+          source_type: 'release',
+          source_id: track.release.id,
           track_index: track_counter,
           track_id: track.id,
           virtual: true
@@ -40,12 +40,12 @@
       <div class="individual-track-star-wrapper" data-track-id="<%=track.id%>">
         <div class="individual-track-star">
           <%= track.average('main').try(:avg).try(:round,1) %>
-          <%= rating_for track, 'main', 
-              star: 4, 
+          <%= rating_for track, 'main',
+              star: 4,
               cancel: false,
               disable_after_rate: true,
-              star_on: image_path('rate/egg/star-on.png'), 
-              star_half: image_path('rate/egg/star-on.png'), 
+              star_on: image_path('rate/egg/star-on.png'),
+              star_half: image_path('rate/egg/star-on.png'),
               star_off: image_path('rate/egg/star-off.png')
             %>
         </div>
@@ -56,11 +56,11 @@
           <% else %>
             <div class="user-rate-mark rate-track-btn">
               <img src="/images/rate/check-circle.png" /><%= user_rate %>
-            </div>          
+            </div>
           <% end %>
         </div>
         <% content_for :body_area do %>
-          <%= render partial: "tracks/rate_track_modal", locals: {track: track, release: track.release, image: track.release.avatar.url, current_user: current_user} %>    
+          <%= render partial: "tracks/rate_track_modal", locals: {track: track, release: track.release, image: track.release.avatar.url(:large), current_user: current_user} %>
         <% end %>
       </div>
     <% end %>

@@ -13,12 +13,12 @@
   <div class="d-flex">
     <% if release.class.to_s == "Announcement" && release.url.present? %>
       <%= link_to release.url do %>
-        <%= image_tag(release.avatar.url, class: 'feed-new-avatar', 
+        <%= image_tag(release.avatar.url(:large), class: 'feed-new-avatar',
             style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
       <% end %>
     <% else %>
       <%= link_to release do %>
-        <%= image_tag(release.avatar.url, class: 'feed-new-avatar', 
+        <%= image_tag(release.avatar.url(:large), class: 'feed-new-avatar',
             style: "width: #{avatar_size}px; height: #{avatar_size}px") %>
       <% end %>
     <% end %>
@@ -40,8 +40,8 @@
       <p class="item-text"><%= strip_tags(release.text).truncate(220) %></p>
 
       <% if release.class.to_s == "Release" %>
-      
-        <%= link_to "LISTEN", "#", 
+
+        <%= link_to "LISTEN", "#",
             id: "play-release-#{release.id}",
             class: "btn c-btn-white c-btn-sm release-listen", remote: true %>
 

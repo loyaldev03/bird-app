@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180925162943) do
+ActiveRecord::Schema.define(version: 20180926154004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -531,7 +531,7 @@ ActiveRecord::Schema.define(version: 20180925162943) do
     t.boolean "celebratory_party_vibe"
     t.boolean "inspiring_uplifting"
     t.boolean "chill_mellow"
-    t.string "lyrics"
+    t.text "lyrics"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

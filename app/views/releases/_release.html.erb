@@ -5,23 +5,23 @@
         <h3><%= link_to release.title.upcase, release %></h3>
         <p>By <%= release.artists(1) %></p>
         <%= link_to '', "#",
-                    data: { 
-                      source_type: 'release', 
+                    data: {
+                      source_type: 'release',
                       source_id: release.id,
                       virtual: true
-                    }, 
+                    },
                     class: "play-release-#{release.id} playlist-play-playlist" %>
-        
+
         <p class="item-tracks">
           <%= pluralize(release.tracks.count, "track") %>
         </p>
 
-        <%= rating_for release, 'main', 
-            star: 4, 
+        <%= rating_for release, 'main',
+            star: 4,
             cancel: false,
             readonly: true,
-            star_on: image_path('rate/egg/star-on.png'), 
-            star_half: image_path('rate/egg/star-on.png'), 
+            star_on: image_path('rate/egg/star-on.png'),
+            star_half: image_path('rate/egg/star-on.png'),
             star_off: image_path('rate/egg/star-off.png')
           %>
 
@@ -43,7 +43,7 @@
         <%= link_to "Details", release, class: "c-link" %>
       </div>
     </div>
-    <%= image_tag release.avatar.url, class: "item-original-image item-image" %>
+    <%= image_tag release.avatar.url(:large), class: "item-original-image item-image" %>
 
     <% case release.release_type %>
     <% when "exclusive" %>
@@ -54,7 +54,7 @@
       <%= image_tag 'birdhouse.png', class: "item-release-type item-release-type-birdhouse item-original-image" %>
     <% end %>
 
-    <%= image_tag release.avatar.url, class: "item-darken-img item-image"%>
+    <%= image_tag release.avatar.url(:large), class: "item-darken-img item-image"%>
   </div>
   <mark class="t-small"><%= time_ago_in_words( release.release_date ).upcase %> AGO</mark>
 </div>

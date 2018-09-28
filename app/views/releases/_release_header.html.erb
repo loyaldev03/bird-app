@@ -1,11 +1,11 @@
 <div class="release-present">
-  <%= image_tag(@release.avatar.url, class: "release-avatar") %>
+  <%= image_tag(@release.avatar.url(:large), class: "release-avatar") %>
   <%= link_to '', "#",
-              data: { 
-                source_type: 'release', 
+              data: {
+                source_type: 'release',
                 source_id: @release.id,
                 virtual: true
-              }, 
+              },
               class: "play-release-#{@release.id} playlist-play-playlist release-avatar release-play",
               remote: true %>
 
@@ -17,21 +17,21 @@
         <% if @release.exclusive? %>
           <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
           <span class="text-big ml-2">exclusive</span>
-        <% elsif @release.d_select? %> 
+        <% elsif @release.d_select? %>
           <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
           <span class="text-big ml-2">select</span>
-        <% elsif @release.birdhouse? %> 
+        <% elsif @release.birdhouse? %>
           <%= image_tag 'icons/bird-blue.svg', style: 'width: 35px;' %>
           <span class="text-big ml-2">birdhouse</span>
-        <% end %> 
+        <% end %>
       </div>
 
       <%= link_to "#",
-                  data: { 
-                    source_type: 'release', 
+                  data: {
+                    source_type: 'release',
                     source_id: @release.id,
                     virtual: true
-                  }, 
+                  },
                   class: "play-release-#{@release.id} release-play-nav mr-3",
                   remote: true do %>
         <%= image_tag 'icons/play-orange-sm.svg' %>
@@ -40,12 +40,12 @@
 
       <div class="release-rate mr-3" data-release-id="<%= @release.id %>">
         <%= @release.average('main').try(:avg).try(:round,1) %>
-        <%= rating_for @release, 'main', 
-            star: 4, 
-            readonly: true, 
+        <%= rating_for @release, 'main',
+            star: 4,
+            readonly: true,
             cancel: false,
-            star_on: image_path('rate/egg-yellow/egg-on.png'), 
-            star_half: image_path('rate/egg-yellow/egg-on.png'), 
+            star_on: image_path('rate/egg-yellow/egg-on.png'),
+            star_half: image_path('rate/egg-yellow/egg-on.png'),
             star_off: image_path('rate/egg-yellow/egg-off.png')
           %>
         <div class="release-nav-caption mt-2">release rating</div>
@@ -62,7 +62,7 @@
           <span class="release-nav-caption mt-1">Download</span>
         </button>
 
-        <div class="collapse collapse-formats release-<%= @release.id %>-download" 
+        <div class="collapse collapse-formats release-<%= @release.id %>-download"
               style="text-align: left; left: 50%">
           <% @release.download_uris.each do |format, uri| %>
             <a href="<%= uri %>" class="btn btn-danger"><%= format %></a>
@@ -93,7 +93,7 @@
         </div>
 
         <div data-object-type="release" data-object-id="<%= @release.id %>">
-          <%= social_share_button_tag(strip_tags(@release.title).gsub("\'",''), desc: strip_tags(@release.text).gsub("\'",''), image: @release.avatar.url) %>
+          <%= social_share_button_tag(strip_tags(@release.title).gsub("\'",''), desc: strip_tags(@release.text).gsub("\'",''), image: @release.avatar.url(:large)) %>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@
                 <span style="display: none;">Hide</span>
                 <span>
                   & <%= @release.users.count - 8 %>
-                  other 
+                  other
                   <%= "artist".pluralize(@release.users.count - 8) %>
                 </span>
               </div>
@@ -166,13 +166,13 @@
     <div class="col-lg-3 px-0 c-btn-group two-btns">
       <% release = params[:player].blank? %>
       <% classes = ["btn c-btn-blue btn-square", "btn c-btn-black btn-square btn-disabled"] %>
-      <%= link_to "Release Feed", @release, 
+      <%= link_to "Release Feed", @release,
           class: release ? classes[1] : classes[0] %><!--
-     --><%= link_to "All Tracks", 
+     --><%= link_to "All Tracks",
           release_path(
-            id: @release.id, 
+            id: @release.id,
             user_id: current_user.try(:id),
-            player: true), 
+            player: true),
           class: release ? classes[0] : classes[1] %>
     </div>
 
@@ -184,9 +184,9 @@
       <button class="btn c-btn-blue btn-square" type="button" data-toggle="modal" data-target="#addcommentModal">
         POST A COMMENT
       </button>
-      <%= render partial: 'follows/follow_button', 
-          locals: { object: @release, 
-                    opt: { 
+      <%= render partial: 'follows/follow_button',
+          locals: { object: @release,
+                    opt: {
                         classes: "btn c-btn-red btn-square",
                         text: ['follow release', 'unfollow'] } } %>
     </div>

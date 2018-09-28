@@ -1,6 +1,6 @@
-var release_menu; 
+var release_menu;
 
-<% if current_user && (current_user.cahced_active_subscription? || 
+<% if current_user && (current_user.cahced_active_subscription? ||
       current_user.has_role?(:admin) ||
       current_user.has_role?(:artist) ) %>
   release_menu = `<button id="jp-release-playlist-btn" style="display: none;">
@@ -16,7 +16,7 @@ var jp_title = `
       <%= "#{@track.title} - #{@track.artists}" %>
     <% end %>
   </div>`;
-var release_img = '<%= link_to image_tag(@release.avatar.url, style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>&nbsp;';
+var release_img = '<%= link_to image_tag(@release.avatar.url(:thumb), style: "width: 28px; height: 28px; border-radius: 2px; margin: 0 5px 0 10px;"), @release %>&nbsp;';
 var add_release = '<button class="playlist-add-source" data-source-type="release" data-source-id="<%= @release.id %>">+</button>';
 var like = '<%= escape_javascript( render "likes/like_button", object: @track )%>';
   var user_rate_track = '<div class="rate-track-btn">Rate</div>';
@@ -25,12 +25,12 @@ var rate_track = user_rate_track;
 <% if get_user_rate_for_track(@track) != 0 %>
   rate_track = user_rate_mark;
 <% end %>
-var rate = '<div class="nav-rate-track-wrapper" data-track-id="<%=@track.id%>">'  + 
-  '<div class="nav-track-star">' + 
-    '<%= @track.average("main").try(:avg).try(:round,1) %><%= escape_javascript( rating_for( @track, "main", star: 4, cancel: false, disable_after_rate: true, star_on: image_path("rate/egg/star-on.png"), star_half: image_path("rate/egg/star-on.png"), star_off: image_path("rate/egg/star-off.png"))) %>' + 
+var rate = '<div class="nav-rate-track-wrapper" data-track-id="<%=@track.id%>">'  +
+  '<div class="nav-track-star">' +
+    '<%= @track.average("main").try(:avg).try(:round,1) %><%= escape_javascript( rating_for( @track, "main", star: 4, cancel: false, disable_after_rate: true, star_on: image_path("rate/egg/star-on.png"), star_half: image_path("rate/egg/star-on.png"), star_off: image_path("rate/egg/star-off.png"))) %>' +
   '</div>' +
-  '<div class="user-rate-wrapper"  data-track-id="<%=@track.id%>">' + rate_track + '</div>' +  
-'</div>'; 
+  '<div class="user-rate-wrapper"  data-track-id="<%=@track.id%>">' + rate_track + '</div>' +
+'</div>';
 var rate_track_modal = '<%= escape_javascript( render "tracks/rate_track_modal", track: @track, release: @release, image: @release.avatar.url, current_user: current_user)%>';
 var download = "<%= escape_javascript( render partial: 'tracks/download', locals: { track: @track, icon: 'white' } )%>";
 var share = "<%= escape_javascript( render partial: 'layouts/share', locals: { object: @track, icon: 'white' } )%>";
@@ -88,11 +88,11 @@ var list = `
           <span>+</span>
         </button>
 
-        <%= link_to "#{'%02i' % track.track_number} #{track.title}", "#", 
+        <%= link_to "#{'%02i' % track.track_number} #{track.title}", "#",
             class: "play-release-#{@release.id}-track-#{track.id}",
-            data: { 
-              source_type: 'release', 
-              source_id: @release.id, 
+            data: {
+              source_type: 'release',
+              source_id: @release.id,
               track_index: @release.tracks.map(&:id).index(track.id),
               track_id: track.id,
               virtual: true
