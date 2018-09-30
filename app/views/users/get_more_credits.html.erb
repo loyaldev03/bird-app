@@ -43,20 +43,20 @@
 
   <% braintree_subscription = current_user.braintree_subscription %>
 
-  <p> Subscription Type:
-    <% if current_user.subscription_type == 'member' %>
-      <% if braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
+<!--   <p> Subscription Type:
+    <%# if current_user.subscription_type == 'member' %>
+      <%# if braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_ID'] ||
             braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_INSIDER_ID'] ||
             braintree_subscription.plan_id == ENV['BRAINTREE_MONTHLY_PLAN_VIB_ID'] %>
         Monthly
-      <% elsif braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
+      <%# elsif braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_ID'] ||
                braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_INSIDER_ID'] ||
                braintree_subscription.plan_id == ENV['BRAINTREE_YEARLY_PLAN_VIB_ID'] %>
         Annual
-      <% end %>
-    <% end %>
-    <%= current_user.subscription_type.titleize %>
-  </p>
+      <%# end %>
+    <%# end %>
+    <%#= current_user.subscription_type.titleize %>
+  </p> -->
 
   <p> Next Bill Date:
     <%= braintree_subscription.next_billing_date %>

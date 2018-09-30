@@ -1,7 +1,7 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :avatar, 
       :avatar_cache, :shipping_address, :birthdate, :gender, :t_shirt_size, 
-      :subscription_type, :first_name, :last_name, #:subscription,
+      :first_name, :last_name,
       :address_zip, :address_country, :address_state, :address_city,
       :address_street, :address_street_number, :address_quarter, :open_for_follow,
       track_ids: [], role_ids: [], release_ids: [],
@@ -63,7 +63,6 @@ ActiveAdmin.register User do
 
       if current_user.has_role?(:admin)
         f.input :roles, as: :check_boxes
-        f.input :subscription_type
         f.input :braintree_subscription_expires_at, as: :date_time_picker
       end
       f.input :open_for_follow

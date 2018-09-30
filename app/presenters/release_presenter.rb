@@ -12,14 +12,6 @@ class ReleasePresenter < SimpleDelegator
     __setobj__(release)
   end
 
-  def likes_release?
-    current_user && current_user.likes?(release)
-  end
-
-  def admin?
-    current_user && current_user.admin?
-  end
-
   def meta_tags
     meta_tag = MetaTag.where(resource_type: 'release', resource_id: release.id).first
 

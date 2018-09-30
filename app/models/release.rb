@@ -43,7 +43,8 @@ class Release < ApplicationRecord
 
   def user_allowed?(user)
     return false unless user
-    return true if user.vip?
+    return true if user.has_role?(:admin)
+    return true if user.has_role?(:homey)
     return false unless published?
     return false unless user.subscription_started_at
     return false if user.subscription_length == 'monthly_insider'

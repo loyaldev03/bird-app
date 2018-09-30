@@ -24,7 +24,6 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true
 
-  enum subscription_type: [:member, :vip, :admin]
   enum subscription_length: [:unknown, :monthly_old, :yearly_old, 
       :monthly_insider, :monthly_vib, :yearly_insider, :yearly_vib]
 
@@ -91,15 +90,6 @@ class User < ApplicationRecord
     rescue Redis::CannotConnectError
       return false
     end
-  end
-
-  def vip?
-    # Admins are also VIPs
-    subscription_type == 'vip' || subscription_type == 'admin'
-  end
-
-  def admin?
-    subscription_type == 'admin'
   end
 
   def releases_tracks
@@ -458,7 +448,7 @@ class User < ApplicationRecord
 
   def active_subscription?
     # VIPs and Admins are always active
-    return true if subscription_type == 'vip' || subscription_type == 'admin'
+    return true if has_role?(:admin) || has_role?(:homey)
 
     # Quick fail if subscription never started
     return false unless subscription_started_at
@@ -489,7 +479,7 @@ class User < ApplicationRecord
   end
 
   def cahced_active_subscription?
-    return true if subscription_type == 'vip' || subscription_type == 'admin'
+    return true if has_role?(:admin) || has_role?(:homey)
     true if braintree_subscription_expires_at && Date.today <= braintree_subscription_expires_at
   end
 

@@ -36,6 +36,26 @@ class Ability
     if user.has_role? :admin 
       can :manage, :all
 
+    elsif user.has_role? :homey
+      cannot :manage, ActiveAdmin::Page
+
+      can :read, Announcement
+
+      can :manage, Topic, user_id: user.id
+      can :read, Topic
+      can :create, Topic
+
+      can :manage, Post, user_id: user.id
+      can :create, Post
+
+      can :manage, User, id: user.id
+      can :read, User
+
+      can :manage, Follow, user_id: user.id
+      can :crud, Like
+      can [:crud, :show, :edit, :reply_form], Comment
+
+      can :manage, Playlist, user_id: user.id
     elsif user.has_role? :artist
       # can :manage, Release do |release|
       #   release.user_ids.include?(user.id)
