@@ -35,7 +35,7 @@
                   class: "play-release-#{@release.id} release-play-nav mr-3",
                   remote: true do %>
         <%= image_tag 'icons/play-orange-sm.svg' %>
-        <div class="mt-1">play all</div>
+        <div class="play-all-caption">play all</div>
       <% end %>
 
       <div class="release-rate mr-3" data-release-id="<%= @release.id %>">
@@ -95,6 +95,24 @@
         <div data-object-type="release" data-object-id="<%= @release.id %>">
           <%= social_share_button_tag(strip_tags(@release.title).gsub("\'",''), desc: strip_tags(@release.text).gsub("\'",''), image: @release.avatar.url(:large)) %>
         </div>
+      </div>
+
+      <div class="release-previous">
+        <%= link_to @release.previous, 
+            class: 'd-flex align-items-center justify-content-end' do %>
+          <%= image_tag @release.previous.avatar.thumb, class: 'release-previous-img' %>
+          <div style="overflow: hidden;">
+            <div class="text-truncate font-weight-bold text-uppercase">
+              <%= @release.previous.title %>
+            </div>
+            <div class="text-truncate">
+              By <%= @release.previous.artists(2) %>
+            </div>
+          </div>
+          <div class="release-previous-chevron">
+            <%= image_tag 'icons/icon-chevron-left' %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

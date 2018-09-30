@@ -37,6 +37,10 @@ class Release < ApplicationRecord
 
   scope :published, -> { where("published_at < ?", DateTime.now).order(release_date: :desc) }
 
+  def previous
+    Release.where("id < ?", id).order("id DESC").first || Release.first
+  end
+
   def user_allowed?(user)
     return false unless user
     return true if user.vip?
