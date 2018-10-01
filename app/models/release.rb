@@ -93,8 +93,10 @@ class Release < ApplicationRecord
     elsif users.any?
       artists = users.map(&:name)
       artists_count = artists.count
-
-      if limit && artists_count > limit
+      
+      if limit == 0 && artists_count > 1
+        'Various Artists'
+      elsif limit && artists_count > limit
         artists = artists[0..limit-1]
         artists = artists.map(&:strip).join(', ')
         artists += " & #{artists_count-limit} #{'other'.pluralize(artists_count-limit)}"

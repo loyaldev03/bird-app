@@ -51,8 +51,8 @@
             </div>
           </div>
           <div data-object-type="topic" data-object-id="<%= @topic.id %>">
-            <%= social_share_button_tag(strip_tags(@topic.title).gsub("\'",''), desc: strip_tags(@topic.body).gsub("\'",''), image: @topic.user.avatar.url) %>
-          </div>          
+            <%= social_share_button_tag(strip_tags(@topic.title).gsub("\'",''), desc: strip_tags(@topic.body).gsub("\'",''), image: @topic.user.try(:avatar).try(:url)) %>
+          </div>
           <!-- <div class="topic-status-bar tsbw-1 twitter-bg">
             <%= image_tag "icons/twitter.png" %>
           </div>
