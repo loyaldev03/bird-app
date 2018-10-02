@@ -14,13 +14,14 @@ class HomeController < ApplicationController
     @artists = User.with_role(:artist)
                    .order('created_at ASC')
                    .includes(:artist_info)
-                   .limit(20)
+                   .limit(10)
 
     @releases = Release.published.where(
       'published_at <= :now AND (published_at >= :user_max OR available_to_all = true)',
       now: DateTime.now,
       user_max: DateTime.now - 1.month
     ).order('published_at DESC')
+    .limit(10)
 
     @badge_kinds = BadgeKind.visible
 

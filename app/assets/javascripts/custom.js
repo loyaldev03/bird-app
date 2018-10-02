@@ -3,6 +3,20 @@ var ready = function() {
     trigger: 'focus'
   });
 
+  if($("#notify-menu").length === 0) {
+    const loginByTime = setTimeout(function(){
+      $('#signInModal').modal('show');
+    }, 15000);
+
+    $(window).on('scroll.popupLogin', function(e) {
+      if ($(this).scrollTop() > 300) {
+        $('#signInModal').modal('show');
+        clearTimeout(loginByTime);
+        $(this).off('scroll.popupLogin');
+      }
+    });
+  }
+
   $('.select').select2();
 
   $('.plan-block').click(function(){

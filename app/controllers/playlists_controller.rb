@@ -31,16 +31,20 @@ class PlaylistsController < ApplicationController
         current_user.update_attributes(current_playlist_id: playlist.id)
       end
     else
+      track = Release.published.first.tracks.first
       render json: { 
-          tracks: [ track_as_json( TrackPresenter.new( Track.last, nil, @browser ) ) ] 
+          tracks: [ track_as_json( TrackPresenter.new( track, nil, @browser ) ) ] 
         }
       return
     end
 
     tracks = playlist.tracks.map do |_track|
+      return nil unless _track.release
       track = TrackPresenter.new(_track, current_user, @browser)
       track_as_json( track )
     end
+
+    tracks.compact!
 
     playlist_name_form = render_to_string( 
         partial: 'playlists/change_name', 

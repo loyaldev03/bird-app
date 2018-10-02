@@ -291,6 +291,68 @@
     </div>
   </div>
 
+  <div class="modal modal-blured" id="signInModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog-centered container" role="document">
+      <div class="modal-content sign-in-modal">
+        <%= image_tag 'dj1.png', class: 'img-left d-none d-lg-block' %>
+
+        <div class="sign-in-modal-body">
+          <h3>
+            LOGIn
+          </h3>
+
+          <%= form_for(resource, as: resource_name, 
+              url: session_path(resource_name),
+              html: {id: "sign_in_user_modal", class: ""}) do |f| %>
+            <%= devise_error_messages! %>
+
+            <div class="form-group">
+              <%= f.label :user_login_email_modal, "E-mail" %>
+              <%= f.email_field :email, autocomplete: "email", 
+                  class: 'form-control', id: "user_login_email_modal", 
+                  required: true %>
+            </div>
+
+            <div class="form-group mb-4">
+              <%= f.label :user_login_password_modal, "Password" %>
+              <%= f.password_field :password, autocomplete: "off", 
+                  required: true, class: 'form-control', 
+                  id: "user_login_password_modal" %>
+            </div>
+
+            <%= f.submit "login", class: "btn c-btn-red btn-square btn-wide" %>
+
+            <span class="mx-2">or</span>
+            <div class="d-block mb-3 d-sm-none"></div>
+
+            <%= link_to user_facebook_omniauth_authorize_path, class: "" do %>
+              <%= image_tag 'icons/flogo_rgb_hex-brc-site-250.png', height: 30 %>
+            <% end %>
+
+            <%= link_to user_google_oauth2_omniauth_authorize_path, class: "" do %>
+              <%= image_tag 'icons/btn_google_dark_normal_ios.svg', height: 34 %>
+            <% end %>
+          <% end %>
+          
+          <%= link_to "I Forgot", new_password_path(resource_name), class: 'c-text' %>
+
+          <div class="text-right mb-4">
+            <span class="or">or</span>
+          </div>
+
+          <%= link_to "Create an account", new_user_registration_path, 
+              class: "btn c-btn-blue btn-square btn-wide float-right mt-4" %>
+        </div>
+
+        <div class="sign-in-modal-owl d-none d-lg-block">
+          <%= image_tag 'owl.png' %>
+          <%= image_tag 'dialog.png', class: 'dialog-img' %>
+          <%= image_tag 'key.png', class: 'key-img' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal modal-blured" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-wide" role="document">
       <div class="modal-content">
