@@ -9,25 +9,27 @@ class FollowsController < ApplicationController
   def create
     follow = Follow.new(follow_params)
     follow.user_id = current_user.id
-    follow.active = true
-
+    followable_id = follow.followable_id
+    
     if follow.followable_type == 'User'
-      follow.active = false
+      if follow.followable.has_role?(:artist) || follow.followable.open_for_follow?
+        follow.save
+      else
+        follow_request = FollowRequest.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+          followable_id, current_user.id).last
 
-      if follow.followable.has_role?(:artist) || follow.followable.try(:open_for_follow?)
-        follow.active = true
+        if follow_request.blank?
+          current_user.follow_requests.create(
+              followable_type: 'User', 
+              followable_id: followable_id)
+        end
       end
+    else
+      follow.save
     end
 
-    if follow.save
-      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(follow.user_id)[:aggregated]
-      news_aggregated_feed.follow( follow.followable_type.downcase, follow.followable_id )
-      
-      unless follow.followable_type == "User"
-        feed_for_tab = StreamRails.feed_manager
-            .get_feed("#{follow.followable_type.downcase}_user_feed", follow.user_id)
-        feed_for_tab.follow( follow.followable_type.downcase, follow.followable_id )
-      end
+    if follow.new_record?
+      follow = { 'followable_type' => 'User', 'followable_id' => followable_id } 
     end
 
     render 'toggle_follow', locals: {
@@ -63,26 +65,33 @@ class FollowsController < ApplicationController
   def reject_request
     @user_id = params[:user_id]
 
-    follow = Follow.unscoped.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+    follow_request = FollowRequest.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
       current_user.id, @user_id).last
 
-    follow.update_attributes(show_notify: false)
+    follow_request.update_attributes(show_notify: false)
   end
 
   def accept_request
     @user_id = params[:user_id]
-    follow = Follow.unscoped.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
+    follow_request = FollowRequest.where("followable_type = 'User' AND followable_id = ? AND user_id = ?",
       current_user.id, @user_id).last
-    follow.update_attributes(active: true, show_notify: false)
+
+    return if follow_request.blank?
+
+    follow_request.destroy
 
     Follow.create(user_id: current_user.id, 
                   followable_id: @user_id,
                   followable_type: 'User',
                   show_notify: false)
+    Follow.create(user_id: @user_id, 
+                  followable_id: current_user.id,
+                  followable_type: 'User',
+                  show_notify: true)
   end
 
   def is_seen_requests
-    Follow.unscoped.where( show_notify: true, 
+    Follow.where( show_notify: true, 
                   followable_type: 'User', 
                   followable_id: current_user.id)
       .update_all(show_notify: false)

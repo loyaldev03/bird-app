@@ -44,6 +44,7 @@ class User < ApplicationRecord
 
   has_many :follows
   has_many :followed_users, through: :follows, source: :followable, source_type: "User"
+  has_many :follow_requests
 
   has_many :likes
   has_one :artist_info, foreign_key: "artist_id"
@@ -73,7 +74,7 @@ class User < ApplicationRecord
   def badges_by_kind kind
     badge_kind = BadgeKind.find_by(ident: kind)
     return [] unless badge_kind
-    self.badges.where(badge_kind_id: badge_kind.id)
+    badges.where(badge_kind_id: badge_kind.id)
   end
 
   def crop_avatar
@@ -86,42 +87,41 @@ class User < ApplicationRecord
 
   def online?
     begin
-      $redis_onlines.exists( self.id )
+      $redis_onlines.exists( id )
     rescue Redis::CannotConnectError
       return false
     end
   end
 
   def releases_tracks
-    releases = self.releases.published.ids
+    releases = releases.published.ids
     Track.where("release_id IN (?)",releases)
   end
 
   def followers
-    User.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User'", self.id)
+    User.joins(:follows).where("follows.followable_id = ? AND follows.followable_type = 'User'", id)
   end
 
-  def friend_requests
-    Follow.unscoped do
-      followers.where("follows.show_notify = true") - followed_users
-    end
+  def followed object
+    follows.where( followable_id: object.id, 
+                        followable_type: object.class.to_s).first
   end
 
-  def followed object, unscoped=false
-    if unscoped
-      Follow.unscoped do
-        self.follows.where( followable_id: object.id, 
-                                followable_type: object.class.to_s).first
-      end
-    else
-      self.follows.where( followable_id: object.id, 
-                                followable_type: object.class.to_s).first
-    end
+  def follow_requesters
+    User.joins(:follow_requests)
+        .where("follow_requests.followable_id = ? AND follow_requests.followable_type = 'User'", 
+          id)
+  end
+
+  def request_to object
+    follow_requests
+      .where(followable_id: object.id, followable_type: object.class.to_s)
+      .first
   end
 
   def posts_from_followed_topics
     topic_ids = "SELECT followable_id FROM follows WHERE user_id = :user_id AND followable_type = 'Topic'"
-    Post.where("topic_id IN (#{topic_ids})", user_id: self.id).order(created_at: :desc)
+    Post.where("topic_id IN (#{topic_ids})", user_id: id).order(created_at: :desc)
   end
 
   def already_liked object

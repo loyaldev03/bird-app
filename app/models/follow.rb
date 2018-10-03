@@ -5,14 +5,12 @@ class Follow < ApplicationRecord
   has_many :comments, as: :commentable
   validates :user_id, :followable_id, :followable_type, presence: true
 
-  after_create :add_points#, :feed_release_topic_announcement
+  after_create :add_points, :add_to_feeds#, :feed_release_topic_announcement
   after_save :trigger_followers_count
   after_destroy :trigger_followers_count, :remove_points, :remove_from_aggregated_feed#, :unfeed_release_topic_announcement
 
   include StreamRails::Activity
   as_activity
-
-  default_scope { where(active: true) }
 
   def activity_notify
     notify = [StreamRails.feed_manager.get_feed( 'masterfeed', 1 )]
@@ -34,6 +32,17 @@ class Follow < ApplicationRecord
   end
 
   private
+
+    def add_to_feeds
+      news_aggregated_feed = StreamRails.feed_manager.get_news_feeds(user_id)[:aggregated]
+      news_aggregated_feed.follow( followable_type.downcase, followable_id )
+      
+      unless followable_type == "User"
+        feed_for_tab = StreamRails.feed_manager
+            .get_feed("#{followable_type.downcase}_user_feed", user_id)
+        feed_for_tab.follow( followable_type.downcase, followable_id )
+      end
+    end
 
     def add_points
       self.user.change_points( 'follow', self.followable_type )

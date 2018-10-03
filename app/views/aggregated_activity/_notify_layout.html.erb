@@ -37,6 +37,7 @@
         <% activity['activities'].each do |_activity| %>
           <% verb = _activity['foreign_id'].class.to_s %>
           <% case verb %>
+          <% when "String" then break %>
           <% when "Post" then verbs << "commented" %>
           <% else %>
             <% verbs << Verbs::Conjugator.conjugate( _activity['foreign_id'].class.to_s.downcase, :tense => :past, :aspect => :perfective ) %>

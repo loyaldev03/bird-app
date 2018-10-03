@@ -75,7 +75,8 @@ class ApplicationController < ActionController::Base
       if current_user.has_role?(:artist)
         @friend_requests = current_user.followers.where("follows.show_notify = true")
       else
-        @friend_requests = current_user.friend_requests
+        @friend_requests = current_user.follow_requesters
+                              .where("follow_requests.show_notify = true")
       end
     end
   end
