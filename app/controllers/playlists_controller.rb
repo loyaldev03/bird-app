@@ -39,12 +39,9 @@ class PlaylistsController < ApplicationController
     end
 
     tracks = playlist.tracks.map do |_track|
-      return nil unless _track.release
       track = TrackPresenter.new(_track, current_user, @browser)
       track_as_json( track )
     end
-
-    tracks.compact!
 
     playlist_name_form = render_to_string( 
         partial: 'playlists/change_name', 

@@ -7,7 +7,7 @@
 <% for user in @friend_requests %>
   <% if current_user.has_role?(:artist) %>
     <div class="nav-notify py-2 px-3">
-      <%= link_to user do %>
+      <%= link_to user, class: "#{avatar_style(user)} sm-style" do %>
         <%= image_tag user.avatar.thumb.url, class: "feed-avatar align-top" %>
       <% end %>
 
@@ -31,7 +31,7 @@
     <hr style="margin: 2px 0 0;">
   <% else %>
     <div id="friend-request-item-<%= user.id %>" class="d-flex my-2 px-3 w-100">
-      <%= link_to user do %>
+      <%= link_to user, class: "#{avatar_style(user)} sm-style" do %>
         <%= image_tag user.avatar.thumb, class: "user-avatar mr-2" %>
       <% end %>
 

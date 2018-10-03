@@ -9,7 +9,8 @@ class Playlist < ApplicationRecord
 
   def tracks
     ids = tracks_ids.to_s.split(',').map do |track_id|
-      Track.find_by_id track_id
+      track = Track.find_by_id track_id
+      track.try(:release) ? track : nil
     end
     
     ids.compact

@@ -1,3 +1,9 @@
+#signInModal {
+  .modal-dialog-centered {
+    width: 75vw;
+  }
+}
+
 .sign-in-modal {
   display: flex;
   flex-direction: row;
@@ -7,14 +13,18 @@
   background-color: white;
 
   .img-left {
-
+    max-width: 515px;
+    width: 30vw;
+    object-fit: cover;
+    max-height: 630px;
+    height: 85vh;
   }
 }
 
 .sign-in-modal-owl {
   position: absolute;
   bottom: 0;
-  left: 30%;
+  right: 50%;
   z-index: 2;
 
   .dialog-img {
@@ -33,7 +43,7 @@
 
 .sign-in-modal-body {
   flex-grow: 1;
-  margin: 60px 50px 50px;
+  margin: 7vh 3vw 7vh;
   border-right: 10px solid #faae03;
   border-bottom: 10px solid #faae03;
   padding-right: 80px;

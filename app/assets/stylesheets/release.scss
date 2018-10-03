@@ -164,23 +164,6 @@
   border-radius: 10px;
 }
 
-.release-play-nav {
-  color: #ffffff;
-  font-family: 'Phosphate-Solid';
-  font-size: 11px;
-  line-height: 11px;
-  letter-spacing: 0.49px;
-  text-align: center;
-
-  &:hover {
-    color: #999;
-  }
-
-  .play-all-caption {
-    margin-top: 6px;
-  }
-}
-
 .release-previous {
   margin: -2px 0 0 20px;
   overflow: hidden;
@@ -217,12 +200,17 @@
 }
 
 .release-play {
-  background: none !important;
+  background-image: none !important;
   width: 276px !important;
   height: 276px !important;
 
-  &:hover:after {
-    opacity: 1;
+
+  &:hover {
+    background-color: rgba(0,0,0,0.4);
+
+    &:after {
+      opacity: 1;
+    }
   }
 
   &:after {
