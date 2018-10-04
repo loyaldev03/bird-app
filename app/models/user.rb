@@ -513,7 +513,10 @@ class User < ApplicationRecord
 
 
   def current_playlist
-    Playlist.find_by_id current_playlist_id
+    playlist = Playlist.find_by_id current_playlist_id
+    playlist = playlists.last unless playlist
+    playlist = playlists.create unless playlist
+    playlist
   end
 
 
