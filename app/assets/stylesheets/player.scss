@@ -14,11 +14,39 @@
   .jp-controls {
     padding: 12px 0;
   }
+
+  .like-button {
+    line-height: 10px;
+
+    img {
+      vertical-align: middle;
+      width: 20px;
+    }
+  }
 }
 
 .jp-interface {
   display: flex;
   justify-content: space-between;
+
+  .playlist-add-source {
+    font-size: 29px;
+    line-height: 29px;
+  }
+
+  .download-release {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .collapse-formats {
+    bottom: 0;
+  }
+
+  .collapse.show {
+    display: inline-block;
+    right: unset;
+  }
 }
 
 .jp-controls {
@@ -166,6 +194,11 @@
   }
 }
 
+.jp-additions {
+  display: flex;
+  align-items: center;
+}
+
 
 .nav-rate-track-wrapper {
   .rate-track-btn {
@@ -254,14 +287,22 @@
 }
 
 .credits-btn {
-  color: #ff7e7e;
-  font-size: 10px;
   background: none;
   border: none;
   cursor: pointer;
   height: 100%;
   position: relative;
   z-index: 2;
+  color: white;
+  font-family: 'Phosphate-Inline';
+  font-size: 12px;
+
+  svg {
+    width: 20px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
 }
 
 .credits-dropdown {

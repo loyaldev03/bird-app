@@ -1,9 +1,7 @@
 @mixin playlist-dropdown {
   color: #222;
-  max-width: 400px;
-  min-width: 300px;
+  width: 320px;
   opacity: 0.98;
-  border-radius: 0 0 15px 15px;
   text-align: left;
   background-color: white;
   display: inline-block;
@@ -14,21 +12,52 @@
     content: '';
     position: absolute;
     width: 10px;
-    height: 10px;
+    height: 5px;
     border: 10px solid transparent;
-    border-bottom: 10px solid white;
-    top: -20px;
-    right: 73px;
+    border-bottom: 5px solid white;
+    top: -15px;
+    right: 30px;
     z-index: 3;
   }
 }
 
+.playlist-name-img {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 7px;
+
+  svg {
+    width: 15px;
+    height: 20px;
+  }
+} 
+
 .playlist-name-btn {
-  color: #ff7272;
+  color: #434343;
+  font-family: 'Phosphate-Solid';
+  font-size: 14px;
+  letter-spacing: 0.63px;
 }
 
+.playlist-name-author {
+  color: #464646;
+  font-family: 'Phosphate-Solid';
+  font-size: 9px;
+}
+
+.playlist-name-time {
+  color: #533232;
+  font-family: "Titillium Web";
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+
 .jp-playlist-item {
-  color: #3ed4e0;
+  color: #292929;
 
   &:hover {
     color: darken(#3ed4e0, 70%);
@@ -40,15 +69,14 @@
   color: #100f0f;
   line-height: 3px;
   font-weight: bold;
+  float: right;
+  margin-left: 5px;
+  line-height: 25px;
 }
 
-.jp-playlist-current {
-  color: #e75e35;
-
-  &:hover {
-    color: darken(#e75e35, 70%);
-  }
-}
+// .jp-playlist-current {
+//   background-color: #ededed;
+// }
 
 .jp-type-playlist {
   text-align: right;
@@ -61,10 +89,12 @@
   outline: none;
   position: relative;
   z-index: 2;
+  line-height: 15px;
 
-  img {
-    padding: 12px;
-    vertical-align: top;
+  svg {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -77,23 +107,32 @@
   ul {
     list-style-type: none;
     margin: 0;
-    padding: 10px 15px;
+    padding: 0;
   }
 
   li {
+    padding: 2px 15px;
     outline: none;
     font-size: 14px;
+    border-bottom: 1px solid #ededed;
+  }
+  
+  &.with-eggs:before {
+    right: 106px;
+  }
+
+  .playlist-play-track {
+    vertical-align: top;
   }
 }
 
 .jp-release-playlist {
   @include playlist-dropdown;
-  left: calc(50% - 300px);
   padding: 0 15px;
   font-family: 'Titillium Web', sans-serif;
 
   &:before {
-    left: 35px;
+    left: 90px;
   }
 
   .jp-release-image {
@@ -132,15 +171,7 @@
   color: #ff7272;
   font-size: 11px;
   font-weight: 700;
-  margin-left: 12px;
-  margin-top: 12px;
-  
-  span {
-    margin-left: 5px;
-    color: #000000;
-    font-size: 7px;
-    font-weight: 300;
-  }
+  margin: 12px 12px 0;
 }
 
 #jp-release-playlist-btn {
@@ -150,6 +181,9 @@
   padding: 0;
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  color: white;
 }
 
 .jp-release-btn {
@@ -222,16 +256,12 @@
 
 .jp-playlist-footer {
   display: flex;
-  justify-content: space-around;
-  padding: 7px 0;
-  margin: 0 13px;
-  border-top: 1px solid #3ed4e0;
+  width: 100%;
+  padding-top: 7px;
   position: relative;
 
   a {
-    color: #0d0c0c;
-    font-size: 10px;
-    font-weight: bold;
+    flex-grow: 1;
   }
 }
 

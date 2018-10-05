@@ -4,4 +4,10 @@ var playlist_name_form = `<%= escape_javascript(
     render partial: 'playlists/change_name', locals: { playlist: @playlist }
   ) %>`
 
-$('.jp-playlist-name').html(playlist_name_form+'<span>Created by <%= current_user.name %></span>');
+$('.jp-playlist-name').html(playlist_name_form);
+
+$("#jp-playlist-popover").append(`
+  <button class="select-playlist" data-playlist-id="<%= @playlist.id %>">
+    <%= "#{@playlist.name}: 0 Tracks" %>
+  </button>
+  <br>`);

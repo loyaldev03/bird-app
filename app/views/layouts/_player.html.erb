@@ -32,15 +32,21 @@
         </div>
 
         <div class="jp-details"></div>
+        <div class="jp-additions"></div>
 
         <% if current_user && (current_user.cahced_active_subscription? || 
               current_user.has_role?(:admin) ||
               current_user.has_role?(:artist) ) %>
 
+          <button id="jp-playlist-btn" class="<%= 'mr-4' unless @credits %>">
+            <%= show_svg 'icons/playlist1.svg' %>
+          </button>
+          
           <% if @credits %>
-            <div class="credits-menu">
+            <div class="credits-menu mr-4">
               <button type="button" data-toggle="collapse" data-target="#credits-count" aria-expanded="false" aria-controls="collapseExample" class="credits-btn">
-                <%= pluralize(@credits, "Credit") %>
+                <%= show_svg 'icons/egg-basket.svg' %>
+                <%= pluralize(@credits, "egg") %>
               </button>
 
               <div id="credits-count" class="collapse credits-dropdown">
@@ -51,10 +57,6 @@
               </div>
             </div>
           <% end %>
-
-          <button id="jp-playlist-btn" class="mr-4">
-            <%= image_tag 'icons/playlist.png' %>
-          </button>
         <% end %>
 
         <div class="jp-progress-container" style="width: 200px">
@@ -65,15 +67,21 @@
       <div class="jp-release-playlist" style="display: none;">
       </div>
 
-      <div class="jp-playlist" style="display: none;">
+      <div class="jp-playlist <%= 'with-eggs' if @credits %>" style="display: none;">
         
         <% if current_user %>
           <div class="jp-playlist-name"></div>
           <ul></ul>
           <div class="jp-playlist-footer">
-            <%= link_to "Create playlist", new_playlist_path, remote: true %>
-            <a href="#" data-toggle="collapse" data-target="#jp-playlist-popover" aria-expanded="false" aria-controls="collapseExample" class="jp-playlist-open-btn">
-              Load playlist
+            <%= link_to "NEW", new_playlist_path, remote: true,
+                class: 'btn c-btn-gray btn-square' %>
+            <a href="#" 
+                data-toggle="collapse" 
+                data-target="#jp-playlist-popover" 
+                aria-expanded="false" 
+                aria-controls="collapseExample" 
+                class="btn c-btn-blue btn-square">
+              Load
             </a>
 
             <div id="jp-playlist-popover" class="collapse playlist-popover-collapse">
@@ -385,7 +393,7 @@
 
   function removeFromPlaylist(index) {
     let item = $('.jp-playlist li').get(index);
-    let active = $(item).find('.jp-playlist-current').length > 0;
+    let active = $(item).hasClass('jp-playlist-current');
     item.remove();
     $('.jp-playlist').trigger('change');
     // if (!$('.jp-audio .jp-play').data('virtual')) {
@@ -472,10 +480,11 @@
       _data = `data-track-id="${track.id}" data-track-index="${index}"`;
     }
 
-    return `<li>
+    return `<li class="playlist-item">
               <div>
+                <a href="#" class="play-${sourceType}-${sourceId}-${_class} playlist-play-track jp-playlist-item mr-1" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="${index}" data-remote="true"></a>
+                <a href="#" class="jp-playlist-item play-${sourceType}-${sourceId}-${_class}" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="${index}">${track.title} - ${track.artists}</a>
                 <a href="#" class="jp-playlist-item-remove">-</a>
-                <a href="#" class="jp-playlist-item play-${sourceType}-${sourceId}-${_class}" data-source-type="${sourceType}" data-source-id="${sourceId}" ${_data} data-virtual="false" tabindex="0">${track.title} - ${track.artists}</a>
               </div>
             </li>`
   }
@@ -699,7 +708,7 @@
 
     var trackId;
 
-    if (trackIndex !== undefined) {
+    if (trackIndex !== undefined && playlist.length > 0) {
       trackId = playlist[trackIndex].id;
     } else {
       trackId = $('.jp-audio .jp-play').data('trackId');
@@ -717,7 +726,8 @@
     $('.jp-audio .jp-play').removeClass('playing');
     $('.pp-play').removeClass('playing');
     $("[class^='play-']").removeClass('playing')
-          .parent('td').parent('tr').removeClass('playing');
+          .closest('tr').removeClass('playing');
+    $('.jp-playlist li').removeClass('playing');
     if (cpAudio.isPlaying()) {
       $('.jp-audio .jp-play').addClass('playing');
       $('.pp-play').addClass('playing');
@@ -728,10 +738,10 @@
           .closest('.playlist-item').addClass('playing');
     }
 
-    $('.jp-playlist li').find('.jp-playlist-item').removeClass('jp-playlist-current');
+    $('.jp-playlist li').removeClass('jp-playlist-current');
     
     if (!virtual) {
-      $($('.jp-playlist li').get(currentTrackIndex)).find('.jp-playlist-item').addClass('jp-playlist-current');
+      $($('.jp-playlist li').get(currentTrackIndex)).addClass('jp-playlist-current');
     }
   }
 
@@ -768,7 +778,7 @@
   
   $(document).on('click', '#jp-release-playlist-btn', function(){
     $('.jp-release-playlist')
-          .css({ 'left': $(this).offset().left - 35 })
+          .css({ 'left': $(this).offset().left - 75 })
           .slideToggle(300, function() {
       if ($(this).is(':visible'))
           $(this).css('display','inline-block');

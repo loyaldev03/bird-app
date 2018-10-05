@@ -1,6 +1,6 @@
 <% for _activity in activity['activities'] %>
 
-  <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
+  <div class="nav-notify <%= 'is_seen' if activity['is_seen'] %>">
     <% if _activity['actor'].try(:id) %>
       <%= link_to _activity['actor'], class: "#{avatar_style(_activity['actor'])} sm-style" do %>
         <%= image_tag _activity['actor'].avatar.thumb.url, class: "feed-avatar" %>

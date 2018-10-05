@@ -10,33 +10,6 @@
               style: 'cursor: pointer; transform: rotate(180deg);', 
               onclick: "window.history.forward();" %>
         </li>
-        <% if current_user %>
-          <% listen = 
-              (controller?('releases') && action?('index') && params[:player] == true ) ||
-              (controller?('player') && action?('listen')) ||
-              (controller?('playlists') && action?('show')) %>
-
-          <li class="<%= 'active-blue' if listen %>">
-            <%= link_to player_listen_path(current_user) do %>
-              Listen
-              <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_listen_path(current_user)) %>
-            <% end %>
-          </li>
-        <% end %>
-
-        <li class="<%= 'active-blue' if current_page?(player_connect_path(current_user)) %>">
-          <%= link_to player_connect_path(current_user) do %>
-            Connect
-            <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(player_connect_path(current_user)) %>
-          <% end %>
-        </li>
-
-        <li class="<%= 'active' if current_page?(leaderboard_path) %>">
-          <%= link_to leaderboard_path do %>
-            Play
-            <%= '<span class="sr-only">(current)</span>'.html_safe if current_page?(leaderboard_path) %>
-          <% end %>
-        </li>
         <li class="playlist-nav-subheader">Music&nbsp;</li>
         <li class="<%= 'active' if current_page?("/releases?player=true&user_id=#{@user.id}") %>">
           <%= link_to "All", releases_path(player: true, user_id: @user.id), id: "playlist-all-releases" %>

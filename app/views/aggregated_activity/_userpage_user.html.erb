@@ -23,7 +23,7 @@
     <% end %>
   </div>
 
-  <%= render 'comments/feed_item', object: _activity['foreign_id'] %>
+  <%= render 'comments/feed_item', object: activity['activities'][0]['foreign_id'] %>
 
   <hr class="feed-divider">
 </div>

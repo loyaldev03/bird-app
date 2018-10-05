@@ -28,8 +28,10 @@
   .nav-notify {
     width: 340px;
     font-size: 12px;
-    padding: 5px;
+    padding: 10px 5px;
     position: relative;
+    font-weight: 700;
+    background-color: #e0e0e0;
 
     a {
       color: #222;
@@ -40,6 +42,15 @@
       height: 40px;
       border-radius: 21px;
     }
+
+    &.is_seen {
+      font-weight: 400;
+    }
+
+    &.is_read {
+      background-color: white;
+    }
+
   }
 
   // @media not all and (min-resolution:.001dpcm)
@@ -63,10 +74,6 @@
   height: 20px;
   line-height: 20px;
   text-align: center;  
-}
-
-.notify-seen {
-  font-weight: 700;
 }
 
 .nav-icon {
@@ -137,12 +144,14 @@
     font-size: 11px; 
     text-transform: lowercase; 
     position: absolute;
-    bottom: 4px;
+    bottom: 9px;
     left: 52px;
   }
 
-  &.is_read {
-    color: gray !important;
+  strong {
+    font-family: 'Phosphate-Solid';
+    font-weight: 500;
+    letter-spacing: 0.8px;
   }
 }
 

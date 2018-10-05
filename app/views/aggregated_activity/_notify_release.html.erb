@@ -1,6 +1,6 @@
 <% if activity['activities'][0]['foreign_id'].class.to_s == 'Release' %>
   <% if DateTime.parse( activity['activities'][0]['time'] ).in_time_zone < DateTime.now %>
-    <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
+    <div class="nav-notify <%= 'is_seen' if activity['is_seen'] %>">
       <%= link_to activity['activities'][0]['object'] do %>
         <%= image_tag activity['activities'][0]['object'].avatar.url, 
             class: "notify-release-avatar align-top" %>
@@ -46,7 +46,7 @@
   <% end %>
 <% elsif activity['activities'][0]['foreign_id'].class.to_s == 'Announcement' %>
   <% if DateTime.parse( activity['activities'][0]['time'] ).in_time_zone < DateTime.now %>
-    <div class="nav-notify <%= 'notify-seen' if activity['is_seen'] == false %>">
+    <div class="nav-notify <%= 'is_seen' if activity['is_seen'] %>">
       <%= link_to activity['activities'][0]['object'] do %>
         <%= image_tag activity['activities'][0]['object'].avatar.url, 
             class: "notify-release-avatar align-top" %>

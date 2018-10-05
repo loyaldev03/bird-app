@@ -212,7 +212,7 @@ var ready = function() {
   });
 
   $('#notify-menu').on("hide.bs.dropdown", function(event){
-    $('#notify-menu .notify-seen').removeClass('notify-seen');
+    $('#notify-menu .is_seen').removeClass('is_seen');
   });
 
   $('.notice').click(function(){$(this).hide()});
