@@ -3,8 +3,11 @@ var ready = function() {
     trigger: 'focus'
   });
 
-  if($("#notify-menu").length === 0) {
-    const loginByTime = setTimeout(function(){
+  $(window).off('scroll.popupLogin');
+  var loginByTime;
+  clearTimeout(loginByTime);
+  if($("#notify-menu").length === 0 && $('.signup-header').length === 0) {
+    loginByTime = setTimeout(function(){
       $('#signInModal').modal('show');
     }, 15000);
 
