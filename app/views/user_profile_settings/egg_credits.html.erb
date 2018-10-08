@@ -51,79 +51,38 @@
         <div class="col-sm-9">
           <div class="eggs-collection-wrapper">
             <div class="row">
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "3-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-              <div class="col-sm-4">
-                <%= image_tag "5-eggs.png", class: 'closed-btn' %>
-              </div>
-
+              <% debugger %>
+              <% group = @credits / 5 %>
+              <% rest = @credits % 5 %>
+              <% if group > 1 %>
+                <% (1..group).each do |index| %>
+                  <div class="col-sm-4">
+                    <div class="w-100 eggs-collection">
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                    </div>
+                    <div class="w-100 eggs-table">
+                      <%= image_tag "egg-table.png", class: 'eggs-table-img' %>
+                    </div>
+                  </div>                
+                <% end %>
+              <% end %>
+              <% if rest > 0 %>
+                <div class="col-sm-4">
+                  <div class="w-100 eggs-collection">
+                    <% (1..rest).each do |index| %>
+                      <%= image_tag "egg.png", class: 'single-egg' %>
+                    <% end %>
+                  </div>
+                  <div class="w-100 eggs-table">
+                    <%= image_tag "egg-table.png", class: 'eggs-table-img' %>
+                  </div>
+                </div>                
+              <% end %>
             </div>
           </div>
         </div>

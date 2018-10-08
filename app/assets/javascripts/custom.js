@@ -8,12 +8,12 @@ var ready = function() {
   clearTimeout(loginByTime);
   if($("#notify-menu").length === 0 && $('.signup-header').length === 0) {
     loginByTime = setTimeout(function(){
-      $('#signInModal').modal('show');
+      // $('#signInModal').modal('show');
     }, 15000);
 
     $(window).on('scroll.popupLogin', function(e) {
       if ($(this).scrollTop() > 300) {
-        $('#signInModal').modal('show');
+        // $('#signInModal').modal('show');
         clearTimeout(loginByTime);
         $(this).off('scroll.popupLogin');
       }

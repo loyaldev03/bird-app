@@ -3,6 +3,7 @@ class Callbacks::BraintreeController < ApplicationController
 
   def nonce
     #buy more credits logic
+    debugger
     if params[:credits_count].present?
       unless current_user.braintree_customer
         flash[:error] = 'You should be subscribed first'
@@ -30,6 +31,7 @@ class Callbacks::BraintreeController < ApplicationController
         }
       )
 
+      debugger
       if result.success?
         current_user.increment!(:download_credits, params[:credits_count].to_i)
 

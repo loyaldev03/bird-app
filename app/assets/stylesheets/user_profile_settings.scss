@@ -159,8 +159,18 @@
 					}	
 				}
 				.eggs-collection-wrapper {
-					img {
-						margin-bottom: 15px;
+					.eggs-collection {
+						.single-egg {
+							width: 25px;
+							margin-left: -3.3px;
+							&:first-child {
+								margin-left: 10px
+							}
+						}
+					}
+					.eggs-table {
+						width: 100%;
+						margin-top: -10px;
 					}
 				}			
 
